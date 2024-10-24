@@ -44,6 +44,7 @@ import { PatientListService } from './modules/patient.admin/services/patient-lis
 import { PatientService } from './modules/patient.questionnaire/service/patient.service';
 import { SecurityModule } from './modules/security';
 import { AuthInterceptor } from './modules/security/service/auth.interceptor';
+import { POSITION_OPTIONS } from '@ng-web-apis/geolocation';
 
 
 
@@ -114,6 +115,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: POSITION_OPTIONS,
+      useValue: {enableHighAccuracy: true, timeout: 3000, maximumAge: 1000},
+  },
   ],
   bootstrap: [AppComponent]
 })

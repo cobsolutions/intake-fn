@@ -1,1 +1,16 @@
-<p>generate-request works!</p>
+<div *ngIf="currentStep === 1" class="step-content">
+    <h2>Enter Device Name</h2>
+    <input type="text" [(ngModel)]="deviceName" class="input-field" placeholder="Type your device name">
+    <button cButton variant="outline" (click)="goToNextStep()" style="float: right;">
+        <svg cIcon name="cilArrowThickFromLeft"></svg>
+    </button>
+</div>
+<div *ngIf="currentStep === 2" class="step-content">
+    <div class="text-center"><h2>Scan QR Code</h2></div>
+    <div class="qr-placeholder">
+        <qrcode [qrdata]="'http://localhost:4200/admin/trust/devices/scannedQR'"  [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+    <button cButton variant="outline" (click)="goTopreviousStep()" style="float: right;">
+        <svg cIcon name="cilArrowThickFromRight"></svg>
+    </button>
+</div>

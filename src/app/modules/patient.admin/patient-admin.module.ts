@@ -8,7 +8,7 @@ import {
   ValidationListComponent,
   RecommendationReportComponent,
   DashboardComponent,
-  
+
   ClinicListComponent,
   UserCreationComponent,
   UserListComponent,

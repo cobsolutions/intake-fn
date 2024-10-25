@@ -1,11 +1,11 @@
 <ngx-spinner></ngx-spinner>
 <c-row>
     <c-col xs="12">
-        <h1>Trust Devices</h1>
+        <h3>Trusted Devices</h3>
     </c-col>
     <c-col xs="12">
         <div class="clinic-header" style="float: right;">
-            <button cButton color="primary" variant="outline" (click)="openGenertaeRequest()">+ Add Device</button>
+            <button cButton color="primary" variant="outline" (click)="openGenertaeRequest()" size="sm">+ Add Device</button>
         </div>
     </c-col>
 </c-row>
@@ -22,7 +22,7 @@
                 <div class="device-date">Created At: {{ device.createdAt | date: 'MMM d, y' }}</div>
             </div>
             <div class="device-actions">
-                <button class="remove-btn">
+                <button cButton color="danger" variant="outline">
                     <svg cIcon name="cilTrash"></svg>
                 </button>
             </div>
@@ -39,7 +39,7 @@
 </ng-template>
 <c-modal id="genertaeRequestModal" [visible]="genertaeRequestVisibility" size="lg" backdrop="static">
     <c-modal-header>
-        <h3 cModalTitle>Add New Device</h3>
+        <h5 cModalTitle>Add New Device</h5>
         <button (click)="toggleGenertaeRequest()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>

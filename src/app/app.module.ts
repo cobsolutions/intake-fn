@@ -45,6 +45,7 @@ import { PatientService } from './modules/patient.questionnaire/service/patient.
 import { SecurityModule } from './modules/security';
 import { AuthInterceptor } from './modules/security/service/auth.interceptor';
 import { POSITION_OPTIONS } from '@ng-web-apis/geolocation';
+import { ScannerlayoutComponent } from './core/scannerlayout/scannerlayout.component';
 
 
 
@@ -64,7 +65,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, ...ADMIN_APP_CONTAINERS],
+  declarations: [AppComponent, ...APP_CONTAINERS, ...ADMIN_APP_CONTAINERS, ScannerlayoutComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

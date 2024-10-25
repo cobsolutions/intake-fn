@@ -1,16 +1,34 @@
 <div *ngIf="currentStep === 1" class="step-content">
-    <h2>Enter Device Name</h2>
-    <input type="text" [(ngModel)]="deviceName" class="input-field" placeholder="Type your device name">
-    <button cButton variant="outline" (click)="goToNextStep()" style="float: right;">
+    <div class="mb-2">
+        <p class="fs-5">Enter Device Name</p>
+    </div>
+    <div *ngIf="inCorrectName">
+        <div class="text-danger">Please enter device name</div>
+    </div>
+    <input cFormControl [(ngModel)]="deviceName" sizing="sm" placeholder="Type your device name" class="mb-2">
+    <button cButton variant="outline" (click)="goToNextStep()" style="float: right;" size="sm">
         <svg cIcon name="cilArrowThickFromLeft"></svg>
     </button>
 </div>
 <div *ngIf="currentStep === 2" class="step-content">
-    <div class="text-center"><h2>Scan QR Code</h2></div>
-    <div class="qr-placeholder">
-        <qrcode [qrdata]="'http://localhost:4200/admin/trust/devices/scannedQR'"  [errorCorrectionLevel]="'M'"></qrcode>
+    <div class="mb-2">
+        <p class="fs-5">Scan QR Code to register device with name : <strong>{{deviceName}}</strong></p>
+    </div>
+    <div class="text-center">
+        <qrcode [qrdata]="'createPatientURL'" [errorCorrectionLevel]="'M'" [width]="256"></qrcode>
     </div>
     <button cButton variant="outline" (click)="goTopreviousStep()" style="float: right;">
         <svg cIcon name="cilArrowThickFromRight"></svg>
     </button>
+    <div class="countdown-container">
+        <div class="countdown-timer">
+            <span class="lead">QR will expired after </span>
+            <span class="countdown-number lead">{{ minutes }}</span><span class="countdown-label"> min</span>
+            <span class="countdown-separator lead">:</span>
+            <span class="countdown-number lead">{{ seconds }}</span><span class="countdown-label"> sec</span>
+        </div>
+        <div class="countdown-expired" *ngIf="expired">
+            <span>Time's up!</span>
+        </div>
+    </div>
 </div>

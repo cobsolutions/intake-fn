@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultAdminLayoutComponent, DefaultLayoutComponent } from './core';
+import { ScannerlayoutComponent } from './core/scannerlayout/scannerlayout.component';
 import { KCAuthGuardGuard } from './modules/security/service/kc/kcauth-guard.guard';
 
 
@@ -9,6 +10,17 @@ const routes: Routes = [
     path: '',
     redirectTo: 'admin',
     pathMatch: 'full',
+  },
+  {
+    path: '',
+    component: ScannerlayoutComponent,
+    children: [
+      {
+          path:'scanner',
+          loadChildren: () =>
+          import('./modules/scanner/scanner.module').then((m) => m.ScannerModule)
+      }
+    ]
   },
   {
     path: '',

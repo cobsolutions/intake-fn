@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { TrustDeviceToken } from '../../../models/trust.device/trust.device.token';
-import { FingerprintService } from '../../../services/trust.device/fingerprint.service';
 import { TrustDeviceService } from '../../../services/trust.device/trust-device.service';
 
 @Component({
@@ -12,25 +11,57 @@ export class GenerateRequestComponent implements OnInit {
   trustDeviceToken: TrustDeviceToken
   currentStep: number = 1;
   deviceName: string = '';
-  constructor(private trustDeviceService: TrustDeviceService, private fingerprintService: FingerprintService) { }
+  inCorrectName: boolean = false;
+  public createPatientURL: string
+  public baseURL: string = location.origin
+  minutes: number = 0;
+  seconds: number = 0;
+  expired: boolean = false;
+  private intervalId: any;
+  constructor(private trustDeviceService: TrustDeviceService) { }
 
   ngOnInit(): void {
-    this.fingerprintService.get().subscribe(re => {
-      console.log(re)
-    })
-    // this.trustDeviceService.generateDeviceRequest().subscribe((token: any) => {
-    //   console.log(token)
-    //   this.trustDeviceToken = token;
-    // })
   }
   goToNextStep(): void {
     if (this.deviceName.trim() !== '') {
-      this.currentStep = 2;
+      this.trustDeviceService.generateDeviceRequest().subscribe((response: any) => {
+        const requestToken: any = response.body;
+        this.createPatientURL = this.baseURL + '/scanner?name=' + this.deviceName + '&token=' + requestToken.token;
+        console.log(this.createPatientURL)
+        this.currentStep = 2;
+        this.inCorrectName = false
+        this.startCountdown(requestToken.expiresAt);
+      })
     } else {
-      alert('Please enter a device name');
+      this.inCorrectName = true;
     }
+
   }
   goTopreviousStep(): void {
     this.currentStep = 1;
+    this.minutes = 0 ;
+    this.seconds = 0 ;
+    this.clearExistingInterval();
+  }
+  startCountdown(expiryDate: number): void {
+    this.intervalId = setInterval(() => {
+      const now = Date.now();
+      const timeRemaining = expiryDate - now;
+
+      if (timeRemaining <= 0) {
+        this.expired = true;
+        clearInterval(this.intervalId);
+      } else {
+        const totalSeconds = Math.floor(timeRemaining / 1000);
+        this.minutes = Math.floor(totalSeconds / 60);
+        this.seconds = totalSeconds % 60;
+      }
+    }, 1000);
+  }
+  clearExistingInterval(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = null; // Reset the interval ID
+    }
   }
 }

@@ -46,6 +46,7 @@ import { SecurityModule } from './modules/security';
 import { AuthInterceptor } from './modules/security/service/auth.interceptor';
 import { POSITION_OPTIONS } from '@ng-web-apis/geolocation';
 import { ScannerlayoutComponent } from './core/scannerlayout/scannerlayout.component';
+import { CookieService } from 'ngx-cookie-service';
 
 
 
@@ -103,6 +104,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SecurityModule
   ],
   providers: [
+    [CookieService],
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { filter, Observable, tap } from 'rxjs';
 import { TrustDevice } from '../../../models/trust.device/trust.device';
 import { TrustDeviceService } from '../../../services/trust.device/trust-device.service';
 

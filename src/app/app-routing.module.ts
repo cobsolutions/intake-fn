@@ -17,6 +17,7 @@ const routes: Routes = [
     children: [
       {
           path:'scanner',
+          canActivate: [KCAuthGuardGuard],
           loadChildren: () =>
           import('./modules/scanner/scanner.module').then((m) => m.ScannerModule)
       }

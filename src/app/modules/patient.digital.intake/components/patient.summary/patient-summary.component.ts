@@ -51,7 +51,6 @@ export class PatientSummaryComponent implements OnInit {
     this.fillPatientAgreement();
     this.getSignture()
     this.clinicId = this.cacheClinicService.getClinic();
-    console.log(this.clinicId)
   }
   submit() {
     var imageFormData = new FormData();

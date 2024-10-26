@@ -23,7 +23,6 @@ export class CacheClinicService {
   //   localStorage.setItem('clinicId', encryptClinicId);
   // }
   private getCachedClinic(): number {
-    console.log(this.localService.decrypt(localStorage.getItem('clinicId') || '{}') )
     var cahcedClinicId = localStorage.getItem('clinicId');
     if (cahcedClinicId === null)
       throw new Error('no  clinic');

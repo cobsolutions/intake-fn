@@ -2,6 +2,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { TrustDeviceService } from 'src/app/modules/patient.admin/services/trust.device/trust-device.service';
+import { CacheClinicService } from '../../services/cache.clinic/cache-clinic.service';
 import { imageDocumentValidator } from './validators/custom.validation/document.image.validator';
 import { EmailValidator } from './validators/custom.validation/email.validator';
 import { futureDateValidator } from './validators/custom.validation/future.date.validator';
@@ -22,10 +26,15 @@ import { PhysicalTherapyValidator } from './validators/physical.therapy/add.phys
 export class CreateDigitalPatientIntakeComponent implements OnInit {
   stepperOrientation: 'horizontal' | 'vertical' = 'horizontal';
   patientForm: FormGroup
-  @ViewChild(MatStepper, { static: true } ) public patientStepper: MatStepper;
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  @ViewChild(MatStepper, { static: true }) public patientStepper: MatStepper;
+  constructor(private breakpointObserver: BreakpointObserver,
+    private cacheClinicService: CacheClinicService,
+    private trustDeviceService: TrustDeviceService,
+    private cookieService: CookieService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this.checkDeviceStatus()
     this.breakpointObserver.observe([
       Breakpoints.HandsetPortrait,
       Breakpoints.HandsetLandscape
@@ -43,7 +52,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'middleName': new FormControl(null, noSpecialCharactersValidator()),
         'lastName': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
-        'dob': new FormControl(null, [Validators.required, todayDOBValidator(),futureDateValidator(),maxDateValidator()]),
+        'dob': new FormControl(null, [Validators.required, todayDOBValidator(), futureDateValidator(), maxDateValidator()]),
         'gender': new FormControl(null, [Validators.required]),
         'marital': new FormControl(null, [Validators.required]),
         'phoneType': new FormControl(null, [Validators.required]),
@@ -64,7 +73,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       'address': new FormGroup({
         'firstAddress': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'secondAddress': new FormControl(null, [noSpecialCharactersValidator()]),
-        'city': new FormControl(null, [Validators.required,noSpecialCharactersValidator()]),
+        'city': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'state': new FormControl(null, [Validators.required]),
         'zipCode': new FormControl(null, [Validators.required, Validators.min(10), Validators.pattern(zipCodeRgx)]),
       }),
@@ -115,11 +124,11 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'compensation-phone': new FormControl(null),
         'compensation-fax': new FormControl(null),
         'compensation-adjuster-first-name': new FormControl(null),
-        'compensation-adjuster-middle-name': new FormControl(null,noSpecialCharactersValidator()),
+        'compensation-adjuster-middle-name': new FormControl(null, noSpecialCharactersValidator()),
         'compensation-adjuster-last-name': new FormControl(null),
         'compensation-adjuster-phone': new FormControl(null),
         'compensation-attorney-first-name': new FormControl(null,),
-        'compensation-attorney-middle-name': new FormControl(null,noSpecialCharactersValidator()),
+        'compensation-attorney-middle-name': new FormControl(null, noSpecialCharactersValidator()),
         'compensation-attorney-last-name': new FormControl(null),
         'compensation-attorney-phone': new FormControl(null),
         'compensation-case-status': new FormControl(null),
@@ -129,7 +138,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'commercial-ploicy-id': new FormControl(null),
         'commercial-ploicyHolder-relationship': new FormControl(null),
         'commercial-ploicyHolder-relationship-first-name': new FormControl(null),
-        'commercial-ploicyHolder-relationship-middle-name': new FormControl(null,noSpecialCharactersValidator()),
+        'commercial-ploicyHolder-relationship-middle-name': new FormControl(null, noSpecialCharactersValidator()),
         'commercial-ploicyHolder-relationship-last-name': new FormControl(null),
         'commercial-ploicyHolder-relationship-phone': new FormControl(null),
         'commercial-ploicyHolder-relationship-employer': new FormControl(null),
@@ -138,10 +147,10 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'commercial-is-secondary-insurance-insurance-company': new FormControl(null),
         'commercial-is-secondary-insurance-member-id': new FormControl(null),
         'commercial-is-secondary-insurance-first-name': new FormControl(null),
-        'commercial-is-secondary-insurance-middle-name': new FormControl(null,noSpecialCharactersValidator()),
+        'commercial-is-secondary-insurance-middle-name': new FormControl(null, noSpecialCharactersValidator()),
         'commercial-is-secondary-insurance-last-name': new FormControl(null),
         'commercial-is-secondary-insurance-medicare-coverage-first-name': new FormControl(null),
-        'commercial-is-secondary-insurance-medicare-coverage-middle-name': new FormControl(null,noSpecialCharactersValidator()),
+        'commercial-is-secondary-insurance-medicare-coverage-middle-name': new FormControl(null, noSpecialCharactersValidator()),
         'commercial-is-secondary-insurance-medicare-coverage-last-name': new FormControl(null),
         'commercial-is-secondary-insurance-medicare-coverage-phone': new FormControl(null),
       }),
@@ -210,11 +219,27 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       }
     })
   }
-  private setReferringEntityOtherValidator(){
-    this.patientForm.get('medical')?.get('referringEntity')?.valueChanges.subscribe((value: any)=>{
-        if( value !== null && value ==='other')
+  private setReferringEntityOtherValidator() {
+    this.patientForm.get('medical')?.get('referringEntity')?.valueChanges.subscribe((value: any) => {
+      if (value !== null && value === 'other')
         this.patientForm.get('medical')?.get('referringEntityOther')?.setValidators(Validators.required)
     })
   }
 
+  private checkDeviceStatus() {
+    if (this.cookieService.check('device-id')) {
+      const deviceId: string = this.cookieService.get('device-id');
+      const clinicId: number = this.cacheClinicService.getClinic();
+      this.trustDeviceService.checkDeviceStatus(clinicId, deviceId).subscribe(reus => {
+        console.log(JSON.stringify(reus))
+      }, error => {
+        console.log(error)
+        const errorCode = { code: 2 };
+        this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
+      })
+    } else {
+       const errorCode = { code: 1 };
+      this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
+    }
+  }
 }

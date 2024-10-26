@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, filter, retry, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, filter, retry, switchMap, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { DeviceStatus } from '../../models/trust.device/device.status';
 import { DeviceTokenRequest } from '../../models/trust.device/device.token.request';
 import { TrustDevice } from '../../models/trust.device/trust.device';
 import { ClinicService } from '../clinic/clinic.service';
@@ -33,5 +34,9 @@ export class TrustDeviceService {
   public registerDevice(deviceTokenRequest: DeviceTokenRequest) {
     const headers = { 'content-type': 'application/json' }
     return this.http.post(`${this.trustDeviceURL}` + '/register', JSON.stringify(deviceTokenRequest), { 'headers': headers, observe: 'response' })
+  }
+
+  public checkDeviceStatus(clinicId: number, deviceId: string) {
+    return this.http.get<DeviceStatus>(`${this.trustDeviceURL}` + '/status/clinic-id/' + clinicId + '/device-id/' + deviceId)
   }
 }

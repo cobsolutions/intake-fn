@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TrustDeviceToken } from '../../../models/trust.device/trust.device.token';
 import { TrustDeviceService } from '../../../services/trust.device/trust-device.service';
+import { SendTask, WebsocketService } from '../../../services/web.socket/websocket.service';
 
 @Component({
   selector: 'generate-request',
@@ -18,9 +19,11 @@ export class GenerateRequestComponent implements OnInit {
   seconds: number = 0;
   expired: boolean = false;
   private intervalId: any;
-  constructor(private trustDeviceService: TrustDeviceService) { }
+  constructor(private trustDeviceService: TrustDeviceService,
+    private websocketService:WebsocketService) { }
 
   ngOnInit(): void {
+    
   }
   goToNextStep(): void {
     if (this.deviceName.trim() !== '') {

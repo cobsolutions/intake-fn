@@ -4,9 +4,11 @@ import { CookieService } from 'ngx-cookie-service';
 import { map, switchMap } from 'rxjs';
 import { DeviceInformation } from 'src/app/modules/patient.admin/models/trust.device/device.information';
 import { DeviceTokenRequest } from 'src/app/modules/patient.admin/models/trust.device/device.token.request';
+import { DeviceTokenResponse } from 'src/app/modules/patient.admin/models/trust.device/device.token.response';
 import { DeviceLocation } from 'src/app/modules/patient.admin/models/trust.device/geolocation';
 import { FingerprintService } from 'src/app/modules/patient.admin/services/trust.device/fingerprint.service';
 import { TrustDeviceService } from 'src/app/modules/patient.admin/services/trust.device/trust-device.service';
+import { SendTask, WebsocketService } from 'src/app/modules/patient.admin/services/web.socket/websocket.service';
 
 @Component({
   selector: 'create-component-scanner',
@@ -21,7 +23,8 @@ export class CreateComponentScannerComponent implements OnInit {
   constructor(private trustDeviceService: TrustDeviceService,
     private fingerprintService: FingerprintService,
     private route: ActivatedRoute,
-    private cookieService: CookieService) { }
+    private cookieService: CookieService,
+    private websocketService: WebsocketService) { }
   ngOnInit(): void {
     this.route.queryParams.subscribe(param => {
 
@@ -45,15 +48,18 @@ export class CreateComponentScannerComponent implements OnInit {
           return deviceTokenRequest
         }), switchMap(deviceRequestToken =>
           this.trustDeviceService.registerDevice(deviceRequestToken))
-      ).subscribe(() => {
+      ).subscribe((respose: any) => {
         this.isLoading = false;
         this.error = false;
         this.errorMessage = undefined;
-        this.cookieService.set('device-id', this.deviceId,3650)
+        this.cookieService.set('device-id', this.deviceId, 3650)
+        this.websocketService.send(respose.body)
       }, error => {
         this.isLoading = false;
         this.error = true
-        this.errorMessage = error.error.message.replace(/\b[a-zA-Z0-9-]+\b/, 'QR code');
+        if (error.error !== undefined)
+          this.errorMessage = error.error.message.replace(/\b[a-zA-Z0-9-]+\b/, 'QR code');
+        console.log(error)
       })
     }
     )

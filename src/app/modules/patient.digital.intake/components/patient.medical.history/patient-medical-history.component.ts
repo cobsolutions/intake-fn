@@ -39,12 +39,11 @@ export class PatientMedicalHistoryComponent implements OnInit {
   convertHeight(checked: boolean) {
     var heightValue: number = this.form?.get('medicalhistory')?.get('height')?.value;
     if (checked) {
-      // Convert cm to inch (1 cm = 0.032808 feet)
-      heightValue = Number((heightValue * 0.032808).toFixed(1));
+      heightValue = heightValue * 30.48
 
     } else {
-      // Convert inch to cm (1 feet = 2.54 cm)
-      heightValue = Math.round(heightValue / 0.032808)
+      heightValue = Number((heightValue / 30.48).toFixed(1));
+      
     }
     this.form?.get('medicalhistory')?.get('height')?.setValue(heightValue, { emitEvent: false });
   }

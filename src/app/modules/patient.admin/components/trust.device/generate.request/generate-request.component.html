@@ -15,8 +15,9 @@
         <p class="fs-5">Scan QR Code to register device with name : <strong>{{deviceName}}</strong></p>
     </div>
     <div class="text-center">
-        <qrcode [qrdata]="'createPatientURL'" [errorCorrectionLevel]="'M'" [width]="256"></qrcode>
+        <qrcode [qrdata]="this.createPatientURL" [errorCorrectionLevel]="'M'" [width]="256"></qrcode>
     </div>
+    {{this.createPatientURL}}
     <button cButton variant="outline" (click)="goTopreviousStep()" style="float: right;">
         <svg cIcon name="cilArrowThickFromRight"></svg>
     </button>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { filter, Observable, tap } from 'rxjs';
 import { TrustDevice } from '../../../models/trust.device/trust.device';
 import { TrustDeviceService } from '../../../services/trust.device/trust-device.service';
@@ -14,11 +14,14 @@ export class ListTrustDevicesComponent implements OnInit {
   errorMessage: string;
   trustDevices!: Observable<TrustDevice[]>;
   genertaeRequestVisibility: boolean = false;
-  constructor(private trustDeviceService: TrustDeviceService, private websocketService: WebsocketService) { }
+  constructor(private trustDeviceService: TrustDeviceService,
+    private websocketService: WebsocketService,
+    private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.listenToWebSocket()
     this.list();
+    this.listenToWebSocket()
+
   }
   toggleGenertaeRequest() {
     this.genertaeRequestVisibility = !this.genertaeRequestVisibility;
@@ -28,22 +31,23 @@ export class ListTrustDevicesComponent implements OnInit {
   }
   private listenToWebSocket() {
     this.websocketService.listen((response: any) => {
-      console.log(JSON.stringify(response))
       if (response.isTrust) {
-        console.log('TT')
+        this.isError = false;
         this.genertaeRequestVisibility = false;
         this.list()
       }
     });
   }
   private list() {
-    this.trustDevices! = this.trustDeviceService.list();
-    this.trustDevices!.subscribe(result => {
+    this.trustDevices = this.trustDeviceService.list();
+    this.trustDevices.subscribe((result: any) => {
+      if (result.length === 0)
+        this.isError = true;
+      else
+        this.isError = false;
     }, error => {
-      this.isError = true;
       if (error.error !== undefined)
         this.errorMessage = error.error.message;
-      console.log(error)
     })
   }
 }

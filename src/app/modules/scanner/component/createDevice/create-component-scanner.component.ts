@@ -52,7 +52,7 @@ export class CreateComponentScannerComponent implements OnInit {
         this.isLoading = false;
         this.error = false;
         this.errorMessage = undefined;
-        this.cookieService.set('device-id', this.deviceId, 3650)
+        this.cookieService.set('device-id', this.deviceId, 3650,'/digital-intake')
         this.websocketService.send(respose.body)
       }, error => {
         this.isLoading = false;

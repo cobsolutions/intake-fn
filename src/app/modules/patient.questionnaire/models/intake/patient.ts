@@ -2,6 +2,7 @@ import { Address } from "src/app/models/patient/address.info.model";
 import { PatientAddress } from "src/app/modules/patient.digital.intake/models/patient.address";
 import { PatientEssentialInformation } from "./essential/patient.essential.information";
 import { PatientInsurance } from "./Insurance/patient.insurance";
+import { Insurance } from "./Insurance/types/insurance";
 import { PatientMedical } from "./medical/patient.medical";
 import { PatientAgreement } from "./patient.agreement";
 import { PatientGrantor } from "./patient.grantor";
@@ -20,4 +21,6 @@ export interface Patient {
   patientAgreements?: PatientAgreement;
   clinicId?: number;
   signature?:string;
+  insurances?:Insurance | null
+  isSelfPay?:boolean
 }

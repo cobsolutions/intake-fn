@@ -813,7 +813,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let patientInsurance of patientInsurances; let i = index">
+                        <tr *ngFor="let patientInsurance of renderedPatientInsurances; let i = index">
                             <td>
                                 <span *ngIf="patientInsurance.type ==='wroker'">Worker Compensation</span>
                                 <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>

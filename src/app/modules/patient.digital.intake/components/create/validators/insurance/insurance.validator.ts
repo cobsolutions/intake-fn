@@ -53,6 +53,15 @@ export class InsuranceValidator {
                 RemoveMedicareValidators.remove(form);
 
             }
+            if (value === 'SelfPay') {
+                RemoveCommercialValidators.remove(form)
+                RemoveCommercialSecondaryInsuranceValidator.remove(form);
+                RemoveCommercialMedicareCoverageValidator.remove(form);
+                RemoveCommercialPloicyHolderRelationshipValidator.remove(form);
+                RemoveWorkerCompensationValidators.remove(form);
+                RemoveMedicareValidators.remove(form);
+                RemoveMedicaidValidators.remove(form);
+            }
         })
     }
 }

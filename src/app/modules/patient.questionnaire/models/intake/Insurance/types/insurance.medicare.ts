@@ -1,5 +1,6 @@
 import { Insurance } from "./insurance";
 
-export interface MedicareInsurance extends Insurance{
+export interface MedicareInsurance {
+    type:string;
     policyId?: string;
 }

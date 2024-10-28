@@ -1,7 +1,8 @@
 import { Address } from "src/app/models/patient/address.info.model";
 import { Insurance } from "./insurance";
 
-export interface WorkerCompensationInsurance extends Insurance{
+export interface WorkerCompensationInsurance {
+    type:string;
     injuryType?: string;
     accidentDate?: number;
     accidentDate_date?: Date;

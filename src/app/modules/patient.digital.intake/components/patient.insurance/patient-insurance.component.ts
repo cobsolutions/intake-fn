@@ -30,7 +30,14 @@ export class PatientInsuranceComponent implements OnInit {
   InsuranceCompanies: InsuranceCompany[] = new Array();
   types: string[] = insuranceTypes;
   selectedInsuranceType: string
-  patientInsurances: Insurance[] = []
+  renderedPatientInsurances:any[]=[]
+  patientInsurances: Insurance = {
+    commercialInsurances: [],
+    workerCompensationInsurances: [],
+    medicareInsurance: [],
+    medicaidInsurance: [],
+    isSelfPay: false
+  }
   constructor(private insuranceCompanyService: InsuranceCompanyService) { }
   ngOnInit(): void {
     this.insuranceCompanyService.get().subscribe((response) => {
@@ -60,24 +67,49 @@ export class PatientInsuranceComponent implements OnInit {
   next() {
     var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
     CheckInvalidForm.check(insuranceForm)
-    if (this.form.get('insurance')?.valid) {
+    if (this.form.get('insurance')?.valid || this.isInsurances()) {
       this.stepper.next();
       this.isValidForm = false;
+      var insuranceType: string = this.form.get('insurance')?.get('type')?.value;
+      if (insuranceType !== 'SelfPay')
+        this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
+      else
+        this.form.get('insurance')?.get('isSelfPay')?.setValue(true)
     } else {
       this.isValidForm = true;
       ValidationExploder.explode(this.form, 'insurance')
     }
   }
+  private isInsurances() {
+    return (this.patientInsurances.commercialInsurances.length > 0 ||
+      this.patientInsurances.workerCompensationInsurances.length > 0 ||
+      this.patientInsurances.medicareInsurance ||
+      this.patientInsurances.medicaidInsurance)
+  }
   private addPatientIsnurance() {
     var insuranceType: string = this.form.get('insurance')?.get('type')?.value;
-    if (insuranceType === 'Commercial Insurance')
-      this.patientInsurances.push(this.fillPatientCommercialInsurance())
-    if (insuranceType === 'Worker\'s Compensation')
-      this.patientInsurances.push(this.fillPatientInsuranceCompensationNoFault());
-    if (insuranceType === 'Medicare')
-      this.patientInsurances.push(this.fillPatientMedicareInsurance());
-    if (insuranceType === 'Medicaid')
-      this.patientInsurances.push(this.fillPatientMedicaidInsurance());
+    if (insuranceType === 'Commercial Insurance'){
+      var patientCommercialInsurance: CommercialInsurance = this.fillPatientCommercialInsurance();
+      this.patientInsurances.commercialInsurances.push(patientCommercialInsurance)
+      this.renderedPatientInsurances.push(patientCommercialInsurance)
+    }
+    if (insuranceType === 'Worker\'s Compensation'){
+      var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = this.fillPatientInsuranceCompensationNoFault();
+      this.patientInsurances.workerCompensationInsurances.push(patientInsuranceCompensationNoFault);
+      this.renderedPatientInsurances.push(patientInsuranceCompensationNoFault)
+    }
+    if (insuranceType === 'Medicare'){
+      var medicareInsurance: MedicareInsurance=this.fillPatientMedicareInsurance()
+      this.patientInsurances.medicareInsurance.push(medicareInsurance);
+      this.renderedPatientInsurances.push(medicareInsurance)
+    }
+    if (insuranceType === 'Medicaid'){
+      var medicaidInsurance: MedicaidInsurance  = this.fillPatientMedicaidInsurance();
+      this.patientInsurances.medicaidInsurance.push(medicaidInsurance);
+      this.renderedPatientInsurances.push(medicaidInsurance)
+    }
+    if (insuranceType === 'SelfPay')
+      this.patientInsurances.isSelfPay = true;
     this.form.get('insurance')?.reset();
 
   }

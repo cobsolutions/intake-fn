@@ -58,6 +58,7 @@ export class PatientSummaryComponent implements OnInit {
       imageFormData.append('files', patientDocument, patientDocument.name);
     })
     this.pateint.clinicId = this.clinicId;
+    console.log(JSON.stringify(this.pateint))
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
     this.patientService.otherCreatPatient(imageFormData).subscribe(resuldd => {
       this.router.navigateByUrl('/digital-intake/done');
@@ -210,119 +211,39 @@ export class PatientSummaryComponent implements OnInit {
     this.form.get('medicalhistory')?.valueChanges.forEach(select => {
       patientMedicalHistory.height = select.height
       patientMedicalHistory.heightUnit = select.heightUnit ? 'Inch' : 'cm'
-      var height :string[] = this.calculateHeight(select.heightUnit, select.height)
+      var height: string[] = this.calculateHeight(select.heightUnit, select.height)
       patientMedicalHistory.height = height[0]
       patientMedicalHistory.heightFT = height[1]
       patientMedicalHistory.weight = select.weight
       patientMedicalHistory.weightUnit = select.weightUnit ? 'kg' : 'pound'
-      var weight :string[] = this.calculateWeight(select.weightUnit, select.weight)
+      var weight: string[] = this.calculateWeight(select.weightUnit, select.weight)
       patientMedicalHistory.weight = weight[0]
       patientMedicalHistory.weightPN = weight[1]
       patientMedicalHistory.evaluationSubmission = select.evaluationReason;
-      patientMedicalHistory.patientCondition = select.patientConditions
-      patientMedicalHistory.medicationPrescription = select.prescriptionMedication
-      patientMedicalHistory.scanningTest = select.isXRay
+      patientMedicalHistory.patientCondition = select.patientConditionsSelections
+      patientMedicalHistory.medicationPrescription = select.prescriptionMedications
+      patientMedicalHistory.medicationPrescriptionText = select.PhysicalTherapyLocationText
+      patientMedicalHistory.scanningTest = select.isXRay === 'yes' ? true : false
       patientMedicalHistory.scanningTestValue = select.isXRayValue
-      patientMedicalHistory.pacemaker = select.isPacemaker
-      patientMedicalHistory.metalImplantation = select.isMetalImplants
+      patientMedicalHistory.pacemaker = select.isPacemaker === 'yes' ? true : false
+      patientMedicalHistory.metalImplantation = select.isMetalImplants==='yes'?true:false
       patientMedicalHistory.surgeriesList = select.surgeriesList
       if (this.pateint.patientMedical !== undefined)
         this.pateint.patientMedical.patientMedicalHistory = patientMedicalHistory
     })
   }
   private fillPatientInsurance() {
-    var patientInsurance: PatientInsurance = {}
     this.form.get('insurance')?.valueChanges.forEach(select => {
-      if (!select.type) {
-
-        patientInsurance = {
-          patientInsuranceCompensationNoFault: this.fillPatientInsuranceCompensationNoFault(select),
-          patientCommercialInsurance: undefined
-        }
+      console.log(JSON.stringify(select.insurances))
+      if (select.insurances !== null) {
+        this.pateint.insurances = select.insurances
+        this.pateint.isSelfPay = true;
       }
-      else {
-        patientInsurance = {
-          patientInsuranceCompensationNoFault: undefined,
-          patientCommercialInsurance: this.fillPatientCommercialInsurance(select)
-        }
+      if (select.isSelfPay) {
+        this.pateint.insurances = null;
+        this.pateint.isSelfPay = true;
       }
-      this.pateint.patientInsurance = patientInsurance;
     })
-  }
-  private fillPatientInsuranceCompensationNoFault(selected: any) {
-    var patientInsuranceCompensationNoFault: PatientInsuranceCompensationNoFault = {
-      injuryType: selected['compensation-related-injury'],
-      accidentDate_str: moment(selected['compensation-accident-date']).format("MM/DD/YYYY"),
-      accidentDate: Number(moment(selected['compensation-accident-date']).format("x")),
-      workerStatus: selected['compensation-wroker-status'],
-      phone: selected['compensation-phone'],
-      fax: selected['compensation-fax'],
-      adjusterInfoName: selected['compensation-adjuster-last-name'] + ',' + selected['compensation-adjuster-first-name'],
-      adjusterInfoPhone: selected['compensation-adjuster-phone'],
-      attorneyInfoName: selected['compensation-attorney-last-name'] + ',' + selected['compensation-attorney-first-name'],
-      attorneyInfoPhone: selected['compensation-attorney-phone'],
-      caseStatus: selected['compensation-case-status'],
-      insuranceName: selected['compensation-insurance-company'],
-      claimNumber: selected['compensation-claim-number'],
-    }
-    var address: Address = {
-      type: selected['compensation-address-type'],
-      first: selected['compensation-first-address'],
-      second: selected['compensation-second-address'],
-      country: '',
-      state: selected['compensation-state'],
-      province: '',
-      city: selected['compensation-city'],
-      zipCode: selected['compensation-zipcode']
-    }
-    patientInsuranceCompensationNoFault.address = address
-    return patientInsuranceCompensationNoFault;
-  }
-  private fillPatientCommercialInsurance(selected: any) {
-    var patientCommercialInsurance: PatientCommercialInsurance = {
-      memberId: selected['commercial-member-id'],
-      policyId: selected['commercial-ploicy-id'],
-      relationship: selected['commercial-ploicyHolder-relationship'],
-      hasSecondaryInsurance: selected['commercial-is-secondary-insurance'],
-      hasMedicareCoverage: selected['commercial-is-medicare-coverage'],
-      insuranceCompanyId: selected['commercial-insurance-company']
-    }
-    if (patientCommercialInsurance.relationship !== 'Self') {
-      var patientRelationship: PatientRelationship = {
-        patientRelationshipFirstName: selected['commercial-ploicyHolder-relationship-first-name'],
-        patientRelationshipMeddileName: selected['commercial-ploicyHolder-relationship-middle-name'],
-        patientRelationshipLastName: selected['commercial-ploicyHolder-relationship-last-name'],
-        patientRelationshipPhone: selected['commercial-ploicyHolder-relationship-phone'],
-        employerName: selected['commercial-ploicyHolder-relationship-employer'],
-      }
-      patientCommercialInsurance.patientRelationship = patientRelationship;
-    } else {
-      patientCommercialInsurance.patientRelationship = undefined;
-    }
-    if (patientCommercialInsurance.hasSecondaryInsurance) {
-      var secondaryInsurance: SecondaryInsurance = {
-        policyHolderFirstName: selected['commercial-is-secondary-insurance-first-name'],
-        policyHolderMiddleName: selected['commercial-is-secondary-insurance-middle-name'],
-        policyHolderLastName: selected['commercial-is-secondary-insurance-last-name'],
-        insuranceCompanyName: selected['commercial-is-secondary-insurance-insurance-company'],
-        memberId: selected['commercial-is-secondary-insurance-member-id']
-      }
-      patientCommercialInsurance.secondaryInsurance = secondaryInsurance
-    } else {
-      patientCommercialInsurance.secondaryInsurance = undefined
-    }
-    if (patientCommercialInsurance.hasMedicareCoverage) {
-      var medicareCoverage: MedicareCoverage = {
-        employerFirstName: selected['commercial-is-secondary-insurance-medicare-coverage-first-name'],
-        employerMeddileName: selected['commercial-is-secondary-insurance-medicare-coverage-middle-name'],
-        employerLastName: selected['commercial-is-secondary-insurance-medicare-coverage-last-name'],
-        employerPhone: selected['commercial-is-secondary-insurance-medicare-coverage-phone']
-      }
-      patientCommercialInsurance.medicareCoverage = medicareCoverage
-    } else {
-      patientCommercialInsurance.medicareCoverage = undefined;
-    }
-    return patientCommercialInsurance;
   }
   private fillPatientAgreement() {
     var patientAgreement: PatientAgreement = {}
@@ -357,7 +278,7 @@ export class PatientSummaryComponent implements OnInit {
   }
 
   private calculateHeight(unit: boolean, value: string): string[] {
-    var heightUnit:string = unit ? 'Inch' : 'cm'
+    var heightUnit: string = unit ? 'Inch' : 'cm'
     var height: string[] = []
     switch (heightUnit) {
       case 'cm':
@@ -372,7 +293,7 @@ export class PatientSummaryComponent implements OnInit {
     return height;
   }
   private calculateWeight(unit: boolean, value: string): string[] {
-    var weightUnit:string = unit ? 'kg' : 'pound'
+    var weightUnit: string = unit ? 'kg' : 'pound'
     var weight: string[] = []
     switch (weightUnit) {
       case 'kg':

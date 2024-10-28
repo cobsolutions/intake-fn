@@ -3,7 +3,8 @@ import { PatientRelationship } from "../patient.relationship";
 import { SecondaryInsurance } from "../secondary.insurance";
 import { Insurance } from "./insurance";
 
-export interface CommercialInsurance extends Insurance{
+export interface CommercialInsurance{
+    type:string;
     insuranceCompanyId?: number;
     memberId?: string;
     policyId?: string;

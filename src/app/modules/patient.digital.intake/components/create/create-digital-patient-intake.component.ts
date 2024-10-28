@@ -161,6 +161,8 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'commercial-is-secondary-insurance-medicare-coverage-phone': new FormControl(null),
         'medicare-policy-namuber': new FormControl(null),
         'medicaid-policy-namuber': new FormControl(null),
+        'insurances': new FormControl(null),
+        'isSelfPay': new FormControl(null),
       }),
       'document': new FormGroup({
         'id-front': new FormControl(null, [imageDocumentValidator()]),

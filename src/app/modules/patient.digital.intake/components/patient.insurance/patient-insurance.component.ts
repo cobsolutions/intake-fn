@@ -11,6 +11,8 @@ import { InsuranceCompanyService } from 'src/app/modules/patient.admin/services/
 import { SecondaryInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/secondary.insurance';
 import { Insurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance';
 import { CommercialInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.commercial';
+import { MedicaidInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.medicaid';
+import { MedicareInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.medicare';
 import { WorkerCompensationInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.workers.compensation';
 import { CheckInvalidForm } from '../../util/invalid.form';
 import { ValidationExploder } from '../create/validators/validation.exploder';
@@ -72,8 +74,12 @@ export class PatientInsuranceComponent implements OnInit {
       this.patientInsurances.push(this.fillPatientCommercialInsurance())
     if (insuranceType === 'Worker\'s Compensation')
       this.patientInsurances.push(this.fillPatientInsuranceCompensationNoFault());
+    if (insuranceType === 'Medicare')
+      this.patientInsurances.push(this.fillPatientMedicareInsurance());
+    if (insuranceType === 'Medicaid')
+      this.patientInsurances.push(this.fillPatientMedicaidInsurance());
     this.form.get('insurance')?.reset();
-    
+
   }
   private fillPatientInsuranceCompensationNoFault() {
     var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = {
@@ -151,5 +157,21 @@ export class PatientInsuranceComponent implements OnInit {
       patientCommercialInsurance.medicareCoverage = undefined;
     }
     return patientCommercialInsurance;
+  }
+
+  private fillPatientMedicareInsurance() {
+    var medicareInsurance: MedicareInsurance = {
+      type: 'medicare',
+      policyId: this.form.get('insurance')?.get('medicare-policy-namuber')?.value,
+    }
+    return medicareInsurance;
+  }
+
+  private fillPatientMedicaidInsurance() {
+    var medicareInsurance: MedicaidInsurance = {
+      type: 'medicaid',
+      policyId: this.form.get('insurance')?.get('medicaid-policy-namuber')?.value,
+    }
+    return medicareInsurance;
   }
 }

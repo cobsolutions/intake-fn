@@ -801,7 +801,7 @@
             </c-card-footer>
         </c-card>
     </div>
-    <div>
+    <div *ngIf="!(this.form.get('insurance')?.get('type')?.value ==='SelfPay')">
         <c-card>
             <c-card-body>
                 <table class="table table-responsive">
@@ -817,12 +817,20 @@
                             <td>
                                 <span *ngIf="patientInsurance.type ==='wroker'">Worker Compensation</span>
                                 <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>
+                                <span *ngIf="patientInsurance.type ==='medicare'">Medicare</span>
+                                <span *ngIf="patientInsurance.type ==='medicaid'">Medicaid</span>
                             </td>
                             <td>
                                 <span *ngIf="patientInsurance.type ==='wroker'">
                                     <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
                                 </span>
                                 <span *ngIf="patientInsurance.type ==='commercial'">
+                                    <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
+                                </span>
+                                <span *ngIf="patientInsurance.type ==='medicare'">
+                                    <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
+                                </span>
+                                <span *ngIf="patientInsurance.type ==='medicaid'">
                                     <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
                                 </span>
                             </td>

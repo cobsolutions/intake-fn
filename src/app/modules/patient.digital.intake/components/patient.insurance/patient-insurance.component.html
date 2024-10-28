@@ -754,6 +754,20 @@
         <c-card *ngIf="selectedInsuranceType === 'Medicare'" class="mb-2">
             <c-card-body>
                 <h5 cCardTitle>Medicare</h5>
+                <c-col xl="12">
+                    <label for="dsds" class="form-label" style="font-size: medium;">Policy ID<span
+                            class="text-danger">*</span>
+                    </label>
+                </c-col>
+                <c-col xl="12">
+                    <input cFormControl sizing="sm" formControlName="medicare-policy-namuber" maxlength="60"
+                        input-trimmer>
+                </c-col>
+                <div *ngIf="!this.form.get('insurance')?.get('medicare-policy-namuber')?.valid && 
+                    (this.form.get('insurance')?.get('medicare-policy-namuber')?.dirty ||this.form.get('insurance')?.get('medicare-policy-namuber')?.touched)"
+                    class="text-danger mx-1">
+                    Policy ID is required
+                </div>
             </c-card-body>
             <c-card-footer>
                 <div class="text-center">
@@ -765,6 +779,20 @@
         <c-card *ngIf="selectedInsuranceType === 'Medicaid'" class="mb-2">
             <c-card-body>
                 <h5 cCardTitle>Medicaid</h5>
+                <c-col xl="12">
+                    <label for="dsds" class="form-label" style="font-size: medium;">Policy ID<span
+                            class="text-danger">*</span>
+                    </label>
+                </c-col>
+                <c-col xl="12">
+                    <input cFormControl sizing="sm" formControlName="medicaid-policy-namuber" maxlength="60"
+                        input-trimmer>
+                </c-col>
+                <div *ngIf="!this.form.get('insurance')?.get('medicaid-policy-namuber')?.valid && 
+                    (this.form.get('insurance')?.get('medicaid-policy-namuber')?.dirty ||this.form.get('insurance')?.get('medicaid-policy-namuber')?.touched)"
+                    class="text-danger mx-1">
+                    Policy ID is required
+                </div>
             </c-card-body>
             <c-card-footer>
                 <div class="text-center">
@@ -792,10 +820,10 @@
                             </td>
                             <td>
                                 <span *ngIf="patientInsurance.type ==='wroker'">
-                                    {{$any(patientInsurance).insuranceName}}
+                                    <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
                                 </span>
                                 <span *ngIf="patientInsurance.type ==='commercial'">
-                                    {{$any(patientInsurance).policyId}}
+                                    <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
                                 </span>
                             </td>
                         </tr>

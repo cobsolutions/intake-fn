@@ -72,6 +72,8 @@ export class PatientInsuranceComponent implements OnInit {
       this.patientInsurances.push(this.fillPatientCommercialInsurance())
     if (insuranceType === 'Worker\'s Compensation')
       this.patientInsurances.push(this.fillPatientInsuranceCompensationNoFault());
+    this.form.get('insurance')?.reset();
+    
   }
   private fillPatientInsuranceCompensationNoFault() {
     var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = {

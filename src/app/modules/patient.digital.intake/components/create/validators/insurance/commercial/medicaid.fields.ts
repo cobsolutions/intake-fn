@@ -1,0 +1,1 @@
+export var MedicaidFields: string[] = ["medicaid-policy-namuber"]

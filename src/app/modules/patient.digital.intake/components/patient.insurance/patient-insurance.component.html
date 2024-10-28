@@ -25,7 +25,7 @@
             </c-col>
         </c-row>
         <!--Commercial Insurance-->
-        <c-card *ngIf="selectedInsuranceType === 'Commercial Insurance'">
+        <c-card *ngIf="selectedInsuranceType === 'Commercial Insurance'" class="mb-2">
             <c-card-body>
                 <h5 cCardTitle>Commercial Insurance</h5>
             </c-card-body>
@@ -36,7 +36,7 @@
             </c-card-footer>
         </c-card>
         <!--Worker's Compensation-->
-        <c-card *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">
+        <c-card *ngIf="selectedInsuranceType === 'Worker\'s Compensation'" class="mb-2">
             <c-card-body>
                 <h5 cCardTitle>Worker's Compensation</h5>
             </c-card-body>
@@ -47,7 +47,7 @@
             </c-card-footer>
         </c-card>
         <!--Medicare-->
-        <c-card *ngIf="selectedInsuranceType === 'Medicare'">
+        <c-card *ngIf="selectedInsuranceType === 'Medicare'" class="mb-2">
             <c-card-body>
                 <h5 cCardTitle>Medicare</h5>
             </c-card-body>
@@ -58,7 +58,7 @@
             </c-card-footer>
         </c-card>
         <!--Medicare-->
-        <c-card *ngIf="selectedInsuranceType === 'Medicaid'">
+        <c-card *ngIf="selectedInsuranceType === 'Medicaid'" class="mb-2">
             <c-card-body>
                 <h5 cCardTitle>Medicaid</h5>
             </c-card-body>
@@ -67,6 +67,23 @@
                     <button cButton size="sm">Add</button>
                 </div>
             </c-card-footer>
+        </c-card>
+    </div>
+    <div>
+        <c-card>
+            <c-card-body>
+                <div class="table-responsive table-bordered">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Insurance Type</th>
+                                <th scope="col">Policy#</th>
+                                <th style="width: 15%;">actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </c-card-body>
         </c-card>
     </div>
     <div class="mt-3">

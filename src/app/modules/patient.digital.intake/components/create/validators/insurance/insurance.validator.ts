@@ -11,7 +11,6 @@ export class InsuranceValidator {
     public static addValidator(form: FormGroup) {
         AddCommercialValidators.add(form)
         form.get('insurance')?.get('type')?.valueChanges.subscribe((value: any) => {
-            console.log(value)
             if (value === 'Worker\'s Compensation') {
                 //add worker compansation validators 
                 AddWorkerCompensationValidators.add(form)

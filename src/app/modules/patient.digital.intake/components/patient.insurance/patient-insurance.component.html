@@ -776,17 +776,31 @@
     <div>
         <c-card>
             <c-card-body>
-                <div class="table-responsive table-bordered">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Insurance Type</th>
-                                <th scope="col">Policy#</th>
-                                <th style="width: 15%;">actions</th>
-                            </tr>
-                        </thead>
-                    </table>
-                </div>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th scope="col">Insurance Type</th>
+                            <th scope="col">Insurance Data</th>
+                            <th style="width: 15%;">actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let patientInsurance of patientInsurances; let i = index">
+                            <td>
+                                <span *ngIf="patientInsurance.type ==='wroker'">Worker Compensation</span>
+                                <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>
+                            </td>
+                            <td>
+                                <span *ngIf="patientInsurance.type ==='wroker'">
+                                    {{$any(patientInsurance).insuranceName}}
+                                </span>
+                                <span *ngIf="patientInsurance.type ==='commercial'">
+                                    {{$any(patientInsurance).policyId}}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </c-card-body>
         </c-card>
     </div>

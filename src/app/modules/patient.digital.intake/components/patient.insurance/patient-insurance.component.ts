@@ -35,6 +35,17 @@ export class PatientInsuranceComponent implements OnInit {
         this.form.get('insurance')?.get('commercial-is-medicare-coverage')?.setValue(false);
     })
   }
+  add() {
+    var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
+    CheckInvalidForm.check(insuranceForm)
+    if (this.form.get('insurance')?.valid) {
+      //this.stepper.next();
+      this.isValidForm = false;
+    } else {
+      this.isValidForm = true;
+      ValidationExploder.explode(this.form, 'insurance')
+    }
+  }
   next() {
     var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
     CheckInvalidForm.check(insuranceForm)

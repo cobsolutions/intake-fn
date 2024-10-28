@@ -15,6 +15,9 @@ import { todayDOBValidator } from './validators/custom.validation/today.dob.vali
 import { DocumentValidator } from './validators/document/document.validator';
 import { GuarantorValidator } from './validators/guarantor/guarantor.validator';
 import { InsuranceValidator } from './validators/insurance/insurance.validator';
+import { PrescriptionValidator } from './validators/medical.history/add.prescription.validator';
+import { AddSurgerisListValidator } from './validators/medical.history/add.surgeries.list';
+import { ConditionsValidator } from './validators/medical.history/conditions.validator';
 import { PatientSourceValidator } from './validators/patient.source/patient.source.validator';
 import { PhysicalTherapyValidator } from './validators/physical.therapy/add.physical.therapy.validator';
 
@@ -99,13 +102,16 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'weight': new FormControl(null, [Validators.required]),
         'weightUnit': new FormControl(false),
         'evaluationReason': new FormControl(null),
-        'patientConditions': new FormControl(null),
-        'prescriptionMedication': new FormControl(null),
-        'isMetalImplants': new FormControl(false, [Validators.required]),
-        'isXRay': new FormControl(false, [Validators.required]),
+        'patientConditions': new FormControl(null, [Validators.required]),
+        'patientConditionsSelections': new FormControl(null),
+        'prescriptionMedication': new FormControl(null, [Validators.required]),
+        'PhysicalTherapyLocationText': new FormControl(null),
+        'isMetalImplants': new FormControl(null, [Validators.required]),
+        'isXRay': new FormControl(null, [Validators.required]),
         'isXRayValue': new FormControl(null),
-        'isPacemaker': new FormControl(false, [Validators.required]),
-        'surgeriesList': new FormControl(null),
+        'isPacemaker': new FormControl(null, [Validators.required]),
+        'surgeriesList': new FormControl(null, [Validators.required]),
+        'surgeriesListText': new FormControl(null, [Validators.required]),
       }),
       'insurance': new FormGroup({
         'type': new FormControl(true, [Validators.required]),
@@ -191,6 +197,9 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     this.setXRayValidator();
     this.setReferringEntityOtherValidator();
     PatientSourceValidator.addValidator(this.patientForm);
+    PrescriptionValidator.addValidator(this.patientForm)
+    ConditionsValidator.addValidator(this.patientForm)
+    AddSurgerisListValidator.addValidator(this.patientForm)
     InsuranceValidator.addValidator(this.patientForm)
     DocumentValidator.addValidator(this.patientForm)
     GuarantorValidator.addValidator(this.patientForm);
@@ -238,7 +247,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
       })
     } else {
-       const errorCode = { code: 1 };
+      const errorCode = { code: 1 };
       this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
     }
   }

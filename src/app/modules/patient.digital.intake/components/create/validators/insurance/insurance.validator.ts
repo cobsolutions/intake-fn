@@ -12,7 +12,7 @@ export class InsuranceValidator {
         AddCommercialValidators.add(form)
         form.get('insurance')?.get('type')?.valueChanges.subscribe((value: any) => {
             console.log(value)
-            if (!value) {
+            if (value === 'Worker\'s Compensation') {
                 //add worker compansation validators 
                 AddWorkerCompensationValidators.add(form)
                 //remove worker commercial validators
@@ -21,11 +21,17 @@ export class InsuranceValidator {
                 RemoveCommercialMedicareCoverageValidator.remove(form);
                 RemoveCommercialPloicyHolderRelationshipValidator.remove(form);
             }
-            if (value) {
+            if (value === 'Commercial Insurance') {
                 //add commercial validators
                 AddCommercialValidators.add(form);
                 //remove worker compansation validators
                 RemoveWorkerCompensationValidators.remove(form)
+            }
+            if (value === 'Medicare') {
+
+            }
+            if (value === 'Medicaid') {
+
             }
         })
     }

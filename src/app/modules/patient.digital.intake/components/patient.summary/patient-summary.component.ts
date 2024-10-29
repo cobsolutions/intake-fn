@@ -42,6 +42,7 @@ export class PatientSummaryComponent implements OnInit {
     , private router: Router) { }
 
   ngOnInit(): void {
+    console.log(JSON.stringify(this.pateint.insurances))
     this.fillPateintEssentialInformation();
     this.fillPatientAddress();
     this.fillPatientSource();

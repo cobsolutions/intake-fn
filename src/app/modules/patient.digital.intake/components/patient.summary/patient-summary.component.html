@@ -126,72 +126,101 @@
     <c-card-body>
         <h5 cCardTitle>Patient Insurance Information</h5>
         <p cCardText>
-            <span *ngIf="this.pateint.patientInsurance?.patientInsuranceCompensationNoFault !== undefined">
-                <strong>Patient Insurance Type : </strong> Worker's Compensation/No Fault <br />
-                <strong> Injury/Auto-Accident: </strong>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.injuryType}} <br />
-                <strong> Accident Date: </strong>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.accidentDate_str}} <br />
-                <strong> Worker Status: </strong>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.workerStatus}} <br />
-                <strong> Phone: </strong>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.phone}} <br />
-                <strong> Fax: </strong>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.fax}} <br />
-                <strong> Case Status: </strong>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.caseStatus}} <br />
-                <strong> Adjuster: </strong> <br />
-                <label> Name : </label>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.adjusterInfoName}} <br />
-                <label> Phone : </label>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.adjusterInfoPhone}} <br />
-                <strong> Attorney: </strong> <br />
-                <label> Name : </label>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.attorneyInfoName}} <br />
-                <label> Phone : </label>
-                {{this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.attorneyInfoPhone}} <br />
-            </span>
-            <span *ngIf="this.pateint.patientInsurance?.patientCommercialInsurance !==undefined">
+            <span
+                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.commercialInsurances !== null&&this.pateint.insurances?.commercialInsurances!.length > 0">
                 <strong>Patient Insurance Type : </strong> Commercial Insurance <br />
-                <strong> Member ID: </strong>
-                {{this.pateint.patientInsurance?.patientCommercialInsurance?.memberId}} <br />
-                <strong> Policy ID: </strong>
-                {{this.pateint.patientInsurance?.patientCommercialInsurance?.policyId}} <br />
-                <strong> Policy Holder relationship: </strong>
-                {{this.pateint.patientInsurance?.patientCommercialInsurance?.relationship}} <br />
-                <span *ngIf="this.pateint.patientInsurance?.patientCommercialInsurance?.relationship !== 'Self'">
-                    <label> Name : </label>
-                    {{this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipLastName
-                    + ',' +
-                    this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipFirstName
-                    }} <br />
-                    <label> Phone : </label>
-                    {{this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipPhone}}
-                    <br />
-                    <label> Employer : </label>
-                    {{this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.employerName}}
-                    <br />
-                </span>
-                <span *ngIf="this.pateint.patientInsurance?.patientCommercialInsurance?.hasSecondaryInsurance">
-                    <strong>Secondary Insurance</strong> <br />
-                    <label>InsuranceCompany : </label>
-                    {{this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance?.insuranceCompanyName}}<br />
-                    <label>memberId : </label>
-                    {{this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance?.memberId}}<br />
-                    <label>Name : </label>
-                    {{this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance?.policyHolderLastName
-                    +',' +
-                    this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance?.policyHolderFirstName}}<br />
-                    <span *ngIf="this.pateint.patientInsurance?.patientCommercialInsurance?.hasMedicareCoverage">
-                        <strong>Medicare Coverage</strong> <br />
-                        <label>Name : </label>
-                        {{this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage?.employerLastName
-                        +',' +
-                        this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage?.employerFirstName}}<br />
-                        <label>Phone : </label>
-                        {{this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage?.employerPhone}}<br />
+                <span *ngFor="let patientInsurance of this.pateint.insurances?.commercialInsurances index as i">
+                    # {{ i+1}} <br />
+                    <strong> Member ID: </strong>
+                    {{patientInsurance.memberId}} <br />
+                    <strong> Policy ID: </strong>
+                    {{patientInsurance.policyId}} <br />
+                    <strong> Policy Holder relationship: </strong>
+                    {{patientInsurance.relationship}} <br />
+                    <span *ngIf="patientInsurance.relationship !== 'Self'">
+                        <label> Name : </label>
+                        {{patientInsurance.patientRelationship?.patientRelationshipLastName
+                        + ',' +
+                        patientInsurance.patientRelationship?.patientRelationshipFirstName
+                        }} <br />
+                        <label> Phone : </label>
+                        {{patientInsurance.patientRelationship?.patientRelationshipPhone}}
+                        <br />
+                        <label> Employer : </label>
+                        {{patientInsurance.patientRelationship?.employerName}}
+                        <br />
                     </span>
+                    <span *ngIf="patientInsurance.hasSecondaryInsurance">
+                        <strong>Secondary Insurance</strong> <br />
+                        <label>InsuranceCompany : </label>
+                        {{patientInsurance.secondaryInsurance?.insuranceCompanyName}}<br />
+                        <label>memberId : </label>
+                        {{patientInsurance.secondaryInsurance?.memberId}}<br />
+                        <label>Name : </label>
+                        {{patientInsurance.secondaryInsurance?.policyHolderLastName
+                        +',' +
+                        patientInsurance.secondaryInsurance?.policyHolderFirstName}}<br />
+                        <span *ngIf="patientInsurance.hasMedicareCoverage">
+                            <strong>Medicare Coverage</strong> <br />
+                            <label>Name : </label>
+                            {{patientInsurance.medicareCoverage?.employerLastName
+                            +',' +
+                            patientInsurance.medicareCoverage?.employerFirstName}}<br />
+                            <label>Phone : </label>
+                            {{patientInsurance.medicareCoverage?.employerPhone}}<br />
+                        </span>
+                    </span>
+                    <br />
                 </span>
+            </span>
+            <span
+                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.workerCompensationInsurances !== null&&this.pateint.insurances?.workerCompensationInsurances!.length > 0">
+                <strong>Patient Insurance Type : </strong> Worker's Compensation/No Fault <br />
+                <span
+                    *ngFor="let patientInsurance of this.pateint.insurances?.workerCompensationInsurances; index as i">
+                    # {{ i+1}} <br />
+                    <strong> Injury/Auto-Accident: </strong>
+                    {{patientInsurance.injuryType}} <br />
+                    <strong> Accident Date: </strong>
+                    {{patientInsurance.accidentDate_str}} <br />
+                    <strong> Worker Status: </strong>
+                    {{patientInsurance.workerStatus}} <br />
+                    <strong> Phone: </strong>
+                    {{patientInsurance.phone}} <br />
+                    <strong> Fax: </strong>
+                    {{patientInsurance.fax}} <br />
+                    <strong> Case Status: </strong>
+                    {{patientInsurance.caseStatus}} <br />
+                    <strong> Adjuster: </strong> <br />
+                    <label> Name : </label>
+                    {{patientInsurance.adjusterInfoName}} <br />
+                    <label> Phone : </label>
+                    {{patientInsurance.adjusterInfoPhone}} <br />
+                    <strong> Attorney: </strong> <br />
+                    <label> Name : </label>
+                    {{patientInsurance.attorneyInfoName}} <br />
+                    <label> Phone : </label>
+                    {{patientInsurance.attorneyInfoPhone}} <br />
+                </span>
+                <br />
+            </span>
+            <span
+                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.medicareInsurance !== null&&this.pateint.insurances?.medicareInsurance!.length > 0">
+                <strong>Patient Insurance Type : </strong> Medicare<br />
+                <span *ngFor="let patientInsurance of this.pateint.insurances?.medicareInsurance; index as i">
+                    <strong> Policy Number: </strong>
+                    {{patientInsurance.policyId}} <br />
+                </span>
+                <br />
+            </span>
+            <span
+                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.medicaidInsurance !== null&&this.pateint.insurances?.medicaidInsurance!.length > 0">
+                <strong>Patient Insurance Type : </strong> Medicaid<br />
+                <span *ngFor="let patientInsurance of this.pateint.insurances?.medicaidInsurance; index as i">
+                    <strong> Policy Number: </strong>
+                    {{patientInsurance.policyId}} <br />
+                </span>
+                <br />
             </span>
         </p>
     </c-card-body>

@@ -58,9 +58,6 @@
                 : </strong> {{pateint.patientMedical?.appointmentBooking}}<br />
             <strong>Primary Doctor
                 : </strong> {{pateint.patientMedical?.primaryDoctor}}<br />
-            <strong>Sending Result to Primary Doctor
-                : </strong> {{pateint.patientMedical?.familyResultSubmission?'Yes':'No'}}<br />
-
             <span *ngIf="pateint.patientMedical?.hasPatientPhysicalTherapy">
                 <strong>Received physical therapy : </strong> {{pateint.patientMedical?.hasPatientPhysicalTherapy?
                 'Yes':'No'}} <br />

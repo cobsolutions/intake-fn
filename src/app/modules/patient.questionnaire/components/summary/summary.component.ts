@@ -61,8 +61,7 @@ export class SummaryComponent implements OnInit {
     }
     paragraph +=
       `<b style="font-family:Lucida">- Booking Appointment</b> : <i style="font-family:Lucida"> ${this.pateint.patientMedical?.appointmentBooking} </i></br>
-    <b style="font-family:Lucida">- Primary Doctor</b> : <i style="font-family:Lucida"> ${this.pateint.patientMedical?.primaryDoctor} </i></br>
-    <b style="font-family:Lucida">- Would you like your results sent to your family doctor?</b> : <i style="font-family:Lucida"> ${this.pateint.patientMedical?.familyResultSubmission ? 'Yes' : 'No'} </i></br>
+    <b style="font-family:Lucida">- Primary Doctor</b> : <i style="font-family:Lucida"> ${this.pateint.patientMedical?.primaryDoctor} </i></br>    
     <b style="font-family:Lucida">- Have you received physical therapy this year somewhere else?</b> : <i style="font-family:Lucida"> ${this.pateint.patientMedical?.patientPhysicalTherapy ? 'Yes' : 'No'} </i></br>`
     if (this.pateint.patientMedical?.patientPhysicalTherapy) {
       paragraph += `

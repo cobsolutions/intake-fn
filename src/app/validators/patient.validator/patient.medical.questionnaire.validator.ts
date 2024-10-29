@@ -83,8 +83,8 @@ export class PatientMedicalQuestionnaireValidator extends PatientValidator {
                 validator.push({ property: "Primary Doctor", message: '' });
         }
         // if (this.isRequiredField('resultSubmissionFamily')) {
-        if (this.medicalQuestionnaireInfo.familyResultSubmission === undefined)
-            validator.push({ property: "Mandatory : Would you like your results sent to your family doctor?", message: '' });
+        // if (this.medicalQuestionnaireInfo.familyResultSubmission === undefined)
+        //     validator.push({ property: "Mandatory : Would you like your results sent to your family doctor?", message: '' });
         //}
     }
 

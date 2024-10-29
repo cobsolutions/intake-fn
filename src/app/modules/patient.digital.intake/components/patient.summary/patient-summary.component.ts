@@ -186,7 +186,7 @@ export class PatientSummaryComponent implements OnInit {
     this.form.get('medical')?.valueChanges.forEach(selected => {
       patientMedical.appointmentBooking = selected.appointmentBooking;
       patientMedical.primaryDoctor = selected.isPrimaryDoctor
-      patientMedical.familyResultSubmission = selected.isFamilyDoctorRequest
+      // patientMedical.familyResultSubmission = selected.isFamilyDoctorRequest
       this.pateint.patientMedical = patientMedical;
     })
     this.form.get('medical')?.get('isReceivedPhysicalTherapy')?.valueChanges.subscribe(value => {

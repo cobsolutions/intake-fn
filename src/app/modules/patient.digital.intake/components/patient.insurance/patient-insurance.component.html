@@ -354,12 +354,10 @@
                         </c-card>
                     </c-card-body>
                 </c-card>
-            </c-card-body>
-            <c-card-footer>
                 <div class="text-center">
                     <button cButton size="sm" (click)="add()">Add</button>
                 </div>
-            </c-card-footer>
+            </c-card-body>
         </c-card>
         <!--Worker's Compensation-->
         <c-card *ngIf="selectedInsuranceType === 'Worker\'s Compensation'" class="mb-2">
@@ -743,12 +741,10 @@
                         Case Status is required
                     </div>
                 </c-row>
-            </c-card-body>
-            <c-card-footer>
                 <div class="text-center">
                     <button cButton size="sm" (click)="add()">Add</button>
                 </div>
-            </c-card-footer>
+            </c-card-body>
         </c-card>
         <!--Medicare-->
         <c-card *ngIf="selectedInsuranceType === 'Medicare'" class="mb-2">
@@ -768,12 +764,10 @@
                     class="text-danger mx-1">
                     Policy ID is required
                 </div>
-            </c-card-body>
-            <c-card-footer>
                 <div class="text-center">
                     <button cButton size="sm" (click)="add()">Add</button>
                 </div>
-            </c-card-footer>
+            </c-card-body>
         </c-card>
         <!--Medicare-->
         <c-card *ngIf="selectedInsuranceType === 'Medicaid'" class="mb-2">
@@ -793,14 +787,14 @@
                     class="text-danger mx-1">
                     Policy ID is required
                 </div>
-            </c-card-body>
-            <c-card-footer>
                 <div class="text-center">
                     <button cButton size="sm" (click)="add()">Add</button>
                 </div>
-            </c-card-footer>
+            </c-card-body>
+
         </c-card>
     </div>
+    <!-- List patient insurances-->
     <div *ngIf="!(this.form.get('insurance')?.get('type')?.value ==='SelfPay')">
         <c-card>
             <c-card-body>

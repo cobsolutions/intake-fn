@@ -4,11 +4,10 @@ import { CookieService } from 'ngx-cookie-service';
 import { map, switchMap } from 'rxjs';
 import { DeviceInformation } from 'src/app/modules/patient.admin/models/trust.device/device.information';
 import { DeviceTokenRequest } from 'src/app/modules/patient.admin/models/trust.device/device.token.request';
-import { DeviceTokenResponse } from 'src/app/modules/patient.admin/models/trust.device/device.token.response';
 import { DeviceLocation } from 'src/app/modules/patient.admin/models/trust.device/geolocation';
 import { FingerprintService } from 'src/app/modules/patient.admin/services/trust.device/fingerprint.service';
 import { TrustDeviceService } from 'src/app/modules/patient.admin/services/trust.device/trust-device.service';
-import { SendTask, WebsocketService } from 'src/app/modules/patient.admin/services/web.socket/websocket.service';
+import { WebsocketService } from 'src/app/modules/patient.admin/services/web.socket/websocket.service';
 
 @Component({
   selector: 'create-component-scanner',
@@ -52,7 +51,7 @@ export class CreateComponentScannerComponent implements OnInit {
         this.isLoading = false;
         this.error = false;
         this.errorMessage = undefined;
-        this.cookieService.set('device-id', this.deviceId, 3650,'/digital-intake')
+        this.cookieService.set('device-id', this.deviceId, 3650, '/digital-intake')
         this.websocketService.send(respose.body)
       }, error => {
         this.isLoading = false;

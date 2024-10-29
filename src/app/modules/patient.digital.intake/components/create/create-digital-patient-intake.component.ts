@@ -243,14 +243,15 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     if (this.cookieService.check('device-id')) {
       const deviceId: string = this.cookieService.get('device-id');
       const clinicId: number = this.cacheClinicService.getClinic();
+      console.log('device id ' + deviceId)
       this.trustDeviceService.checkDeviceStatus(clinicId, deviceId).subscribe(reus => {
-        console.log(JSON.stringify(reus))
       }, error => {
         console.log(error)
         const errorCode = { code: 2 };
         this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
       })
     } else {
+      console.log('without device id ')
       const errorCode = { code: 1 };
       this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
     }

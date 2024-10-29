@@ -13,10 +13,10 @@ export class PatientCreateComponent implements OnInit {
   constructor(private clinicService: ClinicService) { }
 
   ngOnInit(): void {
-    // this.clinicService.selectedClinic$.subscribe(clinicId => {
-    //   this.clinicId = clinicId
-    //   this.createPatientURL = this.baseURL + '/digital-intake?clinicId=' + clinicId;
-    // })
+    this.clinicService.selectedClinic$.subscribe(clinicId => {
+      this.clinicId = clinicId
+      this.createPatientURL = this.baseURL + '/digital-intake?clinicId=' + clinicId;
+    })
     this.createPatientURL = this.baseURL + '/digital-intake'
   }
 

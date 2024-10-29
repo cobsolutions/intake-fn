@@ -41,27 +41,51 @@
         <c-card-header>Traffic </c-card-header>
         <c-card-body>
           <c-row>
-            <c-col sm="4">
+            <c-col sm="2">
               <div class="border-start border-start-4 border-start-info py-1 px-3">
                 <div class="text-medium-emphasis small">total Patients</div>
                 <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfPatient}}</div>
               </div>
             </c-col>
-            <c-col sm="4">
+            <c-col sm="2">
+              <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                <div class="text-medium-emphasis small">
+                  Commercial
+                </div>
+                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfCommercialPatient}}</div>
+              </div>
+            </c-col>
+            <c-col sm="2">
               <div class="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
                 <div class="text-medium-emphasis small">
-                  Insured Patients : Compensation-NoFault
+                  Compensation-NoFault
                 </div>
                 <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfCompensationNoFaultPatient}}
                 </div>
               </div>
             </c-col>
-            <c-col sm="4">
+            <c-col sm="2">
               <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
                 <div class="text-medium-emphasis small">
-                  Insured Patients : Commercial
+                  Medicare
                 </div>
-                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfCommercialPatient}}</div>
+                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfMedicare}}</div>
+              </div>
+            </c-col>
+            <c-col sm="2">
+              <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                <div class="text-medium-emphasis small">
+                  Medicade
+                </div>
+                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfMedicade}}</div>
+              </div>
+            </c-col>
+            <c-col sm="2">
+              <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
+                <div class="text-medium-emphasis small">
+                  SelfPayed
+                </div>
+                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfSelfPay}}</div>
               </div>
             </c-col>
             <c-col xs="12">

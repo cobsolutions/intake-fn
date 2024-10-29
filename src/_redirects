@@ -43,6 +43,7 @@
 /intake-service/api/insurance/company/create https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/insurance/company/create 200
 /intake-service/api/insurance/company/find https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/insurance/company/find 200
 /intake-service/api/insurance/company/find/:id https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/insurance/company/find/:id 200
+/intake-service/api/insurance/company/find/name/:name https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/insurance/company/find/name/:name 200
 
 /intake-service/api/audit/insurance/company/retrieve/uuid/:uuid https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/audit/insurance/company/retrieve/uuid/:uuid 200
 /intake-service/api/audit/insurance/company/retrieve https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/audit/insurance/company/retrieve 200
@@ -66,4 +67,10 @@
 /intake-service/api/patient/counter/monthly/doctor/:year https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/patient/counter/monthly/doctor/:year 200
 /intake-service/api/patient/counter/monthly/entity/:year https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/patient/counter/monthly/entity/:year 200
 /intake-service/api/patient/counter/clinic/:year https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/patient/counter/clinic/:year 200
+/intake-service/api/trusted-device/generate-token https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/trusted-device/generate-token 200
+/intake-service/api/trusted-device/register https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/trusted-device/register 200
+/intake-service/api/trusted-device/validate-token https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/trusted-device/validate-token 200
+/intake-service/api/trusted-device/list/clinic-id/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/trusted-device/list/clinic-id/:clinicId 200
+/intake-service/api/trusted-device/revoke/device-id/:deviceId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/trusted-device/revoke/device-id/:deviceId 200
+
 /*  /index.html   200

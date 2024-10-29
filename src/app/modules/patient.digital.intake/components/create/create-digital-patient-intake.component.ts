@@ -17,6 +17,7 @@ import { GuarantorValidator } from './validators/guarantor/guarantor.validator';
 import { InsuranceValidator } from './validators/insurance/insurance.validator';
 import { PrescriptionValidator } from './validators/medical.history/add.prescription.validator';
 import { AddSurgerisListValidator } from './validators/medical.history/add.surgeries.list';
+import { XRayValidator } from './validators/medical.history/add.xray.validator';
 import { ConditionsValidator } from './validators/medical.history/conditions.validator';
 import { PatientSourceValidator } from './validators/patient.source/patient.source.validator';
 import { PhysicalTherapyValidator } from './validators/physical.therapy/add.physical.therapy.validator';
@@ -202,6 +203,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     this.setReferringEntityOtherValidator();
     PatientSourceValidator.addValidator(this.patientForm);
     PrescriptionValidator.addValidator(this.patientForm)
+    XRayValidator.addValidator(this.patientForm)
     ConditionsValidator.addValidator(this.patientForm)
     AddSurgerisListValidator.addValidator(this.patientForm)
     InsuranceValidator.addValidator(this.patientForm)

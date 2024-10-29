@@ -799,11 +799,18 @@
                     <button cButton size="sm" (click)="add()">Add</button>
                 </div>
             </c-card-body>
-
+        </c-card>
+        <c-card *ngIf="selectedInsuranceType === 'SelfPay'" class="mb-2">
+            <c-card-body>
+                <h5 cCardTitle>SelPay</h5>
+                <div class="text-center">
+                    <button cButton size="sm" (click)="add()">Add</button>
+                </div>
+            </c-card-body>
         </c-card>
     </div>
     <!-- List patient insurances-->
-    <div *ngIf="!(this.form.get('insurance')?.get('type')?.value ==='SelfPay')">
+    <div>
         <c-card>
             <c-card-body>
                 <table class="table table-responsive">
@@ -821,6 +828,7 @@
                                 <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>
                                 <span *ngIf="patientInsurance.type ==='medicare'">Medicare</span>
                                 <span *ngIf="patientInsurance.type ==='medicaid'">Medicaid</span>
+                                <span *ngIf="patientInsurance.type ==='selfpay'">SelfPay</span>
                             </td>
                             <td>
                                 <span *ngIf="patientInsurance.type ==='wroker'">
@@ -834,6 +842,9 @@
                                 </span>
                                 <span *ngIf="patientInsurance.type ==='medicaid'">
                                     <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
+                                </span>
+                                <span *ngIf="patientInsurance.type ==='selfpay'">
+                                    <strong> -------</strong>
                                 </span>
                             </td>
                         </tr>

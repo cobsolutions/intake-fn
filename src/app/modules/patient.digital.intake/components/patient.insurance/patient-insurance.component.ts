@@ -15,6 +15,7 @@ import { CommercialInsurance } from 'src/app/modules/patient.questionnaire/model
 import { MedicaidInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.medicaid';
 import { MedicareInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.medicare';
 import { WorkerCompensationInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.workers.compensation';
+import { SelfPay } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/selfpay';
 import { CheckInvalidForm } from '../../util/invalid.form';
 import { ValidationExploder } from '../create/validators/validation.exploder';
 
@@ -37,7 +38,6 @@ export class PatientInsuranceComponent implements OnInit {
     workerCompensationInsurances: [],
     medicareInsurance: [],
     medicaidInsurance: [],
-    isSelfPay: false
   }
   insuranceCompanyForm = new FormControl();
   isLoadingInsuranceCompany = false;
@@ -74,11 +74,7 @@ export class PatientInsuranceComponent implements OnInit {
     if (this.form.get('insurance')?.valid || this.isInsurances()) {
       this.stepper.next();
       this.isValidForm = false;
-      var insuranceType: string = this.form.get('insurance')?.get('type')?.value;
-      if (insuranceType !== 'SelfPay')
-        this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
-      else
-        this.form.get('insurance')?.get('isSelfPay')?.setValue(true)
+      this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
     } else {
       this.isValidForm = true;
       ValidationExploder.explode(this.form, 'insurance')
@@ -88,7 +84,8 @@ export class PatientInsuranceComponent implements OnInit {
     return (this.patientInsurances.commercialInsurances.length > 0 ||
       this.patientInsurances.workerCompensationInsurances.length > 0 ||
       this.patientInsurances.medicareInsurance.length > 0 ||
-      this.patientInsurances.medicaidInsurance.length > 0)
+      this.patientInsurances.medicaidInsurance.length > 0 ||
+      this.patientInsurances.selfPay !== undefined)
   }
   private addPatientIsnurance() {
     var insuranceType: string = this.form.get('insurance')?.get('type')?.value;
@@ -112,8 +109,13 @@ export class PatientInsuranceComponent implements OnInit {
       this.patientInsurances.medicaidInsurance.push(medicaidInsurance);
       this.renderedPatientInsurances.push(medicaidInsurance)
     }
-    if (insuranceType === 'SelfPay')
-      this.patientInsurances.isSelfPay = true;
+    if (insuranceType === 'SelfPay') {
+      var selfPay: SelfPay = {
+        type: 'selfpay'
+      }
+      this.patientInsurances.selfPay = selfPay;
+      this.renderedPatientInsurances.push(selfPay)
+    }
     this.form.get('insurance')?.reset();
 
   }

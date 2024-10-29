@@ -226,7 +226,7 @@ export class PatientSummaryComponent implements OnInit {
       patientMedicalHistory.scanningTest = select.isXRay === 'yes' ? true : false
       patientMedicalHistory.scanningTestValue = select.isXRayValue
       patientMedicalHistory.pacemaker = select.isPacemaker === 'yes' ? true : false
-      patientMedicalHistory.metalImplantation = select.isMetalImplants==='yes'?true:false
+      patientMedicalHistory.metalImplantation = select.isMetalImplants === 'yes' ? true : false
       patientMedicalHistory.surgeriesList = select.surgeriesList
       if (this.pateint.patientMedical !== undefined)
         this.pateint.patientMedical.patientMedicalHistory = patientMedicalHistory
@@ -237,11 +237,6 @@ export class PatientSummaryComponent implements OnInit {
       console.log(JSON.stringify(select.insurances))
       if (select.insurances !== null) {
         this.pateint.insurances = select.insurances
-        this.pateint.isSelfPay = true;
-      }
-      if (select.isSelfPay) {
-        this.pateint.insurances = null;
-        this.pateint.isSelfPay = true;
       }
     })
   }

@@ -170,7 +170,7 @@
                     <input cFormCheckInput type="radio" formControlName="isXRay" size="sm" [value]="'no'" />
                     <label cFormCheckLabel>No</label>
                 </c-form-check>
-                <span *ngIf="form.get('medicalhistory')?.get('isXRay')?.value">
+                <span *ngIf="form.get('medicalhistory')?.get('isXRay')?.value ==='yes'">
                     <c-row>
                         <c-col xs="12">
                             <c-multi-select multiple formControlName="isXRayValue" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('isXRayValue')?.invalid

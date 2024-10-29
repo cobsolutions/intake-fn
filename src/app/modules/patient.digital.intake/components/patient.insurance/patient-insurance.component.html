@@ -36,6 +36,15 @@
                         </label>
                     </c-col>
                     <c-col xl="12">
+                        <c-input-group class="mb-3" sizing="sm">
+                            <span cInputGroupText>
+                                <svg cIcon name="cilSearch"></svg>
+                            </span>
+                            <input cFormControl name="insurancecompany" [formControl]="insuranceCompanyForm"
+                                placeholder="Type insurance company" cFormControl />
+                        </c-input-group>
+                    </c-col>
+                    <c-col xl="12">
                         <select cSelect sizing="sm" name="injuryType" style="line-height: 15px;" cFormControl
                             formControlName="commercial-insurance-company">
                             <option value="null" disabled>Select</option>

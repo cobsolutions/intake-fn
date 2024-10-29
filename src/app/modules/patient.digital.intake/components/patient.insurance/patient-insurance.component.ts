@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
+import { debounceTime, filter, finalize, switchMap, tap } from 'rxjs';
 import { Address } from 'src/app/models/patient/address.info.model';
 import { MedicareCoverage } from 'src/app/models/questionnaire/Insurance/medicare.coverage';
 import { PatientRelationship } from 'src/app/models/questionnaire/Insurance/patient.relationship';
@@ -27,10 +28,10 @@ export class PatientInsuranceComponent implements OnInit {
   @Input() stepper: MatStepper
   isValidForm: boolean = false;
   @Input() form: FormGroup;
-  InsuranceCompanies: InsuranceCompany[] = new Array();
+  InsuranceCompanies: any;
   types: string[] = insuranceTypes;
   selectedInsuranceType: string
-  renderedPatientInsurances:any[]=[]
+  renderedPatientInsurances: any[] = []
   patientInsurances: Insurance = {
     commercialInsurances: [],
     workerCompensationInsurances: [],
@@ -38,8 +39,11 @@ export class PatientInsuranceComponent implements OnInit {
     medicaidInsurance: [],
     isSelfPay: false
   }
+  insuranceCompanyForm = new FormControl();
+  isLoadingInsuranceCompany = false;
   constructor(private insuranceCompanyService: InsuranceCompanyService) { }
   ngOnInit(): void {
+    this.findInsuranceCompanyByNameAutoComplete();
     this.insuranceCompanyService.get().subscribe((response) => {
       response.body?.forEach(element => {
         this.InsuranceCompanies?.push(element);
@@ -83,28 +87,28 @@ export class PatientInsuranceComponent implements OnInit {
   private isInsurances() {
     return (this.patientInsurances.commercialInsurances.length > 0 ||
       this.patientInsurances.workerCompensationInsurances.length > 0 ||
-      this.patientInsurances.medicareInsurance ||
-      this.patientInsurances.medicaidInsurance)
+      this.patientInsurances.medicareInsurance.length > 0 ||
+      this.patientInsurances.medicaidInsurance.length > 0)
   }
   private addPatientIsnurance() {
     var insuranceType: string = this.form.get('insurance')?.get('type')?.value;
-    if (insuranceType === 'Commercial Insurance'){
+    if (insuranceType === 'Commercial Insurance') {
       var patientCommercialInsurance: CommercialInsurance = this.fillPatientCommercialInsurance();
       this.patientInsurances.commercialInsurances.push(patientCommercialInsurance)
       this.renderedPatientInsurances.push(patientCommercialInsurance)
     }
-    if (insuranceType === 'Worker\'s Compensation'){
+    if (insuranceType === 'Worker\'s Compensation') {
       var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = this.fillPatientInsuranceCompensationNoFault();
       this.patientInsurances.workerCompensationInsurances.push(patientInsuranceCompensationNoFault);
       this.renderedPatientInsurances.push(patientInsuranceCompensationNoFault)
     }
-    if (insuranceType === 'Medicare'){
-      var medicareInsurance: MedicareInsurance=this.fillPatientMedicareInsurance()
+    if (insuranceType === 'Medicare') {
+      var medicareInsurance: MedicareInsurance = this.fillPatientMedicareInsurance()
       this.patientInsurances.medicareInsurance.push(medicareInsurance);
       this.renderedPatientInsurances.push(medicareInsurance)
     }
-    if (insuranceType === 'Medicaid'){
-      var medicaidInsurance: MedicaidInsurance  = this.fillPatientMedicaidInsurance();
+    if (insuranceType === 'Medicaid') {
+      var medicaidInsurance: MedicaidInsurance = this.fillPatientMedicaidInsurance();
       this.patientInsurances.medicaidInsurance.push(medicaidInsurance);
       this.renderedPatientInsurances.push(medicaidInsurance)
     }
@@ -205,5 +209,45 @@ export class PatientInsuranceComponent implements OnInit {
       policyId: this.form.get('insurance')?.get('medicaid-policy-namuber')?.value,
     }
     return medicareInsurance;
+  }
+  private findInsuranceCompanyByNameAutoComplete() {
+    this.insuranceCompanyForm.valueChanges
+      .pipe(
+        filter(text => {
+          if (text === undefined)
+            return false;
+          if (text.length > 0) {
+            return true
+          } else {
+            this.InsuranceCompanies = [];
+            return false;
+          }
+        }),
+        debounceTime(500),
+        tap((value) => {
+          this.InsuranceCompanies = [];
+          this.isLoadingInsuranceCompany = true;
+        }),
+        switchMap((value) => {
+          return this.insuranceCompanyService.getbyName(value)
+            .pipe(
+              finalize(() => {
+                this.isLoadingInsuranceCompany = false
+              }),
+            )
+        }
+        )
+      )
+      .subscribe(data => {
+        if (data == undefined) {
+          this.InsuranceCompanies = [];
+        } else {
+          console.log(JSON.stringify(data))
+          this.InsuranceCompanies = data.body;
+        }
+      },
+        error => {
+          this.isLoadingInsuranceCompany = false
+        });
   }
 }

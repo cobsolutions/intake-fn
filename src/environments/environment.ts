@@ -8,6 +8,7 @@ export const environment = {
   production: false,
   baseURL:"/intake-service/api/",
   keycloak: keycloakConfig,
+  wsurl:"localhost:8090/intake-service/api/websocket"
 };
 
 /*

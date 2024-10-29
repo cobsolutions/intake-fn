@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CompatClient, Stomp, StompSubscription } from '@stomp/stompjs';
+import { environment } from 'src/environments/environment';
 import { DeviceTokenResponse } from '../../models/trust.device/device.token.response';
 import { TrustDevice } from '../../models/trust.device/trust.device';
 export type ListenerCallBack = (message: TrustDevice) => void;
@@ -13,8 +14,9 @@ export interface SendTask {
 export class WebsocketService {
   private connection: CompatClient | undefined = undefined;
   private subscription: StompSubscription | undefined;
+  private wsrl = environment.wsurl;
   constructor() {
-    this.connection = Stomp.client('ws://localhost:8090/intake-service/api/websocket');
+    this.connection = Stomp.client('wss://' + this.wsrl);
     this.connection.connect({}, () => { });
   }
   public send(trustDevice: TrustDevice): void {

@@ -17,7 +17,7 @@ export class PatientCreateComponent implements OnInit {
       this.clinicId = clinicId
       this.createPatientURL = this.baseURL + '/digital-intake?clinicId=' + clinicId;
     })
-    this.createPatientURL = this.baseURL + '/digital-intake'
+    this.createPatientURL = this.baseURL + '/digital-intake?clinicId='+ this.clinicId
   }
 
 }

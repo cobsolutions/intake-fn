@@ -52,6 +52,9 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     const phoneRgx = new RegExp("^[\+]?[0-9]{0,3}\W?[(]?[0-9]{3}[)]?[-\s\.]?[(]?[0-9]{3}[)][-\s\.]?[0-9]{4,6}$");
     const zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
     this.patientForm = new FormGroup({
+      'identity': new FormGroup({
+        'pPhoneNumber': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),
+      }),
       'basic': new FormGroup({
         'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'middleName': new FormControl(null, noSpecialCharactersValidator()),

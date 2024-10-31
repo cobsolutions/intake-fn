@@ -1,0 +1,48 @@
+<div class="otp-container mb-3" [ngClass]="{'otp-verified': isValidOPT}">
+  <div [formGroup]="form" class="mt-3">
+    <div formGroupName="identity">
+      <h2 class="display-4" *ngIf="!isValidOPT">Verify Your Phone Number</h2>
+
+      <!-- Phone Number Section -->
+      <div *ngIf="!otpSent" class="phone-section">
+        <label for="phoneNumber">Enter your phone number:</label>
+        <input type="text" id="phoneNumber" formControlName="pPhoneNumber"
+          [value]="this.form.get('identity')?.get('pPhoneNumber')?.value | phone" maxlength="15"
+          placeholder="e.g. (333)(333)-3333" required [ngClass]="{'is-invalid': this.form.get('identity')?.get('pPhoneNumber')?.invalid
+          && this.form.get('identity')?.get('pPhoneNumber')?.touched}" />
+
+        <div
+          *ngIf="this.form.get('identity')?.get('pPhoneNumber')?.errors?.['required'] === true && 
+            (this.form.get('identity')?.get('pPhoneNumber')?.dirty ||this.form.get('identity')?.get('pPhoneNumber')?.touched)"
+          class="text-danger mx-1">
+          Phone number is required
+        </div>
+        <div *ngIf="this.form.get('identity')?.get('pPhoneNumber')?.errors?.['pattern']" class="text-danger mx-1">
+          Phone number format is invalid
+        </div>
+        <button (click)="sendOtp()" [disabled]="!this.form.get('identity')?.valid">Send OTP</button>
+      </div>
+
+    </div>
+  </div>
+  <!-- OTP Verification Section -->
+  <div *ngIf="otpSent && !isValidOPT" class="otp-section">
+    <p>We've sent a verification code to .</p>
+    <div class="otp-inputs">
+      <input #ropt type="text" maxlength="1" [(ngModel)]="otpArray[0]" />
+      <input #sopt type="text" maxlength="1" [(ngModel)]="otpArray[1]" />
+      <input #topt type="text" maxlength="1" [(ngModel)]="otpArray[2]" />
+      <input #fopt type="text" maxlength="1" [(ngModel)]="otpArray[3]" />
+      <input #fopt type="text" maxlength="1" [(ngModel)]="otpArray[4]" />
+      <input #sopt type="text" maxlength="1" [(ngModel)]="otpArray[5]" />
+
+    </div>
+    <button (click)="verifyOtp()" [disabled]="!isOtpComplete()">Verify OTP</button>
+  </div>
+  <!-- Messages -->
+  <p *ngIf="isValidOPT" class="validOPT">{{ message }}</p>
+  <p *ngIf="!isValidOPT" class="invalidOPT"><strong>{{ message }}</strong></p>
+</div>
+<div class="md-3 text-center" *ngIf="isValidOPT">
+  <button cButton variant="outline" size="sm" (click)="next()" style="width: 10%">Start</button>
+</div>

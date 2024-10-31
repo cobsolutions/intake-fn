@@ -42,6 +42,7 @@ export class CreateComponentScannerComponent implements OnInit {
           }
           var deviceTokenRequest: DeviceTokenRequest = {
             token: param['token'],
+            clinicId: param['clinicId'],
             deviceInformation: deviceInformation
           }
           return deviceTokenRequest
@@ -57,7 +58,7 @@ export class CreateComponentScannerComponent implements OnInit {
         this.isLoading = false;
         this.error = true
         if (error.error !== undefined)
-          this.errorMessage = error.error.message.replace(/\b[a-zA-Z0-9-]+\b/, 'QR code');
+          this.errorMessage = error.error.message;
         console.log(error)
       })
     }

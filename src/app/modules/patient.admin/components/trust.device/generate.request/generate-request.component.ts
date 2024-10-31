@@ -20,16 +20,16 @@ export class GenerateRequestComponent implements OnInit {
   expired: boolean = false;
   private intervalId: any;
   constructor(private trustDeviceService: TrustDeviceService,
-    private websocketService:WebsocketService) { }
+    private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
-    
+
   }
   goToNextStep(): void {
     if (this.deviceName.trim() !== '') {
       this.trustDeviceService.generateDeviceRequest().subscribe((response: any) => {
         const requestToken: any = response.body;
-        this.createPatientURL = this.baseURL + '/scanner?name=' + this.deviceName + '&token=' + requestToken.token;
+        this.createPatientURL = this.baseURL + '/scanner?clinicId=' + requestToken.clinicId + '&name=' + this.deviceName + '&token=' + requestToken.token;
         console.log(this.createPatientURL)
         this.currentStep = 2;
         this.inCorrectName = false
@@ -42,8 +42,8 @@ export class GenerateRequestComponent implements OnInit {
   }
   goTopreviousStep(): void {
     this.currentStep = 1;
-    this.minutes = 0 ;
-    this.seconds = 0 ;
+    this.minutes = 0;
+    this.seconds = 0;
     this.clearExistingInterval();
   }
   startCountdown(expiryDate: number): void {

@@ -14,9 +14,15 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private kcAuthServiceService: KcAuthServiceService, private keycloakService: KeycloakService
     , private spinner: NgxSpinnerService
     , private fetshUrls: FetshDigitalPatientIntakeUrlsService
-    ,private toastrService: ToastrService) { }
+    , private toastrService: ToastrService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.spinner.show();
+    if (request.url.includes('/authentication')) {
+      return next.handle(request);
+    }
+    if (request.url.includes('/trusted-device/register')) {
+      return next.handle(request);
+    }
     return from(this.kcAuthServiceService.getToken())
       .pipe(
         mergeMap(token => {

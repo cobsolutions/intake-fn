@@ -76,4 +76,8 @@
 /intake-service/api/trusted-device/revoke/device-id/:deviceId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/trusted-device/revoke/device-id/:deviceId 200
 /intake-service/api/trusted-device/status/clinic-id/:clinic-id/device-id/:device-id https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/trusted-device/status/clinic-id/:clinic-id/device-id/:device-id 200
 
+
+/intake-service/api/otp/send https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/otp/send 200
+/intake-service/api/otp/validate https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/otp/validate 200
+
 /*  /index.html   200

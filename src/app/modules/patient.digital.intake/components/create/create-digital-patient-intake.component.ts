@@ -1,9 +1,13 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
+import { GeolocationService } from '@ng-web-apis/geolocation';
 import { CookieService } from 'ngx-cookie-service';
+import { catchError, delay, map, Observable, of, retryWhen, scan, switchMap, take, throwError } from 'rxjs';
+import { DeviceInformation } from 'src/app/modules/patient.admin/models/trust.device/device.information';
 import { TrustDeviceService } from 'src/app/modules/patient.admin/services/trust.device/trust-device.service';
 import { CacheClinicService } from '../../services/cache.clinic/cache-clinic.service';
 import { imageDocumentValidator } from './validators/custom.validation/document.image.validator';
@@ -35,10 +39,11 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     private cacheClinicService: CacheClinicService,
     private trustDeviceService: TrustDeviceService,
     private cookieService: CookieService,
-    private router: Router) { }
+    private router: Router,
+    private geolocation$: GeolocationService) { }
 
   ngOnInit(): void {
-    this.checkDeviceStatus()
+    this.isDeviceHealty();
     this.breakpointObserver.observe([
       Breakpoints.HandsetPortrait,
       Breakpoints.HandsetLandscape
@@ -244,21 +249,58 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     })
   }
 
-  private checkDeviceStatus() {
+  private isDeviceHealty() {
     if (this.cookieService.check('device-id')) {
-      const deviceId: string = this.cookieService.get('device-id');
-      const clinicId: number = this.cacheClinicService.getClinic();
-      console.log('device id ' + deviceId)
-      this.trustDeviceService.checkDeviceStatus(clinicId, deviceId).subscribe(reus => {
+      const _callLocation = this.getLocation().pipe(
+        retryWhen((errors) =>
+          errors.pipe(
+            scan((retryCount, error) => {
+              if (retryCount >= 2) {
+                throw error;
+              }
+              console.warn(`Retrying... (${retryCount + 1})`);
+              return retryCount + 1;
+            }, 0),
+            delay(2000) // Delay between retries
+          )
+        ),
+        catchError((error) => {
+          console.error('Location retrieval failed:', error);
+          return of(undefined); // Return undefined on failure
+        })
+      );
+      _callLocation.pipe(
+        map(geolocation => {
+          return {
+            deviceName: '',
+            clinicId: this.cacheClinicService.getClinic(),
+            deviceId: this.cookieService.get('device-id'),
+            geolocation: {
+              accuracy: 0.0,
+              latitude: geolocation.coords.latitude,
+              longitude: geolocation.coords.longitude
+            }
+          };
+        }), switchMap(deviceInformation =>
+          this.trustDeviceService.checkDeviceHealty(deviceInformation))
+      ).subscribe(result => {
+        console.log('healthy')
       }, error => {
         console.log(error)
         const errorCode = { code: 2 };
         this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
       })
     } else {
-      console.log('without device id ')
       const errorCode = { code: 1 };
       this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
     }
+  }
+  private getLocation(): Observable<any> {
+    return this.geolocation$.pipe(
+      take(1),
+      catchError(this.handleHttpError));
+  }
+  private handleHttpError(error: HttpErrorResponse) {
+    return throwError(() => error);
   }
 }

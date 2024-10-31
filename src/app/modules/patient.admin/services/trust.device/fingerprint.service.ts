@@ -38,7 +38,6 @@ export class FingerprintService {
       catchError(this.handleHttpError));
   }
   private handleHttpError(error: HttpErrorResponse) {
-    console.log(error)
     return throwError(() => error);
   }
   private getDeviceId(): Observable<any> {

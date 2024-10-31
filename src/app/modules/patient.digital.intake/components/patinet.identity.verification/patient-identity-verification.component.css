@@ -67,7 +67,6 @@ button:hover:not(:disabled) {
 }
 
 .validOPT {
-  font-size: 1.5rem;
   /* Larger font size */
   font-family: 'Verdana', sans-serif;
   /* A pleasant green color */
@@ -78,6 +77,7 @@ button:hover:not(:disabled) {
   margin-top: 10px;
   /* Space above or below as needed */
   animation: fadeIn 1s ease-in-out;
+  font-size: calc(0.5rem + 1vw); 
 }
 
 .invalidOPT {

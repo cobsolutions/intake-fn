@@ -43,7 +43,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     private geolocation$: GeolocationService) { }
 
   ngOnInit(): void {
-    this.isDeviceHealty();
+    //this.isDeviceHealty();
     this.breakpointObserver.observe([
       Breakpoints.HandsetPortrait,
       Breakpoints.HandsetLandscape

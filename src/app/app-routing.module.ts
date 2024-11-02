@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultAdminLayoutComponent, DefaultLayoutComponent } from './core';
 import { ScannerlayoutComponent } from './core/scannerlayout/scannerlayout.component';
+import { DigitalIntakeGuard } from './modules/security/service/digital.intake.guard/digital-intake.guard';
 import { KCAuthGuardGuard } from './modules/security/service/kc/kcauth-guard.guard';
 
 
@@ -59,7 +60,7 @@ const routes: Routes = [
     children: [
       {
         path:'digital-intake',
-        canActivate: [KCAuthGuardGuard],
+        canActivate: [KCAuthGuardGuard, DigitalIntakeGuard],
         loadChildren: ()=>
         import('./modules/patient.digital.intake/patient-digital-intake.module').then((m) => m.PatientDigitalIntakeModule)
       }

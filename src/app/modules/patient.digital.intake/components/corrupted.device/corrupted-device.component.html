@@ -1,12 +1,7 @@
 <div class="danger-container">
-  <div class="danger-box" *ngIf="errorCode ===2">
+  <div class="danger-box">
     <svg cIcon name="cilShieldAlt" size="4xl"></svg>
     <h1>Access Denied</h1>
-    <p class="lead fs-5">This device is <strong>not registered</strong>.</p>
-  </div>
-  <div class="danger-box" *ngIf="errorCode ===1">
-    <svg cIcon name="cilShieldAlt" size="4xl"></svg>
-    <h1>Access Denied</h1>
-    <p class="lead fs-5">This device has <strong>corrupted data</strong></p>
+    <p class="lead fs-5">{{errorMessage}}<strong></strong></p>
   </div>
 </div>

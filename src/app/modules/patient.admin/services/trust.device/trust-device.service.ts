@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, filter, retry, switchMap, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, filter, Observable, retry, switchMap, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { DeviceInformation } from '../../models/trust.device/device.information';
 import { DeviceStatus } from '../../models/trust.device/device.status';
@@ -41,7 +41,7 @@ export class TrustDeviceService {
     return this.http.get<DeviceStatus>(`${this.trustDeviceURL}` + '/status/clinic-id/' + clinicId + '/device-id/' + deviceId)
   }
 
-  public checkDeviceHealty(deviceInformation:DeviceInformation){
+  public checkDeviceHealty(deviceInformation:DeviceInformation):Observable<any>{
     const headers = { 'content-type': 'application/json' }
     return this.http.post(`${this.trustDeviceURL}` + '/health', JSON.stringify(deviceInformation), { 'headers': headers, observe: 'response' })
   }

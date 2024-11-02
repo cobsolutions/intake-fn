@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-corrupted-device',
@@ -7,13 +8,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./corrupted-device.component.css']
 })
 export class CorruptedDeviceComponent implements OnInit {
-  errorCode: number;
+  errorMessage: number;
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    var error = history.state.errorCode;
-    if (error !== undefined)
-      this.errorCode = error.code;
+    const error: any = JSON.parse(localStorage.getItem('device-error') || '{}');
+    localStorage.removeItem('device-error');
+    this.errorMessage = error.message;
   }
 
 }

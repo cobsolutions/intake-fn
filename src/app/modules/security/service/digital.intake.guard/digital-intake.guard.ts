@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { GeolocationService } from '@ng-web-apis/geolocation';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, delay, map, Observable, of, retryWhen, scan, switchMap, take, tap, throwError } from 'rxjs';
+import { FindLocationService } from 'src/app/modules/common/services/geolocation/find-location.service';
 import { TrustDeviceService } from 'src/app/modules/patient.admin/services/trust.device/trust-device.service';
 import { CacheClinicService } from 'src/app/modules/patient.digital.intake/services/cache.clinic/cache-clinic.service';
 
@@ -14,7 +15,7 @@ export class DigitalIntakeGuard implements CanActivate {
   constructor(private router: Router, private cookieService: CookieService,
     private trustDeviceService: TrustDeviceService,
     private cacheClinicService: CacheClinicService,
-    private geolocation$: GeolocationService) { }
+    private findLocationService: FindLocationService) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
@@ -40,24 +41,7 @@ export class DigitalIntakeGuard implements CanActivate {
   }
   private isDeviceHealty(clinicId: number): Observable<boolean> {
     if (this.cookieService.check('device-id')) {
-      const _callLocation = this.getLocation().pipe(
-        retryWhen((errors) =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 2) {
-                throw error;
-              }
-              console.warn(`Retrying... (${retryCount + 1})`);
-              return retryCount + 1;
-            }, 0),
-            delay(2000) // Delay between retries
-          )
-        ),
-        catchError((error) => {
-          console.error('Location retrieval failed:', error);
-          return of(undefined); // Return undefined on failure
-        })
-      );
+      const _callLocation = this.findLocationService.find()
       return _callLocation.pipe(
         map(geolocation => {
           return {
@@ -90,13 +74,5 @@ export class DigitalIntakeGuard implements CanActivate {
       return throwError(() => error);
     }
 
-  }
-  private getLocation(): Observable<any> {
-    return this.geolocation$.pipe(
-      take(1),
-      catchError(this.handleHttpError));
-  }
-  private handleHttpError(error: HttpErrorResponse) {
-    return throwError(() => error);
   }
 }

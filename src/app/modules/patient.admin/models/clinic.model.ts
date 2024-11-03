@@ -1,4 +1,5 @@
 import { BasicAddress } from "src/app/models/common/basic.address"
+import { DeviceLocation } from "./trust.device/geolocation"
 
 export interface Clinic{
     id:number|null,
@@ -7,5 +8,6 @@ export interface Clinic{
     clinicAddress?: BasicAddress
     selected?:boolean
     status?:boolean
+    geolocation?:DeviceLocation,
     createdAt?:number
 }

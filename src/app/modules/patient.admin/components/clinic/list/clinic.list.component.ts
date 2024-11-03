@@ -22,6 +22,7 @@ export class ClinicListComponent implements OnInit {
   clinics: RenderedClinic[] | null = new Array();
   isCreateClinic: boolean = false;
   isEditClinic: boolean = false;
+  isEditClinicLocation: boolean = false;
   selectedClinicId: number;
   constructor(private router: Router, private clinicService: ClinicService) { }
 
@@ -81,12 +82,23 @@ export class ClinicListComponent implements OnInit {
       this.isEditClinic = false;
     this.getClinics();
   }
+  changeClinicLocationVisibility(event: any){
+      if(event ==='close')
+      this.isEditClinicLocation = false
+  }
 
   showEditClinic(clinicId: number | undefined | null) {
     this.selectedClinicId = clinicId!;
     this.isEditClinic = true;
   }
+  showLocation(clinicId: number | undefined | null) {
+    this.selectedClinicId = clinicId!;
+    this.isEditClinicLocation = true;
+  }
   toggleEditClinic() {
     this.isEditClinic = !this.isEditClinic;
+  }
+  toggleEditClinicLocation() {
+    this.isEditClinicLocation = !this.isEditClinicLocation;
   }
 }

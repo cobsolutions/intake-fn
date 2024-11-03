@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -12,13 +12,13 @@ import { noSpecialCharactersValidator } from 'src/app/modules/patient.digital.in
 import { Clinic } from '../../../models/clinic.model';
 import { DeviceLocation } from '../../../models/trust.device/geolocation';
 import { ClinicService } from '../../../services/clinic/clinic.service';
-
 @Component({
   selector: 'clinic-creation',
   templateUrl: './clinic.creation.component.html',
   styleUrls: ['./clinic.creation.component.css']
 })
 export class ClinicCreationComponent implements OnInit {
+ 
   @Input() clinicId: number
   @Output() changeVisibility = new EventEmitter<string>()
   countries: Countries[] = countries;
@@ -30,6 +30,7 @@ export class ClinicCreationComponent implements OnInit {
   validNameMessage: string;
   constructor(private clinicService: ClinicService, private toastrService: ToastrService, private findLocation: FindLocationService) { }
   ngOnInit(): void {
+
     this.createClinicForm();
     if (this.clinicId !== undefined) {
       this.getSelectedClinic()
@@ -37,7 +38,6 @@ export class ClinicCreationComponent implements OnInit {
       this.checkUserName();
     }
   }
-
   private getSelectedClinic() {
     this.clinicService.getById(this.clinicId.toString()).subscribe((selectedClinic: any) => {
       this.clinic = selectedClinic;
@@ -92,7 +92,7 @@ export class ClinicCreationComponent implements OnInit {
               latitude: geolocation.coords.latitude,
               longitude: geolocation.coords.longitude
             }
-             this.clinic.geolocation = deviceLocation;
+            this.clinic.geolocation = deviceLocation;
           })
           , switchMap((clinic: any) => {
             return this.clinicService.create(this.clinic)
@@ -186,4 +186,5 @@ export class ClinicCreationComponent implements OnInit {
         () => {
         });
   }
+
 }

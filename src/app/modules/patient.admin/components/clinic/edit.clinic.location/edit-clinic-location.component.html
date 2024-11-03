@@ -1,0 +1,8 @@
+<div class="mb-3">
+    <google-map [zoom]="zoom" width="100%" height="400px" [center]="center" *ngIf="center">
+        <map-marker [position]="center"></map-marker>
+    </google-map>
+</div>
+<div class="text-center">
+    <button cButton size="sm" variant="outline" (click)="updateLocation()">Update Location</button>
+</div>

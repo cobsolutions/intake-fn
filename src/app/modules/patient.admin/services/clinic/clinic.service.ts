@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Clinic } from '../../models/clinic.model';
+import { DeviceLocation } from '../../models/trust.device/geolocation';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +39,11 @@ export class ClinicService {
   }
   getById(id: string | null) {
     return this.http.get<Clinic>(`${this.clinicUrl}` + '/find/' + id)
+  }
+  updateClinicLocation(id: number | null , deviceLocation: DeviceLocation){
+    const headers = { 'content-type': 'application/json' }
+    const url = this.clinicUrl + '/update/location/'+id;
+    return this.http.post(`${url}`, JSON.stringify(deviceLocation), { 'headers': headers, observe: 'response' })
   }
 
 }

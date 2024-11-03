@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { IconModule } from '@coreui/icons-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientAdminRoutingModule } from './patient-admin-routing.module';
+import { GoogleMapsModule } from '@angular/google-maps';
 import {
   PatientListComponent,
   ValidationListComponent,
@@ -66,6 +67,7 @@ import { PatientCounterWidgetsComponent } from './components/dashboard/patient.c
 import { ClinicsPatientsChartComponent } from './components/dashboard/patients.clinics.chart/clinics-patients-chart.component';
 import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
 import { GenerateRequestComponent } from './components/trust.device/generate.request/generate-request.component';
+import { EditClinicLocationComponent } from './components/clinic/edit.clinic.location/edit-clinic-location.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,7 @@ import { GenerateRequestComponent } from './components/trust.device/generate.req
     PatientCreateComponent,
     InsuranceCompanyCreateComponent,
     InsuranceCompanyListComponent,
-    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, GenerateRequestComponent
+    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, GenerateRequestComponent, EditClinicLocationComponent
   ],
   imports: [
     CommonModule,
@@ -120,6 +122,7 @@ import { GenerateRequestComponent } from './components/trust.device/generate.req
     UtilitiesModule,
     ModalModule,
     ChartjsModule,
+    GoogleMapsModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ]
 })

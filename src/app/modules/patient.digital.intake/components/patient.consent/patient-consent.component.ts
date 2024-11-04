@@ -15,6 +15,7 @@ export class PatientConsentComponent implements OnInit {
   ngOnInit(): void {
   }
   accept() {
+    this.form.get('consent')?.get('hideCon')?.setValue('dymmy')
     this.stepper.next();
   }
 }

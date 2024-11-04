@@ -43,7 +43,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     const zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
     this.patientForm = new FormGroup({
       'consent': new FormGroup({
-        
+        'hideCon': new FormControl(null, [Validators.required]),
       }),
       'identity': new FormGroup({
         'pPhoneNumber': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),

@@ -29,14 +29,13 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
-    //this.isDeviceHealty();
-    this.breakpointObserver.observe([
-      Breakpoints.HandsetPortrait,
-      Breakpoints.HandsetLandscape
-    ]).subscribe(result => {
-      this.stepperOrientation = result.matches ? 'vertical' : 'horizontal';
-    });
-
+    // this.breakpointObserver.observe([
+    //   Breakpoints.HandsetPortrait,
+    //   Breakpoints.HandsetLandscape
+    // ]).subscribe(result => {
+    //   this.stepperOrientation = result.matches ? 'vertical' : 'horizontal';
+    // });
+    this.stepperOrientation  = 'vertical'
     this.createPatientForm();
   }
   private createPatientForm() {

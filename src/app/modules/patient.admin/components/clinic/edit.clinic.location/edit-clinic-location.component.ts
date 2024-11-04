@@ -38,11 +38,11 @@ export class EditClinicLocationComponent implements OnInit {
         return of(undefined); // Return undefined on failure
       })
     )
-    this.googleMapService.loadGoogleMapsScript().then(() => {
-      // Initialize Google Maps here, e.g., new google.maps.Map(...)
-    }).catch(error => {
-      console.error(error);
-    });
+    // this.googleMapService.loadGoogleMapsScript().then(() => {
+    //   // Initialize Google Maps here, e.g., new google.maps.Map(...)
+    // }).catch(error => {
+    //   console.error(error);
+    // });
   }
   ngAfterViewInit(): void {
     this.clinicService.getById(this.clinicId.toString()).subscribe((result: any) => {

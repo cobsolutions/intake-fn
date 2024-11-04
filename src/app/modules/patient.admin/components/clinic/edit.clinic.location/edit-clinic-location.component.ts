@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { map, switchMap } from 'rxjs';
+import { catchError, delay, map, of, retryWhen, scan, switchMap } from 'rxjs';
 import { FindLocationService } from 'src/app/modules/common/services/geolocation/find-location.service';
 import { GoogleMapService } from 'src/app/modules/common/services/google.map/google-map.service';
 import { DeviceLocation } from '../../../models/trust.device/geolocation';
@@ -20,6 +20,24 @@ export class EditClinicLocationComponent implements OnInit {
     private googleMapService: GoogleMapService) { }
 
   ngOnInit(): void {
+    of(this.googleMapService.loadGoogleMapsScript()).pipe(
+      retryWhen((errors) =>
+        errors.pipe(
+          scan((retryCount, error) => {
+            if (retryCount >= 2) {
+              throw error;
+            }
+            console.warn(`Retrying... (${retryCount + 1})`);
+            return retryCount + 1;
+          }, 0),
+          delay(2000) // Delay between retries
+        )
+      ),
+      catchError((error) => {
+        console.error('Location retrieval failed:', error);
+        return of(undefined); // Return undefined on failure
+      })
+    )
     this.googleMapService.loadGoogleMapsScript().then(() => {
       // Initialize Google Maps here, e.g., new google.maps.Map(...)
     }).catch(error => {

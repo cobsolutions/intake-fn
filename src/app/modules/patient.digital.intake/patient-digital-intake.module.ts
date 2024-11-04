@@ -23,6 +23,7 @@ import { PatientGreetingCreationComponent } from './components/greeting/patient-
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { CorruptedDeviceComponent } from './components/corrupted.device/corrupted-device.component';
 import { PatientIdentityVerificationComponent } from './components/patinet.identity.verification/patient-identity-verification.component';
+import { PatientConsentComponent } from './components/patient.consent/patient-consent.component';
 
 
 const COREUI_MODULES = [
@@ -68,6 +69,7 @@ const COREUI_MODULES = [
     PatientGreetingCreationComponent,
     CorruptedDeviceComponent,
     PatientIdentityVerificationComponent,
+    PatientConsentComponent,
   ],
   imports: [
     CommonModule,

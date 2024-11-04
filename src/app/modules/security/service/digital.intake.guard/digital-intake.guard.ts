@@ -65,7 +65,7 @@ export class DigitalIntakeGuard implements CanActivate {
     } else {
       var error: any = {
         code: 1,
-        message: 'Corrupted data,Please contact administrator to register device'
+        message: 'Device is not register'
       }
       return throwError(() => error);
     }

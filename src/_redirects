@@ -28,6 +28,9 @@
 /intake-service/api/clinic/update https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/clinic/update  200
 /intake-service/api/clinic/delete/clinicId/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/clinic/delete/clinicId/:clinicId  200
 /intake-service/api/clinic/update/location/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/clinic/update/location/:clinicId  200
+/intake-service/api/clinic/find/uuid/:uuid https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/clinic/find/uuid/:uuid  200
+/intake-service/api/clinic/generate/clinic/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/clinic/generate/clinic/:clinicId  200
+
 /intake-service/api/user/find/clinics/:userId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/user/find/clinics/:userId  200
 
 /intake-service/api/user/create https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/user/create  200

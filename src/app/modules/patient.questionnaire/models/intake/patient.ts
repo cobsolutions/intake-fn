@@ -20,6 +20,7 @@ export interface Patient {
   patientSignature?: PatientSignature;
   patientAgreements?: PatientAgreement;
   clinicId?: string;
+  clinicIdUUID?:string
   signature?:string;
   insurances?:Insurance | null
   isSelfPay?:boolean

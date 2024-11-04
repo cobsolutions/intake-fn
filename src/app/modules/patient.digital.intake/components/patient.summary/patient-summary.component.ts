@@ -2,14 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { Address } from 'src/app/models/patient/address.info.model';
-import { MedicareCoverage } from 'src/app/models/questionnaire/Insurance/medicare.coverage';
-import { PatientRelationship } from 'src/app/models/questionnaire/Insurance/patient.relationship';
 import { PatientEssentialInformation } from 'src/app/modules/patient.questionnaire/models/intake/essential/patient.essential.information';
-import { PatientCommercialInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/patient.commercial.insurance';
-import { PatientInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/patient.insurance';
-import { PatientInsuranceCompensationNoFault } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/patient.insurance.compensation.no.fault';
-import { SecondaryInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/secondary.insurance';
 import { PatientMedical } from "src/app/modules/patient.questionnaire/models/intake/medical/patient.medical";
 import { PatientMedicalHistory } from 'src/app/modules/patient.questionnaire/models/intake/medical/patient.medical.history';
 import { PatientPhysicalTherapy } from 'src/app/modules/patient.questionnaire/models/intake/medical/patient.physical.therapy';
@@ -22,7 +15,6 @@ import { PatientSource } from "src/app/modules/patient.questionnaire/models/inta
 import { PatientSignature } from 'src/app/modules/patient.questionnaire/models/patient/signature.model';
 import { PatientService } from 'src/app/modules/patient.questionnaire/service/patient.service';
 import { PatientAddress } from '../../models/patient.address';
-import { CacheClinicService } from '../../services/cache.clinic/cache-clinic.service';
 import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
 
 @Component({
@@ -38,7 +30,6 @@ export class PatientSummaryComponent implements OnInit {
 
   constructor(private componentReference: ComponentReferenceComponentService
     , private patientService: PatientService
-    , private cacheClinicService: CacheClinicService
     , private router: Router) { }
 
   ngOnInit(): void {
@@ -58,7 +49,7 @@ export class PatientSummaryComponent implements OnInit {
     this.componentReference.getPatientDocumentComponent()!.getFormDate().forEach((patientDocument: any) => {
       imageFormData.append('files', patientDocument, patientDocument.name);
     })
-    this.pateint.clinicId = this.clinicId;
+    this.pateint.clinicIdUUID = this.clinicId;
     console.log(JSON.stringify(this.pateint))
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
     this.patientService.otherCreatPatient(imageFormData).subscribe(resuldd => {

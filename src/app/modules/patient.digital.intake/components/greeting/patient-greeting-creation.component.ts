@@ -12,7 +12,7 @@ export class PatientGreetingCreationComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => {
-      this.router.navigateByUrl('/digital-intake');
+      this.router.navigateByUrl('/digital-intake/create?clinicId=' + localStorage.getItem('clinicId'));
     }, 2000)
   }
 

@@ -10,7 +10,7 @@
             <qrcode *ngIf="createPatientURL" [qrdata]="createPatientURL" [width]="300" [errorCorrectionLevel]="'M'">
             </qrcode>
 
-            <a href="{{createPatientURL}}">http://patient-intake/create</a>
+            <a href="{{createPatientURL}}" *ngIf="createPatientURL">http://patient-intake/create</a>
         </c-card-body>
     </c-card>
 </c-col>

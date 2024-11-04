@@ -27,7 +27,7 @@ export class ClinicService {
   checkName(name: string) {
     return this.http.get(`${this.clinicUrl}` + '/check/' + name, { observe: 'response' })
   }
-  getActive():Observable<any>{
+  getActive(): Observable<any> {
     return this.http.get<Clinic[]>(`${this.clinicUrl}` + '/find/active', { observe: 'response' })
   }
   getByUserId(userId: string | undefined) {
@@ -37,12 +37,12 @@ export class ClinicService {
     var deleteClinicURL = this.clinicUrl + '/delete/clinicId/';
     return this.http.delete(deleteClinicURL + id)
   }
-  getById(id: string | null) {
+  getById(id: string | null):Observable<any> {
     return this.http.get<Clinic>(`${this.clinicUrl}` + '/find/' + id)
   }
-  updateClinicLocation(id: number | null , deviceLocation: DeviceLocation){
+  updateClinicLocation(id: number | null, deviceLocation: DeviceLocation) {
     const headers = { 'content-type': 'application/json' }
-    const url = this.clinicUrl + '/update/location/'+id;
+    const url = this.clinicUrl + '/update/location/' + id;
     return this.http.post(`${url}`, JSON.stringify(deviceLocation), { 'headers': headers, observe: 'response' })
   }
 

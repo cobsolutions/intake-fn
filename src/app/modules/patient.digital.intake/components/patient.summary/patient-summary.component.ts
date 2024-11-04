@@ -34,7 +34,7 @@ export class PatientSummaryComponent implements OnInit {
   @Input() form: FormGroup;
   pateint: Patient = {}
   patientSignature: PatientSignature = new PatientSignature();
-  clinicId: number;
+  clinicId: string;
 
   constructor(private componentReference: ComponentReferenceComponentService
     , private patientService: PatientService
@@ -51,7 +51,7 @@ export class PatientSummaryComponent implements OnInit {
     this.fillPatientInsurance();
     this.fillPatientAgreement();
     this.getSignture()
-    this.clinicId = this.cacheClinicService.getClinic();
+    this.clinicId = localStorage.getItem('clinicId') ||'';
   }
   submit() {
     var imageFormData = new FormData();

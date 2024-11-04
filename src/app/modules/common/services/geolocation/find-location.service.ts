@@ -11,9 +11,7 @@ export class FindLocationService {
   constructor(private geolocation$: GeolocationService) { }
 
   find(): Observable<any> {
-    console.log('333333333')
     return this.getLocation().pipe(
-      tap(dd=>console.log(dd)),
       retryWhen((errors) =>
         errors.pipe(
           scan((retryCount, error) => {

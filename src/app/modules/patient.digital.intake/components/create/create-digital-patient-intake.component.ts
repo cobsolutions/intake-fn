@@ -1,15 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { Router } from '@angular/router';
-import { GeolocationService } from '@ng-web-apis/geolocation';
-import { CookieService } from 'ngx-cookie-service';
-import { catchError, delay, map, Observable, of, retryWhen, scan, switchMap, take, throwError } from 'rxjs';
-import { DeviceInformation } from 'src/app/modules/patient.admin/models/trust.device/device.information';
-import { TrustDeviceService } from 'src/app/modules/patient.admin/services/trust.device/trust-device.service';
-import { CacheClinicService } from '../../services/cache.clinic/cache-clinic.service';
 import { imageDocumentValidator } from './validators/custom.validation/document.image.validator';
 import { EmailValidator } from './validators/custom.validation/email.validator';
 import { futureDateValidator } from './validators/custom.validation/future.date.validator';
@@ -24,7 +16,6 @@ import { AddSurgerisListValidator } from './validators/medical.history/add.surge
 import { XRayValidator } from './validators/medical.history/add.xray.validator';
 import { ConditionsValidator } from './validators/medical.history/conditions.validator';
 import { PatientSourceValidator } from './validators/patient.source/patient.source.validator';
-import { PhysicalTherapyValidator } from './validators/physical.therapy/add.physical.therapy.validator';
 
 @Component({
   selector: 'app-create-digital-patient-intake',
@@ -35,12 +26,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   stepperOrientation: 'horizontal' | 'vertical' = 'horizontal';
   patientForm: FormGroup
   @ViewChild(MatStepper, { static: true }) public patientStepper: MatStepper;
-  constructor(private breakpointObserver: BreakpointObserver,
-    private cacheClinicService: CacheClinicService,
-    private trustDeviceService: TrustDeviceService,
-    private cookieService: CookieService,
-    private router: Router,
-    private geolocation$: GeolocationService) { }
+  constructor(private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
     //this.isDeviceHealty();
@@ -247,60 +233,5 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       if (value !== null && value === 'other')
         this.patientForm.get('medical')?.get('referringEntityOther')?.setValidators(Validators.required)
     })
-  }
-
-  private isDeviceHealty() {
-    if (this.cookieService.check('device-id')) {
-      const _callLocation = this.getLocation().pipe(
-        retryWhen((errors) =>
-          errors.pipe(
-            scan((retryCount, error) => {
-              if (retryCount >= 2) {
-                throw error;
-              }
-              console.warn(`Retrying... (${retryCount + 1})`);
-              return retryCount + 1;
-            }, 0),
-            delay(2000) // Delay between retries
-          )
-        ),
-        catchError((error) => {
-          console.error('Location retrieval failed:', error);
-          return of(undefined); // Return undefined on failure
-        })
-      );
-      _callLocation.pipe(
-        map(geolocation => {
-          return {
-            deviceName: '',
-            clinicId: this.cacheClinicService.getClinic(),
-            deviceId: this.cookieService.get('device-id'),
-            geolocation: {
-              accuracy: 0.0,
-              latitude: geolocation.coords.latitude,
-              longitude: geolocation.coords.longitude
-            }
-          };
-        }), switchMap(deviceInformation =>
-          this.trustDeviceService.checkDeviceHealty(deviceInformation))
-      ).subscribe(result => {
-        console.log('healthy')
-      }, error => {
-        console.log(error)
-        const errorCode = { code: 2 };
-        this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
-      })
-    } else {
-      const errorCode = { code: 1 };
-      this.router.navigate(['/digital-intake/corrupted'], { state: { errorCode } });
-    }
-  }
-  private getLocation(): Observable<any> {
-    return this.geolocation$.pipe(
-      take(1),
-      catchError(this.handleHttpError));
-  }
-  private handleHttpError(error: HttpErrorResponse) {
-    return throwError(() => error);
   }
 }

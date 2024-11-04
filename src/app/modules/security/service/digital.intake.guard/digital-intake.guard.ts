@@ -1,12 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { GeolocationService } from '@ng-web-apis/geolocation';
+import { ActivatedRoute, ActivatedRouteSnapshot, CanActivate, Params, Router, RouterStateSnapshot } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { catchError, delay, map, Observable, of, retryWhen, scan, switchMap, take, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, of, switchMap, throwError } from 'rxjs';
 import { FindLocationService } from 'src/app/modules/common/services/geolocation/find-location.service';
 import { TrustDeviceService } from 'src/app/modules/patient.admin/services/trust.device/trust-device.service';
-import { CacheClinicService } from 'src/app/modules/patient.digital.intake/services/cache.clinic/cache-clinic.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,15 +11,14 @@ import { CacheClinicService } from 'src/app/modules/patient.digital.intake/servi
 export class DigitalIntakeGuard implements CanActivate {
   constructor(private router: Router, private cookieService: CookieService,
     private trustDeviceService: TrustDeviceService,
-    private cacheClinicService: CacheClinicService,
-    private findLocationService: FindLocationService) { }
+    private findLocationService: FindLocationService,
+    private route: ActivatedRoute) { }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
     const url = state.url;
-    const clinicIdMatch: any = url.match(/clinicId=(\d+)/)
-    if (clinicIdMatch !== null) {
-      const clinicId = parseInt(clinicIdMatch[1], 10);
+    if (url.includes('create')) {
+      const clinicId = this.getClinicId(route.queryParams);
       return this.isDeviceHealty(clinicId).pipe(
         map((dd: any) => {
           return true;
@@ -39,7 +35,7 @@ export class DigitalIntakeGuard implements CanActivate {
       return of(true);
     }
   }
-  private isDeviceHealty(clinicId: number): Observable<boolean> {
+  private isDeviceHealty(clinicId: string| undefined): Observable<boolean> {
     if (this.cookieService.check('device-id')) {
       const _callLocation = this.findLocationService.find()
       return _callLocation.pipe(
@@ -74,5 +70,16 @@ export class DigitalIntakeGuard implements CanActivate {
       return throwError(() => error);
     }
 
+  }
+  private getClinicId(queryParams: Params): string | undefined{
+    const clinicId = queryParams['clinicId'];
+    if (clinicId === undefined)
+      return undefined;
+    if (localStorage.getItem(clinicId) === null) {
+      localStorage.setItem('clinicId', clinicId);
+      return clinicId;
+    } else {
+      return localStorage.getItem(clinicId)?.toString() || '{}';
+    }
   }
 }

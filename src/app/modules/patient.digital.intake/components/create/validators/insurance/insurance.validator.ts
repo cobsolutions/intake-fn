@@ -12,6 +12,18 @@ import { AddWorkerCompensationValidators } from "./compensation/add.worker.compe
 import { RemoveWorkerCompensationValidators } from "./compensation/remove.worker.compensation.validators";
 
 export class InsuranceValidator {
+    public static clearValidator(form: FormGroup) {
+        form.get('insurance')?.get('type')?.clearValidators();
+        form.get('insurance')?.get('type')?.setErrors(null);
+        form.get('insurance')?.get('type')?.updateValueAndValidity();
+        RemoveCommercialValidators.remove(form)
+        RemoveCommercialSecondaryInsuranceValidator.remove(form);
+        RemoveCommercialMedicareCoverageValidator.remove(form);
+        RemoveCommercialPloicyHolderRelationshipValidator.remove(form);
+        RemoveWorkerCompensationValidators.remove(form);
+        RemoveMedicareValidators.remove(form);
+        RemoveMedicaidValidators.remove(form);
+    }
     public static addValidator(form: FormGroup) {
         AddCommercialValidators.add(form)
         form.get('insurance')?.get('type')?.valueChanges.subscribe((value: any) => {

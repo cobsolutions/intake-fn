@@ -17,6 +17,7 @@ import { MedicareInsurance } from 'src/app/modules/patient.questionnaire/models/
 import { WorkerCompensationInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.workers.compensation';
 import { SelfPay } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/selfpay';
 import { CheckInvalidForm } from '../../util/invalid.form';
+import { InsuranceValidator } from '../create/validators/insurance/insurance.validator';
 import { ValidationExploder } from '../create/validators/validation.exploder';
 
 @Component({
@@ -69,9 +70,11 @@ export class PatientInsuranceComponent implements OnInit {
     }
   }
   next() {
-    var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
-    CheckInvalidForm.check(insuranceForm)
-    if (this.form.get('insurance')?.valid || this.isInsurances()) {
+    // var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
+    // CheckInvalidForm.check(insuranceForm)
+    console.log(this.isInsurances())
+    if ( this.isInsurances()) {
+      InsuranceValidator.clearValidator(this.form)
       this.stepper.next();
       this.isValidForm = false;
       this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)

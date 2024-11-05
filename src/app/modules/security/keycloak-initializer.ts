@@ -24,9 +24,7 @@ export function initializer(keycloak: KeycloakService
       if (fetshUrls.isDigitalIntakeURLS()) {
         of(keycloak.getToken()).subscribe((newToken: any) => {
           console.log('keycloak.updateToken(20);')
-          localStorage.removeItem('digital-access-token')
           keycloak.updateToken(1800);
-          localStorage.setItem('digital-access-token', newToken)
         })
       }
       else

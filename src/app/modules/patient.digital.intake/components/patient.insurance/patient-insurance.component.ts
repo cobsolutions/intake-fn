@@ -7,8 +7,6 @@ import { Address } from 'src/app/models/patient/address.info.model';
 import { MedicareCoverage } from 'src/app/models/questionnaire/Insurance/medicare.coverage';
 import { PatientRelationship } from 'src/app/models/questionnaire/Insurance/patient.relationship';
 import { insuranceTypes } from 'src/app/modules/common/components/insurance/insurance.type';
-import { InsuranceCompany } from 'src/app/modules/patient.admin/models/insurance.company.model';
-import { InsuranceCompanyService } from 'src/app/modules/patient.admin/services/insurance.company/insurance-company.service';
 import { SecondaryInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/secondary.insurance';
 import { Insurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance';
 import { CommercialInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.commercial';
@@ -32,6 +30,7 @@ export class PatientInsuranceComponent implements OnInit {
   isValidForm: boolean = false;
   @Input() form: FormGroup;
   InsuranceCompanies: any;
+  secondaryInsuranceCompanies: any;
   types: string[] = insuranceTypes;
   selectedInsuranceType: string
   renderedPatientInsurances: any[] = []
@@ -42,10 +41,13 @@ export class PatientInsuranceComponent implements OnInit {
     medicaidInsurance: [],
   }
   insuranceCompanyForm = new FormControl();
+  secondaryInsuranceCompanyForm = new FormControl();
   isLoadingInsuranceCompany = false;
+  isLoadingSecondaryInsuranceCompany = false;
   constructor(private digitalIntakeService: DigitalIntakeService) { }
   ngOnInit(): void {
     this.findInsuranceCompanyByNameAutoComplete();
+    this.findSecondaryInsuranceCompanyByNameAutoComplete();
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
       this.selectedInsuranceType = value;
     })
@@ -249,6 +251,45 @@ export class PatientInsuranceComponent implements OnInit {
       },
         error => {
           this.isLoadingInsuranceCompany = false
+        });
+  }
+  private findSecondaryInsuranceCompanyByNameAutoComplete() {
+    this.secondaryInsuranceCompanyForm.valueChanges
+      .pipe(
+        filter(text => {
+          if (text === undefined)
+            return false;
+          if (text.length > 0) {
+            return true
+          } else {
+            this.secondaryInsuranceCompanies = [];
+            return false;
+          }
+        }),
+        debounceTime(500),
+        tap((value) => {
+          this.secondaryInsuranceCompanies = [];
+          this.isLoadingSecondaryInsuranceCompany = true;
+        }),
+        switchMap((value) => {
+          return this.digitalIntakeService.findInsuranceCompanybyName(value)
+            .pipe(
+              finalize(() => {
+                this.isLoadingSecondaryInsuranceCompany = false
+              }),
+            )
+        }
+        )
+      )
+      .subscribe(data => {
+        if (data == undefined) {
+          this.secondaryInsuranceCompanies = [];
+        } else {
+          this.secondaryInsuranceCompanies = data.body;
+        }
+      },
+        error => {
+          this.isLoadingSecondaryInsuranceCompany = false
         });
   }
 }

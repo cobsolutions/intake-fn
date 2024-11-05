@@ -37,12 +37,6 @@ export class AddCommercialValidators {
     private static addSecondaryInsuranceValidators(form: FormGroup) {
         for (var i = 0; i < CommercialSecondaryInsuranceFields.length; i++) {
             form.get('insurance')?.get(CommercialSecondaryInsuranceFields[i])?.setValidators(Validators.required)
-            if (CommercialSecondaryInsuranceFields[i] === 'commercial-is-secondary-insurance-first-name') {
-                form.get('insurance')?.get(CommercialSecondaryInsuranceFields[i])?.addValidators([noSpecialCharactersValidator()])
-            }
-            if (CommercialSecondaryInsuranceFields[i] === 'commercial-is-secondary-insurance-last-name') {
-                form.get('insurance')?.get(CommercialSecondaryInsuranceFields[i])?.addValidators([noSpecialCharactersValidator()])
-            }
             form.get('insurance')?.get(CommercialSecondaryInsuranceFields[i])?.updateValueAndValidity();
         }
     }

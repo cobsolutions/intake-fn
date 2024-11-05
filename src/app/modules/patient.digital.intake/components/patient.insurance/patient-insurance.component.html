@@ -239,6 +239,41 @@
                                 </div>
                             </c-col>
                         </c-row>
+                        <!--Member Id-->
+                        <c-row>
+                            <c-col xl="12">
+                                <label for="dsds" class="form-label" style="font-size: medium;">Member ID<span
+                                        class="text-danger">*</span>
+                                </label>
+                            </c-col>
+                            <c-col xl="12">
+                                <input cFormControl sizing="sm"
+                                    formControlName="commercial-secondary-insurance-member-id" maxlength="60"
+                                    input-trimmer>
+                                <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.valid && 
+                                (this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.touched)"
+                                    class="text-danger mx-1">
+                                    Member ID is required
+                                </div>
+                            </c-col>
+                        </c-row>
+                        <!--Policy id-->
+                        <c-row>
+                            <c-col xl="12">
+                                <label for="dsds" class="form-label" style="font-size: medium;">Policy ID
+                                </label>
+                            </c-col>
+                            <c-col xl="12">
+                                <input cFormControl sizing="sm"
+                                    formControlName="commercial-secondary-insurance-ploicy-id" maxlength="60"
+                                    input-trimmer>
+                            </c-col>
+                            <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.valid && 
+                                (this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.touched)"
+                                class="text-danger mx-1">
+                                Policy ID is required
+                            </div>
+                        </c-row>
                     </c-card-body>
                 </c-card>
                 <div class="text-center">

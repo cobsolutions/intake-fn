@@ -2,7 +2,6 @@ import { FormGroup } from "@angular/forms";
 import { AddCommercialValidators } from "./commercial/add.commercial.validator";
 import { AddMedicaidValidators } from "./commercial/add.medicaid.validator";
 import { AddMedicareValidators } from "./commercial/add.medicare.validator";
-import { RemoveCommercialMedicareCoverageValidator } from "./commercial/remove.commercial.medicare.coverage.validator";
 import { RemoveCommercialPloicyHolderRelationshipValidator } from "./commercial/remove.commercial.ploicy.holderRelationship.validator";
 import { RemoveCommercialSecondaryInsuranceValidator } from "./commercial/remove.commercial.secondary.insurance.validator";
 import { RemoveCommercialValidators } from "./commercial/remove.commercial.validator";
@@ -18,7 +17,6 @@ export class InsuranceValidator {
         form.get('insurance')?.get('type')?.updateValueAndValidity();
         RemoveCommercialValidators.remove(form)
         RemoveCommercialSecondaryInsuranceValidator.remove(form);
-        RemoveCommercialMedicareCoverageValidator.remove(form);
         RemoveCommercialPloicyHolderRelationshipValidator.remove(form);
         RemoveWorkerCompensationValidators.remove(form);
         RemoveMedicareValidators.remove(form);
@@ -33,7 +31,6 @@ export class InsuranceValidator {
                 //remove worker commercial validators
                 RemoveCommercialValidators.remove(form)
                 RemoveCommercialSecondaryInsuranceValidator.remove(form);
-                RemoveCommercialMedicareCoverageValidator.remove(form);
                 RemoveCommercialPloicyHolderRelationshipValidator.remove(form);
                 RemoveMedicareValidators.remove(form);
                 RemoveMedicaidValidators.remove(form);
@@ -50,7 +47,6 @@ export class InsuranceValidator {
                 AddMedicareValidators.add(form);
                 RemoveCommercialValidators.remove(form)
                 RemoveCommercialSecondaryInsuranceValidator.remove(form);
-                RemoveCommercialMedicareCoverageValidator.remove(form);
                 RemoveCommercialPloicyHolderRelationshipValidator.remove(form);
                 RemoveWorkerCompensationValidators.remove(form)
                 RemoveMedicaidValidators.remove(form);
@@ -59,7 +55,6 @@ export class InsuranceValidator {
                 AddMedicaidValidators.add(form)
                 RemoveCommercialValidators.remove(form)
                 RemoveCommercialSecondaryInsuranceValidator.remove(form);
-                RemoveCommercialMedicareCoverageValidator.remove(form);
                 RemoveCommercialPloicyHolderRelationshipValidator.remove(form);
                 RemoveWorkerCompensationValidators.remove(form)
                 RemoveMedicareValidators.remove(form);
@@ -68,7 +63,6 @@ export class InsuranceValidator {
             if (value === 'SelfPay') {
                 RemoveCommercialValidators.remove(form)
                 RemoveCommercialSecondaryInsuranceValidator.remove(form);
-                RemoveCommercialMedicareCoverageValidator.remove(form);
                 RemoveCommercialPloicyHolderRelationshipValidator.remove(form);
                 RemoveWorkerCompensationValidators.remove(form);
                 RemoveMedicareValidators.remove(form);

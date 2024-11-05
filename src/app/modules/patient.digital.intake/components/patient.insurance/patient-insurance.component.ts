@@ -92,7 +92,7 @@ export class PatientInsuranceComponent implements OnInit {
       this.renderedPatientInsurances.push(patientCommercialInsurance)
     }
     if (insuranceType === 'Worker\'s Compensation') {
-      var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = this.fillPatientInsuranceCompensationNoFault();
+      var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = this.fillPatientInsuranceCompensationNoFault('worker');
       this.patientInsurances.workerCompensationInsurances.push(patientInsuranceCompensationNoFault);
       this.renderedPatientInsurances.push(patientInsuranceCompensationNoFault)
     }
@@ -106,6 +106,13 @@ export class PatientInsuranceComponent implements OnInit {
       this.patientInsurances.medicaidInsurance.push(medicaidInsurance);
       this.renderedPatientInsurances.push(medicaidInsurance)
     }
+    if (insuranceType === 'Auto Accident') {
+      var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = this.fillPatientInsuranceCompensationNoFault('auto_acc');
+      patientInsuranceCompensationNoFault.accidentDate_str = moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("MM/DD/YYYY");
+      patientInsuranceCompensationNoFault.accidentDate = Number(moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("x"));
+      this.patientInsurances.workerCompensationInsurances.push(patientInsuranceCompensationNoFault);
+      this.renderedPatientInsurances.push(patientInsuranceCompensationNoFault)
+    }
     if (insuranceType === 'SelfPay') {
       var selfPay: SelfPay = {
         type: 'selfpay'
@@ -116,9 +123,9 @@ export class PatientInsuranceComponent implements OnInit {
     this.form.get('insurance')?.reset();
 
   }
-  private fillPatientInsuranceCompensationNoFault() {
+  private fillPatientInsuranceCompensationNoFault(type:string) {
     var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = {
-      type: 'wroker',
+      type: type,
       accidentDate_str: moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("MM/DD/YYYY"),
       accidentDate: Number(moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("x")),
       adjusterInfoName: this.form.get('insurance')?.get('compensation-adjuster-last-name')?.value + ',' + this.form.get('insurance')?.get('compensation-adjuster-first-name')?.value,
@@ -139,7 +146,8 @@ export class PatientInsuranceComponent implements OnInit {
       relationship: this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value,
       hasSecondaryInsurance: this.form.get('insurance')?.get('commercial-is-secondary-insurance')?.value,
       hasMedicareCoverage: this.form.get('insurance')?.get('commercial-is-medicare-coverage')?.value,
-      insuranceCompanyId: this.form.get('insurance')?.get('commercial-insurance-company')?.value
+      insuranceCompanyId: this.form.get('insurance')?.get('commercial-insurance-company')?.value,
+      insuranceCompanyName: this.insuranceCompanyForm?.value
     }
     if (patientCommercialInsurance.relationship !== 'Self') {
       var patientRelationship: PatientRelationship = {

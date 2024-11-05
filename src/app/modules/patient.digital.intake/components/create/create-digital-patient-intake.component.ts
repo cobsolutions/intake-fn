@@ -129,6 +129,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'compensation-case-status': new FormControl(null),
 
         'commercial-insurance-company': new FormControl(null),
+        'commercial-insurance-company-name': new FormControl(null),
         'commercial-member-id': new FormControl(null),
         'commercial-ploicy-id': new FormControl(null),
         'commercial-ploicyHolder-relationship': new FormControl(null),
@@ -141,6 +142,8 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'commercial-secondary-insurance-insurance-company': new FormControl(null),
         'commercial-secondary-insurance-member-id': new FormControl(null),
         'commercial-secondary-insurance-ploicy-id': new FormControl(null),
+        'medicaid-policy-namuber': new FormControl(null),
+        'medicare-policy-namuber': new FormControl(null),
         'insurances': new FormControl(null),
         'isSelfPay': new FormControl(null),
       }),

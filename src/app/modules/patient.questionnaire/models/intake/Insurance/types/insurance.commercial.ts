@@ -6,6 +6,7 @@ import { Insurance } from "./insurance";
 export interface CommercialInsurance{
     type:string;
     insuranceCompanyId?: number;
+    insuranceCompanyName?: string;
     memberId?: string;
     policyId?: string;
     relationship?: string;

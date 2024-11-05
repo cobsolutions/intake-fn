@@ -394,15 +394,12 @@
                         <c-col xl="12">
                             <c-input-group sizing="sm">
                                 <input cFormControl placeholder="FirstName"
-                                    formControlName="compensation-attorney-first-name" maxlength="60" input-trimmer/>
+                                    formControlName="compensation-attorney-first-name" maxlength="60" input-trimmer />
                                 <input cFormControl placeholder="MiddleName"
                                     formControlName="compensation-attorney-middle-name" maxlength="60" input-trimmer>
                                 <input cFormControl placeholder="LastName"
                                     formControlName="compensation-attorney-last-name" maxlength="60" input-trimmer>
                             </c-input-group>
-                            {{this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['required']}}
-                            ----
-                            {{this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['required']}}
                             <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['noSpecialCharacters']"
                                 class="text-danger mx-1">Attorney first name cannot contain special characters.</div>
                             <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-middle-name')?.errors?.['noSpecialCharacters']"
@@ -527,18 +524,22 @@
                     <tbody>
                         <tr *ngFor="let patientInsurance of renderedPatientInsurances; let i = index">
                             <td>
-                                <span *ngIf="patientInsurance.type ==='wroker'">Worker Compensation</span>
+                                <span *ngIf="patientInsurance.type ==='worker'">Worker Compensation</span>
+                                <span *ngIf="patientInsurance.type ==='auto_acc'">auto Accident</span>
                                 <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>
                                 <span *ngIf="patientInsurance.type ==='medicare'">Medicare</span>
                                 <span *ngIf="patientInsurance.type ==='medicaid'">Medicaid</span>
                                 <span *ngIf="patientInsurance.type ==='selfpay'">SelfPay</span>
                             </td>
                             <td>
-                                <span *ngIf="patientInsurance.type ==='wroker'">
+                                <span *ngIf="patientInsurance.type ==='worker'">
+                                    <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
+                                </span>
+                                <span *ngIf="patientInsurance.type ==='auto_acc'">
                                     <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
                                 </span>
                                 <span *ngIf="patientInsurance.type ==='commercial'">
-                                    <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
+                                    <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceCompanyName}}
                                 </span>
                                 <span *ngIf="patientInsurance.type ==='medicare'">
                                     <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}

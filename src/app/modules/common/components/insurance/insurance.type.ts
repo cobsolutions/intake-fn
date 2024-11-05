@@ -1,5 +1,6 @@
-export var insuranceTypes: string[] = ["Commercial Insurance", 
-"Worker's Compensation", 
-"Medicare", 
-"Medicaid", 
-"SelfPay"]
+export var insuranceTypes: string[] = ["Commercial Insurance",
+    "Worker's Compensation",
+    "Auto Accident",
+    "Medicare",
+    "Medicaid",
+    "SelfPay"]

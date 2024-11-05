@@ -156,19 +156,6 @@
                         {{patientInsurance.secondaryInsurance?.insuranceCompanyName}}<br />
                         <label>memberId : </label>
                         {{patientInsurance.secondaryInsurance?.memberId}}<br />
-                        <label>Name : </label>
-                        {{patientInsurance.secondaryInsurance?.policyHolderLastName
-                        +',' +
-                        patientInsurance.secondaryInsurance?.policyHolderFirstName}}<br />
-                        <span *ngIf="patientInsurance.hasMedicareCoverage">
-                            <strong>Medicare Coverage</strong> <br />
-                            <label>Name : </label>
-                            {{patientInsurance.medicareCoverage?.employerLastName
-                            +',' +
-                            patientInsurance.medicareCoverage?.employerFirstName}}<br />
-                            <label>Phone : </label>
-                            {{patientInsurance.medicareCoverage?.employerPhone}}<br />
-                        </span>
                     </span>
                     <br />
                 </span>

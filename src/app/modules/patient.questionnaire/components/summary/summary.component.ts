@@ -127,9 +127,6 @@ export class SummaryComponent implements OnInit {
       <b style="font-family:Lucida">- Do you have secondry insurance?</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance ? 'Yes' : 'No'} </i></br>`
       if (this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance) {
         paragraph += `
-        &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s First Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.policyHolderFirstName} </i></br>
-        &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Middle Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.policyHolderMiddleName} </i></br>
-        &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Last Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.policyHolderLastName} </i></br>
         &#160 &#160 <b style="font-family:Lucida">- Insurance Company</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.insuranceCompanyName} </i></br>
         &#160 &#160 <b style="font-family:Lucida">- Member ID</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.memberId} </i></br>`
       }

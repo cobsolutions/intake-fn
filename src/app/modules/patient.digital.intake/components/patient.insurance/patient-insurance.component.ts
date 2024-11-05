@@ -174,11 +174,9 @@ export class PatientInsuranceComponent implements OnInit {
     }
     if (patientCommercialInsurance.hasSecondaryInsurance) {
       var secondaryInsurance: SecondaryInsurance = {
-        policyHolderFirstName: this.form.get('insurance')?.get('commercial-is-secondary-insurance-first-name')?.value,
-        policyHolderMiddleName: this.form.get('insurance')?.get('commercial-is-secondary-insurance-middle-name')?.value,
-        policyHolderLastName: this.form.get('insurance')?.get('commercial-is-secondary-insurance-last-name')?.value,
-        insuranceCompanyName: this.form.get('insurance')?.get('commercial-is-secondary-insurance-insurance-company')?.value,
-        memberId: this.form.get('insurance')?.get('commercial-is-secondary-insurance-member-id')?.value
+        insuranceCompanyName: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value,
+        policyId: this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.value,
+        memberId: this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.value,
       }
       patientCommercialInsurance.secondaryInsurance = secondaryInsurance
     } else {

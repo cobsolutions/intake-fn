@@ -16,6 +16,7 @@ import { MedicaidInsurance } from 'src/app/modules/patient.questionnaire/models/
 import { MedicareInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.medicare';
 import { WorkerCompensationInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.workers.compensation';
 import { SelfPay } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/selfpay';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 import { CheckInvalidForm } from '../../util/invalid.form';
 import { InsuranceValidator } from '../create/validators/insurance/insurance.validator';
 import { ValidationExploder } from '../create/validators/validation.exploder';
@@ -42,7 +43,7 @@ export class PatientInsuranceComponent implements OnInit {
   }
   insuranceCompanyForm = new FormControl();
   isLoadingInsuranceCompany = false;
-  constructor(private insuranceCompanyService: InsuranceCompanyService) { }
+  constructor(private digitalIntakeService: DigitalIntakeService) { }
   ngOnInit(): void {
     this.findInsuranceCompanyByNameAutoComplete();
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
@@ -68,7 +69,7 @@ export class PatientInsuranceComponent implements OnInit {
     // var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
     // CheckInvalidForm.check(insuranceForm)
     console.log(this.isInsurances())
-    if ( this.isInsurances()) {
+    if (this.isInsurances()) {
       InsuranceValidator.clearValidator(this.form)
       this.stepper.next();
       this.isValidForm = false;
@@ -229,7 +230,7 @@ export class PatientInsuranceComponent implements OnInit {
           this.isLoadingInsuranceCompany = true;
         }),
         switchMap((value) => {
-          return this.insuranceCompanyService.getbyName(value)
+          return this.digitalIntakeService.findInsuranceCompanybyName(value)
             .pipe(
               finalize(() => {
                 this.isLoadingInsuranceCompany = false

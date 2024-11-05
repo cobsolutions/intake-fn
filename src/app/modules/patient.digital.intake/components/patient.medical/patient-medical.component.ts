@@ -1,11 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { isObject, result } from 'lodash';
-import { debounceTime, filter, finalize, Observable, share, switchMap, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import entityValues from 'src/app/modules/patient.admin/components/reports/_entity.values';
 import { Provider } from '../../models/provider';
-import { ProvidersService } from '../../services/provider/providers.service';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 import { ValidationExploder } from '../create/validators/validation.exploder';
 
 
@@ -25,7 +24,7 @@ export class PatientMedicalComponent implements OnInit {
   isReferringSearchNotValid: boolean = false;
   referringSearchErrorMessage: string | undefined;
   loadingProvider: boolean = false;
-  constructor(private providersService: ProvidersService) { }
+  constructor(private digitalIntakeService: DigitalIntakeService) { }
 
 
   ngOnInit(): void {
@@ -55,13 +54,13 @@ export class PatientMedicalComponent implements OnInit {
     } else {
       switch (referringType) {
         case 'l-name':
-          this.providers = this.providersService.findProviderByLastName(referringSearch)
+          this.providers = this.digitalIntakeService.findProviderByLastName(referringSearch)
           this.providers.subscribe(rr => {
             this.loadingProvider = false
           })
           break;
         case 'f-name':
-          this.providers = this.providersService.findProviderByLastName(referringSearch)
+          this.providers = this.digitalIntakeService.findProviderByLastName(referringSearch)
           this.providers.subscribe(rr => {
             this.loadingProvider = false
           })
@@ -74,7 +73,7 @@ export class PatientMedicalComponent implements OnInit {
             this.referringSearchErrorMessage = 'Please follow search criteria structure'
           }
           else {
-            this.providers = this.providersService.findProviderByFullName(fullName[0], fullName[1])
+            this.providers = this.digitalIntakeService.findProviderByFullName(fullName[0], fullName[1])
             this.providers.subscribe(rr => {
               this.loadingProvider = false
             })
@@ -90,7 +89,7 @@ export class PatientMedicalComponent implements OnInit {
             this.referringSearchErrorMessage = 'Doctor NPI must be numbers only'
           }
           else {
-            this.providers = this.providersService.findProviderByNPI(Number(referringSearch))
+            this.providers = this.digitalIntakeService.findProviderByNPI(Number(referringSearch))
             this.providers.subscribe(rr => {
               this.loadingProvider = false
             })

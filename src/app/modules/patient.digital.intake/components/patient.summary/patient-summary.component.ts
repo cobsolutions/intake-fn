@@ -13,9 +13,9 @@ import { DoctorSource } from 'src/app/modules/patient.questionnaire/models/intak
 import { EntitySource } from 'src/app/modules/patient.questionnaire/models/intake/source/entity.source';
 import { PatientSource } from "src/app/modules/patient.questionnaire/models/intake/source/patient.source";
 import { PatientSignature } from 'src/app/modules/patient.questionnaire/models/patient/signature.model';
-import { PatientService } from 'src/app/modules/patient.questionnaire/service/patient.service';
 import { PatientAddress } from '../../models/patient.address';
 import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
 @Component({
   selector: 'patient-summary',
@@ -29,7 +29,7 @@ export class PatientSummaryComponent implements OnInit {
   clinicId: string;
 
   constructor(private componentReference: ComponentReferenceComponentService
-    , private patientService: PatientService
+    , private digitalIntakeService:DigitalIntakeService
     , private router: Router) { }
 
   ngOnInit(): void {
@@ -52,18 +52,11 @@ export class PatientSummaryComponent implements OnInit {
     this.pateint.clinicIdUUID = this.clinicId;
     console.log(JSON.stringify(this.pateint))
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
-    this.patientService.otherCreatPatient(imageFormData).subscribe(resuldd => {
+    this.digitalIntakeService.create(imageFormData).subscribe(resuldd => {
       this.router.navigateByUrl('/digital-intake/done');
     }, error => {
       console.log('Error During Creation ' + JSON.stringify(error))
     })
-    // this.patientService.newCreatePatient(this.pateint).subscribe(response => {
-    //   this.patientService.upload(imageFormData, <number>response.body).subscribe(d => {
-    //     this.router.navigateByUrl('/digital-intake/done');
-    //   })
-    // }, (error: any) => {
-
-    // })
   }
   private fillPateintEssentialInformation() {
     var patientEssentialInformation: PatientEssentialInformation = {}

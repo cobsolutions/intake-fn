@@ -4,6 +4,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AgreementHolder } from 'src/app/models/patient/agreements/agreements.holder';
 import { PatientService } from 'src/app/modules/patient.questionnaire/service/patient.service';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 import { ValidationExploder } from '../create/validators/validation.exploder';
 
 @Component({
@@ -31,13 +32,14 @@ export class PatientAgreementComponent implements OnInit {
   NoticeOfPrivacyPracticesParagraph: string | null;
   InsuranceEligibilityParagraph: string | null;
   AssignmentReleaseOfBenefitsParagraph: string | null;
-  constructor(private patientService: PatientService, private sanitizer: DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer
+    , private digitalIntakeService: DigitalIntakeService) { }
 
   ngOnInit(): void {
     this.getAgreements();
   }
   private getAgreements() {
-    this.patientService.getAgreement().subscribe(response => {
+    this.digitalIntakeService.findAgreements().subscribe(response => {
       this.agreementHolder = response.body
       this.agreementHolder?.forEach(element => {
         this.fillAggrement(element);

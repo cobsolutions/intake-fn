@@ -2,6 +2,7 @@ import {
   HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -14,8 +15,10 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private kcAuthServiceService: KcAuthServiceService, private keycloakService: KeycloakService
     , private spinner: NgxSpinnerService
     , private fetshUrls: FetshDigitalPatientIntakeUrlsService
-    , private toastrService: ToastrService) { }
+    , private toastrService: ToastrService,
+    private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log(this.router.routerState.snapshot.url)
     this.spinner.show();
     if (request.url.includes('/authentication')) {
       return next.handle(request);

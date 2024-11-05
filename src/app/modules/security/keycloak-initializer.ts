@@ -21,14 +21,18 @@ export function initializer(keycloak: KeycloakService
     .pipe(
       filter(event => event.type === KeycloakEventType.OnTokenExpired))
     .subscribe(() => {
+      console.log('time out')
       if (fetshUrls.isDigitalIntakeURLS()) {
+        console.log('digital url')
         of(keycloak.getToken()).subscribe((newToken: any) => {
           console.log('keycloak.updateToken(20);')
           keycloak.updateToken(1800);
         })
       }
-      else
+      else{
+        console.log('not digital urls')
         kcAuthServiceService.logout();
+      }
     })
   return () => keycloak.init(options);
 

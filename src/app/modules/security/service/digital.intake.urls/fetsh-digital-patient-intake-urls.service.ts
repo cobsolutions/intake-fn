@@ -5,10 +5,9 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class FetshDigitalPatientIntakeUrlsService {
-  private digital_urls: string[] = ['digital-intake', 'patient/create', 'agreement', 'insurance/company/find', 'patient/upload'];
   constructor(private router: Router) { }
   isDigitalIntakeURLS() {
     var url: string = this.router.routerState.snapshot.url;
-    return this.digital_urls.some(segment => url.includes(segment));
+    return  /^\/digital-intake/.test(url);;    
   }
 }

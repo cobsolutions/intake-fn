@@ -87,59 +87,59 @@ export class SummaryComponent implements OnInit {
   }
 
   getPatientInsuranceInformation() {
-    var paragraph = `<br/><u><h4 style="font-family:Lucida">Patient Insurance Information</h4></u>
-    <b style="font-family:Lucida">- Patient Insurance Type?</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault ? 'Yes' : 'No'} </i></br>`
-    if (this.pateint.patientInsurance?.patientInsuranceCompensationNoFault) {
-      paragraph += `
-      <b style="font-family:Lucida">- Worker Related Injury/Auto-Accident</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.injuryType} </i></br>
-      <b style="font-family:Lucida">- Accident Date</b> : <i style="font-family:Lucida"> ${moment(this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.accidentDate_date).format("MM/DD/YYYY")} </i></br>
-      <b style="font-family:Lucida">- Worker Status</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.workerStatus} </i></br>
-      <b style="font-family:Lucida">- Address</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.type} ,
-      ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.first},
-      ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.second},
-      ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.country},
-      ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.city},
-      ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.zipCode} </i></br>
-      <b style="font-family:Lucida">- Fax</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.fax} </i></br>
-      <b style="font-family:Lucida">- Insurance Company Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.insuranceName} </i></br>
-      <b style="font-family:Lucida">- Claim Number/ WC Case Number</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.claimNumber} </i></br>
-      <b style="font-family:Lucida">- Adjuster Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.adjusterInfoName} </i></br>
-      <b style="font-family:Lucida">- Adjuster Phone</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.adjusterInfoPhone} </i></br>
-      <b style="font-family:Lucida">- Attorney Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.attorneyInfoName} </i></br>
-      <b style="font-family:Lucida">- Attorney Phone</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.attorneyInfoPhone} </i></br>
-      <b style="font-family:Lucida">- Case Status</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.caseStatus} </i></br>`
-    } else {
-      paragraph += `
-      <b style="font-family:Lucida">- Insurance Company Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.insuranceCompanyId} </i></br>
-      <b style="font-family:Lucida">- Member ID</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.memberId} </i></br>
-      <b style="font-family:Lucida">- Policy ID</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.policyId} </i></br>
-      <b style="font-family:Lucida">- Policyholders Relationship</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.relationship} </i></br>`
-      if (this.pateint.patientInsurance?.patientCommercialInsurance?.relationship !== 'Self') {
-        paragraph += `
-        <b style="font-family:Lucida">- Policy Holder’s First Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipFirstName} </i></br>
-        <b style="font-family:Lucida">- Policy Holder’s Middle Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipMiddleName} </i></br>
-        <b style="font-family:Lucida">- Policy Holder’s Last Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipLastName} </i></br>
-        <b style="font-family:Lucida">- Policy Holder’s Phone</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipPhone} </i></br>
-        <b style="font-family:Lucida">- Policy Holder’s Employer Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.employerName} </i></br>`
-      }
+    // var paragraph = `<br/><u><h4 style="font-family:Lucida">Patient Insurance Information</h4></u>
+    // <b style="font-family:Lucida">- Patient Insurance Type?</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault ? 'Yes' : 'No'} </i></br>`
+    // if (this.pateint.patientInsurance?.patientInsuranceCompensationNoFault) {
+    //   paragraph += `
+    //   <b style="font-family:Lucida">- Worker Related Injury/Auto-Accident</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.injuryType} </i></br>
+    //   <b style="font-family:Lucida">- Accident Date</b> : <i style="font-family:Lucida"> ${moment(this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.accidentDate_date).format("MM/DD/YYYY")} </i></br>
+    //   <b style="font-family:Lucida">- Worker Status</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.workerStatus} </i></br>
+    //   <b style="font-family:Lucida">- Address</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.type} ,
+    //   ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.first},
+    //   ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.second},
+    //   ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.country},
+    //   ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.city},
+    //   ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault.address?.zipCode} </i></br>
+    //   <b style="font-family:Lucida">- Fax</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.fax} </i></br>
+    //   <b style="font-family:Lucida">- Insurance Company Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.insuranceName} </i></br>
+    //   <b style="font-family:Lucida">- Claim Number/ WC Case Number</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.claimNumber} </i></br>
+    //   <b style="font-family:Lucida">- Adjuster Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.adjusterInfoName} </i></br>
+    //   <b style="font-family:Lucida">- Adjuster Phone</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.adjusterInfoPhone} </i></br>
+    //   <b style="font-family:Lucida">- Attorney Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.attorneyInfoName} </i></br>
+    //   <b style="font-family:Lucida">- Attorney Phone</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.attorneyInfoPhone} </i></br>
+    //   <b style="font-family:Lucida">- Case Status</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientInsuranceCompensationNoFault?.caseStatus} </i></br>`
+    // } else {
+    //   paragraph += `
+    //   <b style="font-family:Lucida">- Insurance Company Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.insuranceCompanyId} </i></br>
+    //   <b style="font-family:Lucida">- Member ID</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.memberId} </i></br>
+    //   <b style="font-family:Lucida">- Policy ID</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.policyId} </i></br>
+    //   <b style="font-family:Lucida">- Policyholders Relationship</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.relationship} </i></br>`
+    //   if (this.pateint.patientInsurance?.patientCommercialInsurance?.relationship !== 'Self') {
+    //     paragraph += `
+    //     <b style="font-family:Lucida">- Policy Holder’s First Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipFirstName} </i></br>
+    //     <b style="font-family:Lucida">- Policy Holder’s Middle Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipMiddleName} </i></br>
+    //     <b style="font-family:Lucida">- Policy Holder’s Last Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipLastName} </i></br>
+    //     <b style="font-family:Lucida">- Policy Holder’s Phone</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.patientRelationshipPhone} </i></br>
+    //     <b style="font-family:Lucida">- Policy Holder’s Employer Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.patientRelationship?.employerName} </i></br>`
+    //   }
 
-      paragraph += `
-      <b style="font-family:Lucida">- Do you have secondry insurance?</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance ? 'Yes' : 'No'} </i></br>`
-      if (this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance) {
-        paragraph += `
-        &#160 &#160 <b style="font-family:Lucida">- Insurance Company</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.insuranceCompanyName} </i></br>
-        &#160 &#160 <b style="font-family:Lucida">- Member ID</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.memberId} </i></br>`
-      }
-      paragraph += `
-      <b style="font-family:Lucida">- Medicare Coverage?</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage ? 'Yes' : 'No'} </i></br>`
-      if (this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage) {
-        paragraph += `
-        &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Employer First Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage.employerFirstName} </i></br>
-        &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Employer Middle Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage.employerMiddleName} </i></br>
-        &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Employer Last Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage.employerLastName} </i></br>
-        &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Employer Phone</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage.employerPhone} </i></br>`
-      }
-    }
-    return paragraph;
+    //   paragraph += `
+    //   <b style="font-family:Lucida">- Do you have secondry insurance?</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance ? 'Yes' : 'No'} </i></br>`
+    //   if (this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance) {
+    //     paragraph += `
+    //     &#160 &#160 <b style="font-family:Lucida">- Insurance Company</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.insuranceCompanyName} </i></br>
+    //     &#160 &#160 <b style="font-family:Lucida">- Member ID</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.secondaryInsurance.memberId} </i></br>`
+    //   }
+    //   paragraph += `
+    //   <b style="font-family:Lucida">- Medicare Coverage?</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage ? 'Yes' : 'No'} </i></br>`
+    //   if (this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage) {
+    //     paragraph += `
+    //     &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Employer First Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage.employerFirstName} </i></br>
+    //     &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Employer Middle Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage.employerMiddleName} </i></br>
+    //     &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Employer Last Name</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage.employerLastName} </i></br>
+    //     &#160 &#160 <b style="font-family:Lucida">- Policy Holder’s Employer Phone</b> : <i style="font-family:Lucida"> ${this.pateint.patientInsurance?.patientCommercialInsurance?.medicareCoverage.employerPhone} </i></br>`
+    //   }
+    // }
+    return 'paragraph';
   }
 }

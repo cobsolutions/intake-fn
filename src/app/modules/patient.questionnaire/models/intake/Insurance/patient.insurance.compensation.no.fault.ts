@@ -5,7 +5,6 @@ export interface PatientInsuranceCompensationNoFault {
   accidentDate?: number;
   accidentDate_date?: Date;
   accidentDate_str?: string;
-  workerStatus?: string;
   phone?:string
   fax?: string;
   address?: Address;

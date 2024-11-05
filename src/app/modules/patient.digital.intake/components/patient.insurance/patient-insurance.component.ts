@@ -126,9 +126,6 @@ export class PatientInsuranceComponent implements OnInit {
       injuryType: this.form.get('insurance')?.get('compensation-related-injury')?.value,
       accidentDate_str: moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("MM/DD/YYYY"),
       accidentDate: Number(moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("x")),
-      workerStatus: this.form.get('insurance')?.get('compensation-wroker-status')?.value,
-      phone: this.form.get('insurance')?.get('compensation-phone')?.value,
-      fax: this.form.get('insurance')?.get('compensation-fax')?.value,
       adjusterInfoName: this.form.get('insurance')?.get('compensation-adjuster-last-name')?.value + ',' + this.form.get('insurance')?.get('compensation-adjuster-first-name')?.value,
       adjusterInfoPhone: this.form.get('insurance')?.get('compensation-adjuster-phone')?.value,
       attorneyInfoName: this.form.get('insurance')?.get('compensation-attorney-last-name')?.value + ',' + this.form.get('insurance')?.get('compensation-attorney-first-name')?.value,
@@ -137,17 +134,6 @@ export class PatientInsuranceComponent implements OnInit {
       insuranceName: this.form.get('insurance')?.get('compensation-insurance-company')?.value,
       claimNumber: this.form.get('insurance')?.get('compensation-claim-number')?.value,
     }
-    var address: Address = {
-      type: this.form.get('insurance')?.get('compensation-address-type')?.value,
-      first: this.form.get('insurance')?.get('compensation-first-address')?.value,
-      second: this.form.get('insurance')?.get('compensation-second-address')?.value,
-      country: '',
-      state: this.form.get('insurance')?.get('compensation-state')?.value,
-      province: '',
-      city: this.form.get('insurance')?.get('compensation-city')?.value,
-      zipCode: this.form.get('insurance')?.get('compensation-zipcode')?.value
-    }
-    patientInsuranceCompensationNoFault.address = address
     return patientInsuranceCompensationNoFault;
   }
   private fillPatientCommercialInsurance() {

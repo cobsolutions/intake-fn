@@ -7,10 +7,6 @@ export interface WorkerCompensationInsurance {
     accidentDate?: number;
     accidentDate_date?: Date;
     accidentDate_str?: string;
-    workerStatus?: string;
-    phone?: string
-    fax?: string;
-    address?: Address;
     insuranceName?: string;
     claimNumber?: string;
     adjusterInfoName?: string;

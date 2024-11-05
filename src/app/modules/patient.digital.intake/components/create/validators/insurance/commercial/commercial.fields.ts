@@ -1,7 +1,5 @@
 export var CommercialFields: string[] = [
     'commercial-insurance-company',
-    'commercial-member-id',
-    //'commercial-ploicy-id',
+    'commercial-member-id', 
     'commercial-ploicyHolder-relationship',
-    'commercial-is-secondary-insurance',
 ]

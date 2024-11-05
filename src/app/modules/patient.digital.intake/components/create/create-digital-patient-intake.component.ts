@@ -35,7 +35,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     // ]).subscribe(result => {
     //   this.stepperOrientation = result.matches ? 'vertical' : 'horizontal';
     // });
-    this.stepperOrientation  = 'vertical'
+    this.stepperOrientation = 'vertical'
     this.createPatientForm();
   }
   private createPatientForm() {
@@ -119,11 +119,11 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'compensation-insurance-company': new FormControl(null),
         'compensation-claim-number': new FormControl(null),
         'compensation-adjuster-first-name': new FormControl(null),
-        'compensation-adjuster-middle-name': new FormControl(null, noSpecialCharactersValidator()),
+        'compensation-adjuster-middle-name': new FormControl(null),
         'compensation-adjuster-last-name': new FormControl(null),
         'compensation-adjuster-phone': new FormControl(null),
-        'compensation-attorney-first-name': new FormControl(null,),
-        'compensation-attorney-middle-name': new FormControl(null, noSpecialCharactersValidator()),
+        'compensation-attorney-first-name': new FormControl(null),
+        'compensation-attorney-middle-name': new FormControl(null),
         'compensation-attorney-last-name': new FormControl(null),
         'compensation-attorney-phone': new FormControl(null),
         'compensation-case-status': new FormControl(null),
@@ -137,7 +137,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'commercial-ploicyHolder-relationship-last-name': new FormControl(null),
         'commercial-ploicyHolder-relationship-phone': new FormControl(null),
         'commercial-ploicyHolder-relationship-employer': new FormControl(null),
-        'commercial-is-secondary-insurance': new FormControl(false),        
+        'commercial-is-secondary-insurance': new FormControl(null),
         'commercial-secondary-insurance-insurance-company': new FormControl(null),
         'commercial-secondary-insurance-member-id': new FormControl(null),
         'commercial-secondary-insurance-ploicy-id': new FormControl(null),

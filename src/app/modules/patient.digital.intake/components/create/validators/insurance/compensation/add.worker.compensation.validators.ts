@@ -8,7 +8,12 @@ export class AddWorkerCompensationValidators {
         const phoneRgx = new RegExp("^[\+]?[0-9]{0,3}\W?[(]?[0-9]{3}[)]?[-\s\.]?[(]?[0-9]{3}[)][-\s\.]?[0-9]{4,6}$");
         const zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
         for (var i = 0; i < CompensationFields.length; i++) {
-            form.get('insurance')?.get(CompensationFields[i])?.setValidators(Validators.required)
+            if (CompensationFields[i] === 'compensation-insurance-company') {
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([noSpecialCharactersValidator(),Validators.required])
+            }
+            if (CompensationFields[i] === 'compensation-claim-number') {
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([noSpecialCharactersValidator(),Validators.required])
+            }
             if (CompensationFields[i] === 'compensation-adjuster-phone'
                 || CompensationFields[i] === 'compensation-attorney-phone') {
                 form.get('insurance')?.get(CompensationFields[i])?.setValidators([Validators.pattern(phoneRgx)])

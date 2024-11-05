@@ -51,10 +51,6 @@ export class PatientInsuranceComponent implements OnInit {
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
       this.selectedInsuranceType = value;
     })
-    this.form.get('insurance')?.get('commercial-is-secondary-insurance')?.valueChanges.subscribe(value => {
-      if (!value)
-        this.form.get('insurance')?.get('commercial-is-medicare-coverage')?.setValue(false);
-    })
   }
   add() {
     var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
@@ -166,17 +162,6 @@ export class PatientInsuranceComponent implements OnInit {
       patientCommercialInsurance.secondaryInsurance = secondaryInsurance
     } else {
       patientCommercialInsurance.secondaryInsurance = undefined
-    }
-    if (patientCommercialInsurance.hasMedicareCoverage) {
-      var medicareCoverage: MedicareCoverage = {
-        employerFirstName: this.form.get('insurance')?.get('commercial-is-secondary-insurance-medicare-coverage-first-name')?.value,
-        employerMeddileName: this.form.get('insurance')?.get('commercial-is-secondary-insurance-medicare-coverage-middle-name')?.value,
-        employerLastName: this.form.get('insurance')?.get('commercial-is-secondary-insurance-medicare-coverage-last-name')?.value,
-        employerPhone: this.form.get('insurance')?.get('commercial-is-secondary-insurance-medicare-coverage-phone')?.value
-      }
-      patientCommercialInsurance.medicareCoverage = medicareCoverage
-    } else {
-      patientCommercialInsurance.medicareCoverage = undefined;
     }
     return patientCommercialInsurance;
   }

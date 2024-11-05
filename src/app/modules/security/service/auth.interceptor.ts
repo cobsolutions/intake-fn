@@ -18,7 +18,6 @@ export class AuthInterceptor implements HttpInterceptor {
     , private toastrService: ToastrService,
     private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log(this.router.routerState.snapshot.url)
     this.spinner.show();
     if (request.url.includes('/authentication')) {
       return next.handle(request);

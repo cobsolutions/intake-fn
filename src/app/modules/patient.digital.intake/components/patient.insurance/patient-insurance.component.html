@@ -551,6 +551,13 @@
                                     <strong> -------</strong>
                                 </span>
                             </td>
+                            <td>
+                                <c-button-group aria-label="Basic example" role="group" size="sm">
+                                    <button cButton variant="outline" size="sm" (click)="remove(i, patientInsurance.type)">
+                                        <svg cIcon name="cilTrash"></svg>
+                                    </button>
+                                </c-button-group>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

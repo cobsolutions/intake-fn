@@ -123,7 +123,7 @@ export class PatientInsuranceComponent implements OnInit {
     this.form.get('insurance')?.reset();
 
   }
-  private fillPatientInsuranceCompensationNoFault(type:string) {
+  private fillPatientInsuranceCompensationNoFault(type: string) {
     var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = {
       type: type,
       accidentDate_str: moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("MM/DD/YYYY"),
@@ -267,5 +267,49 @@ export class PatientInsuranceComponent implements OnInit {
         error => {
           this.isLoadingSecondaryInsuranceCompany = false
         });
+  }
+  remove(index: number, type: string) {
+    console.log('remove')
+    const obj = this.renderedPatientInsurances[index];
+    console.log(type)
+    //commercial
+    if (type === 'commercial') {
+      const _objIndex = this.patientInsurances.commercialInsurances.indexOf(obj);
+      if (index !== -1) {
+        this.patientInsurances.commercialInsurances.splice(_objIndex, 1);
+      }
+    }
+    //worker
+    if (type === 'worker') {
+      const _objIndex = this.patientInsurances.workerCompensationInsurances.indexOf(obj);
+      if (index !== -1) {
+        this.patientInsurances.commercialInsurances.splice(_objIndex, 1);
+      }
+    }
+    //auto_acc
+    if (type === 'auto_acc') {
+      const _objIndex = this.patientInsurances.workerCompensationInsurances.indexOf(obj);
+      if (index !== -1) {
+        this.patientInsurances.workerCompensationInsurances.splice(_objIndex, 1);
+      }
+    }
+
+    if (type === 'medicare') {
+      const _objIndex = this.patientInsurances.medicareInsurance.indexOf(obj);
+      if (index !== -1) {
+        this.patientInsurances.medicareInsurance.splice(_objIndex, 1);
+      }
+    }
+    if (type === 'medicaid') {
+      const _objIndex = this.patientInsurances.medicaidInsurance.indexOf(obj);
+      if (index !== -1) {
+        this.patientInsurances.medicaidInsurance.splice(_objIndex, 1);
+      }
+    }
+    //selfpay
+    if (type === 'selfpay') {
+      this.patientInsurances.selfPay = undefined
+    }
+    this.renderedPatientInsurances.splice(index, 1);
   }
 }

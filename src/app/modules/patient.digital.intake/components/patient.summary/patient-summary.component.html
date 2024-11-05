@@ -166,16 +166,10 @@
                 <span
                     *ngFor="let patientInsurance of this.pateint.insurances?.workerCompensationInsurances; index as i">
                     # {{ i+1}} <br />
-                    <strong> Injury/Auto-Accident: </strong>
-                    {{patientInsurance.injuryType}} <br />
                     <strong> Accident Date: </strong>
                     {{patientInsurance.accidentDate_str}} <br />
                     <strong> Worker Status: </strong>
-                    {{patientInsurance.workerStatus}} <br />
                     <strong> Phone: </strong>
-                    {{patientInsurance.phone}} <br />
-                    <strong> Fax: </strong>
-                    {{patientInsurance.fax}} <br />
                     <strong> Case Status: </strong>
                     {{patientInsurance.caseStatus}} <br />
                     <strong> Adjuster: </strong> <br />

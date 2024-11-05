@@ -45,11 +45,6 @@ export class PatientInsuranceComponent implements OnInit {
   constructor(private insuranceCompanyService: InsuranceCompanyService) { }
   ngOnInit(): void {
     this.findInsuranceCompanyByNameAutoComplete();
-    this.insuranceCompanyService.get().subscribe((response) => {
-      response.body?.forEach(element => {
-        this.InsuranceCompanies?.push(element);
-      });
-    })
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
       this.selectedInsuranceType = value;
     })

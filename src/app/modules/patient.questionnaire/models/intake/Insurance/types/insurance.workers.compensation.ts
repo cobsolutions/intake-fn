@@ -3,7 +3,7 @@ import { Insurance } from "./insurance";
 
 export interface WorkerCompensationInsurance {
     type:string;
-    injuryType?: string;
+    
     accidentDate?: number;
     accidentDate_date?: Date;
     accidentDate_str?: string;

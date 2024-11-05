@@ -285,27 +285,6 @@
         <c-card *ngIf="selectedInsuranceType === 'Worker\'s Compensation'" class="mb-2">
             <c-card-body>
                 <h5 cCardTitle>Worker's Compensation</h5>
-                <!--Worker Related Injury/Auto-Accident-->
-                <c-row class="mb-2">
-                    <c-col xl="12">
-                        <label for="dsds" class="form-label" style="font-size: medium;">
-                            Worker Related Injury/Auto-Accident<span class="text-danger">*</span>
-                        </label>
-                    </c-col>
-                    <c-col xl="12">
-                        <select cSelect sizing="sm" name="injuryType" style="line-height: 15px;" cFormControl
-                            formControlName="compensation-related-injury">
-                            <option value="null" disabled>Select</option>
-                            <option value="Worker Related Injury">Worker Related Injury</option>
-                            <option value="Auto Accident">Auto-Accident</option>
-                        </select>
-                    </c-col>
-                    <div *ngIf="!this.form.get('insurance')?.get('compensation-related-injury')?.valid && 
-                                    (this.form.get('insurance')?.get('compensation-related-injury')?.dirty ||this.form.get('insurance')?.get('compensation-related-injury')?.touched)"
-                        class="text-danger mx-1">
-                        Related Injury is required
-                    </div>
-                </c-row>
                 <!--Accident Date-->
                 <c-row class="mb-2">
                     <c-col xl="12">
@@ -364,8 +343,8 @@
                         <h6 cCardSubtitle class="mb-2 text-medium-emphasis">Adjuster</h6>
                         <c-row>
                             <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Adjuster Full Name<span
-                                        class="text-danger">*</span></label>
+                                <label for="dsds" class="form-label" style="font-size: medium;">Adjuster Full
+                                    Name</label>
                             </c-col>
                         </c-row>
                         <c-col xl="12">
@@ -377,16 +356,7 @@
                                 <input cFormControl placeholder="LastName"
                                     formControlName="compensation-adjuster-last-name" maxlength="60" input-trimmer>
                             </c-input-group>
-                            <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['required'] && 
-                                            (this.form.get('insurance')?.get('compensation-adjuster-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-first-name')?.touched)"
-                                class="text-danger mx-1">
-                                Adjuster first name is required
-                            </div>
-                            <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['required'] && 
-                                            (this.form.get('insurance')?.get('compensation-adjuster-last-name')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-last-name')?.touched)"
-                                class="text-danger mx-1">
-                                Adjuster last name is required
-                            </div>
+
                             <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['noSpecialCharacters']"
                                 class="text-danger mx-1">Adjuster first name cannot contain special characters.</div>
                             <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-middle-name')?.errors?.['noSpecialCharacters']"
@@ -396,8 +366,7 @@
                         </c-col>
                         <c-row>
                             <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Phone<span
-                                        class="text-danger">*</span></label>
+                                <label for="dsds" class="form-label" style="font-size: medium;">Phone</label>
                             </c-col>
                             <c-col xs="12">
                                 <input cFormControl placeholder="Phone" formControlName="compensation-adjuster-phone"
@@ -422,8 +391,8 @@
                         <h6 cCardSubtitle class="mb-2 text-medium-emphasis">Attorney</h6>
                         <c-row>
                             <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Attorney Full Name<span
-                                        class="text-danger">*</span></label>
+                                <label for="dsds" class="form-label" style="font-size: medium;">Attorney Full
+                                    Name</label>
                             </c-col>
                         </c-row>
                         <c-col xl="12">
@@ -455,8 +424,7 @@
                         </c-col>
                         <c-row>
                             <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Phone<span
-                                        class="text-danger">*</span></label>
+                                <label for="dsds" class="form-label" style="font-size: medium;">Phone</label>
                             </c-col>
                             <c-col xs="12">
                                 <input cFormControl placeholder="phone" formControlName="compensation-attorney-phone"

@@ -9,14 +9,9 @@ export class AddWorkerCompensationValidators {
         const zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
         for (var i = 0; i < CompensationFields.length; i++) {
             form.get('insurance')?.get(CompensationFields[i])?.setValidators(Validators.required)
-            if (CompensationFields[i] === 'compensation-phone'
-                || CompensationFields[i] === 'compensation-fax'
-                || CompensationFields[i] === 'compensation-adjuster-phone'
+            if (CompensationFields[i] === 'compensation-adjuster-phone'
                 || CompensationFields[i] === 'compensation-attorney-phone') {
-                form.get('insurance')?.get(CompensationFields[i])?.setValidators([Validators.required, Validators.pattern(phoneRgx)])
-            }
-            if (CompensationFields[i] === 'compensation-zipcode') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, Validators.min(10), Validators.pattern(zipCodeRgx)])
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([Validators.pattern(phoneRgx)])
             }
             if (CompensationFields[i] === 'compensation-accident-date') {
                 form.get('insurance')?.get(CompensationFields[i])?.addValidators([futureDateValidator()])
@@ -30,8 +25,6 @@ export class AddWorkerCompensationValidators {
             if (CompensationFields[i] === 'compensation-attorney-last-name') {
                 form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator()])
             }
-
-
             if (CompensationFields[i] === 'compensation-adjuster-first-name') {
                 form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator()])
             }

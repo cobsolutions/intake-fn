@@ -123,7 +123,6 @@ export class PatientInsuranceComponent implements OnInit {
   private fillPatientInsuranceCompensationNoFault() {
     var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = {
       type: 'wroker',
-      injuryType: this.form.get('insurance')?.get('compensation-related-injury')?.value,
       accidentDate_str: moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("MM/DD/YYYY"),
       accidentDate: Number(moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("x")),
       adjusterInfoName: this.form.get('insurance')?.get('compensation-adjuster-last-name')?.value + ',' + this.form.get('insurance')?.get('compensation-adjuster-first-name')?.value,

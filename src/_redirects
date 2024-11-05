@@ -91,6 +91,8 @@
 /intake-service/api/digital-intake/find/provider/f-name/:name https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/find/provider/f-name/:name 200
 /intake-service/api/digital-intake/find/provider/l-name/:name https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/find/provider/l-name/:name 200
 /intake-service/api/digital-intake/find/provider/f-name/:firstName/l-name/:lastName https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/find/provider/f-name/:firstName/l-name/:lastName 200
+/intake-service/api/digital-intake/opt/send https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/opt/send 200
+/intake-service/api/digital-intake/opt/validate https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/opt/validate 200
 
 
 /*  /index.html   200

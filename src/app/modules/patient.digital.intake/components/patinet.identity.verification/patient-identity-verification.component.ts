@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { OptServiceService } from '../../services/opt/opt-service.service';
 import { v4 as uuidv4 } from 'uuid';
 import { MatStepper } from '@angular/material/stepper';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 @Component({
   selector: 'patient-identity-verification',
   templateUrl: './patient-identity-verification.component.html',
@@ -18,7 +19,7 @@ export class PatientIdentityVerificationComponent implements OnInit {
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
   patientUUID: string
   @Input() stepper: MatStepper
-  constructor(private optServiceService: OptServiceService) { }
+  constructor(private digitalIntakeService:DigitalIntakeService) { }
 
   ngOnInit(): void {
     this.checkValidNumber();
@@ -31,7 +32,7 @@ export class PatientIdentityVerificationComponent implements OnInit {
   }
   sendOtp() {
     this.patientUUID = uuidv4();
-    this.optServiceService.send(this.patientUUID, this.form.get('identity')?.get('pPhoneNumber')?.value)
+    this.digitalIntakeService.send(this.patientUUID, this.form.get('identity')?.get('pPhoneNumber')?.value)
       .subscribe(reuslt => {
         console.log(reuslt)
         this.otpSent = true;
@@ -46,7 +47,7 @@ export class PatientIdentityVerificationComponent implements OnInit {
 
   verifyOtp() {
     const otpNumber = this.otpArray.join('').toString();
-    this.optServiceService.validate(this.patientUUID, otpNumber).subscribe(result => {
+    this.digitalIntakeService.validate(this.patientUUID, otpNumber).subscribe(result => {
       this.isValidOPT = true;
       this.message = 'OTP Verified Successfully.';
     }, error => {

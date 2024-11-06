@@ -4,7 +4,7 @@ import { SecondaryInsurance } from "../secondary.insurance";
 export interface CommercialInsurance {
     type: string;
     hasSecondaryInsurance?: boolean | undefined
-    isSecondaryInsurance?:boolean
+    isSecondaryInsurance?: boolean
     insuranceCompanyId?: number;
     insuranceCompanyName?: string;
     memberId?: string;
@@ -12,4 +12,6 @@ export interface CommercialInsurance {
     relationship?: string;
     patientRelationship?: PatientRelationship;
     secondaryInsurance?: SecondaryInsurance;
+    _frontcontrollName?: string;
+    _backcontrollName?: string;
 }

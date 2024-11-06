@@ -13,7 +13,6 @@
                     </label>
                 </c-col>
                 <c-col xl="12">
-
                     <input cFormControl id="pIdfront" accept="image/*" type="file" capture="environment" class="mb-1"
                         formControlName="id-front" (change)="onImageUpload($event ,'patientIdfront' , 'id-front')" />
                     <div *ngIf="this.form.get('document')?.get('id-front')?.errors?.['required'] && 
@@ -50,54 +49,7 @@
                         size (50 MB)</div>
                 </c-col>
             </c-row>
-            <!--Patient insurance front-->
-            <c-row class="mb-2">
-                <c-col xl="12">
-                    <label for="dsds" class="form-label">
-                        Patient Insurance ID Front<span class="text-danger">*</span>
-                    </label>
-                </c-col>
-                <c-col xl="12">
 
-                    <input cFormControl id="pIdfront" accept="image/*" type="file" capture="environment" class="mb-1"
-                        formControlName="insurance-fornt"
-                        (change)="onImageUpload($event ,'patientinsurancefront','insurance-fornt')" />
-
-                    <div *ngIf="this.form.get('document')?.get('insurance-fornt')?.errors?.['required'] && 
-                        (this.form.get('document')?.get('insurance-fornt')?.dirty ||this.form.get('document')?.get('insurance-fornt')?.touched) && !isMaxSize"
-                        class="text-danger mx-1">
-                        Patient Insurance ID Front is required
-                    </div>
-                    <div *ngIf="this.form.get('document')?.get('insurance-fornt')?.errors?.['imageFile']"
-                        class="text-danger mx-1">Images Only</div>
-                    <div *ngIf="excceedControl === 'insurance-fornt' && isMaxSize" class="text-danger mx-1">File exceed
-                        maximum size (50 MB)</div>
-                </c-col>
-            </c-row>
-            <!--Patient insurance back-->
-            <c-row class="mb-2">
-                <c-col xl="12">
-                    <label for="dsds" class="form-label">
-                        Patient Insurance ID Back<span class="text-danger">*</span>
-                    </label>
-                </c-col>
-                <c-col xl="12">
-
-                    <input cFormControl id="pIdfront" accept="image/*" type="file" capture="environment" class="mb-1"
-                        formControlName="insurance-back"
-                        (change)="onImageUpload($event ,'patientinsuranceback','insurance-back')" />
-
-                    <div *ngIf="this.form.get('document')?.get('insurance-back')?.errors?.['required'] && 
-                    (this.form.get('document')?.get('insurance-back')?.dirty ||this.form.get('document')?.get('insurance-back')?.touched)&& !isMaxSize"
-                        class="text-danger mx-1">
-                        Patient Insurance ID back is required
-                    </div>
-                    <div *ngIf="this.form.get('document')?.get('insurance-back')?.errors?.['imageFile']"
-                        class="text-danger mx-1">Images Only</div>
-                    <div *ngIf="excceedControl === 'insurance-back'&& isMaxSize" class="text-danger mx-1">File exceed
-                        maximum size (50 MB)</div>
-                </c-col>
-            </c-row>
         </span>
 
         <!--Guarantor  Document-->
@@ -183,17 +135,17 @@
                         </td>
                         <td>
                             <c-row>
-                                <c-col xl="6">
-                                    <label for="dsds" class="form-label" style="font-size: medium;">Front</label>
+                                <c-col xs="6">
+                                    <label class="form-label" style="font-size: medium;">Front</label>
                                     <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1"
-                                        formControlName="guarantorIdBack"
-                                        (change)="onImageUpload($event ,'guarantorIdback','guarantorIdBack')" />
+                                        [formControlName]="patientInsurance._frontcontrollName"
+                                        (change)="onImageUpload($event ,patientInsurance._frontcontrollName,patientInsurance._frontcontrollName)" />
                                 </c-col>
-                                <c-col xl="6">
-                                    <label for="dsds" class="form-label" style="font-size: medium;">back</label>
+                                <c-col xs="6">
+                                    <label class="form-label" style="font-size: medium;">Back</label>
                                     <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1"
-                                        formControlName="guarantorIdBack"
-                                        (change)="onImageUpload($event ,'guarantorIdback','guarantorIdBack')" />
+                                        [formControlName]="patientInsurance._backcontrollName"
+                                        (change)="onImageUpload($event ,patientInsurance._backcontrollName,patientInsurance._backcontrollName)" />
                                 </c-col>
                             </c-row>
                         </td>

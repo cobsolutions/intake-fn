@@ -14,4 +14,6 @@ export interface WorkerCompensationInsurance {
     attorneyInfoName?: string;
     attorneyInfoPhone?: string;
     caseStatus?: string;
+    _frontcontrollName?: string;
+    _backcontrollName?: string;
 }

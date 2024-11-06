@@ -1,6 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { imageDocumentValidator } from './validators/custom.validation/document.image.validator';
 import { EmailValidator } from './validators/custom.validation/email.validator';
@@ -35,7 +35,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     // ]).subscribe(result => {
     //   this.stepperOrientation = result.matches ? 'vertical' : 'horizontal';
     // });
-    this.stepperOrientation = 'vertical'
+    this.stepperOrientation = 'horizontal'
     this.createPatientForm();
   }
   private createPatientForm() {
@@ -147,14 +147,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'insurances': new FormControl(null),
         'isSelfPay': new FormControl(null),
       }),
-      'document': new FormGroup({
-        'id-front': new FormControl(null, [imageDocumentValidator()]),
-        'id-back': new FormControl(null, [imageDocumentValidator()]),
-        'insurance-fornt': new FormControl(null, [imageDocumentValidator()]),
-        'insurance-back': new FormControl(null, [imageDocumentValidator()]),
-        'guarantorIdFront': new FormControl(null, imageDocumentValidator()),
-        'guarantorIdBack': new FormControl(null, imageDocumentValidator()),
-      }),
+      'document': new FormArray([]),
       'agreement': new FormGroup({
         'release-Information': new FormControl(null, [Validators.requiredTrue]),
         'financial-responsibility': new FormControl(null, [Validators.requiredTrue]),

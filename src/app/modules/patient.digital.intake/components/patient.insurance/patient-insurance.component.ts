@@ -1,13 +1,11 @@
+
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
 import { debounceTime, filter, finalize, switchMap, tap } from 'rxjs';
-import { Address } from 'src/app/models/patient/address.info.model';
-import { MedicareCoverage } from 'src/app/models/questionnaire/Insurance/medicare.coverage';
 import { PatientRelationship } from 'src/app/models/questionnaire/Insurance/patient.relationship';
 import { insuranceTypes } from 'src/app/modules/common/components/insurance/insurance.type';
-import { SecondaryInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/secondary.insurance';
 import { Insurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance';
 import { CommercialInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.commercial';
 import { MedicaidInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.medicaid';
@@ -45,7 +43,7 @@ export class PatientInsuranceComponent implements OnInit {
   secondaryInsuranceCompanyForm = new FormControl();
   isLoadingInsuranceCompany = false;
   isLoadingSecondaryInsuranceCompany = false;
-  constructor(private digitalIntakeService: DigitalIntakeService , private componentReference:ComponentReferenceComponentService) { }
+  constructor(private digitalIntakeService: DigitalIntakeService, private componentReference: ComponentReferenceComponentService) { }
   ngOnInit(): void {
     this.componentReference.setPatientInsuranceComponent(this)
     this.findInsuranceCompanyByNameAutoComplete();
@@ -96,8 +94,10 @@ export class PatientInsuranceComponent implements OnInit {
         var patientSecondaryCommercialInsurance: CommercialInsurance = {
           type: 'commercial',
           isSecondaryInsurance: true,
+          _frontcontrollName: 'comm_' + this.secondaryInsuranceCompanyForm?.value + '_front',
+          _backcontrollName: 'comm_' + this.secondaryInsuranceCompanyForm?.value + '_back',
           insuranceCompanyId: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value,
-          insuranceCompanyName : this.secondaryInsuranceCompanyForm?.value,
+          insuranceCompanyName: this.secondaryInsuranceCompanyForm?.value,
           policyId: this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.value,
           memberId: this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.value,
         }
@@ -149,6 +149,8 @@ export class PatientInsuranceComponent implements OnInit {
       caseStatus: this.form.get('insurance')?.get('compensation-case-status')?.value,
       insuranceName: this.form.get('insurance')?.get('compensation-insurance-company')?.value,
       claimNumber: this.form.get('insurance')?.get('compensation-claim-number')?.value,
+      _frontcontrollName: type + '_' + this.form.get('insurance')?.get('compensation-insurance-company')?.value + '_front',
+      _backcontrollName: type + '_' + this.form.get('insurance')?.get('compensation-insurance-company')?.value + '_back',
     }
     return patientInsuranceCompensationNoFault;
   }
@@ -156,6 +158,8 @@ export class PatientInsuranceComponent implements OnInit {
     var patientCommercialInsurance: CommercialInsurance = {
       type: 'commercial',
       isSecondaryInsurance: false,
+      _frontcontrollName: 'comm_' + this.insuranceCompanyForm?.value + '_front',
+      _backcontrollName: 'comm_' + this.insuranceCompanyForm?.value + '_back',
       memberId: this.form.get('insurance')?.get('commercial-member-id')?.value,
       policyId: this.form.get('insurance')?.get('commercial-ploicy-id')?.value,
       relationship: this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value,
@@ -182,6 +186,8 @@ export class PatientInsuranceComponent implements OnInit {
     var medicareInsurance: MedicareInsurance = {
       type: 'medicare',
       policyId: this.form.get('insurance')?.get('medicare-policy-namuber')?.value,
+      _frontcontrollName: 'medicare_' + this.form.get('insurance')?.get('medicare-policy-namuber')?.value + '_front',
+      _backcontrollName: 'medicare_' + this.form.get('insurance')?.get('medicare-policy-namuber')?.value + '_back',
     }
     return medicareInsurance;
   }
@@ -190,6 +196,8 @@ export class PatientInsuranceComponent implements OnInit {
     var medicareInsurance: MedicaidInsurance = {
       type: 'medicaid',
       policyId: this.form.get('insurance')?.get('medicaid-policy-namuber')?.value,
+      _frontcontrollName: 'medicaid_' + this.form.get('insurance')?.get('medicaid-policy-namuber')?.value + '_front',
+      _backcontrollName: 'medicaid_' + this.form.get('insurance')?.get('medicaid-policy-namuber')?.value + '_back',
     }
     return medicareInsurance;
   }
@@ -225,7 +233,6 @@ export class PatientInsuranceComponent implements OnInit {
         if (data == undefined) {
           this.InsuranceCompanies = [];
         } else {
-          console.log(JSON.stringify(data))
           this.InsuranceCompanies = data.body;
         }
       },

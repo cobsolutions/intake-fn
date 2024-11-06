@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
+import { Insurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance';
 import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
 import { CompressDocumentService } from '../../services/doument/compress-document.service';
 import { ValidationExploder } from '../create/validators/validation.exploder';
@@ -18,6 +19,7 @@ export class PatientDocumentComponent implements OnInit {
   isGuarantor: boolean = false
   isMaxSize: boolean = false;
   excceedControl: string;
+  patientInsurances: any[] = [];
   @Input() form: FormGroup;
   constructor(private componentReference: ComponentReferenceComponentService
     , private compressDocumentService: CompressDocumentService) { }
@@ -25,7 +27,15 @@ export class PatientDocumentComponent implements OnInit {
   ngOnInit(): void {
     this.componentReference.setPatientDocumentComponent(this)
     this.componentReference.getPatientInsuranceComponent()?.form.get('insurance')?.get('insurances')?.valueChanges.subscribe(value => {
-      console.log(value)
+      if (value.commercialInsurances.length > 0)
+        this.patientInsurances.push(...value.commercialInsurances)
+      if (value.workerCompensationInsurances.length > 0)
+        this.patientInsurances.push(...value.workerCompensationInsurances)
+      if (value.medicareInsurance.length > 0)
+        this.patientInsurances.push(...value.medicareInsurance)
+      if (value.medicaidInsurance.length > 0)
+        this.patientInsurances.push(...value.medicaidInsurance)
+
     })
     this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('dob')?.valueChanges.subscribe(value => {
       this.isGuarantor = this.componentReference.getPatientBasicComponent()!.isGuarantor

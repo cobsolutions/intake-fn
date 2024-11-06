@@ -182,7 +182,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     ConditionsValidator.addValidator(this.patientForm)
     AddSurgerisListValidator.addValidator(this.patientForm)
     InsuranceValidator.addValidator(this.patientForm)
-    DocumentValidator.addValidator(this.patientForm)
+    
     GuarantorValidator.addValidator(this.patientForm);
     PatientSourceValidator.addValidator(this.patientForm)
   }

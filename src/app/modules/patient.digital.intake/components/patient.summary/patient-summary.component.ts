@@ -33,7 +33,6 @@ export class PatientSummaryComponent implements OnInit {
     , private router: Router) { }
 
   ngOnInit(): void {
-    console.log(JSON.stringify(this.pateint.insurances))
     this.fillPateintEssentialInformation();
     this.fillPatientAddress();
     this.fillPatientSource();
@@ -47,10 +46,10 @@ export class PatientSummaryComponent implements OnInit {
   submit() {
     var imageFormData = new FormData();
     this.componentReference.getPatientDocumentComponent()!.getFormDate().forEach((patientDocument: any) => {
+      console.log(JSON.stringify(patientDocument))
       imageFormData.append('files', patientDocument, patientDocument.name);
     })
     this.pateint.clinicIdUUID = this.clinicId;
-    console.log(JSON.stringify(this.pateint))
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
     this.digitalIntakeService.create(imageFormData).subscribe(resuldd => {
       this.router.navigateByUrl('/digital-intake/done');

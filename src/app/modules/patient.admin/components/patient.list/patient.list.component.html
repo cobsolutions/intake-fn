@@ -34,7 +34,7 @@
               <tr>
                 <td *ngIf="!item['hasGuarantor']">Patient ID Document</td>
                 <td *ngIf="item['hasGuarantor']">Guarantor Document</td>
-                <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,item.hasGuarantor)"
+                <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,false)"
                     cTooltip="Id Document">
                     <svg cIcon name="cilCloudDownload"></svg>
                   </button></td>

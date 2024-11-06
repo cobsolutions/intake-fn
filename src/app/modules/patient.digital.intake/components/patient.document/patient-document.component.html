@@ -152,7 +152,7 @@
                     <tr>
                         <th scope="col">Insurance Type</th>
                         <th scope="col">Insurance Data</th>
-                        <th style="width: 15%;">actions</th>
+                        <th style="width: 40%;">Uplodad</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -179,10 +179,23 @@
                             </span>
                             <span *ngIf="patientInsurance.type ==='medicaid'">
                                 <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
-                            </span>                            
+                            </span>
                         </td>
                         <td>
-                            
+                            <c-row>
+                                <c-col xl="6">
+                                    <label for="dsds" class="form-label" style="font-size: medium;">Front</label>
+                                    <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1"
+                                        formControlName="guarantorIdBack"
+                                        (change)="onImageUpload($event ,'guarantorIdback','guarantorIdBack')" />
+                                </c-col>
+                                <c-col xl="6">
+                                    <label for="dsds" class="form-label" style="font-size: medium;">back</label>
+                                    <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1"
+                                        formControlName="guarantorIdBack"
+                                        (change)="onImageUpload($event ,'guarantorIdback','guarantorIdBack')" />
+                                </c-col>
+                            </c-row>
                         </td>
                     </tr>
                 </tbody>

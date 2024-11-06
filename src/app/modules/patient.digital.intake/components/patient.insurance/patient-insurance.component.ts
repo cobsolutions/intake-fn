@@ -90,6 +90,18 @@ export class PatientInsuranceComponent implements OnInit {
       var patientCommercialInsurance: CommercialInsurance = this.fillPatientCommercialInsurance();
       this.patientInsurances.commercialInsurances.push(patientCommercialInsurance)
       this.renderedPatientInsurances.push(patientCommercialInsurance)
+      if (patientCommercialInsurance.hasSecondaryInsurance) {
+        var patientSecondaryCommercialInsurance: CommercialInsurance = {
+          type: 'commercial',
+          isSecondaryInsurance: true,
+          insuranceCompanyId: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value,
+          insuranceCompanyName : this.secondaryInsuranceCompanyForm?.value,
+          policyId: this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.value,
+          memberId: this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.value,
+        }
+        this.patientInsurances.commercialInsurances.push(patientSecondaryCommercialInsurance)
+        this.renderedPatientInsurances.push(patientSecondaryCommercialInsurance)
+      }
     }
     if (insuranceType === 'Worker\'s Compensation') {
       var patientInsuranceCompensationNoFault: WorkerCompensationInsurance = this.fillPatientInsuranceCompensationNoFault('worker');
@@ -141,11 +153,11 @@ export class PatientInsuranceComponent implements OnInit {
   private fillPatientCommercialInsurance() {
     var patientCommercialInsurance: CommercialInsurance = {
       type: 'commercial',
+      isSecondaryInsurance: false,
       memberId: this.form.get('insurance')?.get('commercial-member-id')?.value,
       policyId: this.form.get('insurance')?.get('commercial-ploicy-id')?.value,
       relationship: this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value,
       hasSecondaryInsurance: this.form.get('insurance')?.get('commercial-is-secondary-insurance')?.value,
-      hasMedicareCoverage: this.form.get('insurance')?.get('commercial-is-medicare-coverage')?.value,
       insuranceCompanyId: this.form.get('insurance')?.get('commercial-insurance-company')?.value,
       insuranceCompanyName: this.insuranceCompanyForm?.value
     }
@@ -160,16 +172,6 @@ export class PatientInsuranceComponent implements OnInit {
       patientCommercialInsurance.patientRelationship = patientRelationship;
     } else {
       patientCommercialInsurance.patientRelationship = undefined;
-    }
-    if (patientCommercialInsurance.hasSecondaryInsurance) {
-      var secondaryInsurance: SecondaryInsurance = {
-        insuranceCompanyName: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value,
-        policyId: this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.value,
-        memberId: this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.value,
-      }
-      patientCommercialInsurance.secondaryInsurance = secondaryInsurance
-    } else {
-      patientCommercialInsurance.secondaryInsurance = undefined
     }
     return patientCommercialInsurance;
   }

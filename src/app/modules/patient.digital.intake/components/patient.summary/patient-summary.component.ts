@@ -219,7 +219,6 @@ export class PatientSummaryComponent implements OnInit {
   }
   private fillPatientInsurance() {
     this.form.get('insurance')?.valueChanges.forEach(select => {
-      console.log(JSON.stringify(select.insurances))
       if (select.insurances !== null) {
         this.pateint.insurances = select.insurances
       }

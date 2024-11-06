@@ -24,6 +24,9 @@ export class PatientDocumentComponent implements OnInit {
 
   ngOnInit(): void {
     this.componentReference.setPatientDocumentComponent(this)
+    this.componentReference.getPatientInsuranceComponent()?.form.get('insurance')?.get('insurances')?.valueChanges.subscribe(value => {
+      console.log(value)
+    })
     this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('dob')?.valueChanges.subscribe(value => {
       this.isGuarantor = this.componentReference.getPatientBasicComponent()!.isGuarantor
       var patientAge = moment().diff(value, 'y')

@@ -14,6 +14,7 @@ import { MedicaidInsurance } from 'src/app/modules/patient.questionnaire/models/
 import { MedicareInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.medicare';
 import { WorkerCompensationInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.workers.compensation';
 import { SelfPay } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/selfpay';
+import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 import { CheckInvalidForm } from '../../util/invalid.form';
 import { InsuranceValidator } from '../create/validators/insurance/insurance.validator';
@@ -44,8 +45,9 @@ export class PatientInsuranceComponent implements OnInit {
   secondaryInsuranceCompanyForm = new FormControl();
   isLoadingInsuranceCompany = false;
   isLoadingSecondaryInsuranceCompany = false;
-  constructor(private digitalIntakeService: DigitalIntakeService) { }
+  constructor(private digitalIntakeService: DigitalIntakeService , private componentReference:ComponentReferenceComponentService) { }
   ngOnInit(): void {
+    this.componentReference.setPatientInsuranceComponent(this)
     this.findInsuranceCompanyByNameAutoComplete();
     this.findSecondaryInsuranceCompanyByNameAutoComplete();
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {

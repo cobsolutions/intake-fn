@@ -9,6 +9,7 @@ import { PatientPhysicalTherapy } from 'src/app/modules/patient.questionnaire/mo
 import { Patient } from 'src/app/modules/patient.questionnaire/models/intake/patient';
 import { PatientAgreement } from 'src/app/modules/patient.questionnaire/models/intake/patient.agreement';
 import { PatientGrantor } from 'src/app/modules/patient.questionnaire/models/intake/patient.grantor';
+import { ReferringProvider } from 'src/app/modules/patient.questionnaire/models/intake/referring.provider/referring.provider';
 import { DoctorSource } from 'src/app/modules/patient.questionnaire/models/intake/source/doctor.source';
 import { EntitySource } from 'src/app/modules/patient.questionnaire/models/intake/source/entity.source';
 import { PatientSource } from "src/app/modules/patient.questionnaire/models/intake/source/patient.source";
@@ -29,7 +30,7 @@ export class PatientSummaryComponent implements OnInit {
   clinicId: string;
 
   constructor(private componentReference: ComponentReferenceComponentService
-    , private digitalIntakeService:DigitalIntakeService
+    , private digitalIntakeService: DigitalIntakeService
     , private router: Router) { }
 
   ngOnInit(): void {
@@ -41,7 +42,7 @@ export class PatientSummaryComponent implements OnInit {
     this.fillPatientInsurance();
     this.fillPatientAgreement();
     this.getSignture()
-    this.clinicId = localStorage.getItem('clinicId') ||'';
+    this.clinicId = localStorage.getItem('clinicId') || '';
   }
   submit() {
     var imageFormData = new FormData();
@@ -51,6 +52,7 @@ export class PatientSummaryComponent implements OnInit {
     })
     this.pateint.clinicIdUUID = this.clinicId;
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
+    console.log(JSON.stringify(this.pateint))
     this.digitalIntakeService.create(imageFormData).subscribe(resuldd => {
       this.router.navigateByUrl('/digital-intake/done');
     }, error => {
@@ -118,50 +120,20 @@ export class PatientSummaryComponent implements OnInit {
     })
   }
   private fillPatientSource() {
-    this.form.get('medical')?.get('isReferring')?.valueChanges.subscribe(value => {
-      var patientSource: PatientSource = {}
-      if (value === 'yes') {
-        var doctorSource: DoctorSource = {};
-        this.form.get('medical')?.get('providerName')?.valueChanges.subscribe(value => {
-          doctorSource.doctorName = value;
-          patientSource = {
-            doctorSource: doctorSource,
-            entitySource: undefined
-          }
-          this.pateint.patientSource = patientSource;
-        })
-        this.form.get('medical')?.get('providerNPI')?.valueChanges.subscribe(value => {
-          doctorSource.doctorNPI = value;
-          patientSource = {
-            doctorSource: doctorSource,
-            entitySource: undefined
-          }
-          this.pateint.patientSource = patientSource;
-        })
-      }
-      if (value === 'no') {
-        var entitySource: EntitySource = {}
-        var hasOther: boolean = false;
-        this.form.get('medical')?.get('referringEntity')?.valueChanges.subscribe(value => {
-          entitySource.organizationName = value;
-          patientSource = {
-            doctorSource: undefined,
-            entitySource: entitySource
-          }
-          if (value === 'other' || value === 'clinic_staff' || value === 'word_Of_mouse') {
-            hasOther = true;
-            this.form.get('medical')?.get('referringEntityOther')?.valueChanges.subscribe(value => {
-              entitySource.other = value
-            })
-          }
-          if (hasOther) {
-            var ff: string = this.form.get('medical')?.get('referringEntityOther')?.value;;
-            entitySource.other = ff
-          }
-          this.pateint.patientSource = patientSource;
-        })
-      }
+    this.form.get('medical')?.get('referringEntity')?.valueChanges.subscribe(value => {
+      this.pateint.patientIncomingSource = value;
     })
+    var referringProvider: ReferringProvider = {}
+    this.form.get('medical')?.get('providerName')?.valueChanges.subscribe(value => {
+      console.log('provider name value  ' + value )
+      referringProvider.npi = value;
+      this.pateint.referringProvider= referringProvider;
+    })
+    this.form.get('medical')?.get('providerNPI')?.valueChanges.subscribe(value => {
+      console.log('provider npi value  ' + value )
+      referringProvider.name = value;
+      this.pateint.referringProvider= referringProvider;
+    })    
   }
 
   private fillPatientMedicalInformation() {

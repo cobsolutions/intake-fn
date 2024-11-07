@@ -78,7 +78,6 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'zipCode': new FormControl(null, [Validators.required, Validators.min(10), Validators.pattern(zipCodeRgx)]),
       }),
       'medical': new FormGroup({
-        'isReferring': new FormControl(null, [Validators.required]),
         'providerSearch': new FormControl(false),
         'referringSearchType': new FormControl("l-name"),
         'referringSearch': new FormControl(null),

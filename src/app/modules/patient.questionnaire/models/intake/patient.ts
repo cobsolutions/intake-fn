@@ -7,12 +7,13 @@ import { PatientMedical } from "./medical/patient.medical";
 import { PatientAgreement } from "./patient.agreement";
 import { PatientGrantor } from "./patient.grantor";
 import { PatientSignature } from "./patient.signature";
+import { ReferringProvider } from "./referring.provider/referring.provider";
 import { PatientSource } from "./source/patient.source";
 
 export interface Patient {
   id?: number;
   patientEssentialInformation?: PatientEssentialInformation;
-  patientAddress?:PatientAddress
+  patientAddress?: PatientAddress
   patientMedical?: PatientMedical;
   patientInsurance?: PatientInsurance;
   patientGrantor?: PatientGrantor;
@@ -20,8 +21,11 @@ export interface Patient {
   patientSignature?: PatientSignature;
   patientAgreements?: PatientAgreement;
   clinicId?: string;
-  clinicIdUUID?:string
-  signature?:string;
-  insurances?:Insurance | null
-  isSelfPay?:boolean
+  clinicIdUUID?: string
+  signature?: string;
+  insurances?: Insurance | null
+  isSelfPay?: boolean
+  patientIncomingSource?: string;
+  referringProvider?: ReferringProvider
+
 }

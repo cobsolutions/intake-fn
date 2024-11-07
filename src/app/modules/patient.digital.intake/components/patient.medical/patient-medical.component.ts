@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import entityValues from 'src/app/modules/patient.admin/components/reports/_entity.values';
 import { Provider } from '../../models/provider';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
+import { CheckInvalidForm } from '../../util/invalid.form';
 import { ValidationExploder } from '../create/validators/validation.exploder';
 
 
@@ -103,6 +104,8 @@ export class PatientMedicalComponent implements OnInit {
     }
   }
   next() {
+    var insuranceForm: FormGroup = this.form.get('medical') as FormGroup
+    CheckInvalidForm.check(insuranceForm);
     if (this.form.get('medical')?.valid) {
       this.stepper.next();
       this.isValidForm = false;

@@ -85,7 +85,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'providerSearchName': new FormControl(null),
         'providerName': new FormControl(null),
         'providerNPI': new FormControl(null),
-        'referringEntity': new FormControl(null),
+        'referringEntity': new FormControl(null,[Validators.required]),
         'referringEntityOther': new FormControl(null),
         'appointmentBooking': new FormControl(null, [Validators.required]),
         'isPrimaryDoctor': new FormControl(null, [Validators.required]),

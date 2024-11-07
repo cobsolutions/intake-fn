@@ -127,15 +127,8 @@
                 <c-col xs="12">
                     <div *ngIf="this.form.get('medical')?.get('providerNPI')?.errors?.['required'] === true && 
                     (this.form.get('medical')?.get('providerNPI')?.touched)" class="text-danger mx-1">
-                        NPI is required
+                        Referring Doctor Information is required
                     </div>
-                    <c-col xs="12">
-                        <div *ngIf="this.form.get('medical')?.get('providerName')?.errors?.['required'] === true && 
-            (this.form.get('medical')?.get('providerName')?.dirty ||this.form.get('medical')?.get('providerName')?.touched)"
-                            class="text-danger mx-1">
-                            Provider Name is required
-                        </div>
-                    </c-col>
                 </c-col>
 
             </c-card-body>

@@ -53,7 +53,10 @@
             <c-card-header>
                 <label for="dsds" class="form-label">
                     <label><strong>Could you please provide us with the information of your Referring
-                            Doctor?</strong></label>
+                            Doctor? </strong>
+                        <span class="text-danger"
+                            *ngIf="this.form.get('medical')?.get('referringEntity')?.value ==='referringDoctor'">*</span>
+                    </label>
                 </label>
             </c-card-header>
             <c-card-body>

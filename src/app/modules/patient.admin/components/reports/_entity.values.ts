@@ -1,4 +1,5 @@
 const entityValues = [
+    { entityName: 'Referring Doctor', entityValue: 'referringDoctor', selected: false },
     { entityName: 'Google', entityValue: 'googlead', selected: false },
     { entityName: 'Zocdoc', entityValue: 'Zocdoc', selected: false },
     { entityName: 'Social media', entityValue: 'socialmedia', selected: false },

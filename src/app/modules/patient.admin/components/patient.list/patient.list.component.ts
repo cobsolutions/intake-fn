@@ -57,11 +57,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
       sorter: false,
     },
     {
-      key: 'insuranceType',
-      label: 'Insurance Type',
-      sorter: false,
-    },
-    {
       key: 'hasGuarantor',
       label: 'Has Guarantor',
       sorter: false,

@@ -1,225 +1,91 @@
-<span *ngIf="!(noShow | async)">
-  <ngx-spinner></ngx-spinner>
-  <c-row>
-    <c-col xs="3" class="mb-2">
-      <c-dropdown [autoClose]="'outside'">
-        <button cButton cDropdownToggle variant="outline" size="sm">
-          <svg cIcon name="cilFilter" *ngIf="!isFiltered"></svg>
-          <svg cIcon name="cilFilterX" *ngIf="isFiltered"></svg>
-        </button>
-        <div cDropdownMenu [ngStyle]="{'min-width.px': 200}" class="p-2">
-          <select cSelect sizing="sm" (change)="onChange($event)">
-            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-          </select>
-        </div>
-      </c-dropdown>
-    </c-col>
-  </c-row>
-  <patient-counter-widgets></patient-counter-widgets>
-  <clinics-patients-chart></clinics-patients-chart>
-  <c-row>
-    <c-col xs="3" class="mb-2">
-      <c-dropdown [autoClose]="'outside'">
-        <button cButton cDropdownToggle variant="outline" size="sm">
-          <svg cIcon name="cilFilter" *ngIf="!isFiltered"></svg>
-          <svg cIcon name="cilFilterX" *ngIf="isFiltered"></svg>
-        </button>
-        <div cDropdownMenu [ngStyle]="{'min-width.px': 300}">
-          <div class="px-2 py-1 mb-3">
-            <label cLabel for="db_date_filter">Date Filter</label>
-            <c-date-range-picker size="sm" id="db_date_filter" [ranges]="customRanges"
-              (startDateChange)="startDateChange($event)" (endDateChange)="endDateChange($event)"></c-date-range-picker>
-          </div>
-          <div cDropdownDivider></div>
-        </div>
-      </c-dropdown>
-    </c-col>
-  </c-row>
-  <c-row>
-    <c-col xs="12">
-      <c-card class="mb-4" *ngIf="dashboardDataContainer">
-        <c-card-header>Traffic </c-card-header>
-        <c-card-body>
-          <c-row>
-            <c-col sm="2">
-              <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                <div class="text-medium-emphasis small">
-                  Commercial
-                </div>
-                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfCommercialPatient}}</div>
-              </div>
-            </c-col>
-            <c-col sm="2">
-              <div class="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
-                <div class="text-medium-emphasis small">
-                  Compensation-NoFault
-                </div>
-                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfCompensationNoFaultPatient}}
-                </div>
-              </div>
-            </c-col>
-            <c-col sm="2">
-              <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                <div class="text-medium-emphasis small">
-                  Medicare
-                </div>
-                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfMedicare}}</div>
-              </div>
-            </c-col>
-            <c-col sm="2">
-              <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                <div class="text-medium-emphasis small">
-                  Medicade
-                </div>
-                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfMedicade}}</div>
-              </div>
-            </c-col>
-            <c-col sm="2">
-              <div class="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
-                <div class="text-medium-emphasis small">
-                  SelfPayed
-                </div>
-                <div class="fs-5 fw-semibold">{{dashboardDataContainer.totalNumberOfSelfPay}}</div>
-              </div>
-            </c-col>
-            <c-col xs="12">
-              <div class="progress-group mb-4">
-                <div class="progress-group-header">
-                  <svg cIcon class="icon icon-lg me-2" name="cilUser"></svg>
-                  <span>Male</span>
-                  <span class="ms-auto font-semibold">
-                    ({{dashboardDataContainer.genderContainer.maleNumber}})
-                    {{dashboardDataContainer.genderContainer.malePercentage}}%
-                  </span>
-                </div>
-                <div class="progress-group-bars">
-                  <c-progress thin>
-                    <c-progress-bar color="warning-gradient"
-                      [value]="dashboardDataContainer.genderContainer.malePercentage"></c-progress-bar>
-                  </c-progress>
-                </div>
-              </div>
-              <div class="progress-group mb-5">
-                <div class="progress-group-header">
-                  <svg cIcon class="icon icon-lg me-2" name="cilUserFemale"></svg>
-                  <span>Female</span>
-                  <span class="ms-auto font-semibold">
-                    ({{dashboardDataContainer.genderContainer.femaleNumber}})
-                    {{dashboardDataContainer.genderContainer.femalePercentage}}%
-                  </span>
-                </div>
-                <div class="progress-group-bars">
-                  <c-progress thin>
-                    <c-progress-bar color="warning-gradient"
-                      [value]="dashboardDataContainer.genderContainer.femalePercentage"></c-progress-bar>
-                  </c-progress>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header">
-                  <svg cIcon class="icon icon-lg me-2" name="cilUserFollow"></svg>
-                  <span>Doctor Source</span>
-                  <span class="ms-auto font-semibold">
-                    <span class="text-medium-emphasis small">
-                      ({{dashboardDataContainer.patientSourceContainer.doctorNumber}})
-                      {{dashboardDataContainer.patientSourceContainer.doctorPercentage}}%</span>
-                  </span>
-                </div>
-                <div class="progress-group-bars">
-                  <c-progress thin>
-                    <c-progress-bar color="success-gradient"
-                      [value]="dashboardDataContainer.patientSourceContainer.doctorPercentage"></c-progress-bar>
-                  </c-progress>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header">
-                  <svg cIcon class="icon icon-lg me-2" name="cibZulip"></svg>
-                  <span>Zocdoc</span>
-                  <span class="ms-auto font-semibold">
-                    <span class="text-medium-emphasis small">
-                      ({{dashboardDataContainer.patientSourceContainer.zocdocNumber}})
-                      {{dashboardDataContainer.patientSourceContainer.zocdocPercentage}}%</span>
-                  </span>
-                </div>
-                <div class="progress-group-bars">
-                  <c-progress thin>
-                    <c-progress-bar color="success-gradient"
-                      [value]="dashboardDataContainer.patientSourceContainer.zocdocPercentage"></c-progress-bar>
-                  </c-progress>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header">
-                  <svg cIcon class="icon icon-lg me-2" name="cibFacebook"></svg>
-                  <span>Social Media</span>
-                  <span class="ms-auto font-semibold">
-                    <span class="text-medium-emphasis small">
-                      ({{dashboardDataContainer.patientSourceContainer.socialMediaNumber}})
-                      {{dashboardDataContainer.patientSourceContainer.socialMediaPercentage}}%</span>
-                  </span>
-                </div>
-                <div class="progress-group-bars">
-                  <c-progress thin>
-                    <c-progress-bar color="success-gradient"
-                      [value]="dashboardDataContainer.patientSourceContainer.socialMediaPercentage"></c-progress-bar>
-                  </c-progress>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header">
-                  <svg cIcon class="icon icon-lg me-2" name="cibInternetExplorer"></svg>
-                  <span>Website</span>
-                  <span class="ms-auto font-semibold">
-                    <span class="text-medium-emphasis small">
-                      ({{dashboardDataContainer.patientSourceContainer.websiteNumber}})
-                      {{dashboardDataContainer.patientSourceContainer.websitePercentage}}%</span>
-                  </span>
-                </div>
-                <div class="progress-group-bars">
-                  <c-progress thin>
-                    <c-progress-bar color="success-gradient"
-                      [value]="dashboardDataContainer.patientSourceContainer.websitePercentage"></c-progress-bar>
-                  </c-progress>
-                </div>
-              </div>
-              <div class="progress-group">
-                <div class="progress-group-header">
-                  <svg cIcon class="icon icon-lg me-2" name="cilTv"></svg>
-                  <span>TV</span>
-                  <span class="ms-auto font-semibold">
-                    <span class="text-medium-emphasis small">
-                      ({{dashboardDataContainer.patientSourceContainer.tvNumber}})
-                      {{dashboardDataContainer.patientSourceContainer.tvPercentage}}%</span>
-                  </span>
-                </div>
-                <div class="progress-group-bars">
-                  <c-progress thin>
-                    <c-progress-bar color="success-gradient"
-                      [value]="dashboardDataContainer.patientSourceContainer.tvPercentage"></c-progress-bar>
-                  </c-progress>
-                </div>
-              </div>
-            </c-col>
-          </c-row>
-        </c-card-body>
-      </c-card>
-    </c-col>
-    <!-- <c-col xs="5">
-      <c-card class="mb-4" *ngIf="dashboardDataContainer">
-        <c-card-header>
-          Users
-        </c-card-header>
-        <c-card-body></c-card-body>
-      </c-card>
-    </c-col> -->
-  </c-row>
-</span>
-<span *ngIf="noShow | async">
-  <div class="container error-container">
-    <h1 class="display-4">Oops, something went wrong!</h1>
-    <p class="lead">We apologize for the inconvenience.</p>
-    <p>May be you don't assign to any clinic or your clinic has been deactivated. Please contact the administrator</p>
-    <a class="btn btn-primary" (click)="logout()">Logout</a>
-  </div>
-</span>
+<ngx-spinner></ngx-spinner>
+<c-row>
+  <c-col xs="6" class="mb-2">
+    <c-card>
+      <c-card-header>
+        <h5>Patients Total Sources</h5>
+      </c-card-header>
+      <c-card-body>
+        <c-row class="mb-2">
+          <c-col xs="4">Clinic</c-col>
+          <c-col xs="4">Source</c-col>
+          <c-col xs="4">Date</c-col>
+          <c-col xs="4">
+            <c-multi-select multiple selectionType="counter">
+              <c-multi-select-option selected>Angular</c-multi-select-option>
+              <c-multi-select-option>Bootstrap</c-multi-select-option>
+              <c-multi-select-option>React.js</c-multi-select-option>
+              <c-multi-select-option>Vue.js</c-multi-select-option>
+            </c-multi-select>
+          </c-col>
+          <c-col xs="4">
+            <c-multi-select multiple selectionType="counter">
+              <c-multi-select-option selected>Angular</c-multi-select-option>
+              <c-multi-select-option>Bootstrap</c-multi-select-option>
+              <c-multi-select-option>React.js</c-multi-select-option>
+              <c-multi-select-option>Vue.js</c-multi-select-option>
+            </c-multi-select>
+          </c-col>
+          <c-col xs="4">
+            <c-multi-select multiple selectionType="counter">
+              <c-multi-select-option selected>Angular</c-multi-select-option>
+              <c-multi-select-option>Bootstrap</c-multi-select-option>
+              <c-multi-select-option>React.js</c-multi-select-option>
+              <c-multi-select-option>Vue.js</c-multi-select-option>
+            </c-multi-select>
+          </c-col>
+        </c-row>
+        <patient-source-bar-chart></patient-source-bar-chart>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="6" class="mb-2">
+    <c-card>
+      <c-card-header>
+        <h5>Patients Sources</h5>
+      </c-card-header>
+      <c-card-body>
+        <c-row class="mb-2">
+          <c-col xs="4">Clinic</c-col>
+          <c-col xs="4">Source</c-col>
+          <c-col xs="4">Date</c-col>
+          <c-col xs="4">
+            <c-multi-select multiple selectionType="counter">
+              <c-multi-select-option selected>Angular</c-multi-select-option>
+              <c-multi-select-option>Bootstrap</c-multi-select-option>
+              <c-multi-select-option>React.js</c-multi-select-option>
+              <c-multi-select-option>Vue.js</c-multi-select-option>
+            </c-multi-select>
+          </c-col>
+          <c-col xs="4">
+            <c-multi-select multiple selectionType="counter">
+              <c-multi-select-option selected>Angular</c-multi-select-option>
+              <c-multi-select-option>Bootstrap</c-multi-select-option>
+              <c-multi-select-option>React.js</c-multi-select-option>
+              <c-multi-select-option>Vue.js</c-multi-select-option>
+            </c-multi-select>
+          </c-col>
+          <c-col xs="4">
+            <c-multi-select multiple selectionType="counter">
+              <c-multi-select-option selected>Angular</c-multi-select-option>
+              <c-multi-select-option>Bootstrap</c-multi-select-option>
+              <c-multi-select-option>React.js</c-multi-select-option>
+              <c-multi-select-option>Vue.js</c-multi-select-option>
+            </c-multi-select>
+          </c-col>
+        </c-row>
+        <patient-source-pie-chart></patient-source-pie-chart>
+      </c-card-body>
+    </c-card>
+  </c-col>
+  <c-col xs="12">
+    <c-card>
+      <c-card-header>
+        <h4>Total Patients</h4>
+      </c-card-header>
+      <c-card-body>
+        <clinics-patients-chart [clinics]="clinics$ "></clinics-patients-chart>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

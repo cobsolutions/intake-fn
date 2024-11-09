@@ -24,6 +24,9 @@ export class ClinicService {
   get() {
     return this.http.get<Clinic[]>(`${this.clinicUrl}` + '/find', { observe: 'response' })
   }
+  getObservable():Observable<any> {
+    return this.http.get<Clinic[]>(`${this.clinicUrl}` + '/find', { observe: 'response' })
+  }
   checkName(name: string) {
     return this.http.get(`${this.clinicUrl}` + '/check/' + name, { observe: 'response' })
   }

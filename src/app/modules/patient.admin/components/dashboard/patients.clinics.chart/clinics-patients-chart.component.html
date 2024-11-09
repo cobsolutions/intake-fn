@@ -1,6 +1,26 @@
+<c-row class="mb-2">
+  <c-col xs="6">Clinic</c-col>
+  <c-col xs="6">Date</c-col>
+  <c-col xs="6">
+    <c-multi-select multiple selectionType="counter" (valueChange)="changeClinics($event)">
+      <c-multi-select-option *ngFor="let clinic of clinics |async" [value]="clinic.id?.toString() || '{}'"
+        [selected]="clinic.selected">
+        {{clinic.name}}
+      </c-multi-select-option>
+    </c-multi-select>
+  </c-col>
+  <c-col xs="6">
+    <c-multi-select multiple selectionType="counter" (valueChange)="changeDate($event)" multiple="false">
+      <c-multi-select-option *ngFor="let year of years" [value]="year.value" [selected]="year.selected">
+        {{year.value}}
+      </c-multi-select-option>
+    </c-multi-select>
+  </c-col>
+</c-row>
 <c-card class="mb-4">
-    <c-card-body>
-        <c-chart [height]="300" [options]="options" [ngStyle]="{'marginTop.px': 40}" id="test" [data]="data$ | async" type="line">
-        </c-chart>
-    </c-card-body>
+  <c-card-body>
+    <c-chart [height]="300" [options]="options" [ngStyle]="{'marginTop.px': 40}" id="test" [data]="data$ | async"
+      type="line">
+    </c-chart>
+  </c-card-body>
 </c-card>

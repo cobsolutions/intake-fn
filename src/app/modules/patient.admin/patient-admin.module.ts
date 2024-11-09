@@ -68,6 +68,8 @@ import { ClinicsPatientsChartComponent } from './components/dashboard/patients.c
 import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
 import { GenerateRequestComponent } from './components/trust.device/generate.request/generate-request.component';
 import { EditClinicLocationComponent } from './components/clinic/edit.clinic.location/edit-clinic-location.component';
+import { PatientSourceBarChartComponent } from './components/dashboard/patient.source.bar.chart/patient-source-bar-chart.component';
+import { PatientSourcePieChartComponent } from './components/dashboard/patient.source.pie.chart/patient-source-pie-chart.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +84,7 @@ import { EditClinicLocationComponent } from './components/clinic/edit.clinic.loc
     PatientCreateComponent,
     InsuranceCompanyCreateComponent,
     InsuranceCompanyListComponent,
-    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, GenerateRequestComponent, EditClinicLocationComponent
+    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, GenerateRequestComponent, EditClinicLocationComponent, PatientSourceBarChartComponent, PatientSourcePieChartComponent
   ],
   imports: [
     CommonModule,

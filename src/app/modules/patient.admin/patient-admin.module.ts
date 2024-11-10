@@ -4,6 +4,7 @@ import { IconModule } from '@coreui/icons-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PatientAdminRoutingModule } from './patient-admin-routing.module';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { NgChartsModule } from 'ng2-charts';
 import {
   PatientListComponent,
   ValidationListComponent,
@@ -125,6 +126,7 @@ import { PatientSourcePieChartComponent } from './components/dashboard/patient.s
     ModalModule,
     ChartjsModule,
     GoogleMapsModule,
+    NgChartsModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ]
 })

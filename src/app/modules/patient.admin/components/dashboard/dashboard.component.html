@@ -45,36 +45,7 @@
         <h5>Patients Sources</h5>
       </c-card-header>
       <c-card-body>
-        <c-row class="mb-2">
-          <c-col xs="4">Clinic</c-col>
-          <c-col xs="4">Source</c-col>
-          <c-col xs="4">Date</c-col>
-          <c-col xs="4">
-            <c-multi-select multiple selectionType="counter">
-              <c-multi-select-option selected>Angular</c-multi-select-option>
-              <c-multi-select-option>Bootstrap</c-multi-select-option>
-              <c-multi-select-option>React.js</c-multi-select-option>
-              <c-multi-select-option>Vue.js</c-multi-select-option>
-            </c-multi-select>
-          </c-col>
-          <c-col xs="4">
-            <c-multi-select multiple selectionType="counter">
-              <c-multi-select-option selected>Angular</c-multi-select-option>
-              <c-multi-select-option>Bootstrap</c-multi-select-option>
-              <c-multi-select-option>React.js</c-multi-select-option>
-              <c-multi-select-option>Vue.js</c-multi-select-option>
-            </c-multi-select>
-          </c-col>
-          <c-col xs="4">
-            <c-multi-select multiple selectionType="counter">
-              <c-multi-select-option selected>Angular</c-multi-select-option>
-              <c-multi-select-option>Bootstrap</c-multi-select-option>
-              <c-multi-select-option>React.js</c-multi-select-option>
-              <c-multi-select-option>Vue.js</c-multi-select-option>
-            </c-multi-select>
-          </c-col>
-        </c-row>
-        <patient-source-pie-chart></patient-source-pie-chart>
+        <patient-source-pie-chart [clinics]="clinics$"></patient-source-pie-chart>
       </c-card-body>
     </c-card>
   </c-col>
@@ -84,7 +55,7 @@
         <h4>Total Patients</h4>
       </c-card-header>
       <c-card-body>
-        <clinics-patients-chart [clinics]="clinics$ "></clinics-patients-chart>
+        <clinics-patients-chart [clinics]="clinics$"></clinics-patients-chart>
       </c-card-body>
     </c-card>
   </c-col>

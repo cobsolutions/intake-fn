@@ -23,11 +23,6 @@ export class ClinicsPatientsChartComponent implements OnInit, AfterViewInit {
   selectedClinics: any;
   options: any = {};
   constructor(private dashboardService: DashboardService) { }
-  data = {
-    labels: ChartMonths,
-    datasets: [
-    ]
-  };
   ngOnInit(): void {
     this.prepareYears();
     this.getData();

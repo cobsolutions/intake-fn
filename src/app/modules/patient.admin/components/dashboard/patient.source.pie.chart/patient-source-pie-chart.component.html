@@ -1,3 +1,34 @@
-<div class="text-center">
-    <c-chart [data]="data" type="pie"  width="500"></c-chart>
+<c-row class="mb-2">
+    <c-col xs="4">Clinic</c-col>
+    <c-col xs="4">Source</c-col>
+    <c-col xs="4">Date</c-col>
+    <c-col xs="4">
+        <c-multi-select multiple selectionType="counter" (valueChange)="changeClinics($event)">
+            <c-multi-select-option *ngFor="let clinic of clinics |async" [value]="clinic.id?.toString() || '{}'"
+                [selected]="clinic.selected">
+                {{clinic.name}}
+            </c-multi-select-option>
+        </c-multi-select>
+    </c-col>
+    <c-col xs="4">
+        <c-multi-select multiple selectionType="counter" (valueChange)="changeSources($event)">
+            <c-multi-select-option *ngFor="let patientSource of patientSources" [value]="patientSource.entityValue"
+                [selected]="patientSource.selected">
+                {{patientSource.entityName}}
+            </c-multi-select-option>
+        </c-multi-select>
+    </c-col>
+    <c-col xs="4">
+        <c-multi-select multiple selectionType="counter" (valueChange)="changeDate($event)">
+            <c-multi-select-option *ngFor="let month of dateMonths" [value]="(month.index).toString()"
+                [selected]="month.selected">
+                {{month.name}}
+            </c-multi-select-option>
+        </c-multi-select>
+    </c-col>
+</c-row>
+<div class="chart-container">
+    <canvas baseChart type="pie" [data]="pieChartData" [options]="pieChartOptions"
+        *ngIf="pieChartData &&pieChartOptions">
+    </canvas>
 </div>

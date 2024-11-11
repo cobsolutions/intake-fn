@@ -33,7 +33,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     , private toastrService: ToastrService
     , private patientSearchService: PatientSearchService) {
   }
-  patientSearchCriteria: PatientSearchCriteria = {}
+  patientSearchCriteria: PatientSearchCriteria = {isSchedule:undefined}
   isSchedulePatient: boolean;
   public customRanges = {
     Today: [new Date(), new Date()],
@@ -325,6 +325,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
         return response.records;
       })
     );
+  }
+  isScheduleChanged(event: any) {
+    console.log(this.patientSearchCriteria.isSchedule)
   }
 }
 

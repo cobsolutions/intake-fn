@@ -30,6 +30,15 @@
                 [(endDate)]="patientSearchCriteria.endDate_date" [placeholder]="['Created From ', 'Created To']"
                 [ranges]="customRanges"></c-date-range-picker>
             </c-col>
+            <c-col class="mb-2" xs="12">
+              <select cSelect name="pSchedulefilter" (change)="isScheduleChanged($event)"
+                [(ngModel)]="patientSearchCriteria.isSchedule">
+                <option selected disabled value="undefined">Patient Schedule</option>
+                <option value="null">All</option>
+                <option value="true">Scheduled</option>
+                <option value="false">Not Scheduled</option>
+              </select>
+            </c-col>
             <c-col xs="12" class="text-center">
               <button cButton class="me-1" color="primary" style="width: 15%;" (click)="search()">
                 Search

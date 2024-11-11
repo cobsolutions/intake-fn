@@ -7,6 +7,7 @@ export interface PatientSearchCriteria {
     clinic?: String;
     startDate_date?: Date | null | undefined
     endDate_date?: Date | null | undefined
+    isSchedule?:boolean | null
     startDate?:number
     endDate?:number
 }

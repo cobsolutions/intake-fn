@@ -287,10 +287,12 @@
             <c-card-body>
                 <h5 cCardTitle>Worker's Compensation</h5>
                 <!--Accident Date-->
-                <c-row class="mb-2" *ngIf="selectedInsuranceType === 'Auto Accident'">
+                <c-row class="mb-2">
                     <c-col xl="12">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Accident Date<span
-                                class="text-danger">*</span>
+                        <label for="dsds" class="form-label" style="font-size: medium;">
+                            <span *ngIf="selectedInsuranceType === 'Auto Accident'">Accident Date</span>
+                            <span *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Injury Date</span>
+                            <span class="text-danger">*</span>
                         </label>
                     </c-col>
                     <c-col xl="12">
@@ -299,7 +301,8 @@
                     <div *ngIf="this.form.get('insurance')?.get('compensation-accident-date')?.errors?.['required'] && 
                                 (this.form.get('insurance')?.get('compensation-accident-date')?.dirty ||this.form.get('insurance')?.get('compensation-accident-date')?.touched)"
                         class="text-danger mx-1">
-                        Accident Date is required
+                        <span *ngIf="selectedInsuranceType === 'Auto Accident'">Accident Date is required</span>
+                        <span *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Injury Date is required</span>
                     </div>
                     <div *ngIf="this.form.get('insurance')?.get('compensation-accident-date')?.errors?.['future']"
                         class="text-danger mx-1">accident date can't be in future.</div>
@@ -539,7 +542,8 @@
                                     <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
                                 </span>
                                 <span *ngIf="patientInsurance.type ==='commercial'">
-                                    <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceCompanyName}}
+                                    <strong> Insurance Company :
+                                    </strong>{{$any(patientInsurance).insuranceCompanyName}}
                                 </span>
                                 <span *ngIf="patientInsurance.type ==='medicare'">
                                     <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
@@ -553,7 +557,8 @@
                             </td>
                             <td>
                                 <c-button-group aria-label="Basic example" role="group" size="sm">
-                                    <button cButton variant="outline" size="sm" (click)="remove(i, patientInsurance.type)">
+                                    <button cButton variant="outline" size="sm"
+                                        (click)="remove(i, patientInsurance.type)">
                                         <svg cIcon name="cilTrash"></svg>
                                     </button>
                                 </c-button-group>

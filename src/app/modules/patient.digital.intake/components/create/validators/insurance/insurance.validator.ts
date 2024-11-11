@@ -27,7 +27,7 @@ export class InsuranceValidator {
         AddCommercialValidators.add(form)
         form.get('insurance')?.get('type')?.valueChanges.subscribe((value: any) => {
             if (value === 'Worker\'s Compensation') {
-                this.removeAutoAccident(form)
+                this.addAutoAccident(form)
                 //add worker compansation validators 
                 AddWorkerCompensationValidators.add(form)
                 //remove worker commercial validators

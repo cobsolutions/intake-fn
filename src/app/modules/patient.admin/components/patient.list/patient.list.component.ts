@@ -5,10 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, retry, Subject, takeUntil, tap } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
+import { PatientSearchCriteria } from '../../models/patient.search.criteria';
 import { ClinicService } from '../../services/clinic/clinic.service';
 import { PateintDocumentsService } from '../../services/documents/pateint-documents.service';
 import { IApiParams, IPatient, IUsers, PatientListService } from '../../services/patient-list.service';
 import { PatientReportingService } from '../../services/patient.reporting.service';
+import { PatientSearchService } from '../../services/patient.search/patient-search.service';
 export interface IParams {
   activePage?: number;
   columnFilterValue?: IColumnFilterValue;
@@ -28,10 +30,38 @@ export class PatientListComponent implements OnInit, OnDestroy {
     , private pateintDocumentsService: PateintDocumentsService
     , private clinicService: ClinicService
     , private kcAuthServiceService: KcAuthServiceService
-    , private toastrService: ToastrService) {
+    , private toastrService: ToastrService
+    , private patientSearchService: PatientSearchService) {
   }
-
+  patientSearchCriteria: PatientSearchCriteria = {}
   isSchedulePatient: boolean;
+  public customRanges = {
+    Today: [new Date(), new Date()],
+    Yesterday: [
+      new Date(new Date().setDate(new Date().getDate() - 1)),
+      new Date(new Date().setDate(new Date().getDate() - 1))
+    ],
+    'Last 7 Days': [
+      new Date(new Date().setDate(new Date().getDate() - 6)),
+      new Date(new Date())
+    ],
+    'Last 30 Days': [
+      new Date(new Date().setDate(new Date().getDate() - 29)),
+      new Date(new Date())
+    ],
+    'This Month': [
+      new Date(new Date().setDate(1)),
+      new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
+    ],
+    'Last Month': [
+      new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+      new Date(new Date().getFullYear(), new Date().getMonth(), 0)
+    ],
+    'Clear': [
+      null,
+      null
+    ]
+  };
   readonly columns: (string | IColumn)[] = [
     {
       key: 'lastName',
@@ -267,6 +297,34 @@ export class PatientListComponent implements OnInit, OnDestroy {
     }, error => {
       this.toastrService.error('error during schedule patient');
     })
+  }
+  search() {
+    if (this.patientSearchCriteria.startDate_date !== undefined)
+      this.patientSearchCriteria.startDate = moment(this.patientSearchCriteria.startDate_date).unix() * 1000;
+    if (this.patientSearchCriteria.endDate_date !== undefined)
+      this.patientSearchCriteria.endDate = moment(this.patientSearchCriteria.endDate_date).unix() * 1000;
+
+    this.usersData$ = this.patientSearchService.findFilter(this.apiParams$, this.patientSearchCriteria).pipe(
+      tap((response: any) => {
+        this.totalItems$.next(response.number_of_matching_records);
+        if (response.number_of_records) {
+          this.errorMessage$.next('');
+        }
+        this.retry$.next(false);
+        this.loadingData$.next(false);
+      }),
+      tap((response) => {
+        this.totalItems$.next(response.number_of_matching_records);
+        if (response.number_of_records) {
+          this.errorMessage$.next('');
+        }
+        this.retry$.next(false);
+        this.loadingData$.next(false);
+      }),
+      map((response) => {
+        return response.records;
+      })
+    );
   }
 }
 

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IColumn, IColumnFilterValue, ISorterValue } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import * as moment from 'moment';
+import { ToastrService } from 'ngx-toastr';
 import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, retry, Subject, takeUntil, tap } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
@@ -21,15 +22,16 @@ export interface IParams {
   styleUrls: ['./patient.list.component.css']
 })
 export class PatientListComponent implements OnInit, OnDestroy {
-  noShow:BehaviorSubject<boolean|null>;
+  noShow: BehaviorSubject<boolean | null>;
   constructor(private patientListService: PatientListService
     , private reportingService: PatientReportingService
     , private pateintDocumentsService: PateintDocumentsService
-    ,private clinicService:ClinicService
-    ,private kcAuthServiceService: KcAuthServiceService) {
+    , private clinicService: ClinicService
+    , private kcAuthServiceService: KcAuthServiceService
+    , private toastrService: ToastrService) {
   }
 
-  title = 'CoreUI Angular Smart Table Example';
+  isSchedulePatient: boolean;
   readonly columns: (string | IColumn)[] = [
     {
       key: 'lastName',
@@ -64,6 +66,11 @@ export class PatientListComponent implements OnInit, OnDestroy {
     {
       key: 'createAt',
       label: 'Created At',
+      sorter: false,
+    },
+    {
+      key: 'schedule',
+      label: 'Schedule',
       sorter: false,
     },
     {
@@ -134,13 +141,13 @@ export class PatientListComponent implements OnInit, OnDestroy {
   exportPDF(data: IPatient) {
     this.reportingService.exportPDF(data.patientId).subscribe(
       (response: any) => {
-        this.constructExportedFile(response,'patient-','pdf')
+        this.constructExportedFile(response, 'patient-', 'pdf')
       });
   }
-  exportPatientIDDocument(data: IPatient , hasGuarantor?:boolean) {
-    this.pateintDocumentsService.exportPateintIdDocuments(data.patientId,hasGuarantor).subscribe(
+  exportPatientIDDocument(data: IPatient, hasGuarantor?: boolean) {
+    this.pateintDocumentsService.exportPateintIdDocuments(data.patientId, hasGuarantor).subscribe(
       (response: any) => {
-        this.constructExportedFile(response , 'patient-ID-Documents','zip')
+        this.constructExportedFile(response, 'patient-ID-Documents', 'zip')
       }
     )
 
@@ -148,7 +155,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
   exportPatientInsuranceDocument(data: IPatient) {
     this.pateintDocumentsService.exportPateintInsuranceDocuments(data.patientId).subscribe(
       (response: any) => {
-        this.constructExportedFile(response, 'patient-Insurance-Documents','zip')
+        this.constructExportedFile(response, 'patient-Insurance-Documents', 'zip')
       },
       (error) => {
 
@@ -156,12 +163,12 @@ export class PatientListComponent implements OnInit, OnDestroy {
     )
   }
 
-  constructExportedFile(response: any, fileName: string, extention:string) {
+  constructExportedFile(response: any, fileName: string, extention: string) {
     const a = document.createElement('a')
     const objectUrl = URL.createObjectURL(response)
     a.href = objectUrl
     var nameDatePart = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-    a.download = fileName + nameDatePart + '.' +extention;
+    a.download = fileName + nameDatePart + '.' + extention;
     a.click();
     URL.revokeObjectURL(objectUrl);
   }
@@ -252,6 +259,14 @@ export class PatientListComponent implements OnInit, OnDestroy {
   details_visible = Object.create({});
   toggleDetails(item: any) {
     this.details_visible[item] = !this.details_visible[item];
+  }
+  isSchedule(item: any) {
+    console.log(item.schedule)
+    this.patientListService.updatePatientSchedule(item.patientId, item.schedule).subscribe(result => {
+      this.toastrService.success('Patient is scheduled');
+    }, error => {
+      this.toastrService.error('error during schedule patient');
+    })
   }
 }
 

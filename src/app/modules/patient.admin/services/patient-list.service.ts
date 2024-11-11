@@ -32,19 +32,20 @@ export interface IUsers {
   patientSourceType: string,
   insuranceWorkerType: string,
   hasPhysicalTherapy: boolean
-  createdAt:number;
+  isSchedule: boolean
+  createdAt: number;
 }
 
-export interface IPatient{
-    firstName:string,
-    middleName:string,
-    lastName:string,
-    email:string
-    phoneNumber:string,
-    sourceType:string,
-    insuranceType:string
-    hasGuarantor:boolean;
-    patientId:number
+export interface IPatient {
+  firstName: string,
+  middleName: string,
+  lastName: string,
+  email: string
+  phoneNumber: string,
+  sourceType: string,
+  insuranceType: string
+  hasGuarantor: boolean;
+  patientId: number
 }
 
 export interface IApiParams {
@@ -85,7 +86,7 @@ export class PatientListService {
       ? { params: httpParams, ...httpOptions }
       : { params: {}, ...httpOptions };
     return this.clinicService.selectedClinic$.pipe(
-      switchMap(clinicId =>  
+      switchMap(clinicId =>
         this.httpClient
           .get<IData>(this.baseUrl + "/find/clinic/" + clinicId, options)
           .pipe(
@@ -98,4 +99,8 @@ export class PatientListService {
     return throwError(() => error);
   }
 
+  updatePatientSchedule(patientId: number, isSchedulePatient: boolean) {
+    const url = this.baseUrl + '/update/schedule/patientId/' + patientId + '/isSchedule/' + isSchedulePatient
+    return this.httpClient.get(url)
+  }
 }

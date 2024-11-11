@@ -55,20 +55,6 @@
       <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
         <td>
           <ng-container [ngSwitch]="columnName">
-            <!-- <ng-container *ngSwitchCase="'actions'" class="py-2">
-              <div class="btn-group" role="group" aria-label="Basic example">
-                <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File">
-                  <svg cIcon name="cibAdobeAcrobatReader" class="text-danger"></svg>
-                </button>
-                <button cButton variant="outline" (click)="exportPatientIDDocument(item,item.hasGuarantor)" cTooltip="Id Document">
-                  <svg cIcon name="cilUser"></svg>
-                </button>
-                <button cButton variant="outline" (click)="exportPatientInsuranceDocument(item)" *ngIf="!item.hasGuarantor"
-                  cTooltip="Insurance Document" >
-                  <svg cIcon name="cilPaperPlane"></svg>
-                </button>
-              </div>
-            </ng-container> -->
             <ng-container *ngSwitchCase="'hasGuarantor'">
               <c-form-check>
                 <input cFormCheckInput type="checkbox" size="sm" disabled [checked]="item[columnName]" />
@@ -84,6 +70,12 @@
               <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm" variant="outline">
                 Records
               </button>
+            </ng-container>
+            <ng-container *ngSwitchCase="'schedule'" class="py-2">
+              <c-form-check [switch]="true">
+                <input cFormCheckInput type="checkbox"
+                  (change)="isSchedule(item)" [checked]="item.schedule" [(ngModel)]="item.schedule"/>
+              </c-form-check>          
             </ng-container>
           </ng-container>
         </td>

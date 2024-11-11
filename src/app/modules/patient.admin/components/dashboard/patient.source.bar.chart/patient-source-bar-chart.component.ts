@@ -25,27 +25,17 @@ export class PatientSourceBarChartComponent implements OnInit {
   constructor(private dashboardService: DashboardService) { }
   ngOnInit(): void {
     this.prepareLookups();
-    this.getData();  
-    this.chartData = {
-      labels: ['Google', 'TV', 'Newspaper', 'Referral','Zocdoc','Soical','mail','other'],
-      datasets: [
-        {
-          label: 'Count Source',
-          data: [30, 45, 12, 25,33,12,54,87],
-          backgroundColor: 'rgba(75, 192, 192, 0.5)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1
-        },
-        {
-          label: 'Direct Access',
-          data: [10, 20, 8, 15,65,87,87,98],
-          backgroundColor: 'rgba(153, 102, 255, 0.5)',
-          borderColor: 'rgba(153, 102, 255, 1)',
-          borderWidth: 1
-        }
-      ]
-    };
+    this.buildChartOption();
+    this.getData();
+  }
 
+  changeClinics(event: any) {
+    if (!(this.same(event, this.selectedClinics))) {
+      this.getData(event, this.selectedSources, this.selectedDate);
+    }
+    this.selectedClinics = event;
+  }
+  private buildChartOption() {
     this.chartOptions = {
       responsive: true,
       plugins: {
@@ -76,24 +66,17 @@ export class PatientSourceBarChartComponent implements OnInit {
           }
         }
       }
-    };  
-  }
-
-  changeClinics(event: any) {
-    if (!(this.same(event, this.selectedClinics))) {
-      //this.getData(event, this.selectedSources, this.selectedDate);
-    }
-    this.selectedClinics = event;
+    };
   }
   changeSources(event: any) {
     if (!(this.same(event, this.selectedSources))) {
-      // this.getData(this.selectedClinics, event, this.selectedDate);
+       this.getData(this.selectedClinics, event, this.selectedDate);
     }
     this.selectedSources = event;
   }
   changeDate(event: any) {
     if (!(this.same(event, this.selectedDate))) {
-      // this.getData(this.selectedClinics, this.selectedSources, event);
+       this.getData(this.selectedClinics, this.selectedSources, event);
     }
     this.selectedDate = event;
   }
@@ -108,24 +91,44 @@ export class PatientSourceBarChartComponent implements OnInit {
     return sortedArr1.every((value, index) => value === sortedArr2[index]);
   }
   private prepareLookups() {
-    this.patientSources = this.patientSources.map((source: any) => ({ ...source, selected: true }))
+    this.patientSources = this.patientSources.map((source: any) => ({ ...source, selected: true })).filter(value => value.entityValue !== 'referringDoctor')
     const currentMonthIndex = moment().month() + 1;
     this.dateMonths.forEach(month => {
       month.selected = (month.index === currentMonthIndex);
     });
   }
-  private getData(selectedclinics?: any, selectedSources?: any, selectedDate?: any){
+  private getData(selectedclinics?: any, selectedSources?: any, selectedDate?: any) {
     this.selectedSources = selectedSources !== undefined ? selectedSources : this.initPatientSourceValues();
     this.selectedDate = selectedDate !== undefined ? selectedDate : this.initDate();
-    this.clinics.subscribe(clinics=>{
+    this.clinics.subscribe(clinics => {
       this.selectedClinics = selectedclinics !== undefined ? selectedclinics : clinics.map(clinic => (clinic.id?.toString()));
-      this.dashboardService.getPatientSourceDirectAccess(this.selectedClinics, this.selectedSources, this.selectedDate).subscribe(data=>{
-        console.log(JSON.stringify(data))
+      this.dashboardService.getPatientSourceDirectAccess(this.selectedClinics, this.selectedSources, this.selectedDate).subscribe((data: any) => {
+        console.log(JSON.stringify(data.map((item: any) => item.countWithDirectAccess)))
+        this.chartData = {
+          labels: data.map((item: any) => item.patientSourceName),
+          datasets: [
+            {
+              label: 'Source',
+              data: data.map((item: any) => item.countWithReferringProvider),
+              backgroundColor: 'rgba(75, 192, 192, 0.5)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            },
+            {
+              label: 'Direct Access',
+              data: data.map((item: any) => item.countWithDirectAccess),
+              backgroundColor: 'rgba(153, 102, 255, 0.5)',
+              borderColor: 'rgba(153, 102, 255, 1)',
+              borderWidth: 1
+            }
+          ]
+        }
       })
     })
   }
   private initPatientSourceValues(): string[] {
     return this.patientSources.map(source => source.entityValue)
+      .filter((value: any) => value.entityValue !== 'referringDoctor')
   }
   private initDate(): number[] {
     const currentMonthNumber = moment().month() + 1;

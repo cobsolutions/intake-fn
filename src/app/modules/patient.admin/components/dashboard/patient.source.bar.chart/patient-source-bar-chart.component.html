@@ -19,7 +19,7 @@
         </c-multi-select>
     </c-col>
     <c-col xs="4">
-        <c-multi-select multiple selectionType="counter">
+        <c-multi-select multiple selectionType="counter" (valueChange)="changeDate($event)">
             <c-multi-select-option *ngFor="let month of dateMonths" [value]="(month.index).toString()"
                 [selected]="month.selected">
                 {{month.name}}

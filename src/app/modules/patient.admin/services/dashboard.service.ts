@@ -24,6 +24,15 @@ export class DashboardService {
     params = params.append('months', months.join(','));
     const url = environment.baseURL + 'dashboard' +
       '/group/patient/source/clinic/' + clinicId
-    return this.httpClient.get(url,{ params: params })
+    return this.httpClient.get(url, { params: params })
+  }
+  public getPatientSourceDirectAccess(clinicId: number[], sources: string[], months: number[]) {
+    let params = new HttpParams();
+    params = params.append('clinicIds', clinicId.join(','));
+    params = params.append('sources', sources.join(','));
+    params = params.append('months', months.join(','));
+    const url = environment.baseURL + 'dashboard' +
+      '/total/patient/source'
+    return this.httpClient.get(url, { params: params })
   }
 }

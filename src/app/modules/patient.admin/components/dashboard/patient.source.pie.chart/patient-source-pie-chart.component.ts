@@ -24,7 +24,6 @@ export class PatientSourcePieChartComponent implements OnInit {
 
   constructor(private dashboardService: DashboardService) { }
   ngOnInit(): void {
-    console.log('ngOnInit')
     this.prepareLookups();
     this.getData();
 

@@ -169,7 +169,11 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.kcAuthServiceService.logout()
   }
   exportPDF(data: IPatient) {
-    this.reportingService.exportPDF(data.patientId).subscribe(
+    // this.reportingService.exportPDF(data.patientId).subscribe(
+    //   (response: any) => {
+    //     this.constructExportedFile(response, 'patient-', 'pdf')
+    //   });
+    this.reportingService.exportNewPDF(data.patientId).subscribe(
       (response: any) => {
         this.constructExportedFile(response, 'patient-', 'pdf')
       });

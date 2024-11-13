@@ -19,10 +19,12 @@ export class AuthInterceptor implements HttpInterceptor {
     private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.spinner.show();
-    if (request.url.includes('/authentication')) {
+    if (request.url.includes('/one-time-token/generate')) {
+      this.spinner.hide();
       return next.handle(request);
     }
-    if (request.url.includes('/trusted-device/register')) {
+    if(request.url.includes('/trusted-device/register')){
+      this.spinner.hide();
       return next.handle(request);
     }
     return from(this.kcAuthServiceService.getToken())

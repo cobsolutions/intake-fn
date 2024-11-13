@@ -17,21 +17,12 @@ export class TrustDeviceService {
   public list() {
     return this.clinicService.selectedClinic$.pipe(
       filter(clinic => clinic !== null),
-      switchMap(clinicId =>
+      switchMap((clinicId: any) =>  this.clinicService.getClinicUUID(clinicId)),
+      switchMap((clinicInfo:any) =>
         this.http
-          .get<TrustDevice[]>(`${this.trustDeviceURL}` + '/list/clinic-id/' + clinicId)
+          .get<TrustDevice[]>(`${this.trustDeviceURL}` + '/list/clinic-id/' + clinicInfo.clinicUUID)
       ))
   }
-
-  public generateDeviceRequest() {
-    const headers = { 'content-type': 'application/json' }
-    return this.clinicService.selectedClinic$.pipe(
-      filter(clinic => clinic !== null),
-      switchMap(clinicId =>
-        this.http.post(`${this.trustDeviceURL}` + '/generate-token', JSON.stringify(clinicId), { 'headers': headers, observe: 'response' })
-      ))
-  }
-
   public registerDevice(deviceTokenRequest: DeviceTokenRequest) {
     const headers = { 'content-type': 'application/json' }
     return this.http.post(`${this.trustDeviceURL}` + '/register', JSON.stringify(deviceTokenRequest), { 'headers': headers, observe: 'response' })
@@ -41,7 +32,7 @@ export class TrustDeviceService {
     return this.http.get<DeviceStatus>(`${this.trustDeviceURL}` + '/status/clinic-id/' + clinicId + '/device-id/' + deviceId)
   }
 
-  public checkDeviceHealty(deviceInformation:DeviceInformation):Observable<any>{
+  public checkDeviceHealty(deviceInformation: DeviceInformation): Observable<any> {
     const headers = { 'content-type': 'application/json' }
     return this.http.post(`${this.trustDeviceURL}` + '/health', JSON.stringify(deviceInformation), { 'headers': headers, observe: 'response' })
   }

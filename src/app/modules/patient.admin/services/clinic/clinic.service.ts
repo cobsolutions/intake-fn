@@ -49,4 +49,7 @@ export class ClinicService {
     return this.http.post(`${url}`, JSON.stringify(deviceLocation), { 'headers': headers, observe: 'response' })
   }
 
+  getClinicUUID(clinicId:number){
+    return this.http.get<Clinic>(`${this.clinicUrl}` + '/find-uuid/' + clinicId)
+  }
 }

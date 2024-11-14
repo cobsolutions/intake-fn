@@ -1,11 +1,22 @@
 <div class="mb-2">
     <label cLabel for="exampleFormControlInput1">Select Clinic </label>
-    <select aria-label="Default select example" cSelect>
+    <select aria-label="Default select example" cSelect [(ngModel)]="selectedClinicUUID">
+        <option selected disabled value="undefined">Select Clinic </option>
         <option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.uuid">
             {{clinic.name}}
         </option>
     </select>
 </div>
 <div class="text-center">
-    <button cButton variant="outline">Generate</button>
+    <button cButton  (click)="generateQRCode()" [disabled]="selectedClinicUUID ===undefined">Generate</button>
+</div>
+<hr />
+<div *ngIf="isGenerated">
+    <p class="text-medium-emphasis small">
+        Scan the QR code by tablet to open Digital Intake Submission.
+    </p>
+    <div class="text-center">
+        <qrcode *ngIf="isGenerated" [qrdata]="submissionURL" [width]="300" [errorCorrectionLevel]="'H'">
+        </qrcode>
+    </div>
 </div>

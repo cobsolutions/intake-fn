@@ -67,10 +67,11 @@ import { ChartjsModule } from '@coreui/angular-chartjs';
 import { PatientCounterWidgetsComponent } from './components/dashboard/patient.counters.widgets/patient-counter-widgets.component';
 import { ClinicsPatientsChartComponent } from './components/dashboard/patients.clinics.chart/clinics-patients-chart.component';
 import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
-import { GenerateRequestComponent } from './components/trust.device/generate.request/generate-request.component';
 import { EditClinicLocationComponent } from './components/clinic/edit.clinic.location/edit-clinic-location.component';
 import { PatientSourceBarChartComponent } from './components/dashboard/patient.source.bar.chart/patient-source-bar-chart.component';
 import { PatientSourcePieChartComponent } from './components/dashboard/patient.source.pie.chart/patient-source-pie-chart.component';
+import { RequestDeviceRegistrationComponent } from './components/requesters/device.registration/request-device-registration.component';
+import { RequestIntakeSubmissionComponent } from './components/requesters/intake.submission/request-intake-submission.component';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,7 @@ import { PatientSourcePieChartComponent } from './components/dashboard/patient.s
     PatientCreateComponent,
     InsuranceCompanyCreateComponent,
     InsuranceCompanyListComponent,
-    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, GenerateRequestComponent, EditClinicLocationComponent, PatientSourceBarChartComponent, PatientSourcePieChartComponent
+    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, EditClinicLocationComponent, PatientSourceBarChartComponent, PatientSourcePieChartComponent, RequestDeviceRegistrationComponent, RequestIntakeSubmissionComponent
   ],
   imports: [
     CommonModule,

@@ -13,7 +13,6 @@ import { PatientCreateComponent } from './components/patient.create/patient-crea
 import { PatientListComponent } from './components/patient.list/patient.list.component';
 import { RecommendationReportComponent } from './components/reports/recommendation.report.component';
 import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
-import { ScanHandlerComponent } from './components/trust.device/scanned.qr/scan.handler';
 import { UserCreationComponent } from './components/user/create/user-creation.component';
 import { UserListComponent } from './components/user/list/user-list.component';
 import { UserUpdateComponent } from './components/user/update/user-update.component';
@@ -128,12 +127,7 @@ const routes: Routes = [{
       data: {
         title: 'insurance-company-create',
       }
-    },
-    {
-      path: 'trust/devices/scannedQR',
-      component: ScanHandlerComponent,
-      data: {}
-    },
+    }
   ]
 },
 {

@@ -4,15 +4,14 @@ import { DigitalIntakeOneTimeTokenRequest } from '../../../models/one.time.token
 import { TrustDeviceToken } from '../../../models/trust.device/trust.device.token';
 import { ClinicService } from '../../../services/clinic/clinic.service';
 import { OneTimeTokenService } from '../../../services/one.time.token/one-time-token.service';
-import { TrustDeviceService } from '../../../services/trust.device/trust-device.service';
-import { SendTask, WebsocketService } from '../../../services/web.socket/websocket.service';
+import { WebsocketService } from '../../../services/web.socket/websocket.service';
 
 @Component({
-  selector: 'generate-request',
-  templateUrl: './generate-request.component.html',
-  styleUrls: ['./generate-request.component.css']
+  selector: 'request-device-registration',
+  templateUrl: './request-device-registration.component.html',
+  styleUrls: ['./request-device-registration.component.css']
 })
-export class GenerateRequestComponent implements OnInit {
+export class RequestDeviceRegistrationComponent implements OnInit {
   trustDeviceToken: TrustDeviceToken
   currentStep: number = 1;
   deviceName: string = '';
@@ -28,9 +27,6 @@ export class GenerateRequestComponent implements OnInit {
     private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
-    this.clinicService.getClinicUUID(1).subscribe(res => {
-      console.log(JSON.stringify(res))
-    })
   }
   goToNextStep(): void {
     if (this.deviceName.trim() !== '') {
@@ -86,4 +82,5 @@ export class GenerateRequestComponent implements OnInit {
       this.intervalId = null; // Reset the interval ID
     }
   }
+
 }

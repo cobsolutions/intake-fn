@@ -25,7 +25,7 @@ export class TrustDeviceService {
   }
   public registerDevice(deviceTokenRequest: DeviceTokenRequest) {
     const headers = {
-      'one-time-token':  deviceTokenRequest.token,
+      'one-time-token': deviceTokenRequest.token,
       'clinic-id': deviceTokenRequest.clinicId,
       'device-id': deviceTokenRequest.deviceInformation.deviceId,
       'content-type': 'application/json'
@@ -37,8 +37,13 @@ export class TrustDeviceService {
     return this.http.get<DeviceStatus>(`${this.trustDeviceURL}` + '/status/clinic-id/' + clinicId + '/device-id/' + deviceId)
   }
 
-  public checkDeviceHealty(deviceInformation: DeviceInformation): Observable<any> {
-    const headers = { 'content-type': 'application/json' }
+  public checkDeviceHealty(deviceInformation: DeviceInformation,token:string , clinicId:string): Observable<any> {
+    const headers = {
+      'one-time-token': token,
+      'clinic-id': clinicId,
+      'device-id': deviceInformation.deviceId,
+      'content-type': 'application/json'
+    }
     return this.http.post(`${this.trustDeviceURL}` + '/health', JSON.stringify(deviceInformation), { 'headers': headers, observe: 'response' })
   }
 }

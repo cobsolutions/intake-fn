@@ -8,15 +8,16 @@
     </select>
 </div>
 <div class="text-center">
-    <button cButton  (click)="generateQRCode()" [disabled]="selectedClinicUUID ===undefined">Generate</button>
+    <button cButton (click)="generateQRCode()" [disabled]="selectedClinicUUID ===undefined">Generate</button>
 </div>
 <hr />
 <div *ngIf="isGenerated">
     <p class="text-medium-emphasis small">
-        Scan the QR code by tablet to open Digital Intake Submission.
+        Scan the QR code by tablet to open Digital Intake Submission.Note QR-Code will be expired after one day
     </p>
     <div class="text-center">
         <qrcode *ngIf="isGenerated" [qrdata]="submissionURL" [width]="300" [errorCorrectionLevel]="'H'">
         </qrcode>
     </div>
+    {{this.submissionURL}}
 </div>

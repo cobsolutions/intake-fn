@@ -9,6 +9,8 @@ import { TrustDeviceService } from 'src/app/modules/patient.admin/services/trust
   providedIn: 'root'
 })
 export class DigitalIntakeGuard implements CanActivate {
+  token: string;
+  clinicId: string
   constructor(private router: Router, private cookieService: CookieService,
     private trustDeviceService: TrustDeviceService,
     private findLocationService: FindLocationService,
@@ -18,8 +20,8 @@ export class DigitalIntakeGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> {
     const url = state.url;
     if (url.includes('create')) {
-      const clinicId = this.getClinicId(route.queryParams);
-      return this.isDeviceHealty(clinicId).pipe(
+      this.getParameters(route.queryParams);
+      return this.isDeviceHealty(this.clinicId).pipe(
         map((dd: any) => {
           return true;
         }),
@@ -35,7 +37,7 @@ export class DigitalIntakeGuard implements CanActivate {
       return of(true);
     }
   }
-  private isDeviceHealty(clinicId: string| undefined): Observable<boolean> {
+  private isDeviceHealty(clinicId: string | undefined): Observable<boolean> {
     if (this.cookieService.check('device-id')) {
       const _callLocation = this.findLocationService.find()
       return _callLocation.pipe(
@@ -51,7 +53,7 @@ export class DigitalIntakeGuard implements CanActivate {
             }
           };
         }), switchMap(deviceInformation =>
-          this.trustDeviceService.checkDeviceHealty(deviceInformation)),
+          this.trustDeviceService.checkDeviceHealty(deviceInformation,this.token,this.clinicId)),
         catchError((error) => {
           console.log(error)
           var error: any = {
@@ -71,15 +73,19 @@ export class DigitalIntakeGuard implements CanActivate {
     }
 
   }
-  private getClinicId(queryParams: Params): string | undefined{
-    const clinicId = queryParams['clinicId'];
-    if (clinicId === undefined)
-      return undefined;
-    if (localStorage.getItem(clinicId) === null) {
-      localStorage.setItem('clinicId', clinicId);
-      return clinicId;
-    } else {
-      return localStorage.getItem(clinicId)?.toString() || '{}';
-    }
+  // private getClinicId(queryParams: Params): string | undefined{
+  //   const clinicId = queryParams['clinicId'];
+  //   if (clinicId === undefined)
+  //     return undefined;
+  //   if (localStorage.getItem(clinicId) === null) {
+  //     localStorage.setItem('clinicId', clinicId);
+  //     return clinicId;
+  //   } else {
+  //     return localStorage.getItem(clinicId)?.toString() || '{}';
+  //   }
+  // }
+  private getParameters(queryParams: Params) {
+    this.clinicId = queryParams['clinicId'];
+    this.token = queryParams['token'];
   }
 }

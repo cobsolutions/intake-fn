@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { DigitalIntakeOneTimeTokenRequest } from 'src/app/modules/patient.admin/models/one.time.token/digital.intake.one.time.token.request';
 import { ClinicService } from 'src/app/modules/patient.admin/services/clinic/clinic.service';
+import { OneTimeTokenService } from 'src/app/modules/patient.admin/services/one.time.token/one-time-token.service';
 
 @Component({
   selector: 'request-device-intake-submission',
@@ -13,7 +15,7 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
   selectedClinicUUID: string | undefined = undefined
   submissionURL: string
   isGenerated: boolean = false;
-  constructor(private clinicService: ClinicService) { }
+  constructor(private clinicService: ClinicService, private oneTimeTokenService: OneTimeTokenService) { }
 
   ngOnInit(): void {
     this.getAllClinics()
@@ -25,7 +27,16 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
   }
   generateQRCode() {
     this.isGenerated = true
-    this.submissionURL = this.baseURL + '/digital-intake/create?clinicId=' + this.selectedClinicUUID;
+    var request: DigitalIntakeOneTimeTokenRequest = {
+      expiryPeriod: 1440,
+      requester: 'Digital_Intake_Submission'
+    }
+    this.oneTimeTokenService.generate(request).subscribe((response: any) => {
+      const requestToken: any = response.body;
+      this.submissionURL = this.baseURL + '/digital-intake/create?clinicId=' + this.selectedClinicUUID + '&token=' + requestToken.token;;
+      this.isGenerated = true
+    })
+
   }
 
 }

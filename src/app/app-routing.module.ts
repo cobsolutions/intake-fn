@@ -60,7 +60,7 @@ const routes: Routes = [
     children: [
       {
         path:'digital-intake',
-        canActivate: [KCAuthGuardGuard, DigitalIntakeGuard],
+        canActivate: [DigitalIntakeGuard],
         loadChildren: ()=>
         import('./modules/patient.digital.intake/patient-digital-intake.module').then((m) => m.PatientDigitalIntakeModule)
       }

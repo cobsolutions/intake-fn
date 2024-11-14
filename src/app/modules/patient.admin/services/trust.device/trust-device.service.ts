@@ -17,14 +17,19 @@ export class TrustDeviceService {
   public list() {
     return this.clinicService.selectedClinic$.pipe(
       filter(clinic => clinic !== null),
-      switchMap((clinicId: any) =>  this.clinicService.getClinicUUID(clinicId)),
-      switchMap((clinicInfo:any) =>
+      switchMap((clinicId: any) => this.clinicService.getClinicUUID(clinicId)),
+      switchMap((clinicInfo: any) =>
         this.http
           .get<TrustDevice[]>(`${this.trustDeviceURL}` + '/list/clinic-id/' + clinicInfo.clinicUUID)
       ))
   }
   public registerDevice(deviceTokenRequest: DeviceTokenRequest) {
-    const headers = { 'content-type': 'application/json' }
+    const headers = {
+      'one-time-token':  deviceTokenRequest.token,
+      'clinic-id': deviceTokenRequest.clinicId,
+      'device-id': deviceTokenRequest.deviceInformation.deviceId,
+      'content-type': 'application/json'
+    }
     return this.http.post(`${this.trustDeviceURL}` + '/register', JSON.stringify(deviceTokenRequest), { 'headers': headers, observe: 'response' })
   }
 

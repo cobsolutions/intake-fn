@@ -71,7 +71,8 @@ import { EditClinicLocationComponent } from './components/clinic/edit.clinic.loc
 import { PatientSourceBarChartComponent } from './components/dashboard/patient.source.bar.chart/patient-source-bar-chart.component';
 import { PatientSourcePieChartComponent } from './components/dashboard/patient.source.pie.chart/patient-source-pie-chart.component';
 import { RequestDeviceRegistrationComponent } from './components/requesters/device.registration/request-device-registration.component';
-import { RequestIntakeSubmissionComponent } from './components/requesters/intake.submission/request-intake-submission.component';
+import { RequestDeviceIntakeSubmissionComponent } from './components/requesters/intake.submission/device/request-device-intake-submission.component';
+import { RequestMailIntakeSubmissionComponent } from './components/requesters/intake.submission/mail/request-mail-intake-submission.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,7 @@ import { RequestIntakeSubmissionComponent } from './components/requesters/intake
     PatientCreateComponent,
     InsuranceCompanyCreateComponent,
     InsuranceCompanyListComponent,
-    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, EditClinicLocationComponent, PatientSourceBarChartComponent, PatientSourcePieChartComponent, RequestDeviceRegistrationComponent, RequestIntakeSubmissionComponent
+    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, EditClinicLocationComponent, PatientSourceBarChartComponent, PatientSourcePieChartComponent, RequestDeviceRegistrationComponent, RequestDeviceIntakeSubmissionComponent, RequestMailIntakeSubmissionComponent
   ],
   imports: [
     CommonModule,

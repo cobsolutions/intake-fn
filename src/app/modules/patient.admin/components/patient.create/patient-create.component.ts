@@ -11,6 +11,7 @@ export class PatientCreateComponent implements OnInit {
   public createPatientURL: string
   public clinicId: number | null;
   public baseURL: string = location.origin;
+  submissionApproach:string | undefined =undefined
   constructor(private clinicService: ClinicService) { }
 
   ngOnInit(): void {

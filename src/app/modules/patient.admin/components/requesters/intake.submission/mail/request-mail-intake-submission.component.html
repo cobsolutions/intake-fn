@@ -1,1 +1,16 @@
-<p>request-mail-intake-submission works!</p>
+<div class="mb-2">
+
+    <label cLabel for="exampleFormControlInput1">Select Clinic </label>
+    <select aria-label="Default select example" cSelect>
+        <option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.uuid">
+            {{clinic.name}}
+        </option>
+    </select>
+</div>
+<div class="mb-2">
+    <label cLabel for="pemail">Patient Email</label>
+    <input cFormControl id="pemail" placeholder="name@example.com" type="email" />
+</div>
+<div class="text-center">
+    <button cButton variant="outline">Send</button>
+</div>

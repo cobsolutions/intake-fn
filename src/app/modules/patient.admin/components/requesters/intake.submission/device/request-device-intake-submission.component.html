@@ -1,1 +1,11 @@
-<p>request-device-intake-submission works!</p>
+<div class="mb-2">
+    <label cLabel for="exampleFormControlInput1">Select Clinic </label>
+    <select aria-label="Default select example" cSelect>
+        <option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.uuid">
+            {{clinic.name}}
+        </option>
+    </select>
+</div>
+<div class="text-center">
+    <button cButton variant="outline">Generate</button>
+</div>

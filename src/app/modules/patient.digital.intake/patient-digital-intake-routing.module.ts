@@ -3,24 +3,29 @@ import { RouterModule, Routes } from '@angular/router';
 import { CorruptedDeviceComponent } from './components/corrupted.device/corrupted-device.component';
 import { CreateDigitalPatientIntakeComponent } from './components/create/create-digital-patient-intake.component';
 import { PatientGreetingCreationComponent } from './components/greeting/patient-greeting-creation.component';
+import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
 
 const routes: Routes = [
   {
     path: '',
     data: {
     },
-    children:[
+    children: [
       {
-        path:'create',
-        component:CreateDigitalPatientIntakeComponent
+        path: 'create',
+        component: CreateDigitalPatientIntakeComponent
       },
       {
-        path:'done',
-        component:PatientGreetingCreationComponent
+        path: 'verfiy/mail',
+        component: MailVerificationComponent
       },
       {
-        path:'corrupted',
-        component:CorruptedDeviceComponent
+        path: 'done',
+        component: PatientGreetingCreationComponent
+      },
+      {
+        path: 'corrupted',
+        component: CorruptedDeviceComponent
       }
     ]
   }

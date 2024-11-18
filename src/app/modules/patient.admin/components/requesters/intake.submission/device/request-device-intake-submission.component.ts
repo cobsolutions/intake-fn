@@ -26,7 +26,6 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
     )
   }
   generateQRCode() {
-    this.isGenerated = true
     var request: DigitalIntakeOneTimeTokenRequest = {
       clinicId:this.selectedClinicUUID,
       expiryPeriod: 86400000,

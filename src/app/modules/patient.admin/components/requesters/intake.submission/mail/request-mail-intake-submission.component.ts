@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { map, Observable } from 'rxjs';
+import { DigitalIntakeOneTimeTokenRequest } from 'src/app/modules/patient.admin/models/one.time.token/digital.intake.one.time.token.request';
 import { ClinicService } from 'src/app/modules/patient.admin/services/clinic/clinic.service';
+import { OneTimeTokenService } from 'src/app/modules/patient.admin/services/one.time.token/one-time-token.service';
 
 @Component({
   selector: 'request-mail-intake-submission',
@@ -9,8 +13,13 @@ import { ClinicService } from 'src/app/modules/patient.admin/services/clinic/cli
 })
 export class RequestMailIntakeSubmissionComponent implements OnInit {
   clinics$: Observable<any>
-  constructor(private clinicService:ClinicService) { }
-
+  selectedClinicUUID: string | undefined = undefined
+  patientEmail: string | undefined = undefined
+  constructor(private clinicService: ClinicService, 
+    private oneTimeTokenService: OneTimeTokenService, 
+    private router: Router,
+    private toastrService:ToastrService) { }
+  isSent: boolean = false
   ngOnInit(): void {
     this.getAllClinics()
   }
@@ -18,6 +27,24 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
     this.clinics$ = this.clinicService.get().pipe(
       map(result => result.body)
     )
+  }
+  send() {
+    this.isSent = true;
+    var request: DigitalIntakeOneTimeTokenRequest = {
+      clinicId: this.selectedClinicUUID,
+      expiryPeriod: 1800000,
+      requester: 'Digital_Intake_Mail_Submission'
+    }
+    this.oneTimeTokenService.generate(request).subscribe((response: any) => {
+      this.toastrService.success("Verification mail has been sent to patient")
+      this.isSent = true;
+      const requestToken: any = response.body;
+      this.router.navigateByUrl('admin/patient/create');
+      const url = 'admin/patient/create'
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate([`/${url}`]).then(() => { })
+      })
+    })
   }
 
 }

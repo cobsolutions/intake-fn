@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { filter, switchMap, tap } from 'rxjs';
+import { filter, map, Observable, switchMap, tap } from 'rxjs';
 import { DigitalIntakeOneTimeTokenRequest } from '../../../models/one.time.token/digital.intake.one.time.token.request';
 import { TrustDeviceToken } from '../../../models/trust.device/trust.device.token';
 import { ClinicService } from '../../../services/clinic/clinic.service';
@@ -12,39 +12,42 @@ import { WebsocketService } from '../../../services/web.socket/websocket.service
   styleUrls: ['./request-device-registration.component.css']
 })
 export class RequestDeviceRegistrationComponent implements OnInit {
+  clinics$: Observable<any>
   trustDeviceToken: TrustDeviceToken
   currentStep: number = 1;
   deviceName: string = '';
   inCorrectName: boolean = false;
+  inClinic: boolean = false;
   public createPatientURL: string
   public baseURL: string = location.origin
   minutes: number = 0;
   seconds: number = 0;
   expired: boolean = false;
   private intervalId: any;
+  selectedClinicUUID: string | undefined = undefined
   constructor(private oneTimeTokenService: OneTimeTokenService,
     private clinicService: ClinicService,
     private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
+    this.getAllClinics()
+  }
+  private getAllClinics() {
+    this.clinics$ = this.clinicService.get().pipe(
+      map(result => result.body)
+    )
   }
   goToNextStep(): void {
     if (this.deviceName.trim() !== '') {
       var request: DigitalIntakeOneTimeTokenRequest = {
-        expiryPeriod: 10,
-        requester: 'Device_Registration'
+        expiryPeriod: 60000,
+        requester: 'Device_Registration',
+        clinicId: this.selectedClinicUUID
       }
-      this.clinicService.selectedClinic$.pipe(
-        filter(clinic => clinic !== null),
-        switchMap((clinicId: any) =>
-          this.clinicService.getClinicUUID(clinicId)
-        ),
-        tap((clinicInfo: any) => { request.clinicId = clinicInfo.clinicUUID }),
-        switchMap((clinicId: any) =>
-          this.oneTimeTokenService.generate(request)))
+      this.oneTimeTokenService.generate(request)
         .subscribe((response: any) => {
           const requestToken: any = response.body;
-          this.createPatientURL = this.baseURL + '/scanner?clinicId=' + requestToken.clinicId + '&name=' + this.deviceName + '&token=' + requestToken.token;
+          this.createPatientURL = this.baseURL + '/scanner?name=' + this.deviceName + '&token=' + requestToken.token;
           console.log(this.createPatientURL)
           this.currentStep = 2;
           this.inCorrectName = false

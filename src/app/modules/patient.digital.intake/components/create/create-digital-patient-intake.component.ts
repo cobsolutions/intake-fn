@@ -2,6 +2,10 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
+import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { switchMap } from 'rxjs';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 import { EmailValidator } from './validators/custom.validation/email.validator';
 import { futureDateValidator } from './validators/custom.validation/future.date.validator';
 import { maxDateValidator } from './validators/custom.validation/max.date.validator';
@@ -23,8 +27,10 @@ import { PatientSourceValidator } from './validators/patient.source/patient.sour
 export class CreateDigitalPatientIntakeComponent implements OnInit {
   stepperOrientation: 'horizontal' | 'vertical' = 'horizontal';
   patientForm: FormGroup
+  render: boolean = false;
   @ViewChild(MatStepper, { static: true }) public patientStepper: MatStepper;
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(private breakpointObserver: BreakpointObserver,
+    private digitalIntakeService:DigitalIntakeService) { }
 
   ngOnInit(): void {
     // this.breakpointObserver.observe([
@@ -33,7 +39,11 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     // ]).subscribe(result => {
     //   this.stepperOrientation = result.matches ? 'vertical' : 'horizontal';
     // });
-    this.stepperOrientation = 'horizontal'
+    // this.digitalIntakeService.pickupSubmissionToken().subscribe(result=>{
+    //   this.render = true
+    //   this.stepperOrientation = 'horizontal'
+      
+    // });
     this.createPatientForm();
   }
   private createPatientForm() {
@@ -82,7 +92,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'providerSearchName': new FormControl(null),
         'providerName': new FormControl(null),
         'providerNPI': new FormControl(null),
-        'referringEntity': new FormControl(null,[Validators.required]),
+        'referringEntity': new FormControl(null, [Validators.required]),
         'referringEntityOther': new FormControl(null),
         'appointmentBooking': new FormControl(null, [Validators.required]),
         'isPrimaryDoctor': new FormControl(null, [Validators.required]),
@@ -179,7 +189,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     ConditionsValidator.addValidator(this.patientForm)
     AddSurgerisListValidator.addValidator(this.patientForm)
     InsuranceValidator.addValidator(this.patientForm)
-    
+
     GuarantorValidator.addValidator(this.patientForm);
     PatientSourceValidator.addValidator(this.patientForm)
   }

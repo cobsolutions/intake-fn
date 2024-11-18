@@ -1,15 +1,17 @@
+<ngx-spinner></ngx-spinner>
 <c-container fluid="true">
     <c-card>
         <c-card-body>
             <form [formGroup]="patientForm">
                 <mat-stepper linear="true" #stepper [orientation]="stepperOrientation">
                     <mat-step [stepControl]="patientForm.get('consent')!" formGroupName="consent" completed="true">
-                        <ng-template matStepLabel>Consent</ng-template>                        
+                        <ng-template matStepLabel>Consent</ng-template>
                         <patient-consent [form]="patientForm" [stepper]="patientStepper"></patient-consent>
                     </mat-step>
                     <mat-step [stepControl]="patientForm.get('identity')!" formGroupName="identity" completed="true">
                         <ng-template matStepLabel>Identity Verification</ng-template>
-                        <patient-identity-verification [form]="patientForm" [stepper]="patientStepper"> </patient-identity-verification>
+                        <patient-identity-verification [form]="patientForm" [stepper]="patientStepper">
+                        </patient-identity-verification>
                     </mat-step>
                     <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="true">
                         <ng-template matStepLabel>Essential</ng-template>

@@ -14,7 +14,7 @@ export class CorruptedDeviceComponent implements OnInit {
   ngOnInit(): void {
     const error: any = JSON.parse(localStorage.getItem('device-error') || '{}');
     localStorage.removeItem('device-error');
-    this.errorMessage = error.message;
+    this.errorMessage = error.error.message;
   }
 
 }

@@ -17,7 +17,7 @@ import { ValidationExploder } from '../create/validators/validation.exploder';
 export class PatientMedicalComponent implements OnInit {
   @Input() form: FormGroup;
   provider: Provider = {}
-  providers: Observable<Provider[]> | undefined;
+  providers: Provider[];
   test: Provider[];
   entityValues = entityValues;
   @Input() stepper: MatStepper
@@ -35,13 +35,6 @@ export class PatientMedicalComponent implements OnInit {
       if (this.form.get('medical')?.get('providerName')?.value)
         this.form.get('medical')?.get('providerName')?.setValue(null)
     })
-
-    this.providers?.subscribe(data => {
-      if (data === null) {
-        this.form.get('medical')?.get('providerName')?.setValue(null);
-        this.form.get('medical')?.get('providerNPI')?.setValue(null);
-      }
-    })
   }
   search() {
     this.unpickProvider();
@@ -55,16 +48,30 @@ export class PatientMedicalComponent implements OnInit {
     } else {
       switch (referringType) {
         case 'l-name':
-          this.providers = this.digitalIntakeService.findProviderByLastName(referringSearch)
-          this.providers.subscribe(rr => {
-            this.loadingProvider = false
-          })
+          this.digitalIntakeService.findProviderByLastName(referringSearch)
+            .subscribe(data => {
+              this.loadingProvider = false
+              var providers = data.body;
+              if (providers === null) {
+                this.form.get('medical')?.get('providerName')?.setValue(null);
+                this.form.get('medical')?.get('providerNPI')?.setValue(null);
+              } else {
+                this.providers = providers;
+              }
+            })
           break;
         case 'f-name':
-          this.providers = this.digitalIntakeService.findProviderByLastName(referringSearch)
-          this.providers.subscribe(rr => {
-            this.loadingProvider = false
-          })
+          this.digitalIntakeService.findProviderByLastName(referringSearch)
+            .subscribe(data => {
+              this.loadingProvider = false
+              var providers = data.body;
+              if (providers === null) {
+                this.form.get('medical')?.get('providerName')?.setValue(null);
+                this.form.get('medical')?.get('providerNPI')?.setValue(null);
+              } else {
+                this.providers = providers
+              }
+            })
           break;
         case 'full-name':
           var fullName: string[] = referringSearch.split(',');
@@ -74,25 +81,40 @@ export class PatientMedicalComponent implements OnInit {
             this.referringSearchErrorMessage = 'Please follow search criteria structure'
           }
           else {
-            this.providers = this.digitalIntakeService.findProviderByFullName(fullName[0], fullName[1])
-            this.providers.subscribe(rr => {
-              this.loadingProvider = false
-            })
+            this.digitalIntakeService.findProviderByFullName(fullName[0], fullName[1])
+              .subscribe(data => {
+                this.loadingProvider = false
+                var providers = data.body;
+                if (providers === null) {
+                  this.form.get('medical')?.get('providerName')?.setValue(null);
+                  this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                } else {
+                  this.providers = providers
+                }
+              })
             this.isReferringSearchNotValid = false;
             this.referringSearchErrorMessage = undefined;
           }
           break;
         case 'npi':
           var npi: number = Number(referringSearch);
-          if (!Number.isNaN(referringSearch)) {
+          if (Number.isNaN(referringSearch)) {
+            console.log('333333333333333333333333')
             this.loadingProvider = false
             this.isReferringSearchNotValid = true;
             this.referringSearchErrorMessage = 'Doctor NPI must be numbers only'
           }
           else {
-            this.providers = this.digitalIntakeService.findProviderByNPI(Number(referringSearch))
-            this.providers.subscribe(rr => {
+            this.digitalIntakeService.findProviderByNPI(Number(referringSearch))
+            .subscribe(data => {
+              var providers = data.body;
               this.loadingProvider = false
+              if (providers === null) {
+                this.form.get('medical')?.get('providerName')?.setValue(null);
+                this.form.get('medical')?.get('providerNPI')?.setValue(null);
+              } else {
+                this.providers = providers
+              }
             })
             this.isReferringSearchNotValid = false;
             this.referringSearchErrorMessage = undefined;

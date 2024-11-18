@@ -96,11 +96,10 @@
                             <strong>{{referringSearchErrorMessage}}</strong>
                         </p>
                     </div>
-                    <div class="col-md-10 mb-2" *ngIf="providers |async">
-                        <ng-autocomplete [itemTemplate]="itemTemplate" placeholder="Select.."
-                            [data]="(providers | async) ?? []" [notFoundTemplate]="notFoundTemplate"
-                            (selected)="pickProvider($event)" [searchKeyword]="''" style="width: 90%;"
-                            (inputCleared)="unpickProvider()">
+                    <div class="col-md-10 mb-2" *ngIf="providers">
+                        <ng-autocomplete [itemTemplate]="itemTemplate" placeholder="Select.." [data]="providers"
+                            [notFoundTemplate]="notFoundTemplate" (selected)="pickProvider($event)" [searchKeyword]="''"
+                            style="width: 90%;" (inputCleared)="unpickProvider()">
                         </ng-autocomplete>
                         <ng-template #itemTemplate let-item>
                             <a [innerHTML]="item"></a>

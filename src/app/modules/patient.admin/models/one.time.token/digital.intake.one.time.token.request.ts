@@ -1,5 +1,5 @@
 export interface DigitalIntakeOneTimeTokenRequest{
-    clinicId?:number
+    clinicId?:string
     expiryPeriod:number;
     requester:string;
 }

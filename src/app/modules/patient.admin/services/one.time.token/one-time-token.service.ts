@@ -13,7 +13,7 @@ export class OneTimeTokenService {
   constructor(private http: HttpClient, private clinicService: ClinicService) { }
 
   public generate(request: DigitalIntakeOneTimeTokenRequest) {
-    const generateURL = this.baseURL + '/generate'
+    const generateURL = this.baseURL + '/generate/jwt'
     const headers = { 'content-type': 'application/json' }
     return this.http.post(`${generateURL}`, JSON.stringify(request), { 'headers': headers, observe: 'response' })
   }

@@ -23,7 +23,7 @@ export class AuthInterceptor implements HttpInterceptor {
       this.spinner.hide();
       return next.handle(request);
     }
-    if(request.url.includes('/trusted-device/register')){
+    if(request.url.includes('/digital-intake')){
       this.spinner.hide();
       return next.handle(request);
     }
@@ -42,7 +42,7 @@ export class AuthInterceptor implements HttpInterceptor {
         catchError(error => {
           console.log(error)
           if (error.status === 401) {
-            this.kcAuthServiceService.logout();
+           this.kcAuthServiceService.logout();
           }
           if (error.error.errorCode === 'UNAUTHORIZED') {
             this.kcAuthServiceService.logout();

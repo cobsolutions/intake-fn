@@ -15,10 +15,12 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
   clinics$: Observable<any>
   selectedClinicUUID: string | undefined = undefined
   patientEmail: string | undefined = undefined
-  constructor(private clinicService: ClinicService, 
-    private oneTimeTokenService: OneTimeTokenService, 
+  private baseURL: string = location.origin
+  private verificationLink: string;
+  constructor(private clinicService: ClinicService,
+    private oneTimeTokenService: OneTimeTokenService,
     private router: Router,
-    private toastrService:ToastrService) { }
+    private toastrService: ToastrService) { }
   isSent: boolean = false
   ngOnInit(): void {
     this.getAllClinics()
@@ -39,6 +41,7 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
       this.toastrService.success("Verification mail has been sent to patient")
       this.isSent = true;
       const requestToken: any = response.body;
+      this.verificationLink = this.baseURL + '/scanner?token=' + requestToken.token;
       this.router.navigateByUrl('admin/patient/create');
       const url = 'admin/patient/create'
       this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {

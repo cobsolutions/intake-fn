@@ -43,7 +43,6 @@ export class CreateComponentScannerComponent implements OnInit {
         , switchMap((digitalIntakeDevice: any) => this.digitalIntakeService.registerDevice(digitalIntakeDevice, param['token']))
       ).subscribe((respose: any) => {
         const digitalIntakeDevice :DigitalIntakeDevice = respose.body
-        console.log(JSON.stringify(digitalIntakeDevice))
         this.isLoading = false;
         this.error = false;
         this.errorMessage = undefined;

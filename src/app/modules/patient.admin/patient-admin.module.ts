@@ -73,7 +73,6 @@ import { PatientSourcePieChartComponent } from './components/dashboard/patient.s
 import { RequestDeviceRegistrationComponent } from './components/requesters/device.registration/request-device-registration.component';
 import { RequestDeviceIntakeSubmissionComponent } from './components/requesters/intake.submission/device/request-device-intake-submission.component';
 import { RequestMailIntakeSubmissionComponent } from './components/requesters/intake.submission/mail/request-mail-intake-submission.component';
-import { MailVerificationComponent } from './components/mai.verification/mail-verification.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +87,22 @@ import { MailVerificationComponent } from './components/mai.verification/mail-ve
     PatientCreateComponent,
     InsuranceCompanyCreateComponent,
     InsuranceCompanyListComponent,
-    UserUpdateComponent, UpdateClinicComponent, AuditComponent, UserAuditComponent, UserClinicAuditComponent, UserInsuranceCompanyAuditComponent, UserPatientAuditComponent, PatientCounterWidgetsComponent, ClinicsPatientsChartComponent, ListTrustDevicesComponent, EditClinicLocationComponent, PatientSourceBarChartComponent, PatientSourcePieChartComponent, RequestDeviceRegistrationComponent, RequestDeviceIntakeSubmissionComponent, RequestMailIntakeSubmissionComponent, MailVerificationComponent
+    UserUpdateComponent, 
+    UpdateClinicComponent, 
+    AuditComponent, 
+    UserAuditComponent, 
+    UserClinicAuditComponent, 
+    UserInsuranceCompanyAuditComponent, 
+    UserPatientAuditComponent, 
+    PatientCounterWidgetsComponent, 
+    ClinicsPatientsChartComponent, 
+    ListTrustDevicesComponent, 
+    EditClinicLocationComponent, 
+    PatientSourceBarChartComponent, 
+    PatientSourcePieChartComponent, 
+    RequestDeviceRegistrationComponent, 
+    RequestDeviceIntakeSubmissionComponent, 
+    RequestMailIntakeSubmissionComponent
   ],
   imports: [
     CommonModule,

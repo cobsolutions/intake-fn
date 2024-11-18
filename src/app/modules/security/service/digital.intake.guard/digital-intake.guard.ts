@@ -29,6 +29,10 @@ export class DigitalIntakeGuard implements CanActivate {
         })
       );
     }
+    else if (url.includes('verfiy/mail')){
+      console.log('Guard : verfiy/mail')
+      return of(true);
+    }
     else {
       return of(true);
     }

@@ -19,10 +19,6 @@ export class AuthInterceptor implements HttpInterceptor {
     private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.spinner.show();
-    if (request.url.includes('/one-time-token/generate')) {
-      this.spinner.hide();
-      return next.handle(request);
-    }
     if(request.url.includes('/digital-intake')){
       this.spinner.hide();
       return next.handle(request);

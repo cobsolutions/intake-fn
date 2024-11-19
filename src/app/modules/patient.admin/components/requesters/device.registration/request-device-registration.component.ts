@@ -41,7 +41,7 @@ export class RequestDeviceRegistrationComponent implements OnInit {
     if (this.deviceName.trim() !== '') {
       var request: DigitalIntakeOneTimeTokenRequest = {
         expiryPeriod: 600000,
-        requester: 'Device_Registration',
+        action :'Registration',
         clinicId: this.selectedClinicUUID
       }
       this.oneTimeTokenService.generate(request)

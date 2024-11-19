@@ -81,7 +81,7 @@ export class DigitalIntakeService {
   cacheVerifiedMail(token: string) {
     const headers: any = {
       'one-time-token': token,
-      'requester': 'Pre_Digital_Intake_Mail_Submission',
+      'requester': 'Pre_Digital_Intake_Submission',
       'content-type': 'application/json'
     }
     const url = this.baseUrl + '/mail/cache';

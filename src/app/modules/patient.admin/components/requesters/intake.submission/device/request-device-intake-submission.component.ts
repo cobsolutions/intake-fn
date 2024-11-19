@@ -29,7 +29,7 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
     var request: DigitalIntakeOneTimeTokenRequest = {
       clinicId:this.selectedClinicUUID,
       expiryPeriod: 86400000,
-      requester: 'Digital_Intake_Submission'
+      action : 'Device_Submission'
     }
     this.oneTimeTokenService.generate(request).subscribe((response: any) => {
       const requestToken: any = response.body;

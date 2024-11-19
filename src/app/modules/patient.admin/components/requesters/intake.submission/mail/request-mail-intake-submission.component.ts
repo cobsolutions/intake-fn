@@ -35,7 +35,7 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
     var request: DigitalIntakeOneTimeTokenRequest = {
       clinicId: this.selectedClinicUUID,
       expiryPeriod: 1800000,
-      requester: 'Digital_Intake_Mail_Submission'
+      action: 'Mail_Submission'
     }
     this.oneTimeTokenService.generatePatientMailToken(request, this.patientEmail).subscribe((response: any) => {
       this.toastrService.success("Verification mail has been sent to patient")

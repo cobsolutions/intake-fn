@@ -23,11 +23,6 @@ export class DigitalIntakeGuard implements CanActivate {
       return this.digitalIntakeService.cacheTrustDevice(route.queryParams['token'], this.cookieService.get('device-id')).pipe(
         map((dd: any) => {
           localStorage.setItem('used', this.generateUsedUUID(this.cookieService.get('device-id')))
-          this.router.navigate(['/'], {
-            queryParams: { 'token': null }, // Set the parameter to `null` to remove it
-            queryParamsHandling: 'merge', // Merge with existing query params
-            replaceUrl: true, 
-          });
           return true;
         }),
         catchError((error) => {

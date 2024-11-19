@@ -78,6 +78,16 @@ export class DigitalIntakeService {
     return this.http.get(`${url}`, { 'headers': headers })
   }
 
+  cacheVerifiedMail(token:string){
+    const headers: any = {
+      'one-time-token': token,
+      'requester': 'Pre_Digital_Intake_Mail_Submission',
+      'content-type': 'application/json'
+    }
+    const url = this.baseUrl + '/verified-mail/cache';
+    return this.http.get(`${url}`, { 'headers': headers })
+  }
+
   pickupSubmissionToken() {
     var url = this.baseUrl + '/pickup-token'
     return this.http.get(url, { observe: 'response', withCredentials: true, 'headers': this.headers });

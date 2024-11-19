@@ -1,1 +1,14 @@
-<p>mail-verification works!</p>
+<div class="container">
+    <!-- Loader Section -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="spinner"></div>
+      <p class="loading-text">Loading, please wait...</p>
+    </div>
+    <div *ngIf="(!isLoading) && error" class="message-container">
+      <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+        <i class="errorCheckmark">✗</i>
+      </div>
+      <h2>Error.!</h2>
+      <p class="lead">{{errorMessage}}!<br /></p>
+    </div>
+  </div>

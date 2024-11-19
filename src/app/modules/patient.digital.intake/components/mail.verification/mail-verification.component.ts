@@ -7,7 +7,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./mail-verification.component.css']
 })
 export class MailVerificationComponent implements OnInit {
-
+  isLoading = true;
+  error: boolean = false;
+  errorMessage: string | undefined;
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {

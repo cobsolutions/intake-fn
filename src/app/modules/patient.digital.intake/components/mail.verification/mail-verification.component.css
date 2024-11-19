@@ -1,0 +1,104 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-text {
+    margin-top: 15px;
+    font-size: 18px;
+    color: #555;
+  }
+  
+  .message-container {
+    text-align: center;
+  }
+  
+  .message-text {
+    font-size: 24px;
+    color: #2ecc71;
+    font-weight: bold;
+    animation: fadeIn 1s ease-in;
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  h1 {
+    color: #88B04B;
+    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+    font-weight: 900;
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  p {
+    color: #404F5E;
+    font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+    font-size:20px;
+    margin: 0;
+  }
+i {
+  color: #9ABC66;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left:-15px;
+}
+.errorCheckmark{
+  color: #f70b0b;
+  font-size: 100px;
+  line-height: 200px;
+  margin-left:-15px;
+}
+.card {
+  background: white;
+  padding: 60px;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px #C8D0D8;
+  display: inline-block;
+  margin: 0 auto;
+}
+/* Error Screen */
+.error-screen {
+  color: #f44336;
+}
+
+.error-screen h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.error-screen p {
+  margin: 20px 0;
+}
+
+.error-screen .button {
+  background-color: #f44336;
+}
+
+.error-screen .button:hover {
+  background-color: #d32f2f;
+}

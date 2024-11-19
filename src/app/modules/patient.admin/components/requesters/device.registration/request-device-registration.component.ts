@@ -40,7 +40,7 @@ export class RequestDeviceRegistrationComponent implements OnInit {
   goToNextStep(): void {
     if (this.deviceName.trim() !== '') {
       var request: DigitalIntakeOneTimeTokenRequest = {
-        expiryPeriod: 60000,
+        expiryPeriod: 600000,
         requester: 'Device_Registration',
         clinicId: this.selectedClinicUUID
       }

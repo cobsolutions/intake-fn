@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AgreementHolder } from 'src/app/models/patient/agreements/agreements.holder';
 import { InsuranceCompany } from 'src/app/modules/patient.admin/models/insurance.company.model';
-import { OneTimeToken } from 'src/app/modules/patient.admin/models/one.time.token/one.time.token';
 import { DigitalIntakeDevice } from 'src/app/modules/patient.admin/models/trust.device/digital.intake.device';
 import { environment } from 'src/environments/environment';
 
@@ -85,6 +84,16 @@ export class DigitalIntakeService {
       'content-type': 'application/json'
     }
     const url = this.baseUrl + '/mail/cache';
+    return this.http.get(`${url}`, { 'headers': headers })
+  }
+  verifyMail(token: string , deviceId:string){
+    const headers: any = {
+      'one-time-token': token,
+      'device-id' : deviceId,
+      'requester': 'Verify_Mail',
+      'content-type': 'application/json'
+    }
+    const url = this.baseUrl + '/verify-mail';
     return this.http.get(`${url}`, { 'headers': headers })
   }
 }

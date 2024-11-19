@@ -32,18 +32,18 @@ export class DigitalIntakeGuard implements CanActivate {
         })
       );
     }
-    else if (url.includes('verfiy/mail')) {
-      return this.digitalIntakeService.cacheVerifiedMail(route.queryParams['token']).pipe(
-        map((dd: any) => {
-          return true;
-        }),
-        catchError((error) => {
-          localStorage.setItem('device-error', JSON.stringify(error));
-          this.router.navigate(['/digital-intake/corrupted']);
-          return of(false);
-        })
-      );
-    }
+    // else if (url.includes('verfiy/mail')) {
+    //   return this.digitalIntakeService.cacheVerifiedMail(route.queryParams['token']).pipe(
+    //     map((dd: any) => {
+    //       return true;
+    //     }),
+    //     catchError((error) => {
+    //       localStorage.setItem('device-error', JSON.stringify(error));
+    //       this.router.navigate(['/digital-intake/corrupted']);
+    //       return of(false);
+    //     })
+    //   );
+    // }
     else {
       return of(true);
     }

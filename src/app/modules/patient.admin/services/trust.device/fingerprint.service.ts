@@ -15,7 +15,7 @@ export class FingerprintService {
     const _callDeviceId = this.getDeviceId();
     return forkJoin([_callLocation,_callDeviceId])
   }
-  private getDeviceId(): Observable<any> {
+  public getDeviceId(): Observable<any> {
     return from(FingerprintJS.load()).pipe(
 
       switchMap(res => from(res.get())),

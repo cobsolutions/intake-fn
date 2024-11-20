@@ -13,7 +13,11 @@ const routes: Routes = [
     children: [
       {
         path: 'create',
-        component: CreateDigitalPatientIntakeComponent
+        component: CreateDigitalPatientIntakeComponent,
+      },
+      {
+        path: 'submit',
+        component: CreateDigitalPatientIntakeComponent,
       },
       {
         path: 'verfiy/mail',

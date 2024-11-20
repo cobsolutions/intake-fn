@@ -11,22 +11,27 @@ import { DigitalIntakeService } from '../../services/digitalIntake/digital-intak
 })
 export class MailVerificationComponent implements OnInit {
   status: string
-  errorMessage: string | undefined;
+  digitalIntakeURL:string;
+  public baseURL: string = location.origin;
   constructor(private route: ActivatedRoute, private fingerprintService: FingerprintService, private digitalIntakeService: DigitalIntakeService) { }
 
   ngOnInit(): void {
     const _getDeviceId = this.fingerprintService.getDeviceId();
     this.route.queryParams.subscribe(param => {
-      const toekn = param['token'];
+      const token = param['token'];
       _getDeviceId.pipe(
-        switchMap(deviceId => this.digitalIntakeService.verifyMail(toekn, deviceId))
+        switchMap(deviceId => this.digitalIntakeService.verifyMail(token, deviceId))
       ).subscribe(rre => {
         this.status = 'V'
+        this.digitalIntakeURL =  this.baseURL +'/digital-intake/submit?token=' + token;
+        console.log(this.digitalIntakeURL)
       }, error => {
         this.status = 'E'
       })
     })
-
   }
+  goToLink(url: string){
+    window.open(url, "_self");
+}
 
 }

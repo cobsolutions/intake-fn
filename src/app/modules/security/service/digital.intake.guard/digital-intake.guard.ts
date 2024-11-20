@@ -16,8 +16,11 @@ export class DigitalIntakeGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
     const url = state.url;
+    // const component = this.getComponentFromRoute(route);
+    // console.log(component.name)
     if (url.includes('create')) {
       if (this.checkInUse(this.cookieService.get('device-id'))) {
+        console.log('checkInUse')
         return of(true);
       }
       return this.digitalIntakeService.cacheTrustDevice(route.queryParams['token'], this.cookieService.get('device-id')).pipe(
@@ -32,18 +35,6 @@ export class DigitalIntakeGuard implements CanActivate {
         })
       );
     }
-    // else if (url.includes('verfiy/mail')) {
-    //   return this.digitalIntakeService.cacheVerifiedMail(route.queryParams['token']).pipe(
-    //     map((dd: any) => {
-    //       return true;
-    //     }),
-    //     catchError((error) => {
-    //       localStorage.setItem('device-error', JSON.stringify(error));
-    //       this.router.navigate(['/digital-intake/corrupted']);
-    //       return of(false);
-    //     })
-    //   );
-    // }
     else {
       return of(true);
     }
@@ -64,5 +55,28 @@ export class DigitalIntakeGuard implements CanActivate {
       }
 
     }
+  }
+  private getComponentFromRoute(route: ActivatedRouteSnapshot): any {
+    // Traverse the route tree to find the deepest activated route
+    let currentRoute: ActivatedRouteSnapshot | null = route;
+
+    while (currentRoute.firstChild) {
+      currentRoute = currentRoute.firstChild;
+    }
+
+    // Check for the component property in the deepest route
+    return currentRoute.routeConfig?.component;
+  }
+  private getRouteData(route: ActivatedRouteSnapshot, key: string): any {
+    let currentRoute: ActivatedRouteSnapshot | null = route;
+
+    while (currentRoute) {
+      if (currentRoute.data[key]) {
+        return currentRoute.data[key];
+      }
+      currentRoute = currentRoute.parent;
+    }
+
+    return null;
   }
 }

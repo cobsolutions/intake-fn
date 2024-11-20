@@ -17,8 +17,11 @@ export class DigitalIntakeService {
   }
   constructor(private http: HttpClient) { }
   create(imageFormData: FormData) {
+    var headers: any = {
+      'requester': 'Digital_Intake_Submission'
+    }
     const createPatientURL = this.baseUrl + '/create';
-    return this.http.post(createPatientURL, imageFormData)
+    return this.http.post(createPatientURL, imageFormData , {observe: 'response',withCredentials: true, 'headers': headers })
   }
   findAgreements() {
     const findAgreementURL = this.baseUrl + '/find/agreement';
@@ -74,16 +77,6 @@ export class DigitalIntakeService {
       'content-type': 'application/json'
     }
     const url = this.baseUrl + '/trust-device/cache';
-    return this.http.get(`${url}`, { 'headers': headers })
-  }
-
-  cacheVerifiedMail(token: string) {
-    const headers: any = {
-      'one-time-token': token,
-      'requester': 'Pre_Digital_Intake_Submission',
-      'content-type': 'application/json'
-    }
-    const url = this.baseUrl + '/mail/cache';
     return this.http.get(`${url}`, { 'headers': headers })
   }
   verifyMail(token: string , deviceId:string){

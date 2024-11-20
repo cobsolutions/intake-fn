@@ -10,8 +10,7 @@ import { DigitalIntakeService } from '../../services/digitalIntake/digital-intak
   styleUrls: ['./mail-verification.component.css']
 })
 export class MailVerificationComponent implements OnInit {
-  isLoading = true;
-  error: boolean = false;
+  status: string
   errorMessage: string | undefined;
   constructor(private route: ActivatedRoute, private fingerprintService: FingerprintService, private digitalIntakeService: DigitalIntakeService) { }
 
@@ -22,7 +21,9 @@ export class MailVerificationComponent implements OnInit {
       _getDeviceId.pipe(
         switchMap(deviceId => this.digitalIntakeService.verifyMail(toekn, deviceId))
       ).subscribe(rre => {
-        this.isLoading = false;
+        this.status = 'V'
+      }, error => {
+        this.status = 'E'
       })
     })
 

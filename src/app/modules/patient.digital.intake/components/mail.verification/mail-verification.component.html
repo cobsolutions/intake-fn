@@ -1,14 +1,35 @@
-<div class="container">
-    <!-- Loader Section -->
-    <div *ngIf="isLoading" class="loading-container">
-      <div class="spinner"></div>
-      <p class="loading-text">Loading, please wait...</p>
-    </div>
-    <div *ngIf="(!isLoading) && error" class="message-container">
-      <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
-        <i class="errorCheckmark">✗</i>
-      </div>
-      <h2>Error.!</h2>
-      <p class="lead">{{errorMessage}}!<br /></p>
+<div class="email-verification-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="!status" class="card">
+    <div class="spinner"></div>
+    <div class="content">
+      <h1 class="title">Verifying Email...</h1>
+      <p class="description">
+        Please wait while we verify your email. This may take a few seconds.
+      </p>
     </div>
   </div>
+
+  <!-- Success Message -->
+  <div *ngIf="status === 'V'" class="card success">
+    <div class="icon">&#x2714;</div>
+    <div class="content">
+      <h1 class="title">Email Verified!</h1>
+      <p class="description">
+        Thank you for confirming your email. You can now access all features.
+      </p>
+      <a class="link" routerLink="/main-screen">Go to Main Screen</a>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="status === 'E'" class="card error">
+    <div class="content">
+      <h1 class="title">Verification Failed</h1>
+      <p class="description">
+        The verification link has expired. Please request a new verification email or contact support for assistance.
+      </p>
+      <a class="link" routerLink="/support">Contact Support</a>
+    </div>
+  </div>
+</div>

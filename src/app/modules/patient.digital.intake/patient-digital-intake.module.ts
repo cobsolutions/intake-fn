@@ -25,6 +25,7 @@ import { CorruptedDeviceComponent } from './components/corrupted.device/corrupte
 import { PatientIdentityVerificationComponent } from './components/patinet.identity.verification/patient-identity-verification.component';
 import { PatientConsentComponent } from './components/patient.consent/patient-consent.component';
 import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
+import { RegisterDeviceComponent } from './components/register.device/register-device.component';
 
 
 const COREUI_MODULES = [
@@ -72,6 +73,7 @@ const COREUI_MODULES = [
     PatientIdentityVerificationComponent,
     PatientConsentComponent,
     MailVerificationComponent,
+    RegisterDeviceComponent,
   ],
   imports: [
     CommonModule,

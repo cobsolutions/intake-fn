@@ -6,14 +6,14 @@ import { DigitalIntakeDevice } from 'src/app/modules/patient.admin/models/trust.
 import { DeviceLocation } from 'src/app/modules/patient.admin/models/trust.device/geolocation';
 import { FingerprintService } from 'src/app/modules/patient.admin/services/trust.device/fingerprint.service';
 import { WebsocketService } from 'src/app/modules/patient.admin/services/web.socket/websocket.service';
-import { DigitalIntakeService } from 'src/app/modules/patient.digital.intake/services/digitalIntake/digital-intake.service';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
 @Component({
-  selector: 'create-component-scanner',
-  templateUrl: './create-component-scanner.component.html',
-  styleUrls: ['./create-component-scanner.component.css']
+  selector: 'register-device',
+  templateUrl: './register-device.component.html',
+  styleUrls: ['./register-device.component.css']
 })
-export class CreateComponentScannerComponent implements OnInit {
+export class RegisterDeviceComponent implements OnInit {
   isLoading = true;
   error: boolean = false;
   errorMessage: string | undefined;
@@ -23,6 +23,7 @@ export class CreateComponentScannerComponent implements OnInit {
     private route: ActivatedRoute,
     private websocketService: WebsocketService,
     private cookieService:CookieService) { }
+
   ngOnInit(): void {
     this.route.queryParams.subscribe(param => {
 
@@ -58,4 +59,5 @@ export class CreateComponentScannerComponent implements OnInit {
     }
     )
   }
+
 }

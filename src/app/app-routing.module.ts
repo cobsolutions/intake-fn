@@ -14,17 +14,6 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: ScannerlayoutComponent,
-    children: [
-      {
-          path:'scanner',
-          loadChildren: () =>
-          import('./modules/scanner/scanner.module').then((m) => m.ScannerModule)
-      }
-    ]
-  },
-  {
-    path: '',
     component: DefaultLayoutComponent,
     data: {
       title: 'Home'

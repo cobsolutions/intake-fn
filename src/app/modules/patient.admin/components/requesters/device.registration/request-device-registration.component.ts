@@ -47,7 +47,7 @@ export class RequestDeviceRegistrationComponent implements OnInit {
       this.oneTimeTokenService.generate(request)
         .subscribe((response: any) => {
           const requestToken: any = response.body;
-          this.createPatientURL = this.baseURL + '/scanner?name=' + this.deviceName + '&token=' + requestToken.token;
+          this.createPatientURL = this.baseURL + '/digital-intake/register?name=' + this.deviceName + '&token=' + requestToken.token;
           console.log(this.createPatientURL)
           this.currentStep = 2;
           this.inCorrectName = false

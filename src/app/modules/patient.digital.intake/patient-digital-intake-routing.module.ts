@@ -4,6 +4,7 @@ import { CorruptedDeviceComponent } from './components/corrupted.device/corrupte
 import { CreateDigitalPatientIntakeComponent } from './components/create/create-digital-patient-intake.component';
 import { PatientGreetingCreationComponent } from './components/greeting/patient-greeting-creation.component';
 import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
+import { RegisterDeviceComponent } from './components/register.device/register-device.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,10 @@ const routes: Routes = [
       {
         path: 'create',
         component: CreateDigitalPatientIntakeComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterDeviceComponent,
       },
       {
         path: 'submit',

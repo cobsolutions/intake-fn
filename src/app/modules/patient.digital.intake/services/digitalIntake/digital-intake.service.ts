@@ -21,7 +21,7 @@ export class DigitalIntakeService {
       'requester': 'Digital_Intake_Submission'
     }
     const createPatientURL = this.baseUrl + '/create';
-    return this.http.post(createPatientURL, imageFormData , {observe: 'response',withCredentials: true, 'headers': headers })
+    return this.http.post(createPatientURL, imageFormData, { observe: 'response', withCredentials: true, 'headers': headers })
   }
   findAgreements() {
     const findAgreementURL = this.baseUrl + '/find/agreement';
@@ -68,25 +68,24 @@ export class DigitalIntakeService {
     const url = this.baseUrl + '/trust-device/register'
     return this.http.post(`${url}`, JSON.stringify(digitalIntakeDevice), { 'headers': headers, withCredentials: true, observe: 'response' })
   }
-  cacheTrustDevice(token: string, deviceId: string) {
-
+  verifyMail(token: string, deviceId: string) {
     const headers: any = {
       'one-time-token': token,
       'device-id': deviceId,
-      'requester': 'Pre_Digital_Intake_Submission',
-      'content-type': 'application/json'
-    }
-    const url = this.baseUrl + '/trust-device/cache';
-    return this.http.get(`${url}`, { 'headers': headers })
-  }
-  verifyMail(token: string , deviceId:string){
-    const headers: any = {
-      'one-time-token': token,
-      'device-id' : deviceId,
       'requester': 'Verify_Mail',
       'content-type': 'application/json'
     }
     const url = this.baseUrl + '/verify-mail';
+    return this.http.get(`${url}`, { 'headers': headers })
+  }
+
+  checkDevice(token: string , deviceId:string) {
+    const headers: any = {
+      'one-time-token': token,
+      'device-id': deviceId,
+      'content-type': 'application/json'
+    }
+    const url = this.baseUrl + '/trust-device/check';
     return this.http.get(`${url}`, { 'headers': headers })
   }
 }

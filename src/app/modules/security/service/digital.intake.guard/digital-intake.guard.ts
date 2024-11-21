@@ -16,16 +16,14 @@ export class DigitalIntakeGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
     const url = state.url;
-    // const component = this.getComponentFromRoute(route);
-    // console.log(component.name)
-    if (url.includes('create')) {
-      if (this.checkInUse(this.cookieService.get('device-id'))) {
-        console.log('checkInUse')
-        return of(true);
-      }
-      return this.digitalIntakeService.cacheTrustDevice(route.queryParams['token'], this.cookieService.get('device-id')).pipe(
+
+    if (url.includes('create') || url.includes('register')) {
+      //Catch device-id and clear it
+      //Device id will bet set as asecure HTTP cookie from back-end side 
+      const deviceId = this.cookieService.get('device-id');
+      this.cookieService.delete('device-id')
+      return this.digitalIntakeService.checkDevice(route.queryParams['token'],deviceId).pipe(
         map((dd: any) => {
-          localStorage.setItem('used', this.generateUsedUUID(this.cookieService.get('device-id')))
           return true;
         }),
         catchError((error) => {
@@ -38,45 +36,5 @@ export class DigitalIntakeGuard implements CanActivate {
     else {
       return of(true);
     }
-  }
-  private generateUsedUUID(deviceId: string): string {
-    const NAMESPACE = 'e7e10b6e-cf8c-4a4f-9f20-10bf2db354cc';
-    return uuidv5(deviceId, NAMESPACE);
-  }
-  private checkInUse(deviceId: string) {
-    const isuseUUID = localStorage.getItem('used');
-    if (isuseUUID === undefined)
-      return false
-    else {
-      if (isuseUUID === this.generateUsedUUID(deviceId))
-        return true
-      else {
-        throwError(() => new Error());
-      }
-
-    }
-  }
-  private getComponentFromRoute(route: ActivatedRouteSnapshot): any {
-    // Traverse the route tree to find the deepest activated route
-    let currentRoute: ActivatedRouteSnapshot | null = route;
-
-    while (currentRoute.firstChild) {
-      currentRoute = currentRoute.firstChild;
-    }
-
-    // Check for the component property in the deepest route
-    return currentRoute.routeConfig?.component;
-  }
-  private getRouteData(route: ActivatedRouteSnapshot, key: string): any {
-    let currentRoute: ActivatedRouteSnapshot | null = route;
-
-    while (currentRoute) {
-      if (currentRoute.data[key]) {
-        return currentRoute.data[key];
-      }
-      currentRoute = currentRoute.parent;
-    }
-
-    return null;
   }
 }

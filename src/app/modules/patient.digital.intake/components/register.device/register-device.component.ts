@@ -47,6 +47,7 @@ export class RegisterDeviceComponent implements OnInit {
         this.isLoading = false;
         this.error = false;
         this.errorMessage = undefined;
+        //temp set device-Id cookie to be catched in guard regarding device check
         this.cookieService.set('device-id', digitalIntakeDevice.deviceId, 3650, '/digital-intake')
         //this.websocketService.send(respose.body)
       }, error => {

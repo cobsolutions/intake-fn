@@ -22,7 +22,7 @@ export class PatientBiometricIdentificationComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.stepper)
+    
   }
 
   next() {
@@ -41,13 +41,14 @@ export class PatientBiometricIdentificationComponent implements OnInit {
   }
   public handleImage(webcamImage: WebcamImage): void {
     this.webcamImage = webcamImage;
-    console.log('Captured image', webcamImage);
+    this.form.get('bio')?.get('capturedImage')?.setValue(webcamImage.imageAsDataUrl);    
     // Send this image to the backend for processing
   }
   public handleInitError(error: WebcamInitError): void {
     console.error('Webcam initialization error:', error);
   }
   public clearImage(): void {
+    this.form.get('bio')?.get('capturedImage')?.setValue(null);
     this.webcamImage = null;
   }
 

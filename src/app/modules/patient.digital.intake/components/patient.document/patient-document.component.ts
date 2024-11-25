@@ -2,14 +2,10 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
-import { Insurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance';
 import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
 import { CompressDocumentService } from '../../services/doument/compress-document.service';
 import { CheckInvalidForm } from '../../util/invalid.form';
 import { imageDocumentValidator } from '../create/validators/custom.validation/document.image.validator';
-import { DocumentValidator } from '../create/validators/document/document.validator';
-import { AddPatientValidator } from '../create/validators/document/patient.validator/add.patient.validator';
-import { RemovePatientValidator } from '../create/validators/document/patient.validator/remove.patient.validator';
 import { ValidationExploder } from '../create/validators/validation.exploder';
 
 @Component({

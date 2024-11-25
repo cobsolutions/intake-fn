@@ -59,7 +59,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'pPhoneNumber': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),
       }),
       'bio' : new FormGroup({
-        
+        'capturedImage': new FormControl(null, [Validators.required]),
       }),
       'basic': new FormGroup({
         'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
@@ -181,9 +181,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'generatesign': new FormControl(null),
         'drawsign': new FormControl(null)
       }),
-      'summary': new FormGroup({
-
-      })
+      'summary': new FormGroup({})
     })
     this.setAddressConditionalValidators()
     this.setXRayValidator();

@@ -28,6 +28,8 @@ import { MailVerificationComponent } from './components/mail.verification/mail-v
 import { RegisterDeviceComponent } from './components/register.device/register-device.component';
 import { PreRegisterDeviceComponent } from './components/pre.register.device/pre-register-device.component';
 import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
+import { PatientBiometricIdentificationComponent } from './components/patient.biometric.identification/patient-biometric-identification.component';
+import { WebcamModule } from 'ngx-webcam';
 
 
 const COREUI_MODULES = [
@@ -78,6 +80,7 @@ const COREUI_MODULES = [
     RegisterDeviceComponent,
     PreRegisterDeviceComponent,
     PreCreateDigitalPatientIntakeComponentComponent,
+    PatientBiometricIdentificationComponent,
   ],
   imports: [
     CommonModule,
@@ -90,6 +93,7 @@ const COREUI_MODULES = [
     ...COREUI_MODULES,
     AccordionModule,
     AutocompleteLibModule,
+    WebcamModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
 })

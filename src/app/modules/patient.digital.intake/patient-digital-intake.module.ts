@@ -26,6 +26,8 @@ import { PatientIdentityVerificationComponent } from './components/patinet.ident
 import { PatientConsentComponent } from './components/patient.consent/patient-consent.component';
 import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
 import { RegisterDeviceComponent } from './components/register.device/register-device.component';
+import { PreRegisterDeviceComponent } from './components/pre.register.device/pre-register-device.component';
+import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
 
 
 const COREUI_MODULES = [
@@ -74,6 +76,8 @@ const COREUI_MODULES = [
     PatientConsentComponent,
     MailVerificationComponent,
     RegisterDeviceComponent,
+    PreRegisterDeviceComponent,
+    PreCreateDigitalPatientIntakeComponentComponent,
   ],
   imports: [
     CommonModule,

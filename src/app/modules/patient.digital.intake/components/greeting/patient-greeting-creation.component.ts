@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
 @Component({
   selector: 'app-patient-greeting-creation',
@@ -8,12 +9,14 @@ import { Router } from '@angular/router';
 })
 export class PatientGreetingCreationComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private digitalIntakeService: DigitalIntakeService) { }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.router.navigateByUrl('/digital-intake/create?clinicId=' + localStorage.getItem('clinicId'));
-    }, 2000)
+    this.digitalIntakeService.invalidateToken().subscribe(result => {
+    }, error => {
+      localStorage.setItem('device-error', JSON.stringify(error));
+      this.router.navigate(['/digital-intake/corrupted']);
+    });
   }
 
 }

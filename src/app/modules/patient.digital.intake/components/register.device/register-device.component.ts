@@ -22,34 +22,18 @@ export class RegisterDeviceComponent implements OnInit {
     private fingerprintService: FingerprintService,
     private route: ActivatedRoute,
     private websocketService: WebsocketService,
-    private cookieService:CookieService) { }
+    private cookieService:CookieService
+  ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(param => {
-
-      this.fingerprintService.get().pipe(
-        map(result => {
-          var location: DeviceLocation = {
-            accuracy: result[0].coords.accuracy,
-            latitude: result[0].coords.latitude,
-            longitude: result[0].coords.longitude
-          }
-          var digitalIntakeDevice: DigitalIntakeDevice = {
-            deviceName: param['name'],
-            deviceId: result[1],
-            geolocation: location,
-          }
-          return digitalIntakeDevice
-        })
-        , switchMap((digitalIntakeDevice: any) => this.digitalIntakeService.registerDevice(digitalIntakeDevice, param['token']))
-      ).subscribe((respose: any) => {
-        const digitalIntakeDevice :DigitalIntakeDevice = respose.body
+    // this.digitalIntakeService.registerDevice()
+    this.route.queryParams.subscribe(params => {
+      const token = params['token'];
+      const digitalIntakeDevice = JSON.parse(params['digitalIntakeDevice'])
+      this.digitalIntakeService.registerDevice(digitalIntakeDevice, token).subscribe(result => {
         this.isLoading = false;
         this.error = false;
         this.errorMessage = undefined;
-        //temp set device-Id cookie to be catched in guard regarding device check
-        this.cookieService.set('device-id', digitalIntakeDevice.deviceId, 3650, '/digital-intake')
-        //this.websocketService.send(respose.body)
       }, error => {
         this.isLoading = false;
         this.error = true
@@ -57,8 +41,7 @@ export class RegisterDeviceComponent implements OnInit {
           this.errorMessage = error.error.message;
         console.log(error)
       })
-    }
-    )
+    });
   }
 
 }

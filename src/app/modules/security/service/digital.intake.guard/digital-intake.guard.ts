@@ -16,25 +16,41 @@ export class DigitalIntakeGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
     const url = state.url;
-
     if (url.includes('create') || url.includes('register')) {
       //Catch device-id and clear it
       //Device id will bet set as asecure HTTP cookie from back-end side 
-      const deviceId = this.cookieService.get('device-id');
-      this.cookieService.delete('device-id')
-      return this.digitalIntakeService.checkDevice(route.queryParams['token'],deviceId).pipe(
+      var deviceId = undefined
+      if (this.cookieService.check('device-id')) {
+        deviceId = this.cookieService.get('device-id');
+        this.cookieService.delete('device-id')
+      }
+      return this.digitalIntakeService.checkDevice(route.queryParams['token'], deviceId).pipe(
         map((dd: any) => {
           return true;
         }),
         catchError((error) => {
+          console.log(error)
           localStorage.setItem('device-error', JSON.stringify(error));
           this.router.navigate(['/digital-intake/corrupted']);
           return of(false);
         })
       );
     }
-    else {
-      return of(true);
+    if (url.includes('submit')) {
+      return this.digitalIntakeService.validateMail(route.queryParams['token']).pipe(
+        map((dd: any) => {
+          return true;
+        }),
+        catchError((error) => {
+          console.log(error)
+          localStorage.setItem('device-error', JSON.stringify(error));
+          this.router.navigate(['/digital-intake/corrupted']);
+          return of(false);
+        })
+      );
     }
+
+    return of(true);
+
   }
 }

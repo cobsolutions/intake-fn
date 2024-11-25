@@ -27,13 +27,12 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
   }
   generateQRCode() {
     var request: DigitalIntakeOneTimeTokenRequest = {
-      clinicId:this.selectedClinicUUID,
-      expiryPeriod: 86400000,
-      action : 'Device_Submission'
+      clinicId: this.selectedClinicUUID,
+      requester: 'Device_Submission'
     }
     this.oneTimeTokenService.generate(request).subscribe((response: any) => {
       const requestToken: any = response.body;
-      this.submissionURL = this.baseURL + '/digital-intake/create?token=' + requestToken.token;;
+      this.submissionURL = this.baseURL + '/digital-intake/pre-create?token=' + requestToken.token;;
       this.isGenerated = true
     })
 

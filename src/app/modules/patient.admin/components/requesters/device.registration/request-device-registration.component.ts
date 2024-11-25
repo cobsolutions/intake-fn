@@ -40,14 +40,13 @@ export class RequestDeviceRegistrationComponent implements OnInit {
   goToNextStep(): void {
     if (this.deviceName.trim() !== '') {
       var request: DigitalIntakeOneTimeTokenRequest = {
-        expiryPeriod: 600000,
-        action :'Registration',
-        clinicId: this.selectedClinicUUID
+        clinicId: this.selectedClinicUUID,
+        requester:'Registration'
       }
       this.oneTimeTokenService.generate(request)
         .subscribe((response: any) => {
           const requestToken: any = response.body;
-          this.createPatientURL = this.baseURL + '/digital-intake/register?name=' + this.deviceName + '&token=' + requestToken.token;
+          this.createPatientURL = this.baseURL + '/digital-intake/pre-register?name=' + this.deviceName + '&token=' + requestToken.token;
           console.log(this.createPatientURL)
           this.currentStep = 2;
           this.inCorrectName = false

@@ -47,14 +47,13 @@ export class PatientSummaryComponent implements OnInit {
   submit() {
     var imageFormData = new FormData();
     this.componentReference.getPatientDocumentComponent()!.getFormDate().forEach((patientDocument: any) => {
-      console.log(JSON.stringify(patientDocument))
       imageFormData.append('files', patientDocument, patientDocument.name);
     })
     this.pateint.clinicIdUUID = this.clinicId;
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
     console.log(JSON.stringify(this.pateint))
     this.digitalIntakeService.create(imageFormData).subscribe(resuldd => {
-      this.router.navigateByUrl('/digital-intake/done');
+      this.router.navigateByUrl('/digital-intake/done?token='+this.digitalIntakeService.token);
     }, error => {
       console.log('Error During Creation ' + JSON.stringify(error))
     })

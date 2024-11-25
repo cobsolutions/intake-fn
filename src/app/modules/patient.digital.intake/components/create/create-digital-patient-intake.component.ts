@@ -1,4 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
@@ -29,6 +30,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   patientForm: FormGroup
   render: boolean = false;
   @ViewChild(MatStepper, { static: true }) public patientStepper: MatStepper;
+  activeStepIndex: number;
   constructor(private breakpointObserver: BreakpointObserver,
     private digitalIntakeService:DigitalIntakeService) { }
 
@@ -224,5 +226,8 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       if (value !== null && value === 'other')
         this.patientForm.get('medical')?.get('referringEntityOther')?.setValidators(Validators.required)
     })
+  }
+  onStepChange(event: StepperSelectionEvent): void {
+    this.activeStepIndex = event.selectedIndex;
   }
 }

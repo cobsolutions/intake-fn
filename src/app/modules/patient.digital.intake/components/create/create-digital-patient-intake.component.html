@@ -3,7 +3,7 @@
     <c-card>
         <c-card-body>
             <form [formGroup]="patientForm">
-                <mat-stepper linear="true" #stepper [orientation]="stepperOrientation">
+                <mat-stepper linear="true" #stepper [orientation]="stepperOrientation" (selectionChange)="onStepChange($event)">
                     <mat-step [stepControl]="patientForm.get('consent')!" formGroupName="consent" completed="true">
                         <ng-template matStepLabel>Consent</ng-template>
                         <patient-consent [form]="patientForm" [stepper]="patientStepper"></patient-consent>
@@ -15,7 +15,7 @@
                     </mat-step>
                     <mat-step [stepControl]="patientForm.get('bio')!" formGroupName="bio" completed="true">
                         <ng-template matStepLabel>Photo</ng-template>
-                        <patient-biometric-identification [form]="patientForm"
+                        <patient-biometric-identification [form]="patientForm" [isActive]="activeStepIndex"
                             [stepper]="patientStepper"></patient-biometric-identification>
                     </mat-step>
                     <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="true">

@@ -15,7 +15,7 @@
                     </mat-step>
                     <mat-step [stepControl]="patientForm.get('bio')!" formGroupName="bio" completed="true">
                         <ng-template matStepLabel>Photo</ng-template>
-                        
+                        <patient-biometric-identification></patient-biometric-identification>
                     </mat-step>
                     <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="true">
                         <ng-template matStepLabel>Essential</ng-template>

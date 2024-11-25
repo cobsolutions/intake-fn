@@ -1,26 +1,21 @@
-<div [formGroup]="form" class="mt-3 text-center">
-    <c-card>
-        <c-card-body>
-            <c-row>
-                <c-col xs="12">
-                    <webcam [trigger]="triggerObservable()" (imageCapture)="handleImage($event)"
-                        (initError)="handleInitError($event)" *ngIf="isActive ===2">
-                    </webcam>
-                </c-col>
-                <c-col xs="12">
-                    <button cButton (click)="captureImage()">Capture</button>
-                </c-col>
-            </c-row>
-            <c-row>
-                <c-col>
-                    <div *ngIf="webcamImage">
-                        <img [src]="webcamImage.imageAsDataUrl" alt="Captured face">
-                    </div>
-                </c-col>
-            </c-row>
-        </c-card-body>
-    </c-card>
-</div>
-<div class="mt-3">
-    <button cButton variant="outline" size="sm" (click)="next()">Next</button>
-</div>
+<div class="webcam-container">
+    <!-- Webcam view -->
+    <div class="webcam-view">
+        <h3 class="section-header">Live Webcam</h3>
+      <webcam
+        [height]="300"
+        [width]="400"
+        [trigger]="triggerObservable()"
+        (imageCapture)="handleImage($event)">
+      </webcam>
+      <button (click)="captureImage()" class="capture-button">Capture</button>
+    </div>
+  
+    <!-- Captured image preview -->
+    <div class="image-preview" *ngIf="webcamImage">
+        <h3 class="section-header">Captured Image</h3>
+      <img [src]="webcamImage.imageAsDataUrl" alt="Captured image" />
+      <button (click)="clearImage()" class="clear-button">Clear</button>
+    </div>
+  </div>
+  

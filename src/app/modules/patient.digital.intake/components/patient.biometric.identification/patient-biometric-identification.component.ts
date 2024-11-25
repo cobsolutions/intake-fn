@@ -15,6 +15,8 @@ export class PatientBiometricIdentificationComponent implements OnInit {
   @Input() isActive: number
   isValidForm: boolean = false;
   public webcamImage: WebcamImage | null = null;
+  public capturedImage: string | null = null;
+
   private trigger: Subject<void> = new Subject<void>();
 
   constructor() { }
@@ -45,4 +47,8 @@ export class PatientBiometricIdentificationComponent implements OnInit {
   public handleInitError(error: WebcamInitError): void {
     console.error('Webcam initialization error:', error);
   }
+  public clearImage(): void {
+    this.webcamImage = null;
+  }
+
 }

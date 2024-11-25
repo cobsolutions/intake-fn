@@ -42,6 +42,7 @@ export class PatientSummaryComponent implements OnInit {
     this.fillPatientInsurance();
     this.fillPatientAgreement();
     this.getSignture()
+    this.getPhoto();
     this.clinicId = localStorage.getItem('clinicId') || '';
   }
   submit() {
@@ -51,7 +52,6 @@ export class PatientSummaryComponent implements OnInit {
     })
     this.pateint.clinicIdUUID = this.clinicId;
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
-    console.log(JSON.stringify(this.pateint))
     this.digitalIntakeService.create(imageFormData).subscribe(resuldd => {
       this.router.navigateByUrl('/digital-intake/done?token='+this.digitalIntakeService.token);
     }, error => {
@@ -217,15 +217,22 @@ export class PatientSummaryComponent implements OnInit {
   }
   private getSignture() {
     this.form.get('signature')?.get('generatesign')?.valueChanges.subscribe((valu: any) => {
+      console.log(valu)
       this.patientSignature.signature = valu;
       this.pateint.signature = valu;
     })
     this.form.get('signature')?.get('drawsign')?.valueChanges.subscribe(valu => {
+      console.log(valu)
       this.pateint.signature = valu;
       this.patientSignature.signature = valu;
     })
   }
 
+  private getPhoto(){
+    this.form.get('bio')?.get('capturedImage')?.valueChanges.subscribe((valu: any) => {
+      this.pateint.photo = valu;
+    })
+  }
   private calculateHeight(unit: boolean, value: string): string[] {
     var heightUnit: string = unit ? 'Inch' : 'cm'
     var height: string[] = []

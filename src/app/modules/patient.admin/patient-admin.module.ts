@@ -73,6 +73,9 @@ import { PatientSourcePieChartComponent } from './components/dashboard/patient.s
 import { RequestDeviceRegistrationComponent } from './components/requesters/device.registration/request-device-registration.component';
 import { RequestDeviceIntakeSubmissionComponent } from './components/requesters/intake.submission/device/request-device-intake-submission.component';
 import { RequestMailIntakeSubmissionComponent } from './components/requesters/intake.submission/mail/request-mail-intake-submission.component';
+import { BioComponent } from './components/test.bio/bio.component';
+import { CapComponent } from './components/test.bio/cap/cap.component';
+import { WebcamModule } from 'ngx-webcam';
 
 @NgModule({
   declarations: [
@@ -102,7 +105,7 @@ import { RequestMailIntakeSubmissionComponent } from './components/requesters/in
     PatientSourcePieChartComponent, 
     RequestDeviceRegistrationComponent, 
     RequestDeviceIntakeSubmissionComponent, 
-    RequestMailIntakeSubmissionComponent
+    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent
   ],
   imports: [
     CommonModule,
@@ -144,6 +147,7 @@ import { RequestMailIntakeSubmissionComponent } from './components/requesters/in
     ChartjsModule,
     GoogleMapsModule,
     NgChartsModule,
+    WebcamModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ]
 })

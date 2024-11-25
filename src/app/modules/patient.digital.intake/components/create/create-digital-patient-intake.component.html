@@ -13,6 +13,10 @@
                         <patient-identity-verification [form]="patientForm" [stepper]="patientStepper">
                         </patient-identity-verification>
                     </mat-step>
+                    <mat-step [stepControl]="patientForm.get('bio')!" formGroupName="bio" completed="true">
+                        <ng-template matStepLabel>Photo</ng-template>
+                        
+                    </mat-step>
                     <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="true">
                         <ng-template matStepLabel>Essential</ng-template>
                         <!-- <ng-template matStepLabel><svg cIcon name="cilUser" size="xxl"></svg></ng-template> -->

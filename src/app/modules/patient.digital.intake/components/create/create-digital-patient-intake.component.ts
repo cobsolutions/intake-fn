@@ -56,6 +56,9 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       'identity': new FormGroup({
         'pPhoneNumber': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),
       }),
+      'bio' : new FormGroup({
+        
+      }),
       'basic': new FormGroup({
         'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'middleName': new FormControl(null, noSpecialCharactersValidator()),

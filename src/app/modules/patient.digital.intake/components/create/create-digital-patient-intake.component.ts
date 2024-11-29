@@ -3,9 +3,6 @@ import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { ActivatedRoute } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
-import { switchMap } from 'rxjs';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 import { EmailValidator } from './validators/custom.validation/email.validator';
 import { futureDateValidator } from './validators/custom.validation/future.date.validator';
@@ -160,23 +157,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'isSelfPay': new FormControl(null),
       }),
       'document': new FormArray([]),
-      'agreement': new FormGroup({
-        'release-Information': new FormControl(null, [Validators.requiredTrue]),
-        'financial-responsibility': new FormControl(null, [Validators.requiredTrue]),
-        'financial-agreement': new FormControl(null, [Validators.requiredTrue]),
-        'Insurance-agreement': new FormControl(null, [Validators.requiredTrue]),
-        'hipaa-acknowledgement': new FormControl(null, [Validators.requiredTrue]),
-        'cancellation-policy': new FormControl(null, [Validators.requiredTrue]),
-        'communication-attestation': new FormControl(null, [Validators.requiredTrue]),
-        'authorization': new FormControl(null, [Validators.requiredTrue]),
-        'consent-treatment': new FormControl(null, [Validators.requiredTrue]),
-        'notice-of-privacy-practices': new FormControl(null, [Validators.requiredTrue]),
-        'insurance-eligibility': new FormControl(null, [Validators.requiredTrue]),
-        'assignment-release-of-benefits': new FormControl(null, [Validators.requiredTrue]),
-        'cupping-agreement': new FormControl(null),
-        'pelvic-agreement': new FormControl(null),
-        'photo-video-agreement': new FormControl(null),
-      }),
+      'agreement': new FormGroup({}),
       'signature': new FormGroup({
         'generatesign': new FormControl(null),
         'drawsign': new FormControl(null)

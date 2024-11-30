@@ -10,9 +10,6 @@ import { Patient } from 'src/app/modules/patient.questionnaire/models/intake/pat
 import { PatientAgreement } from 'src/app/modules/patient.questionnaire/models/intake/patient.agreement';
 import { PatientGrantor } from 'src/app/modules/patient.questionnaire/models/intake/patient.grantor';
 import { ReferringProvider } from 'src/app/modules/patient.questionnaire/models/intake/referring.provider/referring.provider';
-import { DoctorSource } from 'src/app/modules/patient.questionnaire/models/intake/source/doctor.source';
-import { EntitySource } from 'src/app/modules/patient.questionnaire/models/intake/source/entity.source';
-import { PatientSource } from "src/app/modules/patient.questionnaire/models/intake/source/patient.source";
 import { PatientSignature } from 'src/app/modules/patient.questionnaire/models/patient/signature.model';
 import { PatientAddress } from '../../models/patient.address';
 import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
@@ -53,7 +50,7 @@ export class PatientSummaryComponent implements OnInit {
     this.pateint.clinicIdUUID = this.clinicId;
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
     this.digitalIntakeService.create(imageFormData).subscribe(resuldd => {
-      this.router.navigateByUrl('/digital-intake/done?token='+this.digitalIntakeService.token);
+      this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
     }, error => {
       console.log('Error During Creation ' + JSON.stringify(error))
     })
@@ -124,15 +121,15 @@ export class PatientSummaryComponent implements OnInit {
     })
     var referringProvider: ReferringProvider = {}
     this.form.get('medical')?.get('providerName')?.valueChanges.subscribe(value => {
-      console.log('provider name value  ' + value )
+      console.log('provider name value  ' + value)
       referringProvider.npi = value;
-      this.pateint.referringProvider= referringProvider;
+      this.pateint.referringProvider = referringProvider;
     })
     this.form.get('medical')?.get('providerNPI')?.valueChanges.subscribe(value => {
-      console.log('provider npi value  ' + value )
+      console.log('provider npi value  ' + value)
       referringProvider.name = value;
-      this.pateint.referringProvider= referringProvider;
-    })    
+      this.pateint.referringProvider = referringProvider;
+    })
   }
 
   private fillPatientMedicalInformation() {
@@ -195,24 +192,18 @@ export class PatientSummaryComponent implements OnInit {
     })
   }
   private fillPatientAgreement() {
-    var patientAgreement: PatientAgreement = {}
+    // var patientAgreement: PatientAgreement = {}
+    var map : Map<string, boolean> = new Map<string, boolean>();
     this.form.get('agreement')?.valueChanges.forEach(value => {
-      patientAgreement.acceptReleaseAgreements = value['release-Information'] ? value['release-Information'] : false
-      patientAgreement.acceptFinancialResponsibilityAgreements = value['financial-responsibility'] ? value['financial-responsibility'] : false
-      patientAgreement.acceptFinancialAgreementAgreements = value['financial-agreement'] ? value['financial-agreement'] : false
-      patientAgreement.acceptInsuranceAgreement = value['Insurance-agreement'] ? value['Insurance-agreement'] : false
-      patientAgreement.acceptHIPAAAgreements = value['hipaa-acknowledgement'] ? value['hipaa-acknowledgement'] : false
-      patientAgreement.cancellationPolicyAgreements = value['cancellation-policy'] ? value['cancellation-policy'] : false
-      patientAgreement.communicationAttestationAgreements = value['communication-attestation'] ? value['communication-attestation'] : false
-      patientAgreement.authorizationToReleaseObtainInformationAgreements = value['authorization'] ? value['authorization'] : false
-      patientAgreement.consentToTreatmentAgreements = value['consent-treatment'] ? value['consent-treatment'] : false
-      patientAgreement.noticeOfPrivacyPracticesAgreements = value['notice-of-privacy-practices'] ? value['notice-of-privacy-practices'] : false
-      patientAgreement.insuranceEligibilityAgreements = value['insurance-eligibility'] ? value['insurance-eligibility'] : false
-      patientAgreement.assignmentReleaseOfBenefitsAgreements = value['assignment-release-of-benefits'] ? value['assignment-release-of-benefits'] : false
-      patientAgreement.acceptCuppingAgreements = value['cupping-agreement'] ? value['cupping-agreement'] : false
-      patientAgreement.acceptPelvicAgreements = value['pelvic-agreement'] ? value['pelvic-agreement'] : false
-      patientAgreement.acceptPhotoVideoAgreements = value['photo-video-agreement'] ? value['photo-video-agreement'] : false
-      this.pateint.patientAgreements = patientAgreement;
+      for (const key in value) {
+        if (value.hasOwnProperty(key)) {
+          map.set(key, value[key]);
+        }
+      }
+      const filteredMap = new Map(
+        [...map].filter(([key, value]) => value !== null)
+    );
+      this.pateint.patientAgreements = Object.fromEntries(filteredMap);
     })
   }
   private getSignture() {
@@ -228,7 +219,7 @@ export class PatientSummaryComponent implements OnInit {
     })
   }
 
-  private getPhoto(){
+  private getPhoto() {
     this.form.get('bio')?.get('capturedImage')?.valueChanges.subscribe((valu: any) => {
       this.pateint.photo = valu;
     })

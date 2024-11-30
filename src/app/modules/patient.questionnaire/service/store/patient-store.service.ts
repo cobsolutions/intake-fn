@@ -61,7 +61,7 @@ export class PatientStoreService {
       patient.patientInsurance.patientInsuranceCompensationNoFault = this.patientInsuranceCompensationNoFault;
     if (this.patientGrantor)
       patient.patientGrantor = this.patientGrantor
-    patient.patientAgreements = this.patientAgreements;
+    // patient.patientAgreements = this.patientAgreements;
     return patient;
   }
 }

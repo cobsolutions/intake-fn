@@ -29,7 +29,6 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
     this.digitalIntakeService.findAgreements().subscribe(response => {
       this.agreements = response.body;
       this.initForm(this.agreements)
-      console.log(this.agreementFormArray)
     })
   }
   private initForm(agreements: AgreementHolder[] | null) {

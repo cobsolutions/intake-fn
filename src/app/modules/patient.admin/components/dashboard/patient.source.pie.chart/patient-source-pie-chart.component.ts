@@ -13,7 +13,7 @@ import { DashboardService } from '../../../services/dashboard.service';
   styleUrls: ['./patient-source-pie-chart.component.css']
 })
 export class PatientSourcePieChartComponent implements OnInit {
-  @Input() clinics: Observable<Clinic[]>
+  @Input() clinics:Clinic[]
   patientSources = PatientSources;
   dateMonths = DateMonth;
   pieChartData: ChartData<'pie'>;
@@ -39,8 +39,8 @@ export class PatientSourcePieChartComponent implements OnInit {
     this.selectedSources = selectedSources !== undefined ? selectedSources : this.initPatientSourceValues();
     this.selectedDate = selectedDate !== undefined ? selectedDate : this.initDate();
 
-    this.clinics.subscribe(clinics => {
-      this.selectedClinics = selectedclinics !== undefined ? selectedclinics : clinics.map(clinic => (clinic.id?.toString()));
+    
+      this.selectedClinics = selectedclinics !== undefined ? selectedclinics : this.clinics.map(clinic => (clinic.id?.toString()));
       this.dashboardService.getGroupedPatientSource(this.selectedClinics, this.selectedSources, this.selectedDate).subscribe((data: any) => {
         this.pieChartData = {
           labels: this.patientSources.map(source => source.entityName),
@@ -67,8 +67,6 @@ export class PatientSourcePieChartComponent implements OnInit {
           }
         };
       })
-    })
-
   }
 
   private initPatientSourceName(): string[] {

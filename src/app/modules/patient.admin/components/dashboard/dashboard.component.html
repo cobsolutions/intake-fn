@@ -6,7 +6,7 @@
         <h5>Patients Total Sources</h5>
       </c-card-header>
       <c-card-body>
-        <patient-source-bar-chart [clinics]="clinics$"></patient-source-bar-chart>
+        <patient-source-bar-chart [clinics]="clinics" *ngIf="clinics"></patient-source-bar-chart>
       </c-card-body>
     </c-card>
   </c-col>
@@ -16,7 +16,7 @@
         <h5>Patients Sources</h5>
       </c-card-header>
       <c-card-body>
-        <patient-source-pie-chart [clinics]="clinics$"></patient-source-pie-chart>
+        <patient-source-pie-chart [clinics]="clinics" *ngIf="clinics"></patient-source-pie-chart>
       </c-card-body>
     </c-card>
   </c-col>
@@ -26,7 +26,7 @@
         <h4>Total Patients</h4>
       </c-card-header>
       <c-card-body>
-        <clinics-patients-chart [clinics]="clinics$"></clinics-patients-chart>
+        <clinics-patients-chart [clinics]="clinics" *ngIf="clinics"></clinics-patients-chart>
       </c-card-body>
     </c-card>
   </c-col>

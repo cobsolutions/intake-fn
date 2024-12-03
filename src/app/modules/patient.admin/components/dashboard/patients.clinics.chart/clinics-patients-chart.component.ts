@@ -15,7 +15,7 @@ interface Year {
   styleUrls: ['./clinics-patients-chart.component.css']
 })
 export class ClinicsPatientsChartComponent implements OnInit, AfterViewInit {
-  @Input() clinics: Observable<Clinic[]>
+  @Input() clinics: Clinic[]
   years: Year[] = [];
   colors: string[] = ColorsPool;
   data$: Observable<any>
@@ -52,10 +52,10 @@ export class ClinicsPatientsChartComponent implements OnInit, AfterViewInit {
       this.getData(this.selectedClinics, event);
   }
   private getData(selectedclinics?: any, selectedYears?: any) {
-    this.clinics.subscribe(clinics => {
+    
       if (selectedclinics !== undefined && selectedclinics.length === 0)
         selectedclinics = [-1]
-      this.selectedClinics = selectedclinics !== undefined ? selectedclinics : clinics.map(clinic => (clinic.id?.toString()));
+      this.selectedClinics = selectedclinics !== undefined ? selectedclinics : this.clinics.map(clinic => (clinic.id?.toString()));
       this.selectedYears = selectedYears !== undefined ? selectedYears : Number(this.years[0].value);
       this.data$ = this.dashboardService.getTotalPatient(this.selectedYears, this.selectedClinics)
         .pipe(
@@ -95,7 +95,7 @@ export class ClinicsPatientsChartComponent implements OnInit, AfterViewInit {
             return mappedData;
           })
         )
-    })
+    
   }
   private same(arr1: string[], arr2: string[]): boolean {
     // Check if arrays have the same length

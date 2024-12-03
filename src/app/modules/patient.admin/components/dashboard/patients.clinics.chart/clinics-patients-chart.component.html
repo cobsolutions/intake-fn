@@ -3,7 +3,7 @@
   <c-col xs="6">Date</c-col>
   <c-col xs="6">
     <c-multi-select multiple selectionType="counter" (valueChange)="changeClinics($event)">
-      <c-multi-select-option *ngFor="let clinic of clinics |async" [value]="clinic.id?.toString() || '{}'"
+      <c-multi-select-option *ngFor="let clinic of clinics " [value]="clinic.id?.toString() || '{}'"
         [selected]="clinic.selected">
         {{clinic.name}}
       </c-multi-select-option>

@@ -13,7 +13,7 @@ import { DashboardService } from '../../../services/dashboard.service';
   styleUrls: ['./patient-source-bar-chart.component.css']
 })
 export class PatientSourceBarChartComponent implements OnInit {
-  @Input() clinics: Observable<Clinic[]>
+  @Input() clinics: Clinic[]
   selectedClinics: any;
   selectedSources: any;
   selectedDate: any
@@ -70,13 +70,13 @@ export class PatientSourceBarChartComponent implements OnInit {
   }
   changeSources(event: any) {
     if (!(this.same(event, this.selectedSources))) {
-       this.getData(this.selectedClinics, event, this.selectedDate);
+      this.getData(this.selectedClinics, event, this.selectedDate);
     }
     this.selectedSources = event;
   }
   changeDate(event: any) {
     if (!(this.same(event, this.selectedDate))) {
-       this.getData(this.selectedClinics, this.selectedSources, event);
+      this.getData(this.selectedClinics, this.selectedSources, event);
     }
     this.selectedDate = event;
   }
@@ -100,31 +100,31 @@ export class PatientSourceBarChartComponent implements OnInit {
   private getData(selectedclinics?: any, selectedSources?: any, selectedDate?: any) {
     this.selectedSources = selectedSources !== undefined ? selectedSources : this.initPatientSourceValues();
     this.selectedDate = selectedDate !== undefined ? selectedDate : this.initDate();
-    this.clinics.subscribe(clinics => {
-      this.selectedClinics = selectedclinics !== undefined ? selectedclinics : clinics.map(clinic => (clinic.id?.toString()));
-      this.dashboardService.getPatientSourceDirectAccess(this.selectedClinics, this.selectedSources, this.selectedDate).subscribe((data: any) => {
-        console.log(JSON.stringify(data.map((item: any) => item.countWithDirectAccess)))
-        this.chartData = {
-          labels: data.map((item: any) => item.patientSourceName),
-          datasets: [
-            {
-              label: 'Source',
-              data: data.map((item: any) => item.countWithReferringProvider),
-              backgroundColor: 'rgba(75, 192, 192, 0.5)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1
-            },
-            {
-              label: 'Direct Access',
-              data: data.map((item: any) => item.countWithDirectAccess),
-              backgroundColor: 'rgba(153, 102, 255, 0.5)',
-              borderColor: 'rgba(153, 102, 255, 1)',
-              borderWidth: 1
-            }
-          ]
-        }
-      })
+
+    this.selectedClinics = selectedclinics !== undefined ? selectedclinics : this.clinics.map(clinic => (clinic.id?.toString()));
+    this.dashboardService.getPatientSourceDirectAccess(this.selectedClinics, this.selectedSources, this.selectedDate).subscribe((data: any) => {
+      console.log(JSON.stringify(data.map((item: any) => item.countWithDirectAccess)))
+      this.chartData = {
+        labels: data.map((item: any) => item.patientSourceName),
+        datasets: [
+          {
+            label: 'Source',
+            data: data.map((item: any) => item.countWithReferringProvider),
+            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+          },
+          {
+            label: 'Direct Access',
+            data: data.map((item: any) => item.countWithDirectAccess),
+            backgroundColor: 'rgba(153, 102, 255, 0.5)',
+            borderColor: 'rgba(153, 102, 255, 1)',
+            borderWidth: 1
+          }
+        ]
+      }
     })
+
   }
   private initPatientSourceValues(): string[] {
     return this.patientSources.map(source => source.entityValue)

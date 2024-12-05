@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
+import { finalize } from 'rxjs';
 import { PatientEssentialInformation } from 'src/app/modules/patient.questionnaire/models/intake/essential/patient.essential.information';
 import { PatientMedical } from "src/app/modules/patient.questionnaire/models/intake/medical/patient.medical";
 import { PatientMedicalHistory } from 'src/app/modules/patient.questionnaire/models/intake/medical/patient.medical.history';
@@ -25,10 +28,11 @@ export class PatientSummaryComponent implements OnInit {
   pateint: Patient = {}
   patientSignature: PatientSignature = new PatientSignature();
   clinicId: string;
-
+  submitting: boolean = false;
   constructor(private componentReference: ComponentReferenceComponentService
     , private digitalIntakeService: DigitalIntakeService
-    , private router: Router) { }
+    , private router: Router
+    , private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.fillPateintEssentialInformation();
@@ -43,6 +47,7 @@ export class PatientSummaryComponent implements OnInit {
     this.clinicId = localStorage.getItem('clinicId') || '';
   }
   submit() {
+    this.submitting = true
     var imageFormData = new FormData();
     this.componentReference.getPatientDocumentComponent()!.getFormDate().forEach((patientDocument: any) => {
       imageFormData.append('files', patientDocument, patientDocument.name);
@@ -50,11 +55,15 @@ export class PatientSummaryComponent implements OnInit {
     this.pateint.clinicIdUUID = this.clinicId;
     console.log(JSON.stringify(this.pateint))
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
-    this.digitalIntakeService.create(imageFormData).subscribe(resuldd => {
-      this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
-    }, error => {
-      console.log('Error During Creation ' + JSON.stringify(error))
-    })
+    this.digitalIntakeService.create(imageFormData)
+      .subscribe(resuldd => {
+        this.submitting = false;
+        this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
+      }, error => {
+        this.submitting = false;
+        this.toastrService.error(JSON.stringify(error))
+        console.log('Error During Creation ' + JSON.stringify(error))
+      })
   }
   private fillPateintEssentialInformation() {
     var patientEssentialInformation: PatientEssentialInformation = {}
@@ -194,7 +203,7 @@ export class PatientSummaryComponent implements OnInit {
   }
   private fillPatientAgreement() {
     // var patientAgreement: PatientAgreement = {}
-    var map : Map<string, boolean> = new Map<string, boolean>();
+    var map: Map<string, boolean> = new Map<string, boolean>();
     this.form.get('agreement')?.valueChanges.forEach(value => {
       for (const key in value) {
         if (value.hasOwnProperty(key)) {
@@ -203,7 +212,7 @@ export class PatientSummaryComponent implements OnInit {
       }
       const filteredMap = new Map(
         [...map].filter(([key, value]) => value !== null)
-    );
+      );
       this.pateint.patientAgreements = Object.fromEntries(filteredMap);
     })
   }

@@ -209,7 +209,7 @@
 <!--Submit-->
 <div [formGroup]="form">
     <div class="mt-3">
-        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
-        <button cButton matStepperNext variant="outline" size="sm" type="button" (click)="submit()">Submit</button>
+        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2" [disabled]="submitting">Back</button>
+        <button cButton matStepperNext variant="outline" size="sm" type="button" (click)="submit()"  [disabled]="submitting" cLoadingButton [loading]="submitting">Submit</button>
     </div>
 </div>

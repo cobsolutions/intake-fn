@@ -89,12 +89,12 @@ const COREUI_MODULES = [
     FormsModule,
     ReactiveFormsModule,
     PatientCommonModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
     ...COREUI_MODULES,
     AccordionModule,
     AutocompleteLibModule,
     WebcamModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ],
 })
 export class PatientDigitalIntakeModule { }

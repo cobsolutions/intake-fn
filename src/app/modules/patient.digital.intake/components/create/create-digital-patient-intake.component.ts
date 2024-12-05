@@ -1,4 +1,4 @@
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -26,22 +26,29 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   stepperOrientation: 'horizontal' | 'vertical' = 'horizontal';
   patientForm: FormGroup
   render: boolean = false;
+  isMobile: boolean = false;
   @ViewChild(MatStepper, { static: true }) public patientStepper: MatStepper;
   activeStepIndex: number;
   constructor(private breakpointObserver: BreakpointObserver,
-    private digitalIntakeService:DigitalIntakeService) { }
+    private digitalIntakeService: DigitalIntakeService) { }
 
   ngOnInit(): void {
-    // this.breakpointObserver.observe([
-    //   Breakpoints.HandsetPortrait,
-    //   Breakpoints.HandsetLandscape
-    // ]).subscribe(result => {
-    //   this.stepperOrientation = result.matches ? 'vertical' : 'horizontal';
-    // });
+
+    this.breakpointObserver.observe([
+      Breakpoints.HandsetPortrait,
+      Breakpoints.HandsetLandscape
+    ]).subscribe(result => {
+      this.stepperOrientation = result.matches ? 'vertical' : 'horizontal';
+      this.isMobile = result.matches;
+      if (this.isMobile)
+        this.stepperOrientation = 'vertical'
+      else
+        this.stepperOrientation = 'horizontal'
+    });
     // this.digitalIntakeService.pickupSubmissionToken().subscribe(result=>{
     //   this.render = true
     //   this.stepperOrientation = 'horizontal'
-      
+
     // });
     this.createPatientForm();
   }
@@ -55,7 +62,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       'identity': new FormGroup({
         'pPhoneNumber': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),
       }),
-      'bio' : new FormGroup({
+      'bio': new FormGroup({
         'capturedImage': new FormControl(null, [Validators.required]),
       }),
       'basic': new FormGroup({

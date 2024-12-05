@@ -16,7 +16,7 @@
 /intake-service/api/digital-intake/ott/invalidate/patient-mail https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/invalidate/patient-mail 200
 /intake-service/api/digital-intake/ott/invalidate/patient-mail https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/invalidate/patient-mail 200
 /intake-service/api/digital-intake/ott/invalidate/patient-mail https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/invalidate/patient-mail 200
-/intake-service/api/digital-intake/ott/assign/registration/requester https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/assign/registration/requester 200
+/intake-service/api/digital-intake/ott/assign/registration/requester https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/assign/registration/requester 200
 /intake-service/api/digital-intake/ott/assign/submission/requester https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/assign/submission/requester 200
 /intake-service/api/digital-intake/create https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/create 200
 /intake-service/api/digital-intake/create https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/create 200

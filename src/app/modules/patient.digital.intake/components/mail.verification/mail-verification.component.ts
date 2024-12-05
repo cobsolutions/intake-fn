@@ -20,7 +20,8 @@ export class MailVerificationComponent implements OnInit {
     this.route.queryParams.subscribe(param => {
       const token = param['token'];
       _getDeviceId.pipe(
-        switchMap(deviceId => this.digitalIntakeService.verifyMail(token, deviceId))
+        switchMap(deviceId => this.digitalIntakeService.verifyMail(token, deviceId)),
+        switchMap(result=>this.digitalIntakeService.initDigitalIntakeRecord("Mail"))
       ).subscribe(rre => {
         this.status = 'V'
         this.digitalIntakeURL =  this.baseURL +'/digital-intake/submit?token=' + token;

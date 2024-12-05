@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { switchMap } from 'rxjs';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
 @Component({
@@ -19,7 +20,10 @@ export class PreCreateDigitalPatientIntakeComponentComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe((param: any) => {
       this.token = param['token'];
-      this.digitalIntakeService.pickSubmissionToken(this.token).subscribe(result => {
+      this.digitalIntakeService.assignTokenToRequesterTerminal().pipe(
+        switchMap(result=>this.digitalIntakeService.initDigitalIntakeRecord("Device"))
+      )
+      .subscribe(result => {
         this.isLoading = false
         this.router.navigate(['/digital-intake/create'], {
           queryParams: {

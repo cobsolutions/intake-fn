@@ -16,12 +16,8 @@
 /intake-service/api/digital-intake/ott/invalidate/patient-mail https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/invalidate/patient-mail 200
 /intake-service/api/digital-intake/ott/invalidate/patient-mail https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/invalidate/patient-mail 200
 /intake-service/api/digital-intake/ott/invalidate/patient-mail https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/invalidate/patient-mail 200
-/intake-service/api/digital-intake/ott/pick/registration https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/pick/registration 200
-/intake-service/api/digital-intake/ott/pick/registration https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/pick/registration 200
-/intake-service/api/digital-intake/ott/pick/registration https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/pick/registration 200
-/intake-service/api/digital-intake/ott/pick/submission https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/pick/submission 200
-/intake-service/api/digital-intake/ott/pick/submission https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/pick/submission 200
-/intake-service/api/digital-intake/ott/pick/submission https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/pick/submission 200
+/intake-service/api/digital-intake/ott/assign/registration/requester https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/assign/registration/requester 200
+/intake-service/api/digital-intake/ott/assign/submission/requester https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/ott/assign/submission/requester 200
 /intake-service/api/digital-intake/create https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/create 200
 /intake-service/api/digital-intake/create https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/create 200
 /intake-service/api/digital-intake/create https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/create 200
@@ -263,7 +259,7 @@
 /intake-service/api/nppes/find/provider/npi/:npi https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/nppes/find/provider/npi/:npi 200
 /intake-service/api/nppes/find/provider/npi/:npi https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/nppes/find/provider/npi/:npi 200
 /intake-service/api/nppes/find/provider/npi/:npi https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/nppes/find/provider/npi/:npi 200
-
+/intake-service/api/digital-intake/record/init/requester/:requester https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/record/init/requester/:requester 200
 
 
 /*  /index.html   200

@@ -116,11 +116,11 @@ export class DigitalIntakeService {
       'device-id': deviceId,
       'content-type': 'application/json'
     }
-    const url = this.baseUrl + '/ott/pick/registration';
+    const url = this.baseUrl + '/ott/assign/registration/requester';
     return this.http.get(`${url}`, { 'headers': headers })
   }
-  pickSubmissionToken(token: string, deviceId?: string) {
-    const url = this.baseUrl + '/ott/pick/submission';
+  assignTokenToRequesterTerminal() {
+    const url = this.baseUrl + '/ott/assign/submission/requester';
     return this.http.get(`${url}`, { 'headers': this.headers })
   }
   invalidateToken() {
@@ -129,6 +129,15 @@ export class DigitalIntakeService {
       'token': this.token
     }
     const createPatientURL = this.baseUrl + '/ott/invalidate';
+    return this.http.get(createPatientURL, { observe: 'response', withCredentials: true, 'headers': headers })
+  }
+
+  initDigitalIntakeRecord(requester:string) {
+    var headers: any = {
+      'content-type': 'application/json',
+      'token': this.token
+    }
+    const createPatientURL = this.baseUrl + '/record/init/requester/' + requester;
     return this.http.get(createPatientURL, { observe: 'response', withCredentials: true, 'headers': headers })
   }
 }

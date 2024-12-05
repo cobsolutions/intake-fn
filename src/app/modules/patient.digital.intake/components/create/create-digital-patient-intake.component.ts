@@ -26,7 +26,6 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   stepperOrientation: 'horizontal' | 'vertical' = 'horizontal';
   patientForm: FormGroup
   render: boolean = false;
-  isMobile: boolean = false;
   @ViewChild(MatStepper, { static: true }) public patientStepper: MatStepper;
   activeStepIndex: number;
   constructor(private breakpointObserver: BreakpointObserver,
@@ -35,15 +34,12 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   ngOnInit(): void {
 
     this.breakpointObserver.observe([
-      Breakpoints.HandsetPortrait,
-      Breakpoints.HandsetLandscape
+      Breakpoints.Handset,
+      Breakpoints.Tablet,
     ]).subscribe(result => {
-      this.stepperOrientation = result.matches ? 'vertical' : 'horizontal';
-      this.isMobile = result.matches;
-      if (this.isMobile)
-        this.stepperOrientation = 'vertical'
-      else
-        this.stepperOrientation = 'horizontal'
+      console.log(JSON.stringify(result))
+      result.matches ? this.stepperOrientation = 'vertical' : this.stepperOrientation = 'horizontal'
+
     });
     // this.digitalIntakeService.pickupSubmissionToken().subscribe(result=>{
     //   this.render = true

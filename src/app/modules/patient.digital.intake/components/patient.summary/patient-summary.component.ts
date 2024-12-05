@@ -2,15 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { finalize } from 'rxjs';
 import { PatientEssentialInformation } from 'src/app/modules/patient.questionnaire/models/intake/essential/patient.essential.information';
 import { PatientMedical } from "src/app/modules/patient.questionnaire/models/intake/medical/patient.medical";
 import { PatientMedicalHistory } from 'src/app/modules/patient.questionnaire/models/intake/medical/patient.medical.history';
 import { PatientPhysicalTherapy } from 'src/app/modules/patient.questionnaire/models/intake/medical/patient.physical.therapy';
 import { Patient } from 'src/app/modules/patient.questionnaire/models/intake/patient';
-import { PatientAgreement } from 'src/app/modules/patient.questionnaire/models/intake/patient.agreement';
 import { PatientGrantor } from 'src/app/modules/patient.questionnaire/models/intake/patient.grantor';
 import { ReferringProvider } from 'src/app/modules/patient.questionnaire/models/intake/referring.provider/referring.provider';
 import { PatientSignature } from 'src/app/modules/patient.questionnaire/models/patient/signature.model';
@@ -29,6 +26,7 @@ export class PatientSummaryComponent implements OnInit {
   patientSignature: PatientSignature = new PatientSignature();
   clinicId: string;
   submitting: boolean = false;
+  isError: boolean = false;
   constructor(private componentReference: ComponentReferenceComponentService
     , private digitalIntakeService: DigitalIntakeService
     , private router: Router
@@ -58,11 +56,12 @@ export class PatientSummaryComponent implements OnInit {
     this.digitalIntakeService.create(imageFormData)
       .subscribe(resuldd => {
         this.submitting = false;
+        this.isError = false;
         this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
       }, error => {
         this.submitting = false;
-        this.toastrService.error(JSON.stringify(error))
-        console.log('Error During Creation ' + JSON.stringify(error))
+        this.isError = true;
+        this.scrollUp();
       })
   }
   private fillPateintEssentialInformation() {
@@ -263,5 +262,13 @@ export class PatientSummaryComponent implements OnInit {
         break;
     }
     return weight;
+  }
+  private scrollUp() {
+    (function smoothscroll() {
+      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.scrollTo(0, 0);
+      }
+    })();
   }
 }

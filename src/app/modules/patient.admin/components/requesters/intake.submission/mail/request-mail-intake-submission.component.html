@@ -14,6 +14,6 @@
         [(ngModel)]="patientEmail" />
 </div>
 <div class="text-center">
-    <button cButton variant="outline" (click)="send()"
+    <button cButton variant="outline" (click)="send()" [disabled]="selectedClinicUUID ===undefined"
         >Send</button>
 </div>

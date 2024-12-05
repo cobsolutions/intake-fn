@@ -28,7 +28,16 @@ export class PatientSignatureComponent implements OnInit, AfterViewInit {
   gPatientFullName: string | undefined
   isDrawsign: boolean | undefined = false;
   isGeneratesign: boolean | undefined = false
-
+  selectedSignature: string = '';
+  signatures = [
+    { value: 'signature-format-Dancing-Script', displayText: 'Signature 1', fontFamily: 'Dancing Script' },
+    { value: 'signature-format-Gloria-Hallelujah', displayText: 'Signature 2', fontFamily: 'Gloria Hallelujah' },
+    { value: 'signature-format-Great-Vibes', displayText: 'Signature 3', fontFamily: 'Great Vibes' },
+    { value: 'signature-format-Homemade-Apple', displayText: 'Signature 3', fontFamily: 'Homemade Apple' },
+    { value: 'signature-format-Monsieur-La-Doulaise', displayText: 'Signature 3', fontFamily: 'Monsieur La Doulaise' },
+    { value: 'signature-format-Nanum-Brush-Script', displayText: 'Signature 3', fontFamily: 'Nanum Brush Script' },
+    { value: 'signature-format-Reenie-Beanie', displayText: 'Signature 3', fontFamily: 'Reenie Beanie' },
+  ];
 
   @ViewChild('patientsig') patientsig: ElementRef;
   public panes = [
@@ -76,6 +85,9 @@ export class PatientSignatureComponent implements OnInit, AfterViewInit {
     this.patientSignatureService.setPatientSignatureComponent(this)
 
   }
+  selectSignature(signature: any) {
+    this.selectedSignature = signature.value;
+  }
   onTabChange($event: number) {
     this.signatureType = $event;
     this.activePane = $event;
@@ -93,8 +105,9 @@ export class PatientSignatureComponent implements OnInit, AfterViewInit {
     this.isGeneratesign = false
   }
   generatesign(event: any) {
+    console.log(event)
     this.patientsig.nativeElement.name = 'patientsig'
-    this.renderer.setAttribute(this.patientsig.nativeElement, 'class', event.target.value);
+    this.renderer.setAttribute(this.patientsig.nativeElement, 'class', event.value);
     html2canvas(this.patientsig.nativeElement).then(canvas => {
       this.form.get('signature')?.get('generatesign')?.setValue(canvas.toDataURL())
     });;

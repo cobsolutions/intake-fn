@@ -130,13 +130,11 @@ export class PatientSummaryComponent implements OnInit {
     })
     var referringProvider: ReferringProvider = {}
     this.form.get('medical')?.get('providerName')?.valueChanges.subscribe(value => {
-      console.log('provider name value  ' + value)
-      referringProvider.npi = value;
+      referringProvider.name = value;
       this.pateint.referringProvider = referringProvider;
     })
     this.form.get('medical')?.get('providerNPI')?.valueChanges.subscribe(value => {
-      console.log('provider npi value  ' + value)
-      referringProvider.name = value;
+      referringProvider.npi = value;
       this.pateint.referringProvider = referringProvider;
     })
   }

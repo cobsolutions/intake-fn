@@ -44,6 +44,9 @@
                 <label style="width: 150px;">Date Of Birth <span class="text-danger">*</span></label>
             </c-col>
             <c-col xl="12">
+                <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
                 <input type="date" cFormControl sizing="sm" formControlName="dob">
             </c-col>
             <div *ngIf="this.form.get('basic')?.get('dob')?.errors?.['required'] && 

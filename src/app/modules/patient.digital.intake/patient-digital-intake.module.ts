@@ -30,7 +30,8 @@ import { PreRegisterDeviceComponent } from './components/pre.register.device/pre
 import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
 import { PatientBiometricIdentificationComponent } from './components/patient.biometric.identification/patient-biometric-identification.component';
 import { WebcamModule } from 'ngx-webcam';
-
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 const COREUI_MODULES = [
   AvatarModule,
@@ -94,7 +95,12 @@ const COREUI_MODULES = [
     AutocompleteLibModule,
     WebcamModule,
     NgMultiSelectDropDownModule.forRoot(),
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
+    MatDatepickerModule,
+    MatNativeDateModule 
+  ],
+  providers: [  
+    MatDatepickerModule,  
   ],
 })
 export class PatientDigitalIntakeModule { }

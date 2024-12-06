@@ -48,13 +48,12 @@
     <c-card-body>
         <h5 cCardTitle>Medical Information</h5>
         <p cCardText>
-            <span
-                *ngIf="pateint.patientSource?.doctorSource?.doctorName && pateint.patientSource?.doctorSource?.doctorNPI">
-                <strong>Referring Doctor : </strong> {{pateint.patientSource?.doctorSource?.doctorName}} -
-                {{pateint.patientSource?.doctorSource?.doctorNPI}}<br />
+            <span *ngIf="pateint.patientIncomingSource">
+                <strong>Incoming Source : </strong> {{pateint.patientIncomingSource}}<br />
             </span>
-            <span *ngIf="pateint.patientSource?.entitySource?.organizationName">
-                <strong>Referring Entity : </strong> {{pateint.patientSource?.entitySource?.organizationName}}<br />
+            <span *ngIf="pateint.referringProvider?.name && pateint.referringProvider?.npi">
+                <strong>Referring Doctor : </strong> {{pateint.referringProvider!.name}} -
+                {{pateint.referringProvider?.npi}}<br />
             </span>
             <strong>Appointment Booking via
                 : </strong> {{pateint.patientMedical?.appointmentBooking}}<br />

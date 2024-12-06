@@ -60,11 +60,13 @@
                 : </strong> {{pateint.patientMedical?.appointmentBooking}}<br />
             <strong>Primary Doctor
                 : </strong> {{pateint.patientMedical?.primaryDoctor}}<br />
-            <span *ngIf="pateint.patientMedical?.hasPatientPhysicalTherapy">
+            <span>
                 <strong>Received physical therapy : </strong> {{pateint.patientMedical?.hasPatientPhysicalTherapy?
                 'Yes':'No'}} <br />
-                <li>Location : {{pateint.patientMedical?.patientPhysicalTherapy?.location}} </li>
-                <li>Number Of Visits : {{pateint.patientMedical?.patientPhysicalTherapy?.numberOfVisit}}</li>
+                <span *ngIf="pateint.patientMedical?.hasPatientPhysicalTherapy">
+                    <li>Location : {{pateint.patientMedical?.patientPhysicalTherapy?.location}} </li>
+                    <li>Number Of Visits : {{pateint.patientMedical?.patientPhysicalTherapy?.numberOfVisit}}</li>
+                </span>
             </span>
         </p>
     </c-card-body>

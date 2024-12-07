@@ -186,7 +186,7 @@ export class PatientSummaryComponent implements OnInit {
       patientMedicalHistory.scanningTestValue = select.isXRayValue
       patientMedicalHistory.pacemaker = select.isPacemaker === 'yes' ? true : false
       patientMedicalHistory.metalImplantation = select.isMetalImplants === 'yes' ? true : false
-      patientMedicalHistory.surgeriesList = select.surgeriesList
+      patientMedicalHistory.surgeriesList = select.surgeriesListText
       if (this.pateint.patientMedical !== undefined)
         this.pateint.patientMedical.patientMedicalHistory = patientMedicalHistory
     })

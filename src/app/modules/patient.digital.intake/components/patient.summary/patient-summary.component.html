@@ -160,21 +160,27 @@
                         <label>memberId : </label>
                         {{patientInsurance.secondaryInsurance?.memberId}}<br />
                     </span>
+                    <hr>
                     <br />
                 </span>
             </span>
             <span
                 *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.workerCompensationInsurances !== null&&this.pateint.insurances?.workerCompensationInsurances!.length > 0">
-                <strong>Patient Insurance Type : </strong> Worker's Compensation/No Fault <br />
                 <span
                     *ngFor="let patientInsurance of this.pateint.insurances?.workerCompensationInsurances; index as i">
-                    # {{ i+1}} <br />
-                    <strong> Accident Date: </strong>
+                    <strong>Patient Insurance Type : </strong>
+                    <span *ngIf="patientInsurance.type ==='worker'"> Worker's Compensation/No Fault</span>
+                    <span *ngIf="patientInsurance.type ==='auto_acc'"> Auto-Accident</span>
+                    <br />
+                    <strong>
+                        <span *ngIf="patientInsurance.type ==='worker'">Injury Date</span>
+                        <span *ngIf="patientInsurance.type ==='auto_acc'">Accident Date:</span>
+                    </strong>
                     {{patientInsurance.accidentDate_str}} <br />
-                    <strong> Worker Status: </strong>
-                    <strong> Phone: </strong>
-                    <strong> Case Status: </strong>
-                    {{patientInsurance.caseStatus}} <br />
+                    <strong> Insurance Company: </strong>
+                    <label> {{patientInsurance.insuranceName}}</label>
+                    <strong> Claim #: </strong>
+                    <label> {{patientInsurance.claimNumber}} : </label> <br />
                     <strong> Adjuster: </strong> <br />
                     <label> Name : </label>
                     {{patientInsurance.adjusterInfoName}} <br />
@@ -185,6 +191,7 @@
                     {{patientInsurance.attorneyInfoName}} <br />
                     <label> Phone : </label>
                     {{patientInsurance.attorneyInfoPhone}} <br />
+                    <hr>
                 </span>
                 <br />
             </span>

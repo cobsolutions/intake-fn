@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { INavData } from '@coreui/angular-pro';
 import { BehaviorSubject, of, tap, timeoutWith } from 'rxjs';
 import { LocalService } from 'src/app/modules/common';
@@ -14,9 +15,10 @@ import { userNavItems } from './_usernav';
 })
 export class DefaultAdminLayoutComponent implements OnInit {
   navItems: INavData[] | null;
-  noShow:BehaviorSubject<boolean|null>;
+  noShow: BehaviorSubject<boolean | null>;
   constructor(private clinicService: ClinicService,
-    private kcUserService: KcAuthServiceService) { }
+    private kcUserService: KcAuthServiceService,
+    private router: Router) { }
   public perfectScrollbarConfig = {
     suppressScrollX: true,
   };
@@ -25,9 +27,14 @@ export class DefaultAdminLayoutComponent implements OnInit {
     this.setNavItems();
   }
   private setNavItems() {
-    if (this.kcUserService.isUserInRole('normal'))
+    if (this.kcUserService.isUserInRole('normal')) {
       this.navItems = userNavItems
-    if (this.kcUserService.isUserInRole('administrator'))
+      this.router.navigateByUrl('/admin/patient/list');
+    }
+    if (this.kcUserService.isUserInRole('administrator')) {
       this.navItems = adminNavItems;
+      this.router.navigateByUrl('/admin/dashboard');
+    }
+
   }
 }

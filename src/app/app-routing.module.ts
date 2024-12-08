@@ -8,26 +8,6 @@ import { KCAuthGuardGuard } from './modules/security/service/kc/kcauth-guard.gua
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'admin',
-    pathMatch: 'full',
-  },
-  {
-    path: '',
-    component: DefaultLayoutComponent,
-    data: {
-      title: 'Home'
-    },
-    children: [
-      {
-        path: 'intake',
-        canActivate: [KCAuthGuardGuard],
-        loadChildren: () =>
-          import('./modules/patient.questionnaire/patient-questionnaire.module').then((m) => m.PatientQuestionnaireModule)
-      },
-    ]
-  },
-  {
     path: 'admin',
     component: DefaultAdminLayoutComponent,
     canActivate: [KCAuthGuardGuard],

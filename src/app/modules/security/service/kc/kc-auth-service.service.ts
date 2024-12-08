@@ -32,7 +32,7 @@ export class KcAuthServiceService {
   }
 
   public logout(): void {
-    this.keycloakService.logout(window.location.origin);
+    this.keycloakService.logout();
   }
 
   public redirectToProfile(): void {

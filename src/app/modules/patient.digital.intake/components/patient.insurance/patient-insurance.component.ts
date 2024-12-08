@@ -99,6 +99,7 @@ export class PatientInsuranceComponent implements OnInit {
           insuranceCompanyName: this.secondaryInsuranceCompanyForm?.value,
           policyId: this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.value,
           memberId: this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.value,
+          name:this.getSecondaryInsuranceCompany(this.secondaryInsuranceCompanyForm?.value)
         }
         this.patientInsurances.commercialInsurances.push(patientSecondaryCommercialInsurance)
         this.renderedPatientInsurances.push(patientSecondaryCommercialInsurance)
@@ -164,7 +165,8 @@ export class PatientInsuranceComponent implements OnInit {
       relationship: this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value,
       hasSecondaryInsurance: this.form.get('insurance')?.get('commercial-is-secondary-insurance')?.value,
       insuranceCompanyId: this.form.get('insurance')?.get('commercial-insurance-company')?.value,
-      insuranceCompanyName: this.insuranceCompanyForm?.value
+      insuranceCompanyName: this.insuranceCompanyForm?.value,
+      name:this.getInsuranceCompany(this.insuranceCompanyForm?.value)
     }
     if (patientCommercialInsurance.relationship !== 'Self') {
       var patientRelationship: PatientRelationship = {
@@ -321,5 +323,18 @@ export class PatientInsuranceComponent implements OnInit {
       this.patientInsurances.selfPay = undefined
     }
     this.renderedPatientInsurances.splice(index, 1);
+  }
+  private getInsuranceCompany(event: any) {
+    const clonedCompanies = [...this.InsuranceCompanies];
+    const company:any[] = clonedCompanies.filter((company:any) =>
+      company.name.toLowerCase().includes(event.toLowerCase())
+    )
+    return company[0].name;
+  }
+  private getSecondaryInsuranceCompany(event: any) {
+    const company:any[] = this.secondaryInsuranceCompanies.filter((company:any) =>
+      company.name.toLowerCase().includes(event.toLowerCase())
+    )
+    return company[0].name;
   }
 }

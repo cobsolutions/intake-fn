@@ -10,6 +10,7 @@ export interface CommercialInsurance {
     memberId?: string;
     policyId?: string;
     relationship?: string;
+    name?:string;
     patientRelationship?: PatientRelationship;
     secondaryInsurance?: SecondaryInsurance;
     _frontcontrollName?: string;

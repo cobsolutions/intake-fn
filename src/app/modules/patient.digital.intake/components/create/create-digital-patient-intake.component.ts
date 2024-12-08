@@ -37,7 +37,6 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       Breakpoints.Handset,
       Breakpoints.Tablet,
     ]).subscribe(result => {
-      console.log(JSON.stringify(result))
       result.matches ? this.stepperOrientation = 'vertical' : this.stepperOrientation = 'horizontal'
 
     });

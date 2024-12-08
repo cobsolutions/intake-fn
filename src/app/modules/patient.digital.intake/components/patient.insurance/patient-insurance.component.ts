@@ -66,7 +66,6 @@ export class PatientInsuranceComponent implements OnInit {
   next() {
     // var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
     // CheckInvalidForm.check(insuranceForm)
-    console.log(this.isInsurances())
     if (this.isInsurances()) {
       InsuranceValidator.clearValidator(this.form)
       this.stepper.next();

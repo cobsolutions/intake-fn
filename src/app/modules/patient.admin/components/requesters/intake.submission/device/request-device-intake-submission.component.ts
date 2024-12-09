@@ -34,6 +34,7 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
       const requestToken: any = response.body;
       this.submissionURL = this.baseURL + '/digital-intake/pre-create?token=' + requestToken.token;;
       this.isGenerated = true
+      console.log(this.submissionURL)
     })
 
   }

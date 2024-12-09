@@ -51,6 +51,7 @@ export class RequestDeviceRegistrationComponent implements OnInit {
           this.currentStep = 2;
           this.inCorrectName = false
           this.startCountdown(requestToken.expiresAt);
+          console.log(this.createPatientURL);
         })
     } else {
       this.inCorrectName = true;

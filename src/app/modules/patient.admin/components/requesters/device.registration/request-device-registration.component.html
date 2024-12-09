@@ -26,7 +26,6 @@
     <div class="text-center">
         <qrcode [qrdata]="this.createPatientURL" [errorCorrectionLevel]="'M'" [width]="256"></qrcode>
     </div>
-    {{this.createPatientURL}}
     <button cButton variant="outline" (click)="goTopreviousStep()" style="float: right;">
         <svg cIcon name="cilArrowThickFromRight"></svg>
     </button>

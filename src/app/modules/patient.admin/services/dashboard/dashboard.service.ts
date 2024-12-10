@@ -10,8 +10,8 @@ export class DashboardService {
   private dashboard = environment.baseURL + 'dashboard'
   constructor(private http: HttpClient) { }
 
-  public getTotalPatient(year: number, clinics: number[] | null) {
+  public getTotalPatient(year: number, clinics: number[] | null, selectedSchedule: string) {
     const url = this.dashboard + '/clinic/'
-    return this.http.get(`${url}` + clinics + '/year/' + year);
+    return this.http.get(`${url}` + clinics + '/year/' + year + '/isScheduled/' + selectedSchedule);
   }
 }

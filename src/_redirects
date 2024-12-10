@@ -204,11 +204,7 @@
 /intake-service/api/document/insurance/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/document/insurance/patientId/:patientId 200
 /intake-service/api/document/insurance/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/document/insurance/patientId/:patientId 200
 /intake-service/api/document/insurance/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/document/insurance/patientId/:patientId 200
-/intake-service/api/dashboard/clinic/:clinics/year/:year https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/clinic/:clinics/year/:year 200
-/intake-service/api/dashboard/clinic/:clinics/year/:year https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/clinic/:clinics/year/:year 200
-/intake-service/api/dashboard/clinic/:clinics/year/:year https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/clinic/:clinics/year/:year 200
-/intake-service/api/dashboard/group/patient/source/clinic/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/group/patient/source/clinic/:clinicId 200
-/intake-service/api/dashboard/group/patient/source/clinic/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/group/patient/source/clinic/:clinicId 200
+/intake-service/api/dashboard/clinic/:clinics/year/:year/isScheduled/:isScheduled https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/clinic/:clinics/year/:year/isScheduled/:isScheduled 200
 /intake-service/api/dashboard/group/patient/source/clinic/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/group/patient/source/clinic/:clinicId 200
 /intake-service/api/dashboard/total/patient/source https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/total/patient/source 200
 /intake-service/api/dashboard/data/clinicId/:clinicId/userId/:userId/startDate/:startDate/endDate/:endDate https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/dashboard/data/clinicId/:clinicId/userId/:userId/startDate/:startDate/endDate/:endDate 200

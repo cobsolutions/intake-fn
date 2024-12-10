@@ -29,13 +29,13 @@ export class PreRegisterDeviceComponent implements OnInit {
       this._callGetFinderPrint().pipe(
         tap(terminalFingerPrint => {
           var location: DeviceLocation = {
-            accuracy: terminalFingerPrint[0].coords.accuracy,
-            latitude: terminalFingerPrint[0].coords.latitude,
-            longitude: terminalFingerPrint[0].coords.longitude
+            accuracy: 0,
+            latitude: 0,
+            longitude: 0
           }
           this.digitalIntakeDevice = {
             deviceName: deviceName,
-            deviceId: terminalFingerPrint[1],
+            deviceId: terminalFingerPrint[0],
             geolocation: location,
           }
         }),

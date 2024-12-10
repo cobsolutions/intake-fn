@@ -11,9 +11,9 @@ export class FingerprintService {
 
   constructor(private findLocationService:FindLocationService) { }
   public get(): Observable<any[]> {
-    const _callLocation = this.findLocationService.find()
+    //const _callLocation = this.findLocationService.find()
     const _callDeviceId = this.getDeviceId();
-    return forkJoin([_callLocation,_callDeviceId])
+    return forkJoin([_callDeviceId])
   }
   public getDeviceId(): Observable<any> {
     return from(FingerprintJS.load()).pipe(

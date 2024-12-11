@@ -46,6 +46,7 @@ export class PatientMedicalComponent implements OnInit {
       this.referringSearchErrorMessage = 'Type Before hit'
       this.loadingProvider = false
     } else {
+      console.log(referringType);
       switch (referringType) {
         case 'l-name':
           this.digitalIntakeService.findProviderByLastName(referringSearch)
@@ -61,7 +62,7 @@ export class PatientMedicalComponent implements OnInit {
             })
           break;
         case 'f-name':
-          this.digitalIntakeService.findProviderByLastName(referringSearch)
+          this.digitalIntakeService.findProviderByFirstName(referringSearch)
             .subscribe(data => {
               this.loadingProvider = false
               var providers = data.body;

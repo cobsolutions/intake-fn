@@ -1,5 +1,6 @@
 export class PatientSearchCriteria {
     type: string |null | undefined = null;
+    sourceType: string |null | undefined = null;
     entityNames: string[] | null;
     doctorName: string | null;
     doctorNPI: string |null;

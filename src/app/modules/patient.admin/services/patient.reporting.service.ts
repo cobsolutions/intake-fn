@@ -14,8 +14,8 @@ export interface IPatientResult {
   createdAt: number,
   gender: string,
   patientSourceType: string,
-  doctorName: string,
-  doctorNPI: string,
+  referringProviderName: string,
+  referringProviderNPI: string,
   organizationName: string
 }
 export interface ISearchResult {
@@ -30,17 +30,17 @@ export class PatientReportingService {
   constructor(private httpClient: HttpClient) { }
 
   search(searchCriteria: PatientSearchCriteria) {
-     if(searchCriteria.type  === 'null'){
+    if (searchCriteria.type === 'null') {
       searchCriteria.type = null;
-     }
+    }
     const headers = { 'content-type': 'application/json' }
-    const changePatientRequiredFieldsURL = this.baseUrl + 'recommendation';
+    const changePatientRequiredFieldsURL = this.baseUrl + 'search';
     return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(searchCriteria), { 'headers': headers })
   }
 
-  export(result: IPatientResult[]) {
+  export(result: IPatientResult[], type: string| null | undefined) {
     const headers = { 'content-type': 'application/json' }
-    const changePatientRequiredFieldsURL = this.baseUrl + 'generator/excel';
+    const changePatientRequiredFieldsURL = this.baseUrl + 'generator/excel/type/' + type;
     return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(result), { 'headers': headers, responseType: 'blob' })
   }
 
@@ -50,8 +50,8 @@ export class PatientReportingService {
     return this.httpClient.post(exportPDFURL, { location: "report.pdf" }, { responseType: 'blob' })
   }
 
-  exportNewPDF(patientId: number){
-    const exportPDFURL = environment.baseURL + 'pdf/intake/patientId/'+patientId
+  exportNewPDF(patientId: number) {
+    const exportPDFURL = environment.baseURL + 'pdf/intake/patientId/' + patientId
     const headers = { 'Content-Type': 'application/pdf', 'Accept': 'application/pdf', 'responseType': 'blob' };
     return this.httpClient.post(exportPDFURL, { location: "report.pdf" }, { responseType: 'blob' })
   }

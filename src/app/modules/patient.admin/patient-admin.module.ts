@@ -77,6 +77,7 @@ import { BioComponent } from './components/test.bio/bio.component';
 import { CapComponent } from './components/test.bio/cap/cap.component';
 import { WebcamModule } from 'ngx-webcam';
 import { EditPatientProviderComponent } from './components/patient.provider.update/edit-patient-provider.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 @NgModule({
   declarations: [
@@ -149,6 +150,7 @@ import { EditPatientProviderComponent } from './components/patient.provider.upda
     GoogleMapsModule,
     NgChartsModule,
     WebcamModule,
+    AutocompleteLibModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ]
 })

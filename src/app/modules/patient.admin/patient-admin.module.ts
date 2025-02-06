@@ -76,6 +76,7 @@ import { RequestMailIntakeSubmissionComponent } from './components/requesters/in
 import { BioComponent } from './components/test.bio/bio.component';
 import { CapComponent } from './components/test.bio/cap/cap.component';
 import { WebcamModule } from 'ngx-webcam';
+import { EditPatientProviderComponent } from './components/patient.provider.update/edit-patient-provider.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +106,7 @@ import { WebcamModule } from 'ngx-webcam';
     PatientSourcePieChartComponent, 
     RequestDeviceRegistrationComponent, 
     RequestDeviceIntakeSubmissionComponent, 
-    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent
+    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent
   ],
   imports: [
     CommonModule,

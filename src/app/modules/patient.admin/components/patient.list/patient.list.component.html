@@ -115,6 +115,12 @@
               Records
             </button>
           </ng-container>
+          <ng-container *ngSwitchCase="'update'" class="py-2">
+            <button (click)="updatePatientProvider(item['patientId'])" cButton color="primary" size="sm"
+              variant="outline">
+              update
+            </button>
+          </ng-container>
           <ng-container *ngSwitchCase="'schedule'" class="py-2">
             <c-form-check [switch]="true">
               <input cFormCheckInput type="checkbox" (change)="isSchedule(item)" [checked]="item.schedule"
@@ -142,3 +148,11 @@
     <a class="btn btn-primary" (click)="logout()">Logout</a>
   </div>
 </span>
+<c-modal id="editPatientProvider" [visible]="editPatientProvider" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>Udpate Provider</h3>
+    <button (click)="toggleEditPatientProvider()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+  </c-modal-body>
+</c-modal>

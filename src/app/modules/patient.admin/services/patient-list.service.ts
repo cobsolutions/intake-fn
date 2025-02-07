@@ -33,6 +33,7 @@ export interface IUsers {
   insuranceWorkerType: string,
   hasPhysicalTherapy: boolean
   isSchedule: boolean
+  hasProvider:boolean
   createdAt: number;
 }
 

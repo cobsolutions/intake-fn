@@ -115,11 +115,18 @@
               Records
             </button>
           </ng-container>
-          <ng-container *ngSwitchCase="'update'" class="py-2">
-            <button (click)="updatePatientProvider(item['patientId'])" cButton color="primary" size="sm"
-              variant="outline">
+          <ng-container *ngSwitchCase="'name'" class="py-2">
+            {{item['lastName']}},{{item['firstName']}}
+          </ng-container>
+          <ng-container *ngSwitchCase="'provider'" class="py-2">
+            <!-- <button (click)="updatePatientProvider(item['patientId'])" cButton color="primary" size="sm"
+              variant="outline" [disabled]="item['hasProvider']">
               update
-            </button>
+            </button> -->
+            <c-form-check [switch]="true">
+              <input cFormCheckInput type="checkbox" (change)="assignProvider(item['patientId'])"
+                [disabled]="item['hasProvider']" [checked]="item['hasProvider']"  [(ngModel)]="item.hasProvider"/>
+            </c-form-check>
           </ng-container>
           <ng-container *ngSwitchCase="'schedule'" class="py-2">
             <c-form-check [switch]="true">

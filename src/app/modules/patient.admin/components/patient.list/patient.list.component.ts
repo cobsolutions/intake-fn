@@ -67,13 +67,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
   };
   readonly columns: (string | IColumn)[] = [
     {
-      key: 'lastName',
-      label: 'Last Name',
-      sorter: false,
-    },
-    {
-      key: 'firstName',
-      label: 'First Name',
+      key: 'name',
+      label: 'Name',
       sorter: false,
     },
     {
@@ -107,8 +102,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
       sorter: false,
     },
     {
-      key: 'update',
-      label: 'Update',
+      key: 'provider',
+      label: 'Assign to Provider',
       sorter: false,
     },
     {
@@ -303,7 +298,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.details_visible[item] = !this.details_visible[item];
   }
   isSchedule(item: any) {
-    console.log(item.schedule)
     this.patientListService.updatePatientSchedule(item.patientId, item.schedule).subscribe(result => {
       this.toastrService.success('Patient is scheduled');
     }, error => {
@@ -340,6 +334,10 @@ export class PatientListComponent implements OnInit, OnDestroy {
   }
   isScheduleChanged(event: any) {
     console.log(this.patientSearchCriteria.isSchedule)
+  }
+  assignProvider(patientId: number){
+    this.editPatientProvider = true;
+    this.selectedPatientId = patientId;
   }
   updatePatientProvider(item: number) {
     this.editPatientProvider = true;

@@ -59,6 +59,7 @@ import {
   FooterModule,
   UtilitiesModule,
   ModalModule,
+  LoadingButtonModule,
 
 } from '@coreui/angular-pro';
 import { QRCodeModule } from 'angularx-qrcode';
@@ -151,6 +152,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     NgChartsModule,
     WebcamModule,
     AutocompleteLibModule,
+    LoadingButtonModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ]
 })

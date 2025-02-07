@@ -154,6 +154,7 @@
     <button (click)="toggleEditPatientProvider()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <edit-patient-provider *ngIf="editPatientProvider"></edit-patient-provider>
+    <edit-patient-provider *ngIf="editPatientProvider" [patientId]="selectedPatientId"
+      (changeVisibility)="changeFacilityVisibility($event)"></edit-patient-provider>
   </c-modal-body>
 </c-modal>

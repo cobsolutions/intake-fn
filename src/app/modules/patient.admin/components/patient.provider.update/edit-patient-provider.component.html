@@ -1,83 +1,78 @@
-<c-card class="mb-2">
-    <c-card-header>
-        <label for="dsds" class="form-label">
-            <label><strong>Could you please provide us with the information of your Referring
-                    Doctor? </strong>
-                <span class="text-danger"
-                    *ngIf="this.form.get('medical')?.get('referringEntity')?.value ==='referringDoctor'">*</span>
-            </label>
-        </label>
-    </c-card-header>
-    <c-card-body>
-        <div class="row height d-flex">
-            <div class="col-md-2">
-                <label></label>
-                <select cSelect formControlName="referringSearchType" sizing="sm" class="form-control"
-                    style="height: 40px;">
-                    <option value="l-name">Last Name</option>
-                    <option value="f-name">First Name</option>
-                    <option value="full-name">Full Name</option>
-                    <option value="npi">NPI</option>
-                </select>
+<c-container fluid="true">
+    <div [formGroup]="form">
+        <div formGroupName="edit-provider">
+            <div class="row height d-flex">
+                <div class="col-md-2">
+                    <label></label>
+                    <select cSelect formControlName="referringSearchType" sizing="sm" class="form-control"
+                        style="height: 40px;">
+                        <option value="l-name">Last Name</option>
+                        <option value="f-name">First Name</option>
+                        <option value="full-name">Full Name</option>
+                        <option value="npi">NPI</option>
+                    </select>
+                </div>
+                <div class="col-md-10 mb-1">
+                    <label>
+                        <span *ngIf="this.form.get('edit-provider')?.get('referringSearchType')?.value ==='full-name'">
+                            <label>
+                                <span class="fst-italic">Search criteria: LastName, FirstName </span> <span
+                                    class="text-primary">Example: Linda, John</span>
+                            </label>
+                        </span>
+                    </label>
+                    <c-input-group sizing="sm">
+                        <input cFormControl placeholder="Enter provider criteria" formControlName="referringSearch">
+                        <span cInputGroupText>
+                            <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                [loading]="loadingProvider">
+                                <svg cIcon name="cilSearch" title="cilUser"></svg>
+                            </button>
+                        </span>
+                    </c-input-group>
+                </div>
+                <div class="col-md-2" *ngIf="isReferringSearchNotValid">
+                    <label></label>
+                    <p class="text-danger">
+                        <strong>{{referringSearchErrorMessage}}</strong>
+                    </p>
+                </div>
+                <div class="col-md-12 mb-2" *ngIf="providers">
+                    <ng-autocomplete [itemTemplate]="itemTemplate" placeholder="Select.." [data]="providers"
+                        [notFoundTemplate]="notFoundTemplate" (selected)="pickProvider($event)" [searchKeyword]="''"
+                        style="width: 90%;" (inputCleared)="unpickProvider()">
+                    </ng-autocomplete>
+                    <ng-template #itemTemplate let-item>
+                        <a [innerHTML]="item"></a>
+                    </ng-template>
+                    <ng-template #notFoundTemplate let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                </div>
             </div>
-            <div class="col-md-4 mb-1">
-                <label>
-                    <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='full-name'">
-                        <label>
-                            <span class="fst-italic">Search criteria: LastName, FirstName </span> <span
-                                class="text-primary">Example: Linda, John</span>
-                        </label>
-                    </span>
-                </label>
-                <c-input-group sizing="sm">
-                    <input cFormControl placeholder="Doctor Name" formControlName="referringSearch">
-                    <span cInputGroupText>
-                        <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
-                            [loading]="loadingProvider">
-                            <svg cIcon name="cilSearch" title="cilUser"></svg>
-                        </button>
-                    </span>
-                </c-input-group>
-            </div>
-            <div class="col-md-2" *ngIf="isReferringSearchNotValid">
-                <label></label>
-                <p class="text-danger">
-                    <strong>{{referringSearchErrorMessage}}</strong>
-                </p>
-            </div>
-            <div class="col-md-10 mb-2" *ngIf="providers">
-                <ng-autocomplete [itemTemplate]="itemTemplate" placeholder="Select.." [data]="providers"
-                    [notFoundTemplate]="notFoundTemplate" (selected)="pickProvider($event)" [searchKeyword]="''"
-                    style="width: 90%;" (inputCleared)="unpickProvider()">
-                </ng-autocomplete>
-                <ng-template #itemTemplate let-item>
-                    <a [innerHTML]="item"></a>
-                </ng-template>
-                <ng-template #notFoundTemplate let-notFound>
-                    <div [innerHTML]="notFound"></div>
-                </ng-template>
-            </div>
-        </div>
-        <c-row *ngIf="(this.form.get('medical')?.get('providerName')?.value !==null) 
-            && (this.form.get('medical')?.get('providerNPI')?.value !== null)">
-            <c-col xs="4">
-                <c-input-group class="mb-3" sizing="sm">
-                    <span cInputGroupText id="basic-addon1">&#64;</span>
-                    <input cFormControl placeholder="Doctor Name" maxlength="60" readonly
-                        formControlName="providerName">
-                </c-input-group>
-                <c-input-group class="mb-3" sizing="sm">
-                    <span cInputGroupText id="basic-addon2">#</span>
-                    <input cFormControl placeholder="NPI" maxlength="60" readonly formControlName="providerNPI">
-                </c-input-group>
+            <c-row *ngIf="(this.form.get('edit-provider')?.get('providerName')?.value !==null) 
+                && (this.form.get('edit-provider')?.get('providerNPI')?.value !== null)">
+                <c-col xs="12">
+                    <c-input-group class="mb-3" sizing="sm">
+                        <span cInputGroupText id="basic-addon1">&#64;</span>
+                        <input cFormControl placeholder="Doctor Name" maxlength="60" readonly
+                            formControlName="providerName">
+                    </c-input-group>
+                    <c-input-group class="mb-3" sizing="sm">
+                        <span cInputGroupText id="basic-addon2">#</span>
+                        <input cFormControl placeholder="NPI" maxlength="60" readonly formControlName="providerNPI">
+                    </c-input-group>
+                </c-col>
+            </c-row>
+            <c-col xs="12">
+                <div *ngIf="this.form.get('edit-provider')?.get('providerNPI')?.errors?.['required'] === true && 
+                (this.form.get('edit-provider')?.get('providerNPI')?.touched)" class="text-danger mx-1">
+                    Referring Doctor Information is required
+                </div>
             </c-col>
-        </c-row>
-        <c-col xs="12">
-            <div *ngIf="this.form.get('medical')?.get('providerNPI')?.errors?.['required'] === true && 
-            (this.form.get('medical')?.get('providerNPI')?.touched)" class="text-danger mx-1">
-                Referring Doctor Information is required
-            </div>
-        </c-col>
-
-    </c-card-body>
-</c-card>
+        </div>
+        <div class="text-center mt-3">
+            <button cButton (click)="update()">Update</button>
+        </div>
+    </div>
+</c-container>

@@ -24,6 +24,7 @@ export interface IParams {
   styleUrls: ['./patient.list.component.css']
 })
 export class PatientListComponent implements OnInit, OnDestroy {
+
   noShow: BehaviorSubject<boolean | null>;
   constructor(private patientListService: PatientListService
     , private reportingService: PatientReportingService
@@ -33,8 +34,10 @@ export class PatientListComponent implements OnInit, OnDestroy {
     , private toastrService: ToastrService
     , private patientSearchService: PatientSearchService) {
   }
-  patientSearchCriteria: PatientSearchCriteria = {isSchedule:undefined}
+  patientSearchCriteria: PatientSearchCriteria = { isSchedule: undefined }
   isSchedulePatient: boolean;
+  editPatientProvider: boolean;
+  selectedPatientId?: number
   public customRanges = {
     Today: [new Date(), new Date()],
     Yesterday: [
@@ -64,13 +67,8 @@ export class PatientListComponent implements OnInit, OnDestroy {
   };
   readonly columns: (string | IColumn)[] = [
     {
-      key: 'lastName',
-      label: 'Last Name',
-      sorter: false,
-    },
-    {
-      key: 'firstName',
-      label: 'First Name',
+      key: 'name',
+      label: 'Name',
       sorter: false,
     },
     {
@@ -101,6 +99,11 @@ export class PatientListComponent implements OnInit, OnDestroy {
     {
       key: 'schedule',
       label: 'Schedule',
+      sorter: false,
+    },
+    {
+      key: 'provider',
+      label: 'Assign to Provider',
       sorter: false,
     },
     {
@@ -295,7 +298,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.details_visible[item] = !this.details_visible[item];
   }
   isSchedule(item: any) {
-    console.log(item.schedule)
     this.patientListService.updatePatientSchedule(item.patientId, item.schedule).subscribe(result => {
       this.toastrService.success('Patient is scheduled');
     }, error => {
@@ -332,6 +334,21 @@ export class PatientListComponent implements OnInit, OnDestroy {
   }
   isScheduleChanged(event: any) {
     console.log(this.patientSearchCriteria.isSchedule)
+  }
+  assignProvider(patientId: number){
+    this.editPatientProvider = true;
+    this.selectedPatientId = patientId;
+  }
+  updatePatientProvider(item: number) {
+    this.editPatientProvider = true;
+    this.selectedPatientId = item;
+  }
+  toggleEditPatientProvider() {
+    this.editPatientProvider = !this.editPatientProvider
+  }
+  changeFacilityVisibility(event: string) {
+    if (event === 'close')
+      this.editPatientProvider = false;
   }
 }
 

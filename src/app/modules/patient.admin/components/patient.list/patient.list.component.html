@@ -115,6 +115,19 @@
               Records
             </button>
           </ng-container>
+          <ng-container *ngSwitchCase="'name'" class="py-2">
+            {{item['lastName']}},{{item['firstName']}}
+          </ng-container>
+          <ng-container *ngSwitchCase="'provider'" class="py-2">
+            <!-- <button (click)="updatePatientProvider(item['patientId'])" cButton color="primary" size="sm"
+              variant="outline" [disabled]="item['hasProvider']">
+              update
+            </button> -->
+            <c-form-check [switch]="true">
+              <input cFormCheckInput type="checkbox" (change)="assignProvider(item['patientId'])"
+                [disabled]="item['hasProvider']" [checked]="item['hasProvider']"  [(ngModel)]="item.hasProvider"/>
+            </c-form-check>
+          </ng-container>
           <ng-container *ngSwitchCase="'schedule'" class="py-2">
             <c-form-check [switch]="true">
               <input cFormCheckInput type="checkbox" (change)="isSchedule(item)" [checked]="item.schedule"
@@ -142,3 +155,13 @@
     <a class="btn btn-primary" (click)="logout()">Logout</a>
   </div>
 </span>
+<c-modal id="editPatientProvider" [visible]="editPatientProvider" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>Udpate Provider</h3>
+    <button (click)="toggleEditPatientProvider()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <edit-patient-provider *ngIf="editPatientProvider" [patientId]="selectedPatientId"
+      (changeVisibility)="changeFacilityVisibility($event)"></edit-patient-provider>
+  </c-modal-body>
+</c-modal>

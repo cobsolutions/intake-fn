@@ -59,6 +59,7 @@ import {
   FooterModule,
   UtilitiesModule,
   ModalModule,
+  LoadingButtonModule,
 
 } from '@coreui/angular-pro';
 import { QRCodeModule } from 'angularx-qrcode';
@@ -76,6 +77,8 @@ import { RequestMailIntakeSubmissionComponent } from './components/requesters/in
 import { BioComponent } from './components/test.bio/bio.component';
 import { CapComponent } from './components/test.bio/cap/cap.component';
 import { WebcamModule } from 'ngx-webcam';
+import { EditPatientProviderComponent } from './components/patient.provider.update/edit-patient-provider.component';
+import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 
 @NgModule({
   declarations: [
@@ -105,7 +108,7 @@ import { WebcamModule } from 'ngx-webcam';
     PatientSourcePieChartComponent, 
     RequestDeviceRegistrationComponent, 
     RequestDeviceIntakeSubmissionComponent, 
-    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent
+    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent
   ],
   imports: [
     CommonModule,
@@ -148,6 +151,8 @@ import { WebcamModule } from 'ngx-webcam';
     GoogleMapsModule,
     NgChartsModule,
     WebcamModule,
+    AutocompleteLibModule,
+    LoadingButtonModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' })
   ]
 })

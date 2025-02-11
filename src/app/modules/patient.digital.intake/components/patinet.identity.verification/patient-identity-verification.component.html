@@ -32,12 +32,12 @@
       <div *ngIf="otpSent && !isValidOPT" class="otp-section">
         <p>We've sent a verification code to .</p>
         <div class="otp-inputs">
-          <input #ropt type="text" maxlength="1" [(ngModel)]="otpArray[0]" />
-          <input #sopt type="text" maxlength="1" [(ngModel)]="otpArray[1]" />
-          <input #topt type="text" maxlength="1" [(ngModel)]="otpArray[2]" />
-          <input #fopt type="text" maxlength="1" [(ngModel)]="otpArray[3]" />
-          <input #fopt type="text" maxlength="1" [(ngModel)]="otpArray[4]" />
-          <input #sopt type="text" maxlength="1" [(ngModel)]="otpArray[5]" />
+          <input #ropt type="text" maxlength="1" [(ngModel)]="otpArray[0]" (keyup)="(ropt.value.length == 1) ? sopt.focus() : ''"/>
+          <input #sopt type="text" maxlength="1" [(ngModel)]="otpArray[1]" (keyup)="(sopt.value.length == 1) ? topt.focus() : ''"/>
+          <input #topt type="text" maxlength="1" [(ngModel)]="otpArray[2]" (keyup)="(topt.value.length == 1) ? fopt.focus() : ''"/>
+          <input #fopt type="text" maxlength="1" [(ngModel)]="otpArray[3]" (keyup)="(topt.value.length == 1) ? fiopt.focus() : ''"/>
+          <input #fiopt type="text" maxlength="1" [(ngModel)]="otpArray[4]" (keyup)="(fiopt.value.length == 1) ? svopt.focus() : ''"/>
+          <input #svopt type="text" maxlength="1" [(ngModel)]="otpArray[5]" />
 
         </div>
         <button cButton variant="outline" (click)="verifyOtp()" [disabled]="!isOtpComplete()">Verify OTP</button>

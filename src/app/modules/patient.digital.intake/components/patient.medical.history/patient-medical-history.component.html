@@ -157,7 +157,7 @@
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <strong style="font-size: medium;">Have you ever been XRay ?
+                    <strong style="font-size: medium;">Have you ever had any of the following imaging tests done ?
                         <span class="text-danger">*</span></strong>
                 </label>
             </c-card-header>
@@ -174,7 +174,7 @@
                     <c-row>
                         <c-col xs="12">
                             <c-multi-select multiple formControlName="isXRayValue" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('isXRayValue')?.invalid
-                            && this.form.get('medicalhistory')?.get('isXRayValue')?.touched}">
+                            && this.form.get('medicalhistory')?.get('isXRayValue')?.touched}" placeholder="Please choose from the drop-down list below">
                                 <c-multi-select-option value="MRI">MRI</c-multi-select-option>
                                 <c-multi-select-option value="CT">CT</c-multi-select-option>
                                 <c-multi-select-option value="X-ray">X-ray</c-multi-select-option>
@@ -248,8 +248,7 @@
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <strong style="font-size: medium;">Please list any surgeries you may had or any other conditions not
-                        listed above ?
+                    <strong style="font-size: medium;">Have you had any surgeries or other conditions not listed above? If so, list them ?
                         <span class="text-danger">*</span></strong>
                 </label>
             </c-card-header>

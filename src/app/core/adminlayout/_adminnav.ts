@@ -59,7 +59,7 @@ export const adminNavItems: INavData[] = [
       },
       {
         name: 'Patient changes',
-        url: 'report/recommendation'
+        url: 'report/changes'
       }
     ]
   },

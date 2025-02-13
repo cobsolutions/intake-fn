@@ -79,6 +79,7 @@ import { CapComponent } from './components/test.bio/cap/cap.component';
 import { WebcamModule } from 'ngx-webcam';
 import { EditPatientProviderComponent } from './components/patient.provider.update/edit-patient-provider.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +109,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     PatientSourcePieChartComponent, 
     RequestDeviceRegistrationComponent, 
     RequestDeviceIntakeSubmissionComponent, 
-    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent
+    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent, ChnagesReportComponent
   ],
   imports: [
     CommonModule,

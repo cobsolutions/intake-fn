@@ -30,12 +30,18 @@
                     class="text-danger mx-1">
                     Last name is required
                 </div>
+                <div *ngIf="this.form.get('basic')?.get('firstname')?.errors?.['noNumbers']" class="text-danger mx-1">
+                    First name cannot contains Numbers.</div>
                 <div *ngIf="this.form.get('basic')?.get('firstname')?.errors?.['noSpecialCharacters']"
                     class="text-danger mx-1">First name cannot contains special characters.</div>
                 <div *ngIf="this.form.get('basic')?.get('middleName')?.errors?.['noSpecialCharacters']"
                     class="text-danger mx-1">Middle name cannot contain special characters.</div>
+                <div *ngIf="this.form.get('basic')?.get('middleName')?.errors?.['noNumbers']" class="text-danger mx-1">
+                    MiddleName name cannot contains Numbers.</div>
                 <div *ngIf="this.form.get('basic')?.get('lastName')?.errors?.['noSpecialCharacters']"
                     class="text-danger mx-1">Last name cannot contains special characters.</div>
+                <div *ngIf="this.form.get('basic')?.get('lastName')?.errors?.['noNumbers']" class="text-danger mx-1">
+                    Last name cannot contains Numbers.</div>
             </c-col>
         </c-row>
         <!--Patient DOB-->
@@ -44,8 +50,8 @@
                 <label style="width: 150px;">Date Of Birth <span class="text-danger">*</span></label>
             </c-col>
             <c-col xl="12">
-                <input matInput [matDatepicker]="picker"  formControlName="dob" style="width: 90%;">
-                <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                <input matInput [matDatepicker]="picker" formControlName="dob" style="width: 90%;">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
                 <!-- <input type="date" cFormControl sizing="sm" formControlName="dob"> -->
             </c-col>
@@ -103,6 +109,13 @@
                             class="text-danger mx-1">MiddleName cannot contain special characters.</div>
                         <div *ngIf="this.form.get('basic')?.get('guarantorLastName')?.errors?.['noSpecialCharacters']"
                             class="text-danger mx-1">lastName cannot contain special characters.</div>
+
+                        <div *ngIf="this.form.get('basic')?.get('guarantorFirstName')?.errors?.['noNumbers']"
+                            class="text-danger mx-1">firstname cannot contains Numbers.</div>
+                        <div *ngIf="this.form.get('basic')?.get('guarantorMiddleName')?.errors?.['noNumbers']"
+                            class="text-danger mx-1">MiddleName cannot contains Numbers.</div>
+                        <div *ngIf="this.form.get('basic')?.get('guarantorLastName')?.errors?.['noNumbers']"
+                            class="text-danger mx-1">lastName cannot contains Numbers.</div>
                     </c-row>
                     <!--Relationship-->
                     <c-row class="mb-1">

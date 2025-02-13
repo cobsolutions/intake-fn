@@ -1,4 +1,5 @@
 import { FormGroup, Validators } from "@angular/forms";
+import { noNumbersValidator } from "../../custom.validation/no.number.validator";
 import { noSpecialCharactersValidator } from "../../custom.validation/special.characters.validator";
 import { CommercialFields } from "./commercial.fields";
 import { CommercialPolicyHolderFields } from "./commercial.ploicy.holder.fields";
@@ -39,7 +40,7 @@ export class AddCommercialValidators {
             form.get('insurance')?.get(CommercialPolicyHolderFields[i])?.updateValueAndValidity();
             if (CommercialPolicyHolderFields[i] === 'commercial-ploicyHolder-relationship-first-name' ||
                 CommercialPolicyHolderFields[i] === 'commercial-ploicyHolder-relationship-last-name') {
-                form.get('insurance')?.get(CommercialPolicyHolderFields[i])?.addValidators(noSpecialCharactersValidator())
+                form.get('insurance')?.get(CommercialPolicyHolderFields[i])?.addValidators([noSpecialCharactersValidator(),noNumbersValidator()])
                 form.get('insurance')?.get(CommercialPolicyHolderFields[i])?.updateValueAndValidity();
             }
             if(CommercialPolicyHolderFields[i] ==='commercial-ploicyHolder-relationship-phone'){

@@ -7,6 +7,7 @@ import { DigitalIntakeService } from '../../services/digitalIntake/digital-intak
 import { EmailValidator } from './validators/custom.validation/email.validator';
 import { futureDateValidator } from './validators/custom.validation/future.date.validator';
 import { maxDateValidator } from './validators/custom.validation/max.date.validator';
+import { noNumbersValidator } from './validators/custom.validation/no.number.validator';
 import { noSpecialCharactersValidator } from './validators/custom.validation/special.characters.validator';
 import { todayDOBValidator } from './validators/custom.validation/today.dob.validator';
 import { GuarantorValidator } from './validators/guarantor/guarantor.validator';
@@ -61,9 +62,9 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'capturedImage': new FormControl(null, [Validators.required]),
       }),
       'basic': new FormGroup({
-        'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
-        'middleName': new FormControl(null, noSpecialCharactersValidator()),
-        'lastName': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
+        'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
+        'middleName': new FormControl(null, [noSpecialCharactersValidator(), noNumbersValidator()]),
+        'lastName': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
         'dob': new FormControl(null, [Validators.required, todayDOBValidator(), futureDateValidator(), maxDateValidator()]),
         'gender': new FormControl(null, [Validators.required]),
         'marital': new FormControl(null, [Validators.required]),
@@ -73,9 +74,9 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'employment': new FormControl(null),
         'employmentCompany': new FormControl(null),
 
-        'guarantorFirstName': new FormControl(null),
-        'guarantorMiddleName': new FormControl(null, noSpecialCharactersValidator()),
-        'guarantorLastName': new FormControl(null),
+        'guarantorFirstName': new FormControl(null, [noSpecialCharactersValidator(), noNumbersValidator()]),
+        'guarantorMiddleName': new FormControl(null, [noSpecialCharactersValidator(), noNumbersValidator]),
+        'guarantorLastName': new FormControl(null, [noSpecialCharactersValidator(), noNumbersValidator()]),
         'guarantorRelationship': new FormControl(null),
 
         'emergencyContact': new FormControl(null, [Validators.required]),
@@ -85,7 +86,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       'address': new FormGroup({
         'firstAddress': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'secondAddress': new FormControl(null, [noSpecialCharactersValidator()]),
-        'city': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
+        'city': new FormControl(null, [Validators.required, noSpecialCharactersValidator(),noNumbersValidator()]),
         'state': new FormControl(null, [Validators.required]),
         'zipCode': new FormControl(null, [Validators.required, Validators.min(10), Validators.pattern(zipCodeRgx)]),
       }),

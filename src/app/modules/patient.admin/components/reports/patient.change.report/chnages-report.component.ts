@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chnages-report.component.css']
 })
 export class ChnagesReportComponent implements OnInit {
+exportResult() {
+throw new Error('Method not implemented.');
+}
 
   constructor() { }
 

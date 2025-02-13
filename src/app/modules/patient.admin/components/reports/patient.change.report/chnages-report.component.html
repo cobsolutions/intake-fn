@@ -1,1 +1,21 @@
-<p>chnages-report works!</p>
+<ngx-spinner></ngx-spinner>
+<c-row>
+    <c-col xs="12" class="mb-4">
+        <c-card>
+            <c-card-header ngPreserveWhitespaces>
+                <strong>Patients Changes Reports</strong>
+            </c-card-header>
+            <c-card-body>
+
+            </c-card-body>
+        </c-card>
+    </c-col>
+    <c-container class="text-end">
+        <button cButton (click)="exportResult()" variant="outline">Export Result
+            <svg cIcon name="cilCloudDownload"></svg>
+        </button>
+    </c-container>
+    <c-col xs="12">
+        Table For Result
+    </c-col>
+</c-row>

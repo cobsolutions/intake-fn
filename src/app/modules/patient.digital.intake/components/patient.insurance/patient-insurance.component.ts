@@ -52,8 +52,14 @@ export class PatientInsuranceComponent implements OnInit {
     this.componentReference.setPatientInsuranceComponent(this)
     this.getInsuranceCompanies();
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
-      console.log(value)
       this.selectedInsuranceType = value;
+      if (value === 'SelfPay') {
+        var selfPay: SelfPay = {
+          type: 'selfpay'
+        }
+        this.patientInsurances.selfPay = selfPay;
+        this.renderedPatientInsurances.push(selfPay)
+      }
     })
     this.dropdownSettings = {
       singleSelection: true,
@@ -75,9 +81,7 @@ export class PatientInsuranceComponent implements OnInit {
     }
   }
   next() {
-    // var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
-    // CheckInvalidForm.check(insuranceForm)
-    if (this.isInsurances()) {
+    if (this.isInsurances() || this.patientInsurances.selfPay !== undefined) {
       InsuranceValidator.clearValidator(this.form)
       this.stepper.next();
       this.isValidForm = false;
@@ -91,8 +95,7 @@ export class PatientInsuranceComponent implements OnInit {
     return (this.patientInsurances.commercialInsurances.length > 0 ||
       this.patientInsurances.workerCompensationInsurances.length > 0 ||
       this.patientInsurances.medicareInsurance.length > 0 ||
-      this.patientInsurances.medicaidInsurance.length > 0 ||
-      this.patientInsurances.selfPay !== undefined)
+      this.patientInsurances.medicaidInsurance.length > 0)
   }
   private addPatientIsnurance() {
     var insuranceType: string = this.form.get('insurance')?.get('type')?.value;
@@ -137,13 +140,6 @@ export class PatientInsuranceComponent implements OnInit {
       patientInsuranceCompensationNoFault.accidentDate = Number(moment(this.form.get('insurance')?.get('compensation-accident-date')?.value).format("x"));
       this.patientInsurances.workerCompensationInsurances.push(patientInsuranceCompensationNoFault);
       this.renderedPatientInsurances.push(patientInsuranceCompensationNoFault)
-    }
-    if (insuranceType === 'SelfPay') {
-      var selfPay: SelfPay = {
-        type: 'selfpay'
-      }
-      this.patientInsurances.selfPay = selfPay;
-      this.renderedPatientInsurances.push(selfPay)
     }
     this.form.get('insurance')?.reset();
 

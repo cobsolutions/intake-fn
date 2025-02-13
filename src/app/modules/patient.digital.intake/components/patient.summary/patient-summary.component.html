@@ -192,11 +192,14 @@
                 </span>
                 <br />
             </span>
+            <span *ngIf="this.pateint.insurances !==null  && this.pateint.insurances?.selfPay?.type ==='selfpay'">
+                SelfPay
+            </span>
         </p>
     </c-card-body>
 </c-card>
 <!--Submit-->
-<div [formGroup]="form">
+<div [formGroup]=" form">
     <div class="mt-3">
         <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2"
             [disabled]="submitting">Back</button>

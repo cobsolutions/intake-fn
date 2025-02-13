@@ -17,6 +17,7 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
   @Input() form: FormGroup;
   agreements: AgreementHolder[] | null = null
   agreementFormArray: FormArray;
+  visibleAgreement: boolean
   constructor(private sanitizer: DomSanitizer
     , private digitalIntakeService: DigitalIntakeService) { }
   ngAfterViewInit(): void {
@@ -28,6 +29,14 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
   private getAgreements() {
     this.digitalIntakeService.findAgreements().subscribe(response => {
       this.agreements = response.body;
+      if (this.agreements !== null)
+        for (let i = 0; i < this.agreements.length; i++) {
+          if (this.agreements[i].id === 1)
+            this.agreements[i].visible = true
+          else
+            this.agreements[i].visible = false
+
+        }
       this.initForm(this.agreements)
     })
   }
@@ -45,5 +54,14 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
       this.isValidForm = true;
       ValidationExploder.explode(this.form, 'agreement')
     }
+  }
+  acceptConcent(agreement: AgreementHolder) {
+    if (this.agreements !== null)
+      for (let i = 0; i < this.agreements?.length; i++) {
+        if (this.agreements[i].id === agreement.id){
+          this.agreements[i + 1].visible = true;
+          this.agreements[i].visible = false;
+        }          
+      }
   }
 }

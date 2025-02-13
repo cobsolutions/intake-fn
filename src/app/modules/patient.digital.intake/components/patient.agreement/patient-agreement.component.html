@@ -5,7 +5,7 @@
 <div [formGroup]="form" class="mt-3">
     <div formArrayName="agreement">
         <c-accordion [alwaysOpen]="false" [flush]="false" class="shadow">
-            <c-accordion-item #item0="cAccordionItem" [visible]="false"
+            <c-accordion-item #item0="cAccordionItem" [visible]="agreement.visible"
                 *ngFor="let agreement of agreements; index as i;">
                 <ng-template cTemplateId="accordionHeaderTemplate">
                     <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
@@ -15,14 +15,14 @@
                 </ng-template>
                 <ng-template cTemplateId="accordionBodyTemplate">
                     <c-row>
-                        <c-col xs="auto">
+                        <c-col xs="12">
                             <div [innerHTML]="agreement.agreementText" class="accordion-body">
                             </div>
                         </c-col>
-                        <c-col xs="auto" class="ms-3">
+                        <c-col xs="12" class="ms-2">
                             <c-form-check>
-                                <input cFormCheckInput  type="checkbox"
-                                    [formControlName]="agreement.fieldName" />
+                                <input cFormCheckInput type="checkbox" [formControlName]="agreement.fieldName"
+                                    (change)="acceptConcent(agreement)" />
                                 <label cFormCheckLabel for="release">I accept</label>
                             </c-form-check>
                         </c-col>

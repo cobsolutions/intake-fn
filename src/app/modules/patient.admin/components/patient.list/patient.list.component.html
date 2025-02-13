@@ -119,10 +119,6 @@
             {{item['lastName']}},{{item['firstName']}}
           </ng-container>
           <ng-container *ngSwitchCase="'provider'" class="py-2">
-            <!-- <button (click)="updatePatientProvider(item['patientId'])" cButton color="primary" size="sm"
-              variant="outline" [disabled]="item['hasProvider']">
-              update
-            </button> -->
             <c-form-check [switch]="true">
               <input cFormCheckInput type="checkbox" (change)="assignProvider(item['patientId'])"
                 [disabled]="item['hasProvider']" [checked]="item['hasProvider']"  [(ngModel)]="item.hasProvider"/>

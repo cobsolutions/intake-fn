@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Provider } from 'src/app/modules/patient.digital.intake/models/provider';
+import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
+import { ActionTaker } from '../../models/one.time.token/monitor/action.taker';
 import { PatientProviderEditableRequest } from '../../models/patient/patient.provider.editable.request';
 import { FindPatientProviderService } from '../../services/patient.find.provider/find-patient-provider.service';
 import { UpdatePatientProviderService } from '../../services/patient.update.provider/update-patient-provider.service';
@@ -19,10 +21,12 @@ export class EditPatientProviderComponent implements OnInit {
   referringSearchErrorMessage: string | undefined;
 
   providers: Provider[];
-  constructor(private findPatientProviderService: FindPatientProviderService,
-    private updatePatientProviderService: UpdatePatientProviderService) { }
+  constructor(private findPatientProviderService: FindPatientProviderService
+    , private updatePatientProviderService: UpdatePatientProviderService
+    , private kcAuthServiceService: KcAuthServiceService) { }
 
   ngOnInit(): void {
+    this.getActionTaker()
     this.form = new FormGroup({
       'edit-provider': new FormGroup({
         'providerSearch': new FormControl(false),
@@ -53,7 +57,6 @@ export class EditPatientProviderComponent implements OnInit {
       this.referringSearchErrorMessage = 'Type Before hit'
       this.loadingProvider = false
     } else {
-      console.log(referringType);
       switch (referringType) {
         case 'l-name':
           this.findPatientProviderService.findProviderByLastName(referringSearch)
@@ -135,13 +138,25 @@ export class EditPatientProviderComponent implements OnInit {
   update() {
     var patientProviderEditableRequest: PatientProviderEditableRequest = {
       patientId: this.patientId,
+      actionTaker: this.getActionTaker(),
       referringProvider: {
         npi: this.form.get('edit-provider')?.get('providerNPI')?.value,
-        name: this.form.get('edit-provider')?.get('providerName')?.value
+        name: this.form.get('edit-provider')?.get('providerName')?.value,
       }
     }
     this.updatePatientProviderService.update(patientProviderEditableRequest).subscribe(result => {
       this.changeVisibility.emit('close');
     })
+  }
+
+  private getActionTaker() :ActionTaker{
+    var user: any = this.kcAuthServiceService.getLoggedUser()
+    return  {
+      uuid: user.sid,
+      name: user.name,
+      email: user.email,
+      accountName: user.preferred_username
+    }
+    
   }
 }

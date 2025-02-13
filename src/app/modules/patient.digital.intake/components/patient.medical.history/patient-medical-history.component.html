@@ -78,7 +78,7 @@
             <c-card-body>
                 <textarea cFormControl sizing="sm" formControlName="evaluationReason" maxlength="200" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('evaluationReason')?.invalid
                             && this.form.get('medicalhistory')?.get('evaluationReason')?.touched}"
-                    input-trimmer></textarea>
+                    input-trimmer placeholder="Please add primary reason for today’s evaluation"></textarea>
             </c-card-body>
         </c-card>
         <!--prescription or non-prescription medication-->
@@ -102,7 +102,7 @@
                 </c-form-check>
                 <span *ngIf="this.form.get('medicalhistory')?.get('prescriptionMedication')?.value ==='yes'">
                     <textarea cFormControl sizing="sm" formControlName="PhysicalTherapyLocationText" maxlength="200"
-                        [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.invalid
+                        placeholder="Please add any prescription or non-prescription medication " [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.invalid
                     && this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.touched}"
                         input-trimmer></textarea>
                     <div *ngIf="this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.errors?.['required'] === true && 
@@ -138,7 +138,8 @@
                 <span *ngIf="this.form.get('medicalhistory')?.get('patientConditions')?.value ==='yes'">
                     <ng-multiselect-dropdown formControlName="patientConditionsSelections" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('patientConditionsSelections')?.invalid
                     && this.form.get('medicalhistory')?.get('patientConditionsSelections')?.touched}"
-                        [settings]="dropdownSettings" [data]="patientConditions">
+                        [settings]="dropdownSettings" [data]="patientConditions"
+                        placeholder="Please select medical conditions">
                     </ng-multiselect-dropdown>
                     <div *ngIf="this.form.get('medicalhistory')?.get('patientConditionsSelections')?.errors?.['required'] === true && 
                 (this.form.get('medicalhistory')?.get('patientConditionsSelections')?.dirty ||this.form.get('medicalhistory')?.get('patientConditionsSelections')?.touched)"
@@ -174,7 +175,8 @@
                     <c-row>
                         <c-col xs="12">
                             <c-multi-select multiple formControlName="isXRayValue" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('isXRayValue')?.invalid
-                            && this.form.get('medicalhistory')?.get('isXRayValue')?.touched}" placeholder="Please choose from the drop-down list below">
+                            && this.form.get('medicalhistory')?.get('isXRayValue')?.touched}"
+                                placeholder="Please select imaging tests">
                                 <c-multi-select-option value="MRI">MRI</c-multi-select-option>
                                 <c-multi-select-option value="CT">CT</c-multi-select-option>
                                 <c-multi-select-option value="X-ray">X-ray</c-multi-select-option>
@@ -248,7 +250,7 @@
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <strong style="font-size: medium;">Have you had any surgeries or other conditions not listed above? If so, list them ?
+                    <strong style="font-size: medium;">Have you had any surgeries or other conditions not listed above?
                         <span class="text-danger">*</span></strong>
                 </label>
             </c-card-header>
@@ -263,7 +265,7 @@
                 </c-form-check>
                 <span *ngIf="this.form.get('medicalhistory')?.get('surgeriesList')?.value ==='yes'">
                     <textarea cFormControl sizing="sm" formControlName="surgeriesListText" maxlength="200" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('surgeriesListText')?.invalid
-                    && this.form.get('medicalhistory')?.get('surgeriesListText')?.touched}" input-trimmer></textarea>
+                    && this.form.get('medicalhistory')?.get('surgeriesListText')?.touched}" input-trimmer placeholder="Please add surgeries or other conditions not listed above"></textarea>
                     <div *ngIf="this.form.get('medicalhistory')?.get('surgeriesListText')?.errors?.['required'] === true && 
                 (this.form.get('medicalhistory')?.get('surgeriesListText')?.dirty ||this.form.get('medicalhistory')?.get('surgeriesListText')?.touched)"
                         class="text-danger mx-1">

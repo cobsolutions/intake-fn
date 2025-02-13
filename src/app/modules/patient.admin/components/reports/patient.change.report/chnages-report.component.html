@@ -5,17 +5,46 @@
             <c-card-header ngPreserveWhitespaces>
                 <strong>Patients Changes Reports</strong>
             </c-card-header>
+            <c-callout color="danger" *ngIf="searchInputNotValid" class="m-2">
+                <span class="text-danger fw-bold">{{errorMsg}}</span>
+            </c-callout>
             <c-card-body>
-
+                <p class="text-medium-emphasis small">
+                    The ability to create patient reports using his/her source inputs,
+                </p>
+                <!-- <c-callout color="danger" *ngIf="searchInputNotValid">
+                    <span class="text-danger fw-bold">{{errorMsg}}</span>
+                </c-callout> -->
+                <form cForm>
+                    <c-row>
+                        <c-col xs="6" class="mb-2">
+                            <!--Action-->
+                            <form cForm>
+                                <select cSelect cFormControl  name="change_action" [(ngModel)]="action">
+                                    <option value="Update_Referring_Provider">Referring Provider</option>
+                                </select>
+                            </form>
+                        </c-col>
+                        <c-col xs="6" class="mb-2">
+                            <input cFormControl [(ngModel)]="patientName" placeholder="Patient Name" name="patient_name"/>
+                        </c-col>
+                        <c-col xs="12" class="text-center">
+                            <button cButton class="me-1" (click)="search()" color="primary" variant="outline"
+                                style="width: 15%;">
+                                Search
+                            </button>
+                        </c-col>
+                    </c-row>
+                </form>
             </c-card-body>
         </c-card>
     </c-col>
     <c-container class="text-end">
-        <button cButton  variant="outline">Export Result
+        <button cButton variant="outline">Export Result
             <svg cIcon name="cilCloudDownload"></svg>
         </button>
     </c-container>
     <c-col xs="12">
-        Table For Result
+        {{changes | async | json}}
     </c-col>
 </c-row>

@@ -512,7 +512,7 @@
         </c-card>
     </div>
     <!-- List patient insurances-->
-    <div>
+    <div *ngIf="!(selectedInsuranceType === 'SelfPay')">
         <c-card>
             <c-card-body>
                 <table class="table table-responsive">

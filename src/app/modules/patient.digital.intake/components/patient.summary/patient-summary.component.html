@@ -133,34 +133,13 @@
                 *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.commercialInsurances !== null&&this.pateint.insurances?.commercialInsurances!.length > 0">
                 <strong>Patient Insurance Type : </strong> Commercial Insurance <br />
                 <span *ngFor="let patientInsurance of this.pateint.insurances?.commercialInsurances index as i">
-                    # {{ i+1}} <br />
-                    <strong> Member ID: </strong>
-                    {{patientInsurance.memberId}} <br />
-                    <strong> Policy ID: </strong>
-                    {{patientInsurance.policyId}} <br />
-                    <strong> Policy Holder relationship: </strong>
-                    {{patientInsurance.relationship}} <br />
-                    <span *ngIf="patientInsurance.relationship !== 'Self'">
-                        <label> Name : </label>
-                        {{patientInsurance.patientRelationship?.patientRelationshipLastName
-                        + ',' +
-                        patientInsurance.patientRelationship?.patientRelationshipFirstName
-                        }} <br />
-                        <label> Phone : </label>
-                        {{patientInsurance.patientRelationship?.patientRelationshipPhone}}
-                        <br />
-                        <label> Employer : </label>
-                        {{patientInsurance.patientRelationship?.employerName}}
-                        <br />
-                    </span>
-                    <span *ngIf="patientInsurance.hasSecondaryInsurance">
-                        <strong>Secondary Insurance</strong> <br />
-                        <label>InsuranceCompany : </label>
-                        {{patientInsurance.secondaryInsurance?.insuranceCompanyName}}<br />
-                        <label>memberId : </label>
-                        {{patientInsurance.secondaryInsurance?.memberId}}<br />
-                    </span>
-                    <hr>
+                    <i>Commercial Insurance {{ i+1}}</i> <br />
+                    <strong> Insurance Company: </strong> : {{patientInsurance.insuranceCompanyName}} <br />
+                    <strong> Member-Id: </strong> : {{patientInsurance.memberId}} <br />
+                    <strong> Policy-Id: </strong> : {{patientInsurance.policyId}} <br />
+                    <span *ngIf="!patientInsurance.isSecondaryInsurance"><strong> Relationship: </strong> :
+                        {{patientInsurance.relationship}} <br /></span>
+                    <strong> IS Secondary Insurance: </strong> : {{patientInsurance.isSecondaryInsurance ? 'Yes': 'No'}}
                     <br />
                 </span>
             </span>

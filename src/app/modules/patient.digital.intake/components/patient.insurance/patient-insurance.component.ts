@@ -3,9 +3,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
-import { debounceTime, filter, finalize, switchMap, tap } from 'rxjs';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { debounceTime, filter, finalize, map, switchMap, tap } from 'rxjs';
 import { PatientRelationship } from 'src/app/models/questionnaire/Insurance/patient.relationship';
 import { insuranceTypes } from 'src/app/modules/common/components/insurance/insurance.type';
+import { BasicInsuranceCompany } from 'src/app/modules/patient.admin/models/basic.insurance.company';
 import { Insurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance';
 import { CommercialInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.commercial';
 import { MedicaidInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.medicaid';
@@ -29,6 +31,7 @@ export class PatientInsuranceComponent implements OnInit {
   isValidForm: boolean = false;
   @Input() form: FormGroup;
   InsuranceCompanies: any;
+  basicInsuranceCompany: BasicInsuranceCompany[]
   secondaryInsuranceCompanies: any;
   types: string[] = insuranceTypes;
   selectedInsuranceType: string
@@ -43,14 +46,21 @@ export class PatientInsuranceComponent implements OnInit {
   secondaryInsuranceCompanyForm = new FormControl();
   isLoadingInsuranceCompany = false;
   isLoadingSecondaryInsuranceCompany = false;
+  dropdownSettings: IDropdownSettings = {};
   constructor(private digitalIntakeService: DigitalIntakeService, private componentReference: ComponentReferenceComponentService) { }
   ngOnInit(): void {
     this.componentReference.setPatientInsuranceComponent(this)
-    this.findInsuranceCompanyByNameAutoComplete();
-    this.findSecondaryInsuranceCompanyByNameAutoComplete();
+    this.getInsuranceCompanies();
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
       this.selectedInsuranceType = value;
     })
+    this.dropdownSettings = {
+      singleSelection: true,
+      idField: 'id',
+      textField: 'name',
+      itemsShowLimit: 30,
+      allowSearchFilter: true
+    };
   }
   add() {
     var insuranceForm: FormGroup = this.form.get('insurance') as FormGroup
@@ -95,11 +105,11 @@ export class PatientInsuranceComponent implements OnInit {
           isSecondaryInsurance: true,
           _frontcontrollName: 'comm_' + this.secondaryInsuranceCompanyForm?.value + '_front',
           _backcontrollName: 'comm_' + this.secondaryInsuranceCompanyForm?.value + '_back',
-          insuranceCompanyId: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value,
-          insuranceCompanyName: this.secondaryInsuranceCompanyForm?.value,
+          insuranceCompanyId: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].id,
+          insuranceCompanyName: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].name,
           policyId: this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.value,
           memberId: this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.value,
-          name:this.getSecondaryInsuranceCompany(this.secondaryInsuranceCompanyForm?.value)
+          name: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].name,
         }
         this.patientInsurances.commercialInsurances.push(patientSecondaryCommercialInsurance)
         this.renderedPatientInsurances.push(patientSecondaryCommercialInsurance)
@@ -164,9 +174,10 @@ export class PatientInsuranceComponent implements OnInit {
       policyId: this.form.get('insurance')?.get('commercial-ploicy-id')?.value,
       relationship: this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value,
       hasSecondaryInsurance: this.form.get('insurance')?.get('commercial-is-secondary-insurance')?.value,
-      insuranceCompanyId: this.form.get('insurance')?.get('commercial-insurance-company')?.value,
-      insuranceCompanyName: this.insuranceCompanyForm?.value,
-      name:this.getInsuranceCompany(this.insuranceCompanyForm?.value)
+      insuranceCompanyId: this.form.get('insurance')?.get('commercial-insurance-company')?.value[0].id,
+      insuranceCompanyName: this.form.get('insurance')?.get('commercial-insurance-company')?.value[0].name,
+
+      name: this.form.get('insurance')?.get('commercial-insurance-company')?.value[0].name
     }
     if (patientCommercialInsurance.relationship !== 'Self') {
       var patientRelationship: PatientRelationship = {
@@ -202,83 +213,13 @@ export class PatientInsuranceComponent implements OnInit {
     }
     return medicareInsurance;
   }
-  private findInsuranceCompanyByNameAutoComplete() {
-    this.insuranceCompanyForm.valueChanges
-      .pipe(
-        filter(text => {
-          if (text === undefined)
-            return false;
-          if (text.length > 0) {
-            return true
-          } else {
-            this.InsuranceCompanies = [];
-            return false;
-          }
-        }),
-        debounceTime(500),
-        tap((value) => {
-          this.InsuranceCompanies = [];
-          this.isLoadingInsuranceCompany = true;
-        }),
-        switchMap((value) => {
-          return this.digitalIntakeService.findInsuranceCompanybyName(value)
-            .pipe(
-              finalize(() => {
-                this.isLoadingInsuranceCompany = false
-              }),
-            )
-        }
-        )
-      )
-      .subscribe(data => {
-        if (data == undefined) {
-          this.InsuranceCompanies = [];
-        } else {
-          this.InsuranceCompanies = data.body;
-        }
-      },
-        error => {
-          this.isLoadingInsuranceCompany = false
-        });
-  }
-  private findSecondaryInsuranceCompanyByNameAutoComplete() {
-    this.secondaryInsuranceCompanyForm.valueChanges
-      .pipe(
-        filter(text => {
-          if (text === undefined)
-            return false;
-          if (text.length > 0) {
-            return true
-          } else {
-            this.secondaryInsuranceCompanies = [];
-            return false;
-          }
-        }),
-        debounceTime(500),
-        tap((value) => {
-          this.secondaryInsuranceCompanies = [];
-          this.isLoadingSecondaryInsuranceCompany = true;
-        }),
-        switchMap((value) => {
-          return this.digitalIntakeService.findInsuranceCompanybyName(value)
-            .pipe(
-              finalize(() => {
-                this.isLoadingSecondaryInsuranceCompany = false
-              }),
-            )
-        }
-        )
-      )
-      .subscribe(data => {
-        if (data == undefined) {
-          this.secondaryInsuranceCompanies = [];
-        } else {
-          this.secondaryInsuranceCompanies = data.body;
-        }
-      },
-        error => {
-          this.isLoadingSecondaryInsuranceCompany = false
-        });
+  private getInsuranceCompanies() {
+    this.digitalIntakeService.findInsuranceCompanies().pipe(
+      map(result => { return result.body })
+    )
+      .subscribe((insuranceCompanies: any) => {
+        this.basicInsuranceCompany = insuranceCompanies;
+      })
   }
   remove(index: number, type: string) {
     console.log('remove')
@@ -324,17 +265,5 @@ export class PatientInsuranceComponent implements OnInit {
     }
     this.renderedPatientInsurances.splice(index, 1);
   }
-  private getInsuranceCompany(event: any) {
-    const clonedCompanies = [...this.InsuranceCompanies];
-    const company:any[] = clonedCompanies.filter((company:any) =>
-      company.name.toLowerCase().includes(event.toLowerCase())
-    )
-    return company[0].name;
-  }
-  private getSecondaryInsuranceCompany(event: any) {
-    const company:any[] = this.secondaryInsuranceCompanies.filter((company:any) =>
-      company.name.toLowerCase().includes(event.toLowerCase())
-    )
-    return company[0].name;
-  }
+
 }

@@ -38,6 +38,10 @@ export class DigitalIntakeService {
     const findInsuranceCompanyURL = this.baseUrl + '/lookups/find/insurance/company/name/';
     return this.http.get<InsuranceCompany[]>(`${findInsuranceCompanyURL}` + name, { observe: 'response', withCredentials: true, 'headers': this.headers })
   }
+  findInsuranceCompanies() {
+    const findInsuranceCompanyURL = this.baseUrl + '/lookups/find/insurance/company';
+    return this.http.get<InsuranceCompany[]>(`${findInsuranceCompanyURL}` + name, { observe: 'response', withCredentials: true, 'headers': this.headers })
+  }
   public findProviderByNPI(npi: number): Observable<any> {
     var url = this.baseUrl + '/lookups/find/provider/npi/' + npi;
     return this.http.get(url, { observe: 'response', withCredentials: true, 'headers': this.headers });

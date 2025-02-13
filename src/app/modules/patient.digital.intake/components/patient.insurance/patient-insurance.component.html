@@ -29,36 +29,17 @@
             <c-card-body>
                 <h5 cCardTitle>Commercial Insurance</h5>
                 <!--Insurance Company-->
-                <c-row class="mb-2">
-                    <c-col xl="12">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Insurance Company<span
-                                class="text-danger">*</span>
-                        </label>
-                    </c-col>
-                    <c-col xl="12">
-                        <c-input-group class="mb-3" sizing="sm">
-                            <span cInputGroupText>
-                                <svg cIcon name="cilSearch"></svg>
-                            </span>
-                            <input cFormControl name="insurancecompany" [formControl]="insuranceCompanyForm"
-                                placeholder="Type insurance company" cFormControl />
-                        </c-input-group>
-                    </c-col>
-                    <c-col xl="12">
-                        <select cSelect sizing="sm" name="injuryType" style="line-height: 15px;" cFormControl
-                            formControlName="commercial-insurance-company">
-                            <option value="null" disabled>Select</option>
-                            <option *ngFor="let InsuranceCompany of InsuranceCompanies"
-                                [value]="InsuranceCompany.id?.toString()">
-                                {{InsuranceCompany.name}}</option>
-                        </select>
-                        <div *ngIf="!this.form.get('insurance')?.get('commercial-insurance-company')?.valid && 
+                <ng-multiselect-dropdown *ngIf="basicInsuranceCompany" formControlName="commercial-insurance-company"
+                    [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-insurance-company')?.invalid
+                    && this.form.get('insurance')?.get('commercial-insurance-company')?.touched}"
+                    [settings]="dropdownSettings" [data]="basicInsuranceCompany"
+                    placeholder="Please select insurance company">
+                </ng-multiselect-dropdown>
+                <div *ngIf="!this.form.get('insurance')?.get('commercial-insurance-company')?.valid && 
 						(this.form.get('insurance')?.get('commercial-insurance-company')?.dirty ||this.form.get('insurance')?.get('commercial-insurance-company')?.touched)"
-                            class="text-danger mx-1">
-                            Insurance company is required
-                        </div>
-                    </c-col>
-                </c-row>
+                    class="text-danger mx-1">
+                    Insurance company is required
+                </div>
                 <!--Member Id-->
                 <c-row>
                     <c-col xl="12">
@@ -224,30 +205,17 @@
                                         class="text-danger">*</span>
                                 </label>
                             </c-col>
-                            <c-col xl="12">
-                                <c-input-group class="mb-3" sizing="sm">
-                                    <span cInputGroupText>
-                                        <svg cIcon name="cilSearch"></svg>
-                                    </span>
-                                    <input cFormControl name="secondaryinsurancecompany"
-                                        [formControl]="secondaryInsuranceCompanyForm"
-                                        placeholder="Type insurance company" cFormControl />
-                                </c-input-group>
-                            </c-col>
-                            <c-col xl="12">
-                                <select cSelect sizing="sm" style="line-height: 15px;" cFormControl
-                                    formControlName="commercial-secondary-insurance-insurance-company">
-                                    <option value="null" disabled>Select</option>
-                                    <option *ngFor="let InsuranceCompany of secondaryInsuranceCompanies"
-                                        [value]="InsuranceCompany.id?.toString()">
-                                        {{InsuranceCompany.name}}</option>
-                                </select>
-                                <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.valid && 
-                            (this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched)"
-                                    class="text-danger mx-1">
-                                    Insurance company is required
-                                </div>
-                            </c-col>
+                            <ng-multiselect-dropdown *ngIf="basicInsuranceCompany"
+                                formControlName="commercial-secondary-insurance-insurance-company"
+                                [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.invalid
+                            && this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched}" [settings]="dropdownSettings"
+                                [data]="basicInsuranceCompany" placeholder="Please select insurance company">
+                            </ng-multiselect-dropdown>
+                            <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.valid && 
+                                (this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched)"
+                                class="text-danger mx-1">
+                                Insurance company is required
+                            </div>
                         </c-row>
                         <!--Member Id-->
                         <c-row>

@@ -52,6 +52,7 @@ export class PatientInsuranceComponent implements OnInit {
     this.componentReference.setPatientInsuranceComponent(this)
     this.getInsuranceCompanies();
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
+      console.log(value)
       this.selectedInsuranceType = value;
     })
     this.dropdownSettings = {

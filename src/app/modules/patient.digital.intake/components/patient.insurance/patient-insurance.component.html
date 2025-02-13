@@ -208,8 +208,8 @@
                             <ng-multiselect-dropdown *ngIf="basicInsuranceCompany"
                                 formControlName="commercial-secondary-insurance-insurance-company"
                                 [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.invalid
-                            && this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched}" [settings]="dropdownSettings"
-                                [data]="basicInsuranceCompany" placeholder="Please select insurance company">
+                            && this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched}" [settings]="dropdownSettings" [data]="basicInsuranceCompany"
+                                placeholder="Please select insurance company">
                             </ng-multiselect-dropdown>
                             <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.valid && 
                                 (this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched)"
@@ -505,9 +505,9 @@
         <c-card *ngIf="selectedInsuranceType === 'SelfPay'" class="mb-2">
             <c-card-body>
                 <h5 cCardTitle>SelPay</h5>
-                <div class="text-center">
+                <!-- <div class="text-center">
                     <button cButton size="sm" (click)="add()">Add</button>
-                </div>
+                </div> -->
             </c-card-body>
         </c-card>
     </div>

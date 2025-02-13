@@ -5,28 +5,27 @@
             <c-card-header ngPreserveWhitespaces>
                 <strong>Patients Changes Reports</strong>
             </c-card-header>
-            <c-callout color="danger" *ngIf="searchInputNotValid" class="m-2">
-                <span class="text-danger fw-bold">{{errorMsg}}</span>
-            </c-callout>
+
             <c-card-body>
                 <p class="text-medium-emphasis small">
                     The ability to create patient reports using his/her source inputs,
                 </p>
-                <!-- <c-callout color="danger" *ngIf="searchInputNotValid">
+                <c-callout color="danger" *ngIf="searchInputNotValid" class="m-2">
                     <span class="text-danger fw-bold">{{errorMsg}}</span>
-                </c-callout> -->
+                </c-callout>
                 <form cForm>
                     <c-row>
                         <c-col xs="6" class="mb-2">
                             <!--Action-->
                             <form cForm>
-                                <select cSelect cFormControl  name="change_action" [(ngModel)]="action">
-                                    <option value="Update_Referring_Provider">Referring Provider</option>
+                                <select cSelect cFormControl name="change_action" [(ngModel)]="action">
+                                    <option value="1">Referring Provider</option>
                                 </select>
                             </form>
                         </c-col>
                         <c-col xs="6" class="mb-2">
-                            <input cFormControl [(ngModel)]="patientName" placeholder="Patient Name" name="patient_name"/>
+                            <input cFormControl [(ngModel)]="patientName" placeholder="Patient Name"
+                                name="patient_name" />
                         </c-col>
                         <c-col xs="12" class="text-center">
                             <button cButton class="me-1" (click)="search()" color="primary" variant="outline"
@@ -45,6 +44,40 @@
         </button>
     </c-container>
     <c-col xs="12">
-        {{changes | async | json}}
+        <ng-container *ngIf="props$ | async as props" fluid="true">
+            <c-smart-table [columns]="columns" [items]="(changes | async) ?? []" [itemsPerPage]="props.itemsPerPage"
+                (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
+                [itemsPerPageSelect]="true" [columnFilterValue]="props.columnFilterValue?? []"
+                [sorterValue]="props.sorterValue" [tableProps]="{ hover: true, striped: true  }"
+                [tableBodyProps]="{ align: 'middle' }" (sorterValueChange)="handleSorterValueChange($event)" header>
+                <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td>
+                        <ng-container [ngSwitch]="columnName">
+                            <ng-container *ngSwitchCase="'createdAt'">
+                                {{item.createdAt | date:'medium'}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'userName'">
+                                {{item.taker.name}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'userAccount'">
+                                {{item.taker.accountName}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'userEmail'">
+                                {{item.taker.email}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'userUUID'">
+                                {{item.taker.uuid}}
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                {{tdContent}}
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </ng-template>
+            </c-smart-table>
+            <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
+                (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
+        </ng-container>
     </c-col>
 </c-row>

@@ -102,7 +102,7 @@ export class PaginationListTemplate {
             takeUntil(this.#destroy$)
         ).subscribe((page) => {
             const limit = this.itemsPerPage$.value;
-            const offset = page ;
+            const offset = page - 1;
             this.apiParams = { offset, limit };
         });
 

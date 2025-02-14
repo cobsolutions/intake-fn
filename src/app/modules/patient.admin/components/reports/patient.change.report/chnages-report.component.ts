@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
+import * as moment from 'moment';
 import { map, Observable, switchMap, tap } from 'rxjs';
 import { PaginationListTemplate } from 'src/app/modules/common/template/pagination.list.template';
 import { Clinic } from '../../../models/clinic.model';
 import { PatientChangesRecord } from '../../../models/monitor/patient.changes.record';
 import { ClinicService } from '../../../services/clinic/clinic.service';
 import { PatientChangesService } from '../../../services/monitor/patient-changes.service';
+import { PatientReportingService } from '../../../services/patient.reporting.service';
 
 @Component({
   selector: 'app-chnages-report',
@@ -20,6 +22,7 @@ export class ChnagesReportComponent extends PaginationListTemplate implements On
   clinics: Clinic[]
   selectedClinic: number;
   changes: Observable<PatientChangesRecord[]>;
+  exportData : PatientChangesRecord[];
   readonly columns: (string | IColumn)[] = [
     {
       key: 'patientName',
@@ -47,7 +50,8 @@ export class ChnagesReportComponent extends PaginationListTemplate implements On
     }
   ];
   constructor(private patientChangesService: PatientChangesService
-    , private clinicService: ClinicService) { super(); }
+    , private clinicService: ClinicService
+    , private patientReportingService: PatientReportingService) { super(); }
 
   ngOnInit(): void {
     this.clinicService.get().pipe(
@@ -74,8 +78,24 @@ export class ChnagesReportComponent extends PaginationListTemplate implements On
         this.loadingData$.next(false);
       }),
       map((response: any) => {
+        this.exportData = response.records;
         return response.records;
       })
     )
+  }
+  exportResult() {
+    this.patientReportingService.exportPatientchanges(this.exportData).subscribe(
+      (response) => {
+        const a = document.createElement('a')
+        const objectUrl = URL.createObjectURL(response)
+        a.href = objectUrl
+        var nameDatePart = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+        a.download = 'patient-' + nameDatePart + '.xlsx';
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      (error) => {
+        console.log(error)
+      });
   }
 }

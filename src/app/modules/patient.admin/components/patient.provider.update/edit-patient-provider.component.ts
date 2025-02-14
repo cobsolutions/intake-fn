@@ -151,8 +151,9 @@ export class EditPatientProviderComponent implements OnInit {
 
   private getActionTaker() :ActionTaker{
     var user: any = this.kcAuthServiceService.getLoggedUser()
+    console.log(JSON.stringify(user))
     return  {
-      uuid: user.sid,
+      uuid: user.sub,
       name: user.name,
       email: user.email,
       accountName: user.preferred_username

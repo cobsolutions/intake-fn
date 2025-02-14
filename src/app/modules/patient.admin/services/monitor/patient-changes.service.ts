@@ -13,6 +13,8 @@ export class PatientChangesService extends BasePaginationService {
   constructor(httpClient: HttpClient) { super(httpClient) }
 
   public find(config$: BehaviorSubject<IApiParams>, clinicId: number, patient: string, action: string): Observable<any> {
+    if (patient === '')
+      patient = 'all'
     var url = this.baseUrl + '/find/clinic/' + clinicId + '/patient/' + patient + '/action/' + action
     return this.get(config$, url)
   }

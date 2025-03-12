@@ -8,12 +8,14 @@
         </option>
     </select>
 </div>
+<div *ngIf="selectedClinicUUID ===undefined">
+    <label class="text-danger fw-normal fst-italic">Select Clinic to send digital intake </label>
+</div>
 <div class="mb-2">
     <label cLabel for="pemail">Patient Email</label>
     <input cFormControl id="pemail" placeholder="name@example.com" type="email" [disabled]="isSent"
         [(ngModel)]="patientEmail" />
 </div>
 <div class="text-center">
-    <button cButton variant="outline" (click)="send()" [disabled]="selectedClinicUUID ===undefined"
-        >Send</button>
+    <button cButton variant="outline" (click)="send()" [disabled]="selectedClinicUUID ===undefined">Send</button>
 </div>

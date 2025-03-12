@@ -11,14 +11,17 @@
 <div *ngIf="selectedClinicUUID ===undefined">
     <label class="text-danger fw-normal fst-italic">Select Clinic to send digital intake </label>
 </div>
+<div *ngIf="inVaildMessageMail !==undefined">
+    <label class="text-danger fw-normal fst-italic">{{inVaildMessageMail}} </label>
+</div>
 <div class="mb-2">
     <label cLabel for="pemail">Patient Email</label>
-    <input cFormControl id="pemail" placeholder="name@example.com" type="email" [disabled]="isSent"
-        [(ngModel)]="patientEmail" />
+    <input cFormControl id="pemail" type="email"  [(ngModel)]="patientEmail" />
 </div>
 <div *ngIf="patientEmail === undefined ||patientEmail ===''">
     <label class="text-danger fw-normal fst-italic">Select add email address to send digital intake </label>
 </div>
 <div class="text-center">
-    <button cButton variant="outline" (click)="send()" [disabled]="selectedClinicUUID ===undefined">Send</button>
+    <button cButton variant="outline" (click)="send()"
+        [disabled]="(selectedClinicUUID ===undefined) || (patientEmail === undefined ||patientEmail ==='')">Send</button>
 </div>

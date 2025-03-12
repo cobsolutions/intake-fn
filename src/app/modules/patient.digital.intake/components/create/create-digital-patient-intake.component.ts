@@ -86,7 +86,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       'address': new FormGroup({
         'firstAddress': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'secondAddress': new FormControl(null, [noSpecialCharactersValidator()]),
-        'city': new FormControl(null, [Validators.required, noSpecialCharactersValidator(),noNumbersValidator()]),
+        'city': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
         'state': new FormControl(null, [Validators.required]),
         'zipCode': new FormControl(null, [Validators.required, Validators.min(10), Validators.pattern(zipCodeRgx)]),
       }),
@@ -170,6 +170,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     this.setAddressConditionalValidators()
     this.setXRayValidator();
     this.setReferringEntityOtherValidator();
+    this.setMedicalPhysicalTherapyVisitsValidator()
     PatientSourceValidator.addValidator(this.patientForm);
     PrescriptionValidator.addValidator(this.patientForm)
     XRayValidator.addValidator(this.patientForm)
@@ -207,6 +208,23 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     this.patientForm.get('medical')?.get('referringEntity')?.valueChanges.subscribe((value: any) => {
       if (value !== null && value === 'other')
         this.patientForm.get('medical')?.get('referringEntityOther')?.setValidators(Validators.required)
+    })
+  }
+  private setMedicalPhysicalTherapyVisitsValidator() {
+    this.patientForm.get('medical')?.get('isReceivedPhysicalTherapy')?.valueChanges.subscribe((value: any) => {
+      if (value === 'yes') {
+        this.patientForm.get('medical')?.get('PhysicalTherapyLocation')?.setValidators(Validators.required)
+        this.patientForm.get('medical')?.get('PhysicalTherapyNumber')?.setValidators(Validators.required)
+      }
+      if (value === 'no') {
+        this.patientForm.get('medical')?.get('PhysicalTherapyLocation')?.clearValidators();
+        this.patientForm.get('medical')?.get('PhysicalTherapyLocation')?.setErrors(null);
+        this.patientForm.get('medical')?.get('PhysicalTherapyLocation')?.updateValueAndValidity();
+
+        this.patientForm.get('medical')?.get('PhysicalTherapyNumber')?.clearValidators();
+        this.patientForm.get('medical')?.get('PhysicalTherapyNumber')?.setErrors(null);
+        this.patientForm.get('medical')?.get('PhysicalTherapyNumber')?.updateValueAndValidity();
+      }
     })
   }
   onStepChange(event: StepperSelectionEvent): void {

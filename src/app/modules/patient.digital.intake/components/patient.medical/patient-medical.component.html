@@ -7,8 +7,7 @@
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <label><strong>How you heard about us? </strong><span
-                            class="text-danger">*</span></label>
+                    <label><strong>How you heard about us? </strong><span class="text-danger">*</span></label>
                 </label>
             </c-card-header>
             <c-card-body>
@@ -207,6 +206,11 @@
                                 && this.form.get('medical')?.get('PhysicalTherapyLocation')?.touched}" maxlength="60"
                                 input-trimmer>
                         </c-col>
+                        <div *ngIf="this.form.get('medical')?.get('PhysicalTherapyLocation')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('PhysicalTherapyLocation')?.dirty ||this.form.get('medical')?.get('PhysicalTherapyLocation')?.touched)"
+                            class="text-danger mx-1">
+                            Location is required
+                        </div>
                     </c-row>
                     <c-row>
                         <c-col xs="12">
@@ -216,8 +220,14 @@
                             <input class="form-control" placeholder formControlName="PhysicalTherapyNumber" numbers
                                 onKeyDown="if(this.value.length==2 && event.keyCode!=8) return false;" cFormControl
                                 sizing="sm" [ngClass]="{'is-invalid': this.form.get('medical')?.get('PhysicalTherapyNumber')?.invalid
-                                && this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched}" (input)="onPhysicalTherapyNumberInput()">
+                                && this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched}"
+                                (input)="onPhysicalTherapyNumberInput()">
                         </c-col>
+                        <div *ngIf="this.form.get('medical')?.get('PhysicalTherapyNumber')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('PhysicalTherapyNumber')?.dirty ||this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched)"
+                            class="text-danger mx-1">
+                            Number of visit is required
+                        </div>
                     </c-row>
                 </span>
                 <div *ngIf="this.form.get('medical')?.get('isReceivedPhysicalTherapy')?.errors?.['required'] === true && 

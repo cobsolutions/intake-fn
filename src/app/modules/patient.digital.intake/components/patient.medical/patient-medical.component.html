@@ -216,7 +216,7 @@
                             <input class="form-control" placeholder formControlName="PhysicalTherapyNumber" numbers
                                 onKeyDown="if(this.value.length==2 && event.keyCode!=8) return false;" cFormControl
                                 sizing="sm" [ngClass]="{'is-invalid': this.form.get('medical')?.get('PhysicalTherapyNumber')?.invalid
-                                && this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched}">
+                                && this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched}" (input)="onPhysicalTherapyNumberInput()">
                         </c-col>
                     </c-row>
                 </span>

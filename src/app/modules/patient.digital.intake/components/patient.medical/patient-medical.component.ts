@@ -145,4 +145,18 @@ export class PatientMedicalComponent implements OnInit {
     this.form.get('medical')?.get('providerName')?.setValue(null);
     this.form.get('medical')?.get('providerNPI')?.setValue(null);
   }
+  onPhysicalTherapyNumberInput() {
+    let PhysicalTherapyNumber = this.form?.get('medical')?.get('PhysicalTherapyNumber')
+
+    if (PhysicalTherapyNumber) {
+      setTimeout(() => {
+        let value = PhysicalTherapyNumber?.value?.toString();
+        if (value === '0') {
+          PhysicalTherapyNumber?.setValue('', { emitEvent: false });
+        } else if (value?.startsWith('0') && value.length > 1) {
+          PhysicalTherapyNumber?.setValue(value.replace(/^0+/, ''), { emitEvent: false });
+        }
+      });
+    }
+  }
 }

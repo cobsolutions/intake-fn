@@ -7,6 +7,9 @@
         </option>
     </select>
 </div>
+<div *ngIf="selectedClinicUUID ===undefined">
+    <label class="text-danger fw-normal fst-italic">Select Clinic to generate digital intake </label>
+</div>
 <div class="text-center">
     <button cButton (click)="generateQRCode()" [disabled]="selectedClinicUUID ===undefined">Generate</button>
 </div>

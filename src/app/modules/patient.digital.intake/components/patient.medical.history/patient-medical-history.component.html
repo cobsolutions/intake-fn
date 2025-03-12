@@ -15,7 +15,7 @@
                     <c-col xs="12">
                         <input class="form-control col-xs-2 mx-2" placeholder formControlName="height" type="number"
                             onKeyDown="if(this.value.length==3 && event.keyCode!=8) return false;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('height')?.invalid
-                && this.form.get('medicalhistory')?.get('height')?.touched}">
+                && this.form.get('medicalhistory')?.get('height')?.touched}" (input)="onHeightInput()">
                     </c-col>
                     <c-col xs=" 12">
                         <div *ngIf="this.form.get('medicalhistory')?.get('height')?.errors?.['required'] === true && 
@@ -24,6 +24,8 @@
                             Height is required
                         </div>
                     </c-col>
+                    <div *ngIf="this.form.get('medicalhistory')?.get('height')?.errors?.['invalidNumber']" class="text-danger mx-1">
+                        height can't start with zero.</div>
                 </c-row>
             </c-col>
             <c-col xl="2">
@@ -49,7 +51,7 @@
                     <c-col xs="12">
                         <input class="form-control col-xs-2 mx-2" placeholder formControlName="weight" type="number"
                             onKeyDown="if(this.value.length==3 && event.keyCode!=8) return false;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('weight')?.invalid
-                            && this.form.get('medicalhistory')?.get('weight')?.touched}">
+                            && this.form.get('medicalhistory')?.get('weight')?.touched}"  (input)="onWeightInput()">
                     </c-col>
                     <c-col xs="12">
                         <div *ngIf="this.form.get('medicalhistory')?.get('weight')?.errors?.['required'] === true && 
@@ -57,6 +59,8 @@
                             class="text-danger mx-1">
                             Weight is required
                         </div>
+                        <div *ngIf="this.form.get('medicalhistory')?.get('weight')?.errors?.['invalidNumber']" class="text-danger mx-1">
+                            height can't start with zero.</div>
                     </c-col>
                 </c-row>
             </c-col>

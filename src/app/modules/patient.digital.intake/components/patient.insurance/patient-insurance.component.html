@@ -346,6 +346,17 @@
                             <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['noSpecialCharacters']"
                                 class="text-danger mx-1">Adjuster last name cannot contain special characters.</div>
 
+                            <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['required'] && 
+                (this.form.get('insurance')?.get('compensation-adjuster-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-first-name')?.touched)"
+                                class="text-danger mx-1">
+                                Adjuster first name is required
+                            </div>
+
+                            <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['required'] && 
+                (this.form.get('insurance')?.get('compensation-adjuster-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-last-name')?.touched)"
+                                class="text-danger mx-1">
+                                Adjuster last name is required
+                            </div>
 
                             <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['noNumbers']"
                                 class="text-danger mx-1">
@@ -356,6 +367,7 @@
                             <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['noNumbers']"
                                 class="text-danger mx-1">last-name
                                 cannot contains Numbers.</div>
+
                         </c-col>
                         <c-row>
                             <c-col xl="12">
@@ -370,6 +382,11 @@
                                 class="text-danger mx-1">
                                 Invalid Phone format
                             </div>
+                            <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-phone')?.errors?.['required'] && 
+                            (this.form.get('insurance')?.get('compensation-adjuster-phone')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-phone')?.touched)"
+                                            class="text-danger mx-1">
+                                            Adjuster phone  is required
+                                        </div>
                         </c-row>
                     </c-card-body>
                 </c-card>
@@ -408,6 +425,17 @@
                             <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-last-name')?.errors?.['noNumbers']"
                                 class="text-danger mx-1">last-name
                                 cannot contains Numbers.</div>
+
+                            <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['required'] && 
+                (this.form.get('insurance')?.get('compensation-attorney-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-first-name')?.touched)"
+                                class="text-danger mx-1">
+                                Attorney first name is required
+                            </div>
+                            <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-last-name')?.errors?.['required'] && 
+                (this.form.get('insurance')?.get('compensation-attorney-last-name')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-last-name')?.touched)"
+                                class="text-danger mx-1">
+                                Attorney last name is required
+                            </div>
                         </c-col>
                         <c-row>
                             <c-col xl="12">
@@ -423,6 +451,11 @@
                                 class="text-danger mx-1">
                                 Invalid Phone format
                             </div>
+                            <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-phone')?.errors?.['required'] && 
+                            (this.form.get('insurance')?.get('compensation-attorney-phone')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-phone')?.touched)"
+                                            class="text-danger mx-1">
+                                            Attorney phone is required
+                                        </div>
                         </c-row>
                     </c-card-body>
                 </c-card>

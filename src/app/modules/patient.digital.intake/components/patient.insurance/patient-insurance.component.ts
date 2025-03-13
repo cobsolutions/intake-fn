@@ -54,12 +54,18 @@ export class PatientInsuranceComponent implements OnInit {
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
       this.selectedInsuranceType = value;
       if (value === 'SelfPay') {
+        const hasSelfPay = this.renderedPatientInsurances.some(insurance => insurance.type === 'selfpay');
         var selfPay: SelfPay = {
           type: 'selfpay'
         }
         this.patientInsurances.selfPay = selfPay;
-        this.renderedPatientInsurances.push(selfPay)
-      }
+        if (!hasSelfPay)
+          this.renderedPatientInsurances.push(selfPay)
+      } else {
+        this.renderedPatientInsurances = this.renderedPatientInsurances.filter(
+          insurance => insurance.type !== 'selfpay'
+        );
+      }      
     })
     this.dropdownSettings = {
       singleSelection: true,

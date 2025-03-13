@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IColumn, ISorterValue } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import * as moment from 'moment';
-import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, filter, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PatientSearchCriteria } from 'src/app/models/reporting/patient.search.criteria';
 import { LocalService } from 'src/app/modules/common';
 import { IParams } from '../../models/pagination/params';
@@ -161,6 +161,12 @@ export class RecommendationReportComponent implements OnInit {
     this.apiParams$.next({ ...apiParams });
   }
   ngOnInit(): void {
+    this.clinicService.selectedClinic$.pipe(
+      filter(clinicId => clinicId == null)
+    ).
+      subscribe(clinicId => {
+        this.patientSearchCriteria.clinicId = clinicId;
+      })
     this.patientSources = this.patientSources.map((source: any) => ({ ...source, selected: true }));
     this.result = {
       resultCount: 0,
@@ -247,7 +253,6 @@ export class RecommendationReportComponent implements OnInit {
               this.loadingData$.next(false);
             }),
             map((response) => {
-              console.log(JSON.stringify(response))
               return response.records;
             })
           );
@@ -258,23 +263,32 @@ export class RecommendationReportComponent implements OnInit {
     }
   }
   exportResult() {
-    const type: string | null | undefined = this.patientSearchCriteria.sourceType;
-    this.patients$.subscribe(result => {
-      this.patientReportingService.export(result, type).subscribe(
-        (response) => {
-          const a = document.createElement('a')
-          const objectUrl = URL.createObjectURL(response)
-          a.href = objectUrl
-          var nameDatePart = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-          a.download = 'patient-' + nameDatePart + '.xlsx';
-          a.click();
-          URL.revokeObjectURL(objectUrl);
-        },
-        (error) => {
-          console.log(error)
-        });
-    })
-
+    var isValidPatientSearchCriteria: boolean = this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null
+    if (isValidPatientSearchCriteria) {
+      const type: string | null | undefined = this.patientSearchCriteria.sourceType;
+      this.patientSourceReportingService.searchAll(this.patientSearchCriteria).pipe(
+        map((response: any) => {
+          return response.body.records;
+        })
+      )
+        .subscribe((patients: any) => {
+          this.patientReportingService.export(patients, type).subscribe(
+            (response) => {
+              const a = document.createElement('a')
+              const objectUrl = URL.createObjectURL(response)
+              a.href = objectUrl
+              var nameDatePart = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+              a.download = 'patient-' + nameDatePart + '.xlsx';
+              a.click();
+              URL.revokeObjectURL(objectUrl);
+            },
+            (error) => {
+              console.log(error)
+            });
+        })
+    } else {
+      this.searchErrorMessage = "Please select search criteria"
+    }
   }
 
   private FillEmptyFieldsInSearchCriteria() {

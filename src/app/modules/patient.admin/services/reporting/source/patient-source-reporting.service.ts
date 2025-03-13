@@ -20,4 +20,12 @@ export class PatientSourceReportingService extends BasePaginationService {
     const url = this.baseUrl + 'search';
     return this.post(config$, url, JSON.stringify(searchCriteria))
   }
+  searchAll(searchCriteria: PatientSearchCriteria) {
+    const url = this.baseUrl + 'search';
+    if (searchCriteria.type === 'null') {
+      searchCriteria.type = null;
+    }
+    const headers = { 'content-type': 'application/json' }
+    return this.httpClient.post(url, JSON.stringify(searchCriteria),{ 'headers': headers, observe: 'response' })
+  }
 }

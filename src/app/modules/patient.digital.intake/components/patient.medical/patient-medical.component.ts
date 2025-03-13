@@ -25,6 +25,8 @@ export class PatientMedicalComponent implements OnInit {
   isReferringSearchNotValid: boolean = false;
   referringSearchErrorMessage: string | undefined;
   loadingProvider: boolean = false;
+  nppesError: boolean = false;;
+  nppesErrorMessage: string = 'No matches found. Please review your search parameters and try again.'
   constructor(private digitalIntakeService: DigitalIntakeService) { }
 
 
@@ -52,6 +54,7 @@ export class PatientMedicalComponent implements OnInit {
           this.digitalIntakeService.findProviderByLastName(referringSearch)
             .subscribe(data => {
               this.loadingProvider = false
+              this.nppesError = false;
               var providers = data.body;
               if (providers === null) {
                 this.form.get('medical')?.get('providerName')?.setValue(null);
@@ -59,6 +62,9 @@ export class PatientMedicalComponent implements OnInit {
               } else {
                 this.providers = providers;
               }
+            }, error => {
+              this.loadingProvider = false;
+              this.nppesError = true;
             })
           break;
         case 'f-name':
@@ -72,6 +78,9 @@ export class PatientMedicalComponent implements OnInit {
               } else {
                 this.providers = providers
               }
+            }, error => {
+              this.loadingProvider = false;
+              this.nppesError = true;
             })
           break;
         case 'full-name':
@@ -92,6 +101,9 @@ export class PatientMedicalComponent implements OnInit {
                 } else {
                   this.providers = providers
                 }
+              }, error => {
+                this.loadingProvider = false;
+                this.nppesError = true;
               })
             this.isReferringSearchNotValid = false;
             this.referringSearchErrorMessage = undefined;
@@ -107,16 +119,16 @@ export class PatientMedicalComponent implements OnInit {
           }
           else {
             this.digitalIntakeService.findProviderByNPI(Number(referringSearch))
-            .subscribe(data => {
-              var providers = data.body;
-              this.loadingProvider = false
-              if (providers === null) {
-                this.form.get('medical')?.get('providerName')?.setValue(null);
-                this.form.get('medical')?.get('providerNPI')?.setValue(null);
-              } else {
-                this.providers = providers
-              }
-            })
+              .subscribe(data => {
+                var providers = data.body;
+                this.loadingProvider = false
+                if (providers === null) {
+                  this.form.get('medical')?.get('providerName')?.setValue(null);
+                  this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                } else {
+                  this.providers = providers
+                }
+              })
             this.isReferringSearchNotValid = false;
             this.referringSearchErrorMessage = undefined;
           }

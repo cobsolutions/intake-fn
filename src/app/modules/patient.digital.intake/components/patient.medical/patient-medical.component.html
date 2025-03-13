@@ -60,6 +60,9 @@
             </c-card-header>
             <c-card-body>
                 <div class="row height d-flex">
+                    <div class="col-md-12" *ngIf="nppesError">
+                        <label class="text-danger fw-normal fst-italic">{{nppesErrorMessage}} </label>
+                    </div>
                     <div class="col-md-2">
                         <label></label>
                         <select cSelect formControlName="referringSearchType" sizing="sm" class="form-control"

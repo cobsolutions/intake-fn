@@ -62,10 +62,10 @@ export class PatientDocumentComponent implements OnInit, AfterViewInit {
         this.patientInsurances.push(...value.medicareInsurance)
         var doumentControllerName_front: string = '';
         var doumentControllerName_back: string = '';
-        for (let i = 0; i < value.workerCompensationInsurances?.length; i++) {
-          doumentControllerName_front = value.workerCompensationInsurances[i]._frontcontrollName;
+        for (let i = 0; i < value.medicareInsurance?.length; i++) {
+          doumentControllerName_front = value.medicareInsurance[i]._frontcontrollName;
           (this.form.get('document') as FormArray).push(new FormGroup({ [doumentControllerName_front]: new FormControl(null, [imageDocumentValidator()]) }))
-          doumentControllerName_back = value.workerCompensationInsurances[i]._backcontrollName;
+          doumentControllerName_back = value.medicareInsurance[i]._backcontrollName;
           (this.form.get('document') as FormArray).push(new FormGroup({ [doumentControllerName_back]: new FormControl(null, [imageDocumentValidator()]) }))
         }
       }
@@ -73,10 +73,10 @@ export class PatientDocumentComponent implements OnInit, AfterViewInit {
         this.patientInsurances.push(...value.medicaidInsurance)
         var doumentControllerName_front: string = '';
         var doumentControllerName_back: string = '';
-        for (let i = 0; i < value.workerCompensationInsurances?.length; i++) {
-          doumentControllerName_front = value.workerCompensationInsurances[i]._frontcontrollName;
+        for (let i = 0; i < value.medicaidInsurance?.length; i++) {
+          doumentControllerName_front = value.medicaidInsurance[i]._frontcontrollName;
           (this.form.get('document') as FormArray).push(new FormGroup({ [doumentControllerName_front]: new FormControl(null, [imageDocumentValidator()]) }))
-          doumentControllerName_back = value.workerCompensationInsurances[i]._backcontrollName;
+          doumentControllerName_back = value.medicaidInsurance[i]._backcontrollName;
           (this.form.get('document') as FormArray).push(new FormGroup({ [doumentControllerName_back]: new FormControl(null, [imageDocumentValidator()]) }))
         }
       }

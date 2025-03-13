@@ -28,9 +28,10 @@ export class RecommendationReportComponent implements OnInit {
   patientSearchCriteria: PatientSearchCriteria = new PatientSearchCriteria();
   result: ISearchResult;
   patients$!: Observable<any[]>;
+  searchErrorMessage: string | undefined
   constructor(private patientReportingService: PatientReportingService,
     private clinicService: ClinicService,
-    private patientSourceReportingService:PatientSourceReportingService) { }
+    private patientSourceReportingService: PatientSourceReportingService) { }
 
   entityValues = entityValues;
   pateintSourceSelects: PateintSourceSelects[] = [
@@ -156,7 +157,7 @@ export class RecommendationReportComponent implements OnInit {
     this.loadingData$.next(true);
     this._apiParams = { ...apiParams };
     this.retry$.next(true);
-    
+
     this.apiParams$.next({ ...apiParams });
   }
   ngOnInit(): void {
@@ -220,40 +221,46 @@ export class RecommendationReportComponent implements OnInit {
 
 
   private requestSearchService() {
-     this.patients$ = this.clinicService.selectedClinic$.pipe(
-      tap(clinicid=>{
-        this.patientSearchCriteria.clinicId = clinicid
-      }),
-      switchMap(dd=>{
-        return this.patientSourceReportingService.search(this.apiParams$,this.patientSearchCriteria).pipe(
-          tap((response: any) => {
-            this.totalItems$.next(response.number_of_matching_records);
-            if (response.number_of_records) {
-              this.errorMessage$.next('');
-            }
-            this.retry$.next(false);
-            this.loadingData$.next(false);
-          }),
-          tap((response) => {
-            this.totalItems$.next(response.number_of_matching_records);
-            if (response.number_of_records) {
-              this.errorMessage$.next('');
-            }
-            this.retry$.next(false);
-            this.loadingData$.next(false);
-          }),
-          map((response) => {
-            console.log(JSON.stringify(response))
-            return response.records;
-          })
-        );
-      })
-    )
+    var isValidPatientSearchCriteria: boolean = this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null
+    if (isValidPatientSearchCriteria) {
+      this.searchErrorMessage = undefined
+      this.patients$ = this.clinicService.selectedClinic$.pipe(
+        tap(clinicid => {
+          this.patientSearchCriteria.clinicId = clinicid
+        }),
+        switchMap(dd => {
+          return this.patientSourceReportingService.search(this.apiParams$, this.patientSearchCriteria).pipe(
+            tap((response: any) => {
+              this.totalItems$.next(response.number_of_matching_records);
+              if (response.number_of_records) {
+                this.errorMessage$.next('');
+              }
+              this.retry$.next(false);
+              this.loadingData$.next(false);
+            }),
+            tap((response) => {
+              this.totalItems$.next(response.number_of_matching_records);
+              if (response.number_of_records) {
+                this.errorMessage$.next('');
+              }
+              this.retry$.next(false);
+              this.loadingData$.next(false);
+            }),
+            map((response) => {
+              console.log(JSON.stringify(response))
+              return response.records;
+            })
+          );
+        })
+      )
+    } else {
+      this.searchErrorMessage = "Please select search criteria"
+    }
   }
   exportResult() {
-    const type:string | null | undefined  = this.patientSearchCriteria.sourceType;
-    this.patients$.subscribe(result=>{
-      this.patientReportingService.export(result,type).subscribe(
+    const type: string | null | undefined = this.patientSearchCriteria.sourceType;
+    this.patients$.subscribe(result => {
+      this.patientReportingService.export(result, type).subscribe(
         (response) => {
           const a = document.createElement('a')
           const objectUrl = URL.createObjectURL(response)
@@ -267,7 +274,7 @@ export class RecommendationReportComponent implements OnInit {
           console.log(error)
         });
     })
-    
+
   }
 
   private FillEmptyFieldsInSearchCriteria() {
@@ -303,7 +310,7 @@ export class RecommendationReportComponent implements OnInit {
   handleActivePageChange(page: number) {
     this.setActivePage(page);
   }
-  changeSources(event:any){
+  changeSources(event: any) {
     console.log(event)
     this.patientSearchCriteria.entityNames = event;
   }

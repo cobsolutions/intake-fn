@@ -230,6 +230,7 @@ export class RecommendationReportComponent implements OnInit {
     var isValidPatientSearchCriteria: boolean = this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null
     if (isValidPatientSearchCriteria) {
       this.searchErrorMessage = undefined
+      this.cleanEmptyFields(this.patientSearchCriteria)
       this.patients$ = this.clinicService.selectedClinic$.pipe(
         tap(clinicid => {
           this.patientSearchCriteria.clinicId = clinicid
@@ -265,6 +266,7 @@ export class RecommendationReportComponent implements OnInit {
   exportResult() {
     var isValidPatientSearchCriteria: boolean = this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null
     if (isValidPatientSearchCriteria) {
+      this.cleanEmptyFields(this.patientSearchCriteria)
       const type: string | null | undefined = this.patientSearchCriteria.sourceType;
       this.patientSourceReportingService.searchAll(this.patientSearchCriteria).pipe(
         map((response: any) => {
@@ -327,5 +329,13 @@ export class RecommendationReportComponent implements OnInit {
   changeSources(event: any) {
     console.log(event)
     this.patientSearchCriteria.entityNames = event;
+  }
+  cleanEmptyFields(criteria: PatientSearchCriteria): void {
+    Object.keys(criteria).forEach((key) => {
+      const value = (criteria as any)[key];
+      if (value === '') {
+        (criteria as any)[key] = null;
+      }
+    });
   }
 }

@@ -27,6 +27,7 @@ export class PatientSummaryComponent implements OnInit {
   clinicId: string;
   submitting: boolean = false;
   isError: boolean = false;
+  errorMessage:string;
   constructor(private componentReference: ComponentReferenceComponentService
     , private digitalIntakeService: DigitalIntakeService
     , private router: Router
@@ -59,6 +60,7 @@ export class PatientSummaryComponent implements OnInit {
         this.isError = false;
         this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
       }, error => {
+        this.errorMessage = error.error.message
         this.submitting = false;
         this.isError = true;
         this.scrollUp();

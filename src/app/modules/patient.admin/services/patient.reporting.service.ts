@@ -39,9 +39,9 @@ export class PatientReportingService {
     return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(searchCriteria), { 'headers': headers })
   }
 
-  export(result: IPatientResult[], type: string| null | undefined) {
+  export(result: IPatientResult[], type: string | null | undefined, timeZone: string | null | undefined) {
     const headers = { 'content-type': 'application/json' }
-    const changePatientRequiredFieldsURL = this.baseUrl + 'generator/excel/type/' + type;
+    const changePatientRequiredFieldsURL = this.baseUrl + 'generator/excel/type/' + type + '/tz/' + timeZone;
     return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(result), { 'headers': headers, responseType: 'blob' })
   }
 

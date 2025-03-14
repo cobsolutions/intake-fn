@@ -168,7 +168,7 @@ export class RecommendationReportComponent implements OnInit {
         this.patientSearchCriteria.clinicId = clinicId;
       })
     this.patientSources = this.patientSources.map((source: any) => ({ ...source, selected: true }));
-    this.patientSources = this.patientSources.filter(source=> source.entityValue !=='referringDoctor')
+    this.patientSources = this.patientSources.filter(source => source.entityValue !== 'referringDoctor')
     this.result = {
       resultCount: 0,
       result: []
@@ -228,7 +228,10 @@ export class RecommendationReportComponent implements OnInit {
 
 
   private requestSearchService() {
-    var isValidPatientSearchCriteria: boolean = this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null
+    var isValidPatientSearchCriteria: boolean = this.patientSearchCriteria.type !== null
+      || this.patientSearchCriteria.sourceType !== null
+      || this.patientSearchCriteria.startDate_date !== null
+      || this.patientSearchCriteria.endDate_date !== null
     if (isValidPatientSearchCriteria) {
       this.searchErrorMessage = undefined
       this.cleanEmptyFields(this.patientSearchCriteria)
@@ -275,7 +278,8 @@ export class RecommendationReportComponent implements OnInit {
         })
       )
         .subscribe((patients: any) => {
-          this.patientReportingService.export(patients, type).subscribe(
+          const timeZone =  Intl.DateTimeFormat().resolvedOptions().timeZone;
+          this.patientReportingService.export(patients, type,timeZone).subscribe(
             (response) => {
               const a = document.createElement('a')
               const objectUrl = URL.createObjectURL(response)

@@ -229,10 +229,8 @@ export class RecommendationReportComponent implements OnInit {
 
 
   private requestSearchService() {
-    var isValidPatientSearchCriteria: boolean = this.patientSearchCriteria.type !== null
-      || this.patientSearchCriteria.sourceType !== null
-      || this.patientSearchCriteria.startDate_date !== null
-      || this.patientSearchCriteria.endDate_date !== null
+    var isValidPatientSearchCriteria: boolean = (this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null)
+      || (this.patientSearchCriteria.startDate_date !== undefined && this.patientSearchCriteria.endDate_date !== undefined)
     if (isValidPatientSearchCriteria) {
       this.searchErrorMessage = undefined
       this.cleanEmptyFields(this.patientSearchCriteria)
@@ -279,13 +277,12 @@ export class RecommendationReportComponent implements OnInit {
         })
       )
         .subscribe((patients: any) => {
-          
+
           var request: ExportPatientSourceReportRequest = {
             patients: patients,
             type: type!,
             timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
           }
-          console.log(JSON.stringify(request))
           this.patientReportingService.export(request).subscribe(
             (response) => {
               const a = document.createElement('a')

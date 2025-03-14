@@ -190,7 +190,7 @@
 /intake-service/api/clinic/update/location/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/clinic/update/location/:clinicId 200
 /intake-service/api/clinic/update/location/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/clinic/update/location/:clinicId 200
 /intake-service/api/reports/search https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/search 200
-/intake-service/api/reports/generator/excel https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/excel/type/:type 200
+/intake-service/api/reports/generator/excel https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/excel 200
 /intake-service/api/reports/generator/pdf/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/pdf/patientId/:patientId 200
 /intake-service/api/reports/generator/pdf/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/pdf/patientId/:patientId 200
 /intake-service/api/reports/generator/pdf/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/pdf/patientId/:patientId 200

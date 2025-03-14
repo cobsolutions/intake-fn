@@ -6,6 +6,7 @@ import { PatientSearchCriteria } from 'src/app/models/reporting/patient.search.c
 import { LocalService } from 'src/app/modules/common';
 import { IParams } from '../../models/pagination/params';
 import PatientSources from '../../models/patient.sources';
+import { ExportPatientSourceReportRequest } from '../../models/report/export.patient.source.report.request';
 import { ClinicService } from '../../services/clinic/clinic.service';
 import { IApiParams } from '../../services/patient-list.service';
 import { ISearchResult, PatientReportingService } from '../../services/patient.reporting.service';
@@ -278,8 +279,14 @@ export class RecommendationReportComponent implements OnInit {
         })
       )
         .subscribe((patients: any) => {
-          const timeZone =  Intl.DateTimeFormat().resolvedOptions().timeZone;
-          this.patientReportingService.export(patients, type,timeZone).subscribe(
+          
+          var request: ExportPatientSourceReportRequest = {
+            patients: patients,
+            type: type!,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+          }
+          console.log(JSON.stringify(request))
+          this.patientReportingService.export(request).subscribe(
             (response) => {
               const a = document.createElement('a')
               const objectUrl = URL.createObjectURL(response)

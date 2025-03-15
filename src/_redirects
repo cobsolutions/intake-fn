@@ -191,6 +191,7 @@
 /intake-service/api/clinic/update/location/:clinicId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/clinic/update/location/:clinicId 200
 /intake-service/api/reports/search https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/search 200
 /intake-service/api/reports/generator/excel https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/excel 200
+/intake-service/api/reports/generator/excel/changes https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/excel/changes 200
 /intake-service/api/reports/generator/pdf/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/pdf/patientId/:patientId 200
 /intake-service/api/reports/generator/pdf/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/pdf/patientId/:patientId 200
 /intake-service/api/reports/generator/pdf/patientId/:patientId https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/reports/generator/pdf/patientId/:patientId 200
@@ -252,6 +253,6 @@
 /intake-service/api/nppes/find/provider/npi/:npi https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/nppes/find/provider/npi/:npi 200
 /intake-service/api/nppes/find/provider/npi/:npi https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/nppes/find/provider/npi/:npi 200
 /intake-service/api/digital-intake/record/init/requester/:requester https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/record/init/requester/:requester 200
-
+/intake-service/api/digital-intake/patient/monitor/find/clinic/:clinicId/patient/:patient/action/:action https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/patient/monitor/find/clinic/:clinicId/patient/:patient/action/:action 200
 
 /*  /index.html   200

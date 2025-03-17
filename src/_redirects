@@ -33,6 +33,7 @@
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
+/intake-service/api/digital-intake/lookups/find/insurance/company https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/lookups/find/insurance/company 200
 /intake-service/api/digital-intake/lookups/find/provider/f-name/:firstName/l-name/:lastName https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/lookups/find/provider/f-name/:firstName/l-name/:lastName 200
 /intake-service/api/digital-intake/lookups/find/provider/f-name/:firstName/l-name/:lastName https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/lookups/find/provider/f-name/:firstName/l-name/:lastName 200
 /intake-service/api/digital-intake/lookups/find/provider/f-name/:firstName/l-name/:lastName https://patient-intake-a7d7a58ddf0b.herokuapp.com/intake-service/api/digital-intake/lookups/find/provider/f-name/:firstName/l-name/:lastName 200

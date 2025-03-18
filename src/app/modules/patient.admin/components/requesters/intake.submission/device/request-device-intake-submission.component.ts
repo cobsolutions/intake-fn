@@ -15,6 +15,7 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
   selectedClinicUUID: string | undefined = undefined
   submissionURL: string
   isGenerated: boolean = false;
+  isValid: boolean = true
   constructor(private clinicService: ClinicService, private oneTimeTokenService: OneTimeTokenService) { }
 
   ngOnInit(): void {
@@ -26,16 +27,21 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
     )
   }
   generateQRCode() {
-    var request: DigitalIntakeOneTimeTokenRequest = {
-      clinicId: this.selectedClinicUUID,
-      requester: 'Device_Submission'
+    if (this.selectedClinicUUID !== undefined) {
+      this.isValid = true
+      var request: DigitalIntakeOneTimeTokenRequest = {
+        clinicId: this.selectedClinicUUID,
+        requester: 'Device_Submission'
+      }
+      this.oneTimeTokenService.generate(request).subscribe((response: any) => {
+        const requestToken: any = response.body;
+        this.submissionURL = this.baseURL + '/digital-intake/pre-create?token=' + requestToken.token;;
+        this.isGenerated = true
+        console.log(this.submissionURL)
+      })
+    } else {
+      this.isValid = false;
     }
-    this.oneTimeTokenService.generate(request).subscribe((response: any) => {
-      const requestToken: any = response.body;
-      this.submissionURL = this.baseURL + '/digital-intake/pre-create?token=' + requestToken.token;;
-      this.isGenerated = true
-      console.log(this.submissionURL)
-    })
 
   }
 

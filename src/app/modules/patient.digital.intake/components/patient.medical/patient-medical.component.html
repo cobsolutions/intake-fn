@@ -63,6 +63,12 @@
                     <div class="col-md-12" *ngIf="nppesError">
                         <label class="text-danger fw-normal fst-italic">{{nppesErrorMessage}} </label>
                     </div>
+                    <div class="col-md-12" *ngIf="isReferringSearchNotValid">
+                        <label class="text-danger fw-normal fst-italic">{{referringSearchErrorMessage}} </label>
+                    </div>
+                    <div class="col-md-12" *ngIf="prodiverNotfound">
+                        <label class="text-danger fw-normal fst-italic">No Provider has been found</label>
+                    </div>
                     <div class="col-md-2">
                         <label></label>
                         <select cSelect formControlName="referringSearchType" sizing="sm" class="form-control"
@@ -117,7 +123,8 @@
                         </span>
                         <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='npi'">
                             <c-input-group sizing="sm">
-                                <input cFormControl placeholder="Provider NPI" formControlName="referringSearch" type="number">
+                                <input cFormControl placeholder="Provider NPI" formControlName="referringSearch"
+                                    type="number">
                                 <span cInputGroupText>
                                     <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
                                         [loading]="loadingProvider">
@@ -127,12 +134,7 @@
                             </c-input-group>
                         </span>
                     </div>
-                    <div class="col-md-2" *ngIf="isReferringSearchNotValid">
-                        <label></label>
-                        <p class="text-danger">
-                            <strong>{{referringSearchErrorMessage}}</strong>
-                        </p>
-                    </div>
+
                     <div class="col-md-10 mb-2" *ngIf="providers">
                         <ng-autocomplete [itemTemplate]="itemTemplate" placeholder="Select.." [data]="providers"
                             [notFoundTemplate]="notFoundTemplate" (selected)="pickProvider($event)" [searchKeyword]="''"

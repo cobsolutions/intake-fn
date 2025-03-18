@@ -26,6 +26,7 @@ export class PatientMedicalComponent implements OnInit {
   referringSearchErrorMessage: string | undefined;
   loadingProvider: boolean = false;
   nppesError: boolean = false;;
+  prodiverNotfound: boolean = false
   nppesErrorMessage: string = 'No matches found. Please review your search parameters and try again.'
   constructor(private digitalIntakeService: DigitalIntakeService) { }
 
@@ -45,10 +46,9 @@ export class PatientMedicalComponent implements OnInit {
     this.loadingProvider = true
     if (referringSearch === null || referringSearch === '') {
       this.isReferringSearchNotValid = true;
-      this.referringSearchErrorMessage = 'Type Before hit'
+      this.referringSearchErrorMessage = 'Type Before Search'
       this.loadingProvider = false
     } else {
-      console.log(referringType);
       switch (referringType) {
         case 'l-name':
           this.digitalIntakeService.findProviderByLastName(referringSearch)
@@ -59,7 +59,10 @@ export class PatientMedicalComponent implements OnInit {
               if (providers === null) {
                 this.form.get('medical')?.get('providerName')?.setValue(null);
                 this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                this.prodiverNotfound = true
+                this.providers = [];
               } else {
+                this.prodiverNotfound = false
                 this.providers = providers;
               }
             }, error => {
@@ -75,7 +78,10 @@ export class PatientMedicalComponent implements OnInit {
               if (providers === null) {
                 this.form.get('medical')?.get('providerName')?.setValue(null);
                 this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                this.prodiverNotfound = true
+                this.providers = [];
               } else {
+                this.prodiverNotfound = false
                 this.providers = providers
               }
             }, error => {
@@ -98,7 +104,10 @@ export class PatientMedicalComponent implements OnInit {
                 if (providers === null) {
                   this.form.get('medical')?.get('providerName')?.setValue(null);
                   this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                  this.prodiverNotfound = true
+                  this.providers = [];
                 } else {
+                  this.prodiverNotfound = false
                   this.providers = providers
                 }
               }, error => {
@@ -124,7 +133,10 @@ export class PatientMedicalComponent implements OnInit {
                 if (providers === null) {
                   this.form.get('medical')?.get('providerName')?.setValue(null);
                   this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                  this.prodiverNotfound = true
+                  this.providers = [];
                 } else {
+                  this.prodiverNotfound = false
                   this.providers = providers
                 }
               })

@@ -173,8 +173,8 @@ export class PatientSummaryComponent implements OnInit {
       patientMedicalHistory.height = select.height
       patientMedicalHistory.heightUnit = select.heightUnit ? 'Inch' : 'cm'
       var height: string[] = this.calculateHeight(select.heightUnit, select.height)
-      patientMedicalHistory.height = height[0]
-      patientMedicalHistory.heightFT = height[1]
+      patientMedicalHistory.height = height[1]
+      patientMedicalHistory.heightFT = height[0]
       patientMedicalHistory.weight = select.weight
       patientMedicalHistory.weightUnit = select.weightUnit ? 'kg' : 'pound'
       var weight: string[] = this.calculateWeight(select.weightUnit, select.weight)

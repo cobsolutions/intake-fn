@@ -40,6 +40,9 @@ export class AddWorkerCompensationValidators {
             if (CompensationFields[i] === 'compensation-adjuster-last-name') {
                 form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
             }
+            if (CompensationFields[i] === 'compensation-case-status') {
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required])
+            }
             form.get('insurance')?.get(CompensationFields[i])?.updateValueAndValidity();
         }
     }

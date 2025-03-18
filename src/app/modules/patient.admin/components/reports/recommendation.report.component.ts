@@ -169,6 +169,7 @@ export class RecommendationReportComponent implements OnInit {
         this.patientSearchCriteria.clinicId = clinicId;
       })
     this.patientSources = this.patientSources.map((source: any) => ({ ...source, selected: true }));
+    if(this.patientSearchCriteria.sourceType ==='direct')
     this.patientSources = this.patientSources.filter(source => source.entityValue !== 'referringDoctor')
     this.result = {
       resultCount: 0,

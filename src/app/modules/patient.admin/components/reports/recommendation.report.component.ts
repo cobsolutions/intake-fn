@@ -169,8 +169,8 @@ export class RecommendationReportComponent implements OnInit {
         this.patientSearchCriteria.clinicId = clinicId;
       })
     this.patientSources = this.patientSources.map((source: any) => ({ ...source, selected: true }));
-    if(this.patientSearchCriteria.sourceType ==='direct')
-    this.patientSources = this.patientSources.filter(source => source.entityValue !== 'referringDoctor')
+    if (this.patientSearchCriteria.sourceType === 'direct')
+      this.patientSources = this.patientSources.filter(source => source.entityValue !== 'referringDoctor')
     this.result = {
       resultCount: 0,
       result: []
@@ -228,10 +228,14 @@ export class RecommendationReportComponent implements OnInit {
       this.patientSearchCriteria.endDate = null;
   }
 
-
+  private isValid(): boolean {
+    if (this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null)
+      return true;
+    else
+      return false;
+  }
   private requestSearchService() {
-    var isValidPatientSearchCriteria: boolean = (this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null)
-      || (this.patientSearchCriteria.startDate_date !== undefined && this.patientSearchCriteria.endDate_date !== undefined)
+    var isValidPatientSearchCriteria: boolean = this.isValid();
     if (isValidPatientSearchCriteria) {
       this.searchErrorMessage = undefined
       this.cleanEmptyFields(this.patientSearchCriteria)
@@ -264,7 +268,7 @@ export class RecommendationReportComponent implements OnInit {
         })
       )
     } else {
-      this.searchErrorMessage = "Please select search criteria"
+      this.searchErrorMessage = "Please select Patient Source type"
     }
   }
   exportResult() {
@@ -299,7 +303,7 @@ export class RecommendationReportComponent implements OnInit {
             });
         })
     } else {
-      this.searchErrorMessage = "Please select search criteria"
+      this.searchErrorMessage = "Please select Patient Source type"
     }
   }
 

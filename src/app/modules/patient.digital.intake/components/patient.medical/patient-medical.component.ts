@@ -112,7 +112,6 @@ export class PatientMedicalComponent implements OnInit {
         case 'npi':
           var npi: number = Number(referringSearch);
           if (Number.isNaN(referringSearch)) {
-            console.log('333333333333333333333333')
             this.loadingProvider = false
             this.isReferringSearchNotValid = true;
             this.referringSearchErrorMessage = 'Doctor NPI must be numbers only'

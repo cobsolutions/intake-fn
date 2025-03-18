@@ -82,15 +82,50 @@
                                 </label>
                             </span>
                         </label>
-                        <c-input-group sizing="sm">
-                            <input cFormControl placeholder="Doctor Name" formControlName="referringSearch">
-                            <span cInputGroupText>
-                                <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
-                                    [loading]="loadingProvider">
-                                    <svg cIcon name="cilSearch" title="cilUser"></svg>
-                                </button>
-                            </span>
-                        </c-input-group>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='full-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider Full Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='f-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider first Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='l-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider last Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='npi'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider NPI" formControlName="referringSearch" type="number">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
                     </div>
                     <div class="col-md-2" *ngIf="isReferringSearchNotValid">
                         <label></label>

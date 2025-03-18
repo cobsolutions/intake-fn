@@ -17,7 +17,13 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
   patientEmail: string | undefined = undefined
   private baseURL: string = location.origin
   private verificationLink: string;
-  inVaildMessageMail:string|undefined = undefined
+  isValid: boolean = true;
+  isEmptyClinic: boolean = true;
+  isEmptyMail: boolean = true;
+  isNotMail: boolean = true;
+  errorMessageClinic: string | undefined;
+  errorMessageMail: string | undefined;
+  errorMessageMailFormat: string | undefined;
   constructor(private clinicService: ClinicService,
     private oneTimeTokenService: OneTimeTokenService,
     private router: Router,
@@ -33,9 +39,8 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
   }
   send() {
     this.isSent = true;
-    console.log(this.validateEmail(this.patientEmail!))
-    if (this.validateEmail(this.patientEmail!)) {
-      this.inVaildMessageMail = undefined;
+    this.validate()
+    if (this.validate()) {
       var request: DigitalIntakeOneTimeTokenRequest = {
         clinicId: this.selectedClinicUUID,
         expiryPeriod: 1800000,
@@ -52,8 +57,6 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
           this.router.navigate([`/${url}`]).then(() => { })
         })
       })
-    }else{
-      this.inVaildMessageMail = "Invalid email. Please check the entered email address format.";
     }
   }
 
@@ -63,5 +66,26 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
       return !forbidden ? false : true;
     } else
       return true;
+  }
+  private validate(): boolean {
+    if (this.selectedClinicUUID === undefined) {
+      this.isEmptyClinic = true;
+      this.errorMessageClinic = "Select Clinic to send digital intake.";
+    } else {
+      this.isEmptyClinic = false;
+    }
+    if (this.patientEmail === undefined || this.patientEmail === '') {
+      this.isEmptyMail = true;
+      this.errorMessageMail = "Select Email to send digital intake.";
+    } else {
+      this.isEmptyMail = false;
+    }
+    if (!this.validateEmail(this.patientEmail!)) {
+      this.isNotMail = true;
+      this.errorMessageMailFormat = "Invalid email. Please check the entered email address format.";
+    } else {
+      this.isNotMail = false;
+    }
+    return !this.isEmptyMail && !this.isEmptyClinic && !this.isNotMail;
   }
 }

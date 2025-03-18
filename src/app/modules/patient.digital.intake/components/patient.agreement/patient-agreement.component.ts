@@ -43,7 +43,7 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
   private initForm(agreements: AgreementHolder[] | null) {
     for (var i = 0; i < agreements!.length; i++) {
       var agreement: AgreementHolder = agreements![i];
-      (this.form.get('agreement') as FormGroup).addControl(agreement.fieldName, new FormControl(null, agreement.required ? [Validators.required] : []))
+      (this.form.get('agreement') as FormGroup).addControl(agreement.fieldName, new FormControl(null, agreement.required ? [Validators.requiredTrue] : []))
     }
   }
   next() {
@@ -54,6 +54,22 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
       this.isValidForm = true;
       ValidationExploder.explode(this.form, 'agreement')
     }
+  }
+  getAllFormValues(formGroup: FormGroup): any {
+    const values: any = {};
+    Object.keys(formGroup.controls).forEach((key) => {
+      const control = formGroup.get(key);
+      if (control instanceof FormControl) {
+        values[key] = control.value;
+      } else if (control instanceof FormGroup) {
+        values[key] = this.getAllFormValues(control); // Recursively get values from nested FormGroup
+      } else if (control instanceof FormArray) {
+        values[key] = control.controls.map(ctrl =>
+          ctrl instanceof FormGroup ? this.getAllFormValues(ctrl) : ctrl.value
+        );
+      }
+    });
+    return values;
   }
   acceptConcent(agreement: AgreementHolder) {
     if (this.agreements !== null)

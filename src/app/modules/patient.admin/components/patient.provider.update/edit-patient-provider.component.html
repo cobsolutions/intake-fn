@@ -114,7 +114,8 @@
             </c-col>
         </div>
         <div class="text-center mt-3">
-            <button cButton (click)="update()">Update</button>
+            <button cButton (click)="update()"
+                [disabled]="this.form.get('edit-provider')?.get('providerNPI')?.value ===null">Update</button>
         </div>
     </div>
 </c-container>

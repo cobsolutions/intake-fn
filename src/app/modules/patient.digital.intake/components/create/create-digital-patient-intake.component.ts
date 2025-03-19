@@ -124,7 +124,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       }),
       'insurance': new FormGroup({
         'type': new FormControl(null, [Validators.required]),
-
+        'selfPay':new FormControl(false),
         'compensation-related-injury': new FormControl(null),
         'compensation-accident-date': new FormControl(null),
         'compensation-wroker-status': new FormControl(null),
@@ -157,7 +157,6 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'medicaid-policy-namuber': new FormControl(null),
         'medicare-policy-namuber': new FormControl(null),
         'insurances': new FormControl(null),
-        'isSelfPay': new FormControl(null),
       }),
       'document': new FormArray([]),
       'agreement': new FormGroup({}),

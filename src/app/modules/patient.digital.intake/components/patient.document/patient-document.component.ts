@@ -34,8 +34,8 @@ export class PatientDocumentComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.componentReference.setPatientDocumentComponent(this)
     this.initForm();
-
     this.componentReference.getPatientInsuranceComponent()?.form.get('insurance')?.get('insurances')?.valueChanges.subscribe(value => {
+      this.patientInsurances=[]
       if (value !== null && value.commercialInsurances!.length > 0) {
         this.patientInsurances.push(...value.commercialInsurances)
         var doumentControllerName_front: string = '';

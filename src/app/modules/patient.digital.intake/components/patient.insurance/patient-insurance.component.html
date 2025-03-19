@@ -1,6 +1,6 @@
 <ngx-spinner></ngx-spinner>
 <c-callout color="danger" *ngIf="isValidForm">
-    <span class="text-danger fw-bold">Please fill in all the required fields before navigating to next step</span>
+    <span class="text-danger fw-bold">Please select Insurance Type or check SelfPay before navigating to next step</span>
 </c-callout>
 <div [formGroup]="form" class="mt-3">
     <div formGroupName="insurance">
@@ -17,11 +17,8 @@
                 </select>
             </c-col>
             <c-col xs="12">
-                <div *ngIf="this.form.get('insurance')?.get('type')?.errors?.['required'] === true && 
-                    (this.form.get('insurance')?.get('type')?.dirty ||this.form.get('insurance')?.get('type')?.touched)"
-                    class="text-danger mx-1">
-                    Insurance Type is required
-                </div>
+                <input cFormCheckInput type="checkbox" class="mx-2" formControlName="selfPay" />
+                <label>Self Pay</label>
             </c-col>
         </c-row>
         <!--Commercial Insurance-->
@@ -29,8 +26,7 @@
             <c-card-body>
                 <h5 cCardTitle>Commercial Insurance</h5>
                 <!--Insurance Company-->
-                <ng-multiselect-dropdown  formControlName="commercial-insurance-company"
-                    [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-insurance-company')?.invalid
+                <ng-multiselect-dropdown formControlName="commercial-insurance-company" [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-insurance-company')?.invalid
                     && this.form.get('insurance')?.get('commercial-insurance-company')?.touched}"
                     [settings]="dropdownSettings" [data]="basicInsuranceCompany"
                     placeholder="Please select insurance company">
@@ -205,10 +201,10 @@
                                         class="text-danger">*</span>
                                 </label>
                             </c-col>
-                            <ng-multiselect-dropdown 
-                                formControlName="commercial-secondary-insurance-insurance-company"
+                            <ng-multiselect-dropdown formControlName="commercial-secondary-insurance-insurance-company"
                                 [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.invalid
-                            && this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched}" [settings]="dropdownSettings" [data]="basicInsuranceCompany"
+                            && this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched}"
+                                [settings]="dropdownSettings" [data]="basicInsuranceCompany"
                                 placeholder="Please select insurance company">
                             </ng-multiselect-dropdown>
                             <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.valid && 
@@ -384,9 +380,9 @@
                             </div>
                             <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-phone')?.errors?.['required'] && 
                             (this.form.get('insurance')?.get('compensation-adjuster-phone')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-phone')?.touched)"
-                                            class="text-danger mx-1">
-                                            Adjuster phone  is required
-                                        </div>
+                                class="text-danger mx-1">
+                                Adjuster phone is required
+                            </div>
                         </c-row>
                     </c-card-body>
                 </c-card>
@@ -453,9 +449,9 @@
                             </div>
                             <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-phone')?.errors?.['required'] && 
                             (this.form.get('insurance')?.get('compensation-attorney-phone')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-phone')?.touched)"
-                                            class="text-danger mx-1">
-                                            Attorney phone is required
-                                        </div>
+                                class="text-danger mx-1">
+                                Attorney phone is required
+                            </div>
                         </c-row>
                     </c-card-body>
                 </c-card>

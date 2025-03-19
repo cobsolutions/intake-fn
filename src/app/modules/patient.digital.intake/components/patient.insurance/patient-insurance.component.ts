@@ -121,8 +121,8 @@ export class PatientInsuranceComponent implements OnInit {
         var patientSecondaryCommercialInsurance: CommercialInsurance = {
           type: 'commercial',
           isSecondaryInsurance: true,
-          _frontcontrollName: 'comm_' + this.secondaryInsuranceCompanyForm?.value + '_front',
-          _backcontrollName: 'comm_' + this.secondaryInsuranceCompanyForm?.value + '_back',
+          _frontcontrollName: 'comm_' + this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].name + '_front',
+          _backcontrollName: 'comm_' + this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].name + '_back',
           insuranceCompanyId: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].id,
           insuranceCompanyName: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].name,
           policyId: this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.value,
@@ -179,8 +179,8 @@ export class PatientInsuranceComponent implements OnInit {
     var patientCommercialInsurance: CommercialInsurance = {
       type: 'commercial',
       isSecondaryInsurance: false,
-      _frontcontrollName: 'comm_' + this.insuranceCompanyForm?.value + '_front',
-      _backcontrollName: 'comm_' + this.insuranceCompanyForm?.value + '_back',
+      _frontcontrollName: 'comm_' + this.form.get('insurance')?.get('commercial-insurance-company')?.value[0].name + '_front',
+      _backcontrollName: 'comm_' + this.form.get('insurance')?.get('commercial-insurance-company')?.value[0].name + '_back',
       memberId: this.form.get('insurance')?.get('commercial-member-id')?.value,
       policyId: this.form.get('insurance')?.get('commercial-ploicy-id')?.value,
       relationship: this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value,

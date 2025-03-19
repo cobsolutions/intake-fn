@@ -53,6 +53,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{patientInsurances | json}}
                     <tr *ngFor="let patientInsurance of patientInsurances; let i = index">
                         <td>
                             <span *ngIf="patientInsurance.type ==='worker'">Worker Compensation</span>

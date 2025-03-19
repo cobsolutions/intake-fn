@@ -66,26 +66,13 @@ export class PatientInsuranceComponent implements OnInit {
         this.patientInsurances.selfPay = selfPay;
         this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
         this.form.get('insurance')?.get('type')?.disable();
-      }else{
+      } else {
         this.patientInsurances.selfPay = undefined
         this.form.get('insurance')?.get('type')?.enable();
       }
     })
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
       this.selectedInsuranceType = value;
-      // if (value === 'SelfPay') {
-      //   const hasSelfPay = this.renderedPatientInsurances.some(insurance => insurance.type === 'selfpay');
-      //   var selfPay: SelfPay = {
-      //     type: 'selfpay'
-      //   }
-      //   this.patientInsurances.selfPay = selfPay;
-      //   if (!hasSelfPay)
-      //     this.renderedPatientInsurances.push(selfPay)
-      // } else {
-      //   this.renderedPatientInsurances = this.renderedPatientInsurances.filter(
-      //     insurance => insurance.type !== 'selfpay'
-      //   );
-      // }
     })
     this.dropdownSettings = {
       singleSelection: true,
@@ -112,6 +99,7 @@ export class PatientInsuranceComponent implements OnInit {
       InsuranceValidator.clearValidator(this.form)
       this.stepper.next();
       this.isValidForm = false;
+      this.form.get('insurance')?.get('type')?.setValue(null);
     } else {
       this.isValidForm = true;
       ValidationExploder.explode(this.form, 'insurance')

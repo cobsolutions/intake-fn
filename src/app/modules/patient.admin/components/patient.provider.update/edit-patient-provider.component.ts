@@ -21,6 +21,7 @@ export class EditPatientProviderComponent implements OnInit {
   referringSearchErrorMessage: string | undefined;
   nppesError: boolean = false;
   nppesErrorMessage: string = 'No matches found. Please review your search parameters and try again.'
+  prodiverNotfound: boolean = false
   providers: Provider[];
   constructor(private findPatientProviderService: FindPatientProviderService
     , private updatePatientProviderService: UpdatePatientProviderService
@@ -55,7 +56,7 @@ export class EditPatientProviderComponent implements OnInit {
     this.loadingProvider = true
     if (referringSearch === null || referringSearch === '') {
       this.isReferringSearchNotValid = true;
-      this.referringSearchErrorMessage = 'Type Before hit'
+      this.referringSearchErrorMessage = 'Type Before Search'
       this.loadingProvider = false
     } else {
       switch (referringType) {
@@ -67,7 +68,10 @@ export class EditPatientProviderComponent implements OnInit {
               if (providers === null) {
                 this.form.get('edit-provider')?.get('providerName')?.setValue(null);
                 this.form.get('edit-provider')?.get('providerNPI')?.setValue(null);
+                this.prodiverNotfound = true
+                this.providers = [];
               } else {
+                this.prodiverNotfound = false
                 this.providers = providers;
               }
             }, error => {
@@ -83,7 +87,10 @@ export class EditPatientProviderComponent implements OnInit {
               if (providers === null) {
                 this.form.get('edit-provider')?.get('providerName')?.setValue(null);
                 this.form.get('edit-provider')?.get('providerNPI')?.setValue(null);
+                this.prodiverNotfound = true
+                this.providers = [];
               } else {
+                this.prodiverNotfound = false
                 this.providers = providers
               }
             }, error => {
@@ -106,7 +113,10 @@ export class EditPatientProviderComponent implements OnInit {
                 if (providers === null) {
                   this.form.get('edit-provider')?.get('providerName')?.setValue(null);
                   this.form.get('edit-provider')?.get('providerNPI')?.setValue(null);
+                  this.prodiverNotfound = true
+                  this.providers = [];
                 } else {
+                  this.prodiverNotfound = false
                   this.providers = providers
                 }
               }, error => {
@@ -132,7 +142,10 @@ export class EditPatientProviderComponent implements OnInit {
                 if (providers === null) {
                   this.form.get('edit-provider')?.get('providerName')?.setValue(null);
                   this.form.get('edit-provider')?.get('providerNPI')?.setValue(null);
+                  this.prodiverNotfound = true
+                  this.providers = [];
                 } else {
+                  this.prodiverNotfound = false
                   this.providers = providers
                 }
               }, error => {

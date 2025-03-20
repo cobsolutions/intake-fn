@@ -26,8 +26,8 @@
                                     <c-col class="mb-2" xs="12">
                                         <form cForm>
                                             <select cSelect cFormControl name="recommendation"
-                                                [(ngModel)]="patientSearchCriteria.sourceType">
-                                                <option value="null">Select Patient Source</option>
+                                                [(ngModel)]="patientSearchCriteria.sourceType" (change)="changeSourceType()">
+                                                <option value="null" disabled>Select Patient Source</option>
                                                 <option value="referring">Referring Provider</option>
                                                 <option value="direct">Direct Access</option>
                                             </select>

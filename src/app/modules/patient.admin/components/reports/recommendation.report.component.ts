@@ -23,7 +23,7 @@ interface PateintSourceSelects {
   styleUrls: ['./recommendation.report.component.css']
 })
 export class RecommendationReportComponent implements OnInit {
-  patientSources = PatientSources;
+  patientSources: any
   searchInputNotValid: boolean = false;
   errorMsg: string;
   patientSearchCriteria: PatientSearchCriteria = new PatientSearchCriteria();
@@ -168,9 +168,7 @@ export class RecommendationReportComponent implements OnInit {
       subscribe(clinicId => {
         this.patientSearchCriteria.clinicId = clinicId;
       })
-    this.patientSources = this.patientSources.map((source: any) => ({ ...source, selected: true }));
-    if (this.patientSearchCriteria.sourceType === 'direct')
-      this.patientSources = this.patientSources.filter(source => source.entityValue !== 'referringDoctor')
+
     this.result = {
       resultCount: 0,
       result: []
@@ -351,5 +349,12 @@ export class RecommendationReportComponent implements OnInit {
         (criteria as any)[key] = null;
       }
     });
+  }
+  changeSourceType() {
+    var orgignalPatientSources = PatientSources.map((source: any) => ({ ...source, selected: true }));
+    if (this.patientSearchCriteria.sourceType === 'direct')
+      this.patientSources = orgignalPatientSources.filter(source => source.entityValue !== 'referringDoctor')
+    else
+      this.patientSources = orgignalPatientSources;
   }
 }

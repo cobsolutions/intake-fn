@@ -239,10 +239,10 @@ export class PatientSummaryComponent implements OnInit {
     switch (heightUnit) {
       case 'cm':
         height[0] = value;
-        height[1] = Number((Number(value) * 0.032808).toFixed(1)).toString();
+        height[1] = Number((Number(value) * 30.48).toFixed(1)).toString();
         break;
       case 'Inch':
-        height[0] = Math.round(Number(value) / 0.032808).toString();
+        height[0] = Math.round(Number(value) / 30.48).toString();
         height[1] = value;
         break;
     }
@@ -254,10 +254,10 @@ export class PatientSummaryComponent implements OnInit {
     switch (weightUnit) {
       case 'kg':
         weight[0] = value;
-        weight[1] = Number((Number(value) / 2.20462).toFixed(1)).toString();
+        weight[1] = Number((Number(value) * 2.20462).toFixed(1)).toString();
         break;
       case 'pound':
-        weight[0] = Math.round(Number(value) * 2.20462).toString()
+        weight[0] = Math.round(Number(value) / 2.20462).toString()
         weight[1] = value
         break;
     }

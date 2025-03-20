@@ -259,7 +259,8 @@
         <c-card *ngIf="selectedInsuranceType === 'Worker\'s Compensation' || selectedInsuranceType === 'Auto Accident'"
             class="mb-2">
             <c-card-body>
-                <h5 cCardTitle>Worker's Compensation</h5>
+                <h5 cCardTitle *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Worker's Compensation</h5>
+                <h5 cCardTitle *ngIf="selectedInsuranceType === 'Auto Accident'">Worker's Compensation</h5>
                 <!--Accident Date-->
                 <c-row class="mb-2">
                     <c-col xl="12">

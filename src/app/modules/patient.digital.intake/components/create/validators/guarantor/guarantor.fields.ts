@@ -1,3 +1,3 @@
 export var GuarantorFields: string[] = [
-    'guarantorFirstName', 'guarantorLastName', 'guarantorMiddleName', 'guarantorRelationship'
+    'guarantorFirstName', 'guarantorLastName', 'guarantorRelationship'
 ]

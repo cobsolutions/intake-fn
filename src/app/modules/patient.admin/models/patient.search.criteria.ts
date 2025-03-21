@@ -11,4 +11,5 @@ export interface PatientSearchCriteria {
     startDate?:number
     endDate?:number
     timeZone?:string
+    clinicId?:number| null
 }

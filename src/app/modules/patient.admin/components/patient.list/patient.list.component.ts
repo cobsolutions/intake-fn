@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IColumn, IColumnFilterValue, ISorterValue } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, retry, Subject, takeUntil, tap } from 'rxjs';
+import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, retry, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
 import { PatientSearchCriteria } from '../../models/patient.search.criteria';
@@ -310,27 +310,30 @@ export class PatientListComponent implements OnInit, OnDestroy {
     if (this.patientSearchCriteria.endDate_date !== undefined)
       this.patientSearchCriteria.endDate = moment(this.patientSearchCriteria.endDate_date).unix() * 1000;
     this.patientSearchCriteria.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-      this.usersData$ = this.patientSearchService.findFilter(this.apiParams$, this.patientSearchCriteria).pipe(
-        tap((response: any) => {
-          this.totalItems$.next(response.number_of_matching_records);
-          if (response.number_of_records) {
-            this.errorMessage$.next('');
-          }
-          this.retry$.next(false);
-          this.loadingData$.next(false);
-        }),
-        tap((response) => {
-          this.totalItems$.next(response.number_of_matching_records);
-          if (response.number_of_records) {
-            this.errorMessage$.next('');
-          }
-          this.retry$.next(false);
-          this.loadingData$.next(false);
-        }),
-        map((response) => {
-          return response.records;
-        })
-      );
+    this.clinicService.selectedClinic$.subscribe(clinicId => {
+      this.patientSearchCriteria.clinicId = clinicId
+    })
+    this.usersData$ = this.patientSearchService.findFilter(this.apiParams$, this.patientSearchCriteria).pipe(
+      tap((response: any) => {
+        this.totalItems$.next(response.number_of_matching_records);
+        if (response.number_of_records) {
+          this.errorMessage$.next('');
+        }
+        this.retry$.next(false);
+        this.loadingData$.next(false);
+      }),
+      tap((response) => {
+        this.totalItems$.next(response.number_of_matching_records);
+        if (response.number_of_records) {
+          this.errorMessage$.next('');
+        }
+        this.retry$.next(false);
+        this.loadingData$.next(false);
+      }),
+      map((response) => {
+        return response.records;
+      })
+    );
   }
   isScheduleChanged(event: any) {
     console.log(this.patientSearchCriteria.isSchedule)

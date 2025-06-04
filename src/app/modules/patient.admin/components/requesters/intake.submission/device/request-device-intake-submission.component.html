@@ -1,5 +1,7 @@
 <div class="mb-2">
-    <label cLabel for="exampleFormControlInput1">Select Clinic </label>
+    <div *ngIf="!isValid">
+        <label class="text-danger fw-normal fst-italic">Select Clinic to generate digital intake </label>
+    </div>
     <select aria-label="Default select example" cSelect [(ngModel)]="selectedClinicUUID">
         <option selected disabled value="undefined">Select Clinic </option>
         <option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.uuid">
@@ -8,7 +10,7 @@
     </select>
 </div>
 <div class="text-center">
-    <button cButton (click)="generateQRCode()" [disabled]="selectedClinicUUID ===undefined">Generate</button>
+    <button cButton (click)="generateQRCode()">Generate</button>
 </div>
 <hr />
 <div *ngIf="isGenerated">

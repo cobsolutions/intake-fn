@@ -10,35 +10,38 @@ export class AddWorkerCompensationValidators {
         const zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
         for (var i = 0; i < CompensationFields.length; i++) {
             if (CompensationFields[i] === 'compensation-insurance-company') {
-                form.get('insurance')?.get(CompensationFields[i])?.setValidators([noSpecialCharactersValidator(),Validators.required])
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([noSpecialCharactersValidator(), Validators.required])
             }
             if (CompensationFields[i] === 'compensation-claim-number') {
-                form.get('insurance')?.get(CompensationFields[i])?.setValidators([noSpecialCharactersValidator(),Validators.required])
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([noSpecialCharactersValidator(), Validators.required])
             }
             if (CompensationFields[i] === 'compensation-adjuster-phone'
                 || CompensationFields[i] === 'compensation-attorney-phone') {
-                form.get('insurance')?.get(CompensationFields[i])?.setValidators([Validators.pattern(phoneRgx)])
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([Validators.required,Validators.pattern(phoneRgx)])
             }
             if (CompensationFields[i] === 'compensation-accident-date') {
                 form.get('insurance')?.get(CompensationFields[i])?.addValidators([futureDateValidator()])
             }
             if (CompensationFields[i] === 'compensation-attorney-first-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(),noNumbersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-attorney-middle-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(),noNumbersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-attorney-last-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(),noNumbersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-adjuster-first-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(),noNumbersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-adjuster-middle-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(),noNumbersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-adjuster-last-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(),noNumbersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
+            }
+            if (CompensationFields[i] === 'compensation-case-status') {
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required])
             }
             form.get('insurance')?.get(CompensationFields[i])?.updateValueAndValidity();
         }

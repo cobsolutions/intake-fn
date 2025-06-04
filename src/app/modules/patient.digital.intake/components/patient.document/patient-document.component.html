@@ -9,17 +9,16 @@
             <c-row class="mb-2">
                 <c-col xl="12">
                     <div *ngFor="let docGroup of document.controls; let i = index" [formGroupName]="i">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Id Front <span
-                                class="text-danger">*</span></label>
+                        <label for="dsds" class="form-label" style="font-size: medium;"
+                            *ngIf="docGroup.get('id-front')">Id Front <span class="text-danger">*</span></label>
                         <input cFormControl type="file" formControlName="id-front" placeholder="ID Front"
                             accept="image/*" type="file" *ngIf="docGroup.get('id-front')" capture="environment"
                             class="mb-1" (change)="onImageUpload($event ,'patientIdfront' ,'id-front')">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Id Back <span
-                                class="text-danger">*</span></label>
-                        <input cFormControl type="file" formControlName="id-back" placeholder="ID Back" accept="image/*"
-                            type="file" *ngIf="docGroup.get('id-back')" capture="environment" class="mb-1"
+                        <label for="dsds" class="form-label" style="font-size: medium;"
+                            *ngIf="docGroup.get('id-back')">Id Back <span class="text-danger">*</span></label>
+                        <input cFormControl type="file" formControlName="id-back" *ngIf="docGroup.get('id-back')"
+                            placeholder="ID Back" accept="image/*" type="file" capture="environment" class="mb-1"
                             (change)="onImageUpload($event ,'patientIdback' ,'id-back')">
-                        <!-- Add other controls as necessary -->
                     </div>
                     <div *ngIf="this.form.get('document')?.get('0')!.get('id-front')?.errors?.['required'] && 
                         (this.form.get('document')?.get('0')!.get('id-front')?.dirty ||this.form.get('document')!.get('0')?.get('id-front')?.touched) "

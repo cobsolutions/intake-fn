@@ -19,7 +19,9 @@ export class EditPatientProviderComponent implements OnInit {
   loadingProvider: boolean = false;
   isReferringSearchNotValid: boolean = false;
   referringSearchErrorMessage: string | undefined;
-
+  nppesError: boolean = false;
+  nppesErrorMessage: string = 'No matches found. Please review your search parameters and try again.'
+  prodiverNotfound: boolean = false
   providers: Provider[];
   constructor(private findPatientProviderService: FindPatientProviderService
     , private updatePatientProviderService: UpdatePatientProviderService
@@ -54,7 +56,7 @@ export class EditPatientProviderComponent implements OnInit {
     this.loadingProvider = true
     if (referringSearch === null || referringSearch === '') {
       this.isReferringSearchNotValid = true;
-      this.referringSearchErrorMessage = 'Type Before hit'
+      this.referringSearchErrorMessage = 'Type Before Search'
       this.loadingProvider = false
     } else {
       switch (referringType) {
@@ -66,9 +68,15 @@ export class EditPatientProviderComponent implements OnInit {
               if (providers === null) {
                 this.form.get('edit-provider')?.get('providerName')?.setValue(null);
                 this.form.get('edit-provider')?.get('providerNPI')?.setValue(null);
+                this.prodiverNotfound = true
+                this.providers = [];
               } else {
+                this.prodiverNotfound = false
                 this.providers = providers;
               }
+            }, error => {
+              this.loadingProvider = false;
+              this.nppesError = true;
             })
           break;
         case 'f-name':
@@ -79,9 +87,15 @@ export class EditPatientProviderComponent implements OnInit {
               if (providers === null) {
                 this.form.get('edit-provider')?.get('providerName')?.setValue(null);
                 this.form.get('edit-provider')?.get('providerNPI')?.setValue(null);
+                this.prodiverNotfound = true
+                this.providers = [];
               } else {
+                this.prodiverNotfound = false
                 this.providers = providers
               }
+            }, error => {
+              this.loadingProvider = false;
+              this.nppesError = true;
             })
           break;
         case 'full-name':
@@ -99,9 +113,15 @@ export class EditPatientProviderComponent implements OnInit {
                 if (providers === null) {
                   this.form.get('edit-provider')?.get('providerName')?.setValue(null);
                   this.form.get('edit-provider')?.get('providerNPI')?.setValue(null);
+                  this.prodiverNotfound = true
+                  this.providers = [];
                 } else {
+                  this.prodiverNotfound = false
                   this.providers = providers
                 }
+              }, error => {
+                this.loadingProvider = false;
+                this.nppesError = true;
               })
             this.isReferringSearchNotValid = false;
             this.referringSearchErrorMessage = undefined;
@@ -122,9 +142,15 @@ export class EditPatientProviderComponent implements OnInit {
                 if (providers === null) {
                   this.form.get('edit-provider')?.get('providerName')?.setValue(null);
                   this.form.get('edit-provider')?.get('providerNPI')?.setValue(null);
+                  this.prodiverNotfound = true
+                  this.providers = [];
                 } else {
+                  this.prodiverNotfound = false
                   this.providers = providers
                 }
+              }, error => {
+                this.loadingProvider = false;
+                this.nppesError = true;
               })
             this.isReferringSearchNotValid = false;
             this.referringSearchErrorMessage = undefined;
@@ -149,15 +175,15 @@ export class EditPatientProviderComponent implements OnInit {
     })
   }
 
-  private getActionTaker() :ActionTaker{
+  private getActionTaker(): ActionTaker {
     var user: any = this.kcAuthServiceService.getLoggedUser()
     console.log(JSON.stringify(user))
-    return  {
+    return {
       uuid: user.sub,
       name: user.name,
       email: user.email,
       accountName: user.preferred_username
     }
-    
+
   }
 }

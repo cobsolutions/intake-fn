@@ -5,5 +5,5 @@ export interface AgreementHolder{
     agreementName:string;
     fieldName:string
     agreementText:string
-    visible:boolean    
+    visible:boolean  |null 
 }

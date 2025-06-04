@@ -25,6 +25,9 @@ export class PatientMedicalComponent implements OnInit {
   isReferringSearchNotValid: boolean = false;
   referringSearchErrorMessage: string | undefined;
   loadingProvider: boolean = false;
+  nppesError: boolean = false;;
+  prodiverNotfound: boolean = false
+  nppesErrorMessage: string = 'No matches found. Please review your search parameters and try again.'
   constructor(private digitalIntakeService: DigitalIntakeService) { }
 
 
@@ -43,22 +46,28 @@ export class PatientMedicalComponent implements OnInit {
     this.loadingProvider = true
     if (referringSearch === null || referringSearch === '') {
       this.isReferringSearchNotValid = true;
-      this.referringSearchErrorMessage = 'Type Before hit'
+      this.referringSearchErrorMessage = 'Type Before Search'
       this.loadingProvider = false
     } else {
-      console.log(referringType);
       switch (referringType) {
         case 'l-name':
           this.digitalIntakeService.findProviderByLastName(referringSearch)
             .subscribe(data => {
               this.loadingProvider = false
+              this.nppesError = false;
               var providers = data.body;
               if (providers === null) {
                 this.form.get('medical')?.get('providerName')?.setValue(null);
                 this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                this.prodiverNotfound = true
+                this.providers = [];
               } else {
+                this.prodiverNotfound = false
                 this.providers = providers;
               }
+            }, error => {
+              this.loadingProvider = false;
+              this.nppesError = true;
             })
           break;
         case 'f-name':
@@ -69,9 +78,15 @@ export class PatientMedicalComponent implements OnInit {
               if (providers === null) {
                 this.form.get('medical')?.get('providerName')?.setValue(null);
                 this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                this.prodiverNotfound = true
+                this.providers = [];
               } else {
+                this.prodiverNotfound = false
                 this.providers = providers
               }
+            }, error => {
+              this.loadingProvider = false;
+              this.nppesError = true;
             })
           break;
         case 'full-name':
@@ -89,9 +104,15 @@ export class PatientMedicalComponent implements OnInit {
                 if (providers === null) {
                   this.form.get('medical')?.get('providerName')?.setValue(null);
                   this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                  this.prodiverNotfound = true
+                  this.providers = [];
                 } else {
+                  this.prodiverNotfound = false
                   this.providers = providers
                 }
+              }, error => {
+                this.loadingProvider = false;
+                this.nppesError = true;
               })
             this.isReferringSearchNotValid = false;
             this.referringSearchErrorMessage = undefined;
@@ -100,23 +121,25 @@ export class PatientMedicalComponent implements OnInit {
         case 'npi':
           var npi: number = Number(referringSearch);
           if (Number.isNaN(referringSearch)) {
-            console.log('333333333333333333333333')
             this.loadingProvider = false
             this.isReferringSearchNotValid = true;
             this.referringSearchErrorMessage = 'Doctor NPI must be numbers only'
           }
           else {
             this.digitalIntakeService.findProviderByNPI(Number(referringSearch))
-            .subscribe(data => {
-              var providers = data.body;
-              this.loadingProvider = false
-              if (providers === null) {
-                this.form.get('medical')?.get('providerName')?.setValue(null);
-                this.form.get('medical')?.get('providerNPI')?.setValue(null);
-              } else {
-                this.providers = providers
-              }
-            })
+              .subscribe(data => {
+                var providers = data.body;
+                this.loadingProvider = false
+                if (providers === null) {
+                  this.form.get('medical')?.get('providerName')?.setValue(null);
+                  this.form.get('medical')?.get('providerNPI')?.setValue(null);
+                  this.prodiverNotfound = true
+                  this.providers = [];
+                } else {
+                  this.prodiverNotfound = false
+                  this.providers = providers
+                }
+              })
             this.isReferringSearchNotValid = false;
             this.referringSearchErrorMessage = undefined;
           }
@@ -144,5 +167,19 @@ export class PatientMedicalComponent implements OnInit {
   unpickProvider() {
     this.form.get('medical')?.get('providerName')?.setValue(null);
     this.form.get('medical')?.get('providerNPI')?.setValue(null);
+  }
+  onPhysicalTherapyNumberInput() {
+    let PhysicalTherapyNumber = this.form?.get('medical')?.get('PhysicalTherapyNumber')
+
+    if (PhysicalTherapyNumber) {
+      setTimeout(() => {
+        let value = PhysicalTherapyNumber?.value?.toString();
+        if (value === '0') {
+          PhysicalTherapyNumber?.setValue('', { emitEvent: false });
+        } else if (value?.startsWith('0') && value.length > 1) {
+          PhysicalTherapyNumber?.setValue(value.replace(/^0+/, ''), { emitEvent: false });
+        }
+      });
+    }
   }
 }

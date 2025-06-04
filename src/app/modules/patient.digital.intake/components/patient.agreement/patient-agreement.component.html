@@ -1,5 +1,5 @@
 <c-callout color="danger" *ngIf="isValidForm">
-    Please all mandatory agreements <strong class="text-danger">marked with red star</strong> before navigating to next
+    Please accept all mandatory agreements <strong class="text-danger">marked with red star</strong> before navigating to next
     step
 </c-callout>
 <div [formGroup]="form" class="mt-3">
@@ -13,7 +13,7 @@
                         </h5>
                     </button>
                 </ng-template>
-                <ng-template cTemplateId="accordionBodyTemplate">
+                <ng-template cTemplateId="accordionBodyTemplate">                    
                     <c-row>
                         <c-col xs="12">
                             <div [innerHTML]="agreement.agreementText" class="accordion-body">

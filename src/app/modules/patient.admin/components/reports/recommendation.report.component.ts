@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { IColumn, ISorterValue } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import * as moment from 'moment';
-import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, distinctUntilChanged, filter, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { PatientSearchCriteria } from 'src/app/models/reporting/patient.search.criteria';
 import { LocalService } from 'src/app/modules/common';
 import { IParams } from '../../models/pagination/params';
 import PatientSources from '../../models/patient.sources';
+import { ExportPatientSourceReportRequest } from '../../models/report/export.patient.source.report.request';
 import { ClinicService } from '../../services/clinic/clinic.service';
 import { IApiParams } from '../../services/patient-list.service';
 import { ISearchResult, PatientReportingService } from '../../services/patient.reporting.service';
@@ -22,15 +23,16 @@ interface PateintSourceSelects {
   styleUrls: ['./recommendation.report.component.css']
 })
 export class RecommendationReportComponent implements OnInit {
-  patientSources = PatientSources;
+  patientSources: any
   searchInputNotValid: boolean = false;
   errorMsg: string;
   patientSearchCriteria: PatientSearchCriteria = new PatientSearchCriteria();
   result: ISearchResult;
   patients$!: Observable<any[]>;
+  searchErrorMessage: string | undefined
   constructor(private patientReportingService: PatientReportingService,
     private clinicService: ClinicService,
-    private patientSourceReportingService:PatientSourceReportingService) { }
+    private patientSourceReportingService: PatientSourceReportingService) { }
 
   entityValues = entityValues;
   pateintSourceSelects: PateintSourceSelects[] = [
@@ -156,11 +158,17 @@ export class RecommendationReportComponent implements OnInit {
     this.loadingData$.next(true);
     this._apiParams = { ...apiParams };
     this.retry$.next(true);
-    
+
     this.apiParams$.next({ ...apiParams });
   }
   ngOnInit(): void {
-    this.patientSources = this.patientSources.map((source: any) => ({ ...source, selected: true }));
+    this.clinicService.selectedClinic$.pipe(
+      filter(clinicId => clinicId == null)
+    ).
+      subscribe(clinicId => {
+        this.patientSearchCriteria.clinicId = clinicId;
+      })
+
     this.result = {
       resultCount: 0,
       result: []
@@ -218,56 +226,83 @@ export class RecommendationReportComponent implements OnInit {
       this.patientSearchCriteria.endDate = null;
   }
 
-
+  private isValid(): boolean {
+    if (this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null)
+      return true;
+    else
+      return false;
+  }
   private requestSearchService() {
-     this.patients$ = this.clinicService.selectedClinic$.pipe(
-      tap(clinicid=>{
-        this.patientSearchCriteria.clinicId = clinicid
-      }),
-      switchMap(dd=>{
-        return this.patientSourceReportingService.search(this.apiParams$,this.patientSearchCriteria).pipe(
-          tap((response: any) => {
-            this.totalItems$.next(response.number_of_matching_records);
-            if (response.number_of_records) {
-              this.errorMessage$.next('');
-            }
-            this.retry$.next(false);
-            this.loadingData$.next(false);
-          }),
-          tap((response) => {
-            this.totalItems$.next(response.number_of_matching_records);
-            if (response.number_of_records) {
-              this.errorMessage$.next('');
-            }
-            this.retry$.next(false);
-            this.loadingData$.next(false);
-          }),
-          map((response) => {
-            console.log(JSON.stringify(response))
-            return response.records;
-          })
-        );
-      })
-    )
+    var isValidPatientSearchCriteria: boolean = this.isValid();
+    if (isValidPatientSearchCriteria) {
+      this.searchErrorMessage = undefined
+      this.cleanEmptyFields(this.patientSearchCriteria)
+      this.patients$ = this.clinicService.selectedClinic$.pipe(
+        tap(clinicid => {
+          this.patientSearchCriteria.clinicId = clinicid
+        }),
+        switchMap(dd => {
+          return this.patientSourceReportingService.search(this.apiParams$, this.patientSearchCriteria).pipe(
+            tap((response: any) => {
+              this.totalItems$.next(response.number_of_matching_records);
+              if (response.number_of_records) {
+                this.errorMessage$.next('');
+              }
+              this.retry$.next(false);
+              this.loadingData$.next(false);
+            }),
+            tap((response) => {
+              this.totalItems$.next(response.number_of_matching_records);
+              if (response.number_of_records) {
+                this.errorMessage$.next('');
+              }
+              this.retry$.next(false);
+              this.loadingData$.next(false);
+            }),
+            map((response) => {
+              return response.records;
+            })
+          );
+        })
+      )
+    } else {
+      this.searchErrorMessage = "Please select Patient Source type"
+    }
   }
   exportResult() {
-    const type:string | null | undefined  = this.patientSearchCriteria.sourceType;
-    this.patients$.subscribe(result=>{
-      this.patientReportingService.export(result,type).subscribe(
-        (response) => {
-          const a = document.createElement('a')
-          const objectUrl = URL.createObjectURL(response)
-          a.href = objectUrl
-          var nameDatePart = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-          a.download = 'patient-' + nameDatePart + '.xlsx';
-          a.click();
-          URL.revokeObjectURL(objectUrl);
-        },
-        (error) => {
-          console.log(error)
-        });
-    })
-    
+    var isValidPatientSearchCriteria: boolean = this.patientSearchCriteria.type !== null || this.patientSearchCriteria.sourceType !== null
+    if (isValidPatientSearchCriteria) {
+      this.cleanEmptyFields(this.patientSearchCriteria)
+      const type: string | null | undefined = this.patientSearchCriteria.sourceType;
+      this.patientSourceReportingService.searchAll(this.patientSearchCriteria).pipe(
+        map((response: any) => {
+          return response.body.records;
+        })
+      )
+        .subscribe((patients: any) => {
+
+          var request: ExportPatientSourceReportRequest = {
+            patients: patients,
+            type: type!,
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
+          }
+          this.patientReportingService.export(request).subscribe(
+            (response) => {
+              const a = document.createElement('a')
+              const objectUrl = URL.createObjectURL(response)
+              a.href = objectUrl
+              var nameDatePart = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+              a.download = 'patient-' + nameDatePart + '.xlsx';
+              a.click();
+              URL.revokeObjectURL(objectUrl);
+            },
+            (error) => {
+              console.log(error)
+            });
+        })
+    } else {
+      this.searchErrorMessage = "Please select Patient Source type"
+    }
   }
 
   private FillEmptyFieldsInSearchCriteria() {
@@ -303,8 +338,23 @@ export class RecommendationReportComponent implements OnInit {
   handleActivePageChange(page: number) {
     this.setActivePage(page);
   }
-  changeSources(event:any){
+  changeSources(event: any) {
     console.log(event)
     this.patientSearchCriteria.entityNames = event;
+  }
+  cleanEmptyFields(criteria: PatientSearchCriteria): void {
+    Object.keys(criteria).forEach((key) => {
+      const value = (criteria as any)[key];
+      if (value === '') {
+        (criteria as any)[key] = null;
+      }
+    });
+  }
+  changeSourceType() {
+    var orgignalPatientSources = PatientSources.map((source: any) => ({ ...source, selected: true }));
+    if (this.patientSearchCriteria.sourceType === 'direct')
+      this.patientSources = orgignalPatientSources.filter(source => source.entityValue !== 'referringDoctor')
+    else
+      this.patientSources = orgignalPatientSources;
   }
 }

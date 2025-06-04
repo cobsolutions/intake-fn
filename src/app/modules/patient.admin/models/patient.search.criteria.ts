@@ -10,4 +10,6 @@ export interface PatientSearchCriteria {
     isSchedule?:boolean | null
     startDate?:number
     endDate?:number
+    timeZone?:string
+    clinicId?:number| null
 }

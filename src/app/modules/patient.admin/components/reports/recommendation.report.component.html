@@ -7,9 +7,9 @@
                 <strong>Patients Source Reports</strong>
             </c-card-header>
             <c-card-body>
-                <p class="text-medium-emphasis small">
-                    The ability  to create patient reports using his/her source  inputs,
-                </p>
+                <div *ngIf="searchErrorMessage !==undefined" class="mb-2">
+                    <label class="text-danger fw-normal fst-italic">{{searchErrorMessage}}</label>
+                </div>
                 <c-callout color="danger" *ngIf="searchInputNotValid">
                     <span class="text-danger fw-bold">{{errorMsg}}</span>
                 </c-callout>
@@ -26,8 +26,8 @@
                                     <c-col class="mb-2" xs="12">
                                         <form cForm>
                                             <select cSelect cFormControl name="recommendation"
-                                                [(ngModel)]="patientSearchCriteria.sourceType">
-                                                <option value="null">Select Patient Source</option>
+                                                [(ngModel)]="patientSearchCriteria.sourceType" (change)="changeSourceType()">
+                                                <option value="null" disabled>Select Patient Source</option>
                                                 <option value="referring">Referring Provider</option>
                                                 <option value="direct">Direct Access</option>
                                             </select>

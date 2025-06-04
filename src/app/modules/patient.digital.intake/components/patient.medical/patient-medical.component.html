@@ -7,8 +7,7 @@
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <label><strong>How you heard about us? </strong><span
-                            class="text-danger">*</span></label>
+                    <label><strong>How you heard about us? </strong><span class="text-danger">*</span></label>
                 </label>
             </c-card-header>
             <c-card-body>
@@ -61,6 +60,15 @@
             </c-card-header>
             <c-card-body>
                 <div class="row height d-flex">
+                    <div class="col-md-12" *ngIf="nppesError">
+                        <label class="text-danger fw-normal fst-italic">{{nppesErrorMessage}} </label>
+                    </div>
+                    <div class="col-md-12" *ngIf="isReferringSearchNotValid">
+                        <label class="text-danger fw-normal fst-italic">{{referringSearchErrorMessage}} </label>
+                    </div>
+                    <div class="col-md-12" *ngIf="prodiverNotfound">
+                        <label class="text-danger fw-normal fst-italic">No Provider has been found</label>
+                    </div>
                     <div class="col-md-2">
                         <label></label>
                         <select cSelect formControlName="referringSearchType" sizing="sm" class="form-control"
@@ -80,22 +88,53 @@
                                 </label>
                             </span>
                         </label>
-                        <c-input-group sizing="sm">
-                            <input cFormControl placeholder="Doctor Name" formControlName="referringSearch">
-                            <span cInputGroupText>
-                                <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
-                                    [loading]="loadingProvider">
-                                    <svg cIcon name="cilSearch" title="cilUser"></svg>
-                                </button>
-                            </span>
-                        </c-input-group>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='full-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider Full Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='f-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider first Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='l-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider last Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='npi'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider NPI" formControlName="referringSearch"
+                                    type="number">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
                     </div>
-                    <div class="col-md-2" *ngIf="isReferringSearchNotValid">
-                        <label></label>
-                        <p class="text-danger">
-                            <strong>{{referringSearchErrorMessage}}</strong>
-                        </p>
-                    </div>
+
                     <div class="col-md-10 mb-2" *ngIf="providers">
                         <ng-autocomplete [itemTemplate]="itemTemplate" placeholder="Select.." [data]="providers"
                             [notFoundTemplate]="notFoundTemplate" (selected)="pickProvider($event)" [searchKeyword]="''"
@@ -207,6 +246,11 @@
                                 && this.form.get('medical')?.get('PhysicalTherapyLocation')?.touched}" maxlength="60"
                                 input-trimmer>
                         </c-col>
+                        <div *ngIf="this.form.get('medical')?.get('PhysicalTherapyLocation')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('PhysicalTherapyLocation')?.dirty ||this.form.get('medical')?.get('PhysicalTherapyLocation')?.touched)"
+                            class="text-danger mx-1">
+                            Location is required
+                        </div>
                     </c-row>
                     <c-row>
                         <c-col xs="12">
@@ -216,8 +260,14 @@
                             <input class="form-control" placeholder formControlName="PhysicalTherapyNumber" numbers
                                 onKeyDown="if(this.value.length==2 && event.keyCode!=8) return false;" cFormControl
                                 sizing="sm" [ngClass]="{'is-invalid': this.form.get('medical')?.get('PhysicalTherapyNumber')?.invalid
-                                && this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched}">
+                                && this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched}"
+                                (input)="onPhysicalTherapyNumberInput()">
                         </c-col>
+                        <div *ngIf="this.form.get('medical')?.get('PhysicalTherapyNumber')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('PhysicalTherapyNumber')?.dirty ||this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched)"
+                            class="text-danger mx-1">
+                            Number of visit is required
+                        </div>
                     </c-row>
                 </span>
                 <div *ngIf="this.form.get('medical')?.get('isReceivedPhysicalTherapy')?.errors?.['required'] === true && 

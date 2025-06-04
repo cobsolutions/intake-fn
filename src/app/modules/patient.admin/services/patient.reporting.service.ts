@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { PatientSearchCriteria } from 'src/app/models/reporting/patient.search.criteria';
 import { environment } from 'src/environments/environment';
 import { PatientChangesRecord } from '../models/monitor/patient.changes.record';
+import { ExportPatientSourceReportRequest } from '../models/report/export.patient.source.report.request';
 export interface IPatientResult {
   firstName: string;
   middleName: string;
@@ -39,10 +40,10 @@ export class PatientReportingService {
     return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(searchCriteria), { 'headers': headers })
   }
 
-  export(result: IPatientResult[], type: string| null | undefined) {
+  export(request: ExportPatientSourceReportRequest) {
     const headers = { 'content-type': 'application/json' }
-    const changePatientRequiredFieldsURL = this.baseUrl + 'generator/excel/type/' + type;
-    return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(result), { 'headers': headers, responseType: 'blob' })
+    const changePatientRequiredFieldsURL = this.baseUrl + 'generator/excel';
+    return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(request), { 'headers': headers, responseType: 'blob' })
   }
 
   exportPatientchanges(records: PatientChangesRecord[]) {

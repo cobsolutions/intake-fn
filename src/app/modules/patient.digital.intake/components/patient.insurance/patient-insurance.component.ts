@@ -51,15 +51,28 @@ export class PatientInsuranceComponent implements OnInit {
   ngOnInit(): void {
     this.componentReference.setPatientInsuranceComponent(this)
     this.getInsuranceCompanies();
-    this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
-      this.selectedInsuranceType = value;
-      if (value === 'SelfPay') {
+    this.form.get('insurance')?.get('selfPay')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.renderedPatientInsurances = []
+        this.patientInsurances = {
+          commercialInsurances: [],
+          workerCompensationInsurances: [],
+          medicareInsurance: [],
+          medicaidInsurance: [],
+        }
         var selfPay: SelfPay = {
           type: 'selfpay'
         }
         this.patientInsurances.selfPay = selfPay;
-        this.renderedPatientInsurances.push(selfPay)
+        this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
+        this.form.get('insurance')?.get('type')?.disable();
+      } else {
+        this.patientInsurances.selfPay = undefined
+        this.form.get('insurance')?.get('type')?.enable();
       }
+    })
+    this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
+      this.selectedInsuranceType = value;
     })
     this.dropdownSettings = {
       singleSelection: true,
@@ -75,6 +88,7 @@ export class PatientInsuranceComponent implements OnInit {
     if (this.form.get('insurance')?.valid) {
       this.isValidForm = false;
       this.addPatientIsnurance();
+      this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
     } else {
       this.isValidForm = true;
       ValidationExploder.explode(this.form, 'insurance')
@@ -85,7 +99,7 @@ export class PatientInsuranceComponent implements OnInit {
       InsuranceValidator.clearValidator(this.form)
       this.stepper.next();
       this.isValidForm = false;
-      this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
+      this.form.get('insurance')?.get('type')?.setValue(null);
     } else {
       this.isValidForm = true;
       ValidationExploder.explode(this.form, 'insurance')
@@ -107,8 +121,8 @@ export class PatientInsuranceComponent implements OnInit {
         var patientSecondaryCommercialInsurance: CommercialInsurance = {
           type: 'commercial',
           isSecondaryInsurance: true,
-          _frontcontrollName: 'comm_' + this.secondaryInsuranceCompanyForm?.value + '_front',
-          _backcontrollName: 'comm_' + this.secondaryInsuranceCompanyForm?.value + '_back',
+          _frontcontrollName: 'comm_' + this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].name + '_front',
+          _backcontrollName: 'comm_' + this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].name + '_back',
           insuranceCompanyId: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].id,
           insuranceCompanyName: this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.value[0].name,
           policyId: this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.value,
@@ -165,8 +179,8 @@ export class PatientInsuranceComponent implements OnInit {
     var patientCommercialInsurance: CommercialInsurance = {
       type: 'commercial',
       isSecondaryInsurance: false,
-      _frontcontrollName: 'comm_' + this.insuranceCompanyForm?.value + '_front',
-      _backcontrollName: 'comm_' + this.insuranceCompanyForm?.value + '_back',
+      _frontcontrollName: 'comm_' + this.form.get('insurance')?.get('commercial-insurance-company')?.value[0].name + '_front',
+      _backcontrollName: 'comm_' + this.form.get('insurance')?.get('commercial-insurance-company')?.value[0].name + '_back',
       memberId: this.form.get('insurance')?.get('commercial-member-id')?.value,
       policyId: this.form.get('insurance')?.get('commercial-ploicy-id')?.value,
       relationship: this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value,
@@ -219,7 +233,6 @@ export class PatientInsuranceComponent implements OnInit {
       })
   }
   remove(index: number, type: string) {
-    console.log('remove')
     const obj = this.renderedPatientInsurances[index];
     console.log(type)
     //commercial
@@ -261,6 +274,6 @@ export class PatientInsuranceComponent implements OnInit {
       this.patientInsurances.selfPay = undefined
     }
     this.renderedPatientInsurances.splice(index, 1);
+    this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
   }
-
 }

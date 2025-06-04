@@ -1,5 +1,5 @@
 <c-callout color="danger" *ngIf="isError">
-    <span class="text-danger fw-bold">Error during submitting . Please contact PT of City support </span>
+    <span class="text-danger fw-bold">{{errorMessage}} . Please contact PT of City support </span>
 </c-callout>
 <!--Essential Information-->
 <c-card class="mb-3 mt-3">
@@ -97,14 +97,13 @@
             <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.patientCondition">
                 <strong>
                     Conditions : </strong>
-                {{pateint.patientMedical?.patientMedicalHistory?.patientCondition | json}}
                 <li *ngFor="let condition of pateint.patientMedical?.patientMedicalHistory?.patientCondition">
                     {{condition.name}}
                 </li>
                 <br />
             </span>
             <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.scanningTest">
-                <strong>X-Ray</strong>
+                <strong>Imaging tests</strong>
                 <li *ngFor="let xVaue of pateint.patientMedical?.patientMedicalHistory?.scanningTestValue">
                     {{xVaue }}
                 </li>

@@ -27,6 +27,7 @@ export class PatientSummaryComponent implements OnInit {
   clinicId: string;
   submitting: boolean = false;
   isError: boolean = false;
+  errorMessage:string;
   constructor(private componentReference: ComponentReferenceComponentService
     , private digitalIntakeService: DigitalIntakeService
     , private router: Router
@@ -59,6 +60,7 @@ export class PatientSummaryComponent implements OnInit {
         this.isError = false;
         this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
       }, error => {
+        this.errorMessage = error.error.message
         this.submitting = false;
         this.isError = true;
         this.scrollUp();
@@ -171,8 +173,8 @@ export class PatientSummaryComponent implements OnInit {
       patientMedicalHistory.height = select.height
       patientMedicalHistory.heightUnit = select.heightUnit ? 'Inch' : 'cm'
       var height: string[] = this.calculateHeight(select.heightUnit, select.height)
-      patientMedicalHistory.height = height[0]
-      patientMedicalHistory.heightFT = height[1]
+      patientMedicalHistory.height = height[1]
+      patientMedicalHistory.heightFT = height[0]
       patientMedicalHistory.weight = select.weight
       patientMedicalHistory.weightUnit = select.weightUnit ? 'kg' : 'pound'
       var weight: string[] = this.calculateWeight(select.weightUnit, select.weight)
@@ -237,10 +239,10 @@ export class PatientSummaryComponent implements OnInit {
     switch (heightUnit) {
       case 'cm':
         height[0] = value;
-        height[1] = Number((Number(value) * 0.032808).toFixed(1)).toString();
+        height[1] = Number((Number(value) * 30.48).toFixed(1)).toString();
         break;
       case 'Inch':
-        height[0] = Math.round(Number(value) / 0.032808).toString();
+        height[0] = Math.round(Number(value) / 30.48).toString();
         height[1] = value;
         break;
     }
@@ -252,10 +254,10 @@ export class PatientSummaryComponent implements OnInit {
     switch (weightUnit) {
       case 'kg':
         weight[0] = value;
-        weight[1] = Number((Number(value) / 2.20462).toFixed(1)).toString();
+        weight[1] = Number((Number(value) * 2.20462).toFixed(1)).toString();
         break;
       case 'pound':
-        weight[0] = Math.round(Number(value) * 2.20462).toString()
+        weight[0] = Math.round(Number(value) / 2.20462).toString()
         weight[1] = value
         break;
     }

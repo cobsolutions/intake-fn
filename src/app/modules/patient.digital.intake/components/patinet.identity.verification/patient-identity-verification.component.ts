@@ -34,6 +34,7 @@ export class PatientIdentityVerificationComponent implements OnInit {
     this.patientUUID = uuidv4();
     this.digitalIntakeService.send(this.patientUUID, this.form.get('identity')?.get('pPhoneNumber')?.value)
       .subscribe(reuslt => {
+        console.log(reuslt)
         this.otpSent = true;
         this.message = 'OTP has been sent to your phone number.';
       })

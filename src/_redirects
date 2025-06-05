@@ -158,8 +158,6 @@
 /intake-service/api/devices/list/clinic-id/:clinicId https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/devices/list/clinic-id/:clinicId 200
 /intake-service/api/devices/list/clinic-id/:clinicId https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/devices/list/clinic-id/:clinicId 200
 /intake-service/api/devices/revoke/device-id/:deviceId https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/devices/revoke/device-id/:deviceId 200
-/intake-service/api/devices/revoke/device-id/:deviceId https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/devices/revoke/device-id/:deviceId 200
-/intake-service/api/devices/revoke/device-id/:deviceId https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/devices/revoke/device-id/:deviceId 200
 /intake-service/api/clinic https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/clinic 200
 /intake-service/api/clinic https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/clinic 200
 /intake-service/api/clinic https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/clinic 200

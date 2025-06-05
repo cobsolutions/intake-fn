@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { filter, Observable, tap } from 'rxjs';
 import { TrustDevice } from '../../../models/trust.device/trust.device';
 import { TrustDeviceService } from '../../../services/trust.device/trust-device.service';
@@ -16,7 +17,8 @@ export class ListTrustDevicesComponent implements OnInit {
   genertaeRequestVisibility: boolean = false;
   constructor(private trustDeviceService: TrustDeviceService,
     private websocketService: WebsocketService,
-    private cdRef: ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef,
+    private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.list();
@@ -48,6 +50,14 @@ export class ListTrustDevicesComponent implements OnInit {
     }, error => {
       if (error.error !== undefined)
         this.errorMessage = error.error.message;
+    })
+  }
+  public revoke(deviceId:string){
+    this.trustDeviceService.revoke(deviceId).subscribe(result=>{
+      this.list();
+      this.toastrService.success('Device deleted');
+    },error=>{
+      this.toastrService.success('Error during revoke device');
     })
   }
 }

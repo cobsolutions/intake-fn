@@ -25,7 +25,7 @@
                 <div class="device-date">Created At: {{ device.createdAt | date: 'MMM d, y' }}</div>
             </div>
             <div class="device-actions">
-                <button cButton color="danger" variant="outline">
+                <button cButton color="danger" variant="outline" (click)="revoke(device.deviceId)">
                     <svg cIcon name="cilTrash"></svg>
                 </button>
             </div>

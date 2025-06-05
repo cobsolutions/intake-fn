@@ -22,4 +22,8 @@ export class TrustDeviceService {
           .get<TrustDevice[]>(`${this.trustDeviceURL}` + '/list/clinic-id/' + clinicInfo.clinicUUID)
       ))
   }
+  public revoke(deviceId: string) {
+    var url = this.trustDeviceURL + "/revoke/device-id/" + deviceId
+    return this.http.delete(`${url}`)
+  }
 }

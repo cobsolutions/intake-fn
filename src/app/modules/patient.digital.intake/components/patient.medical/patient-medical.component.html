@@ -47,6 +47,34 @@
                 </c-row>
             </c-card-body>
         </c-card>
+        <!--Best Way to Contact You  -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <label><strong>What is the best way to contact you?</strong>
+                        <span class="text-danger"
+                            *ngIf="this.form.get('medical')?.get('referringEntity')?.value ==='referringDoctor'">*</span>
+                    </label>
+                </label>
+            </c-card-header>
+            <c-card-body>
+
+            </c-card-body>
+        </c-card>
+        <!--Best Way to Contact You  -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <label><strong>What is the best time to contact you?</strong>
+                        <span class="text-danger"
+                            *ngIf="this.form.get('medical')?.get('referringEntity')?.value ==='referringDoctor'">*</span>
+                    </label>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                
+            </c-card-body>
+        </c-card>
         <!--Referring Provider-->
         <c-card class="mb-2">
             <c-card-header>

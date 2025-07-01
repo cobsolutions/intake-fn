@@ -1,1 +1,48 @@
-<p>patient-contact-report works!</p>
+<ngx-spinner></ngx-spinner>
+<c-row>
+    <c-col xs="12" class="mb-4">
+        <c-card>
+            <c-card-header ngPreserveWhitespaces>
+                <strong>Patients Contact Report</strong>
+            </c-card-header>
+            <c-card-body>
+                <p class="text-medium-emphasis small">
+                    The ability to create patient reports using his/her contacts,
+                </p>
+                <form cForm>
+                    <c-row>
+                        <c-col xs="4" class="mb-2">
+                            <!--contact type-->
+                            <label>Contact Type</label>
+                            <form cForm>
+                                <select cSelect cFormControl name="contact_type" [(ngModel)]="contactType">
+                                    <option value="null" disabled>Select</option>
+                                    <option value="sms">Text Message (SMS)</option>
+                                    <option value="call">Phone Call</option>
+                                    <option value="email">Email</option>
+                                </select>
+                            </form>
+                        </c-col>
+                        <c-col xs="4" class="mb-2">
+                            <!--contact type-->
+                            <label>Contact Time</label>
+                            <form cForm>
+                                <select cSelect cFormControl name="contact_time" [(ngModel)]="contactTime">
+                                    <option value="null" disabled>Select</option>
+                                    <option value="morning">Morning (8 AM – 12 PM)</option>
+                                    <option value="afternoon">Afternoon (12 PM – 4 PM)</option>
+                                    <option value="evening">Evening (4 PM – 8 PM)</option>
+                                </select>
+                            </form>
+                        </c-col>
+                        <c-col xs="4" class="mb-2">
+                            <label>Patient</label>
+                            <input cFormControl [(ngModel)]="patientName" placeholder="Patient Name"
+                                name="patient_name" />
+                        </c-col>
+                    </c-row>
+                </form>
+            </c-card-body>
+        </c-card>
+    </c-col>
+</c-row>

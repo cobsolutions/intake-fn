@@ -44,7 +44,7 @@
                     <c-row>
                         <c-col xs="12" class="text-center">
                             <button cButton class="me-1" (click)="search()" color="primary" variant="outline"
-                                style="width: 15%;">
+                                style="width: 15%;" [disabled]="contactType ===null && contactTime ===null">
                                 Search
                             </button>
                         </c-col>
@@ -54,17 +54,19 @@
         </c-card>
     </c-col>
     <c-container class="text-end">
-        <button cButton variant="outline" (click)="exportResult()">Export Result
+        <button cButton variant="outline" (click)="exportResult()"
+            [disabled]="exportData ===undefined ||exportData.length === 0">Export Result
             <svg cIcon name="cilCloudDownload"></svg>
         </button>
     </c-container>
     <c-col xs="12">
         <ng-container *ngIf="props$ | async as props" fluid="true">
-            <c-smart-table [columns]="columns" [items]="(patientData$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
-                (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
-                [itemsPerPageSelect]="true" [columnFilterValue]="props.columnFilterValue?? []"
-                [sorterValue]="props.sorterValue" [tableProps]="{ hover: true, striped: true  }"
-                [tableBodyProps]="{ align: 'middle' }" (sorterValueChange)="handleSorterValueChange($event)" header>
+            <c-smart-table [columns]="columns" [items]="(patientData$ | async) ?? []"
+                [itemsPerPage]="props.itemsPerPage" (itemsPerPageChange)="handleItemsPerPageChange($event)"
+                [itemsPerPageOptions]="[5,10,20]" [itemsPerPageSelect]="true"
+                [columnFilterValue]="props.columnFilterValue?? []" [sorterValue]="props.sorterValue"
+                [tableProps]="{ hover: true, striped: true  }" [tableBodyProps]="{ align: 'middle' }"
+                (sorterValueChange)="handleSorterValueChange($event)" header>
                 <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
                     let-tdContent="tdContent">
                     <td>
@@ -80,7 +82,7 @@
                 </ng-template>
             </c-smart-table>
             <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
-            (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
+                (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
         </ng-container>
     </c-col>
 </c-row>

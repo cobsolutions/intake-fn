@@ -4,6 +4,7 @@ import { PatientSearchCriteria } from 'src/app/models/reporting/patient.search.c
 import { environment } from 'src/environments/environment';
 import { PatientChangesRecord } from '../models/monitor/patient.changes.record';
 import { ExportPatientSourceReportRequest } from '../models/report/export.patient.source.report.request';
+import { IUsers } from './patient-list.service';
 export interface IPatientResult {
   firstName: string;
   middleName: string;
@@ -49,6 +50,12 @@ export class PatientReportingService {
   exportPatientchanges(records: PatientChangesRecord[]) {
     const headers = { 'content-type': 'application/json' }
     const changePatientRequiredFieldsURL = this.baseUrl + 'generator/excel/changes'
+    return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(records), { 'headers': headers, responseType: 'blob' })
+  }
+  
+  exportPatientContact(records: IUsers[]) {
+    const headers = { 'content-type': 'application/json' }
+    const changePatientRequiredFieldsURL = this.baseUrl + 'generator/excel/contact'
     return this.httpClient.post(changePatientRequiredFieldsURL, JSON.stringify(records), { 'headers': headers, responseType: 'blob' })
   }
 

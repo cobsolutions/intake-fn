@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
+import * as moment from 'moment';
 import { map, Observable, tap } from 'rxjs';
 import { PatientContactSearchCriteria } from 'src/app/models/reporting/patient.contact.search.criteria';
 import { PaginationListTemplate } from 'src/app/modules/common/template/pagination.list.template';
 import { Clinic } from '../../../models/clinic.model';
 import { ClinicService } from '../../../services/clinic/clinic.service';
 import { IUsers } from '../../../services/patient-list.service';
+import { PatientReportingService } from '../../../services/patient.reporting.service';
 import { PatientSourceReportingService } from '../../../services/reporting/source/patient-source-reporting.service';
 
 @Component({
@@ -41,6 +43,7 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
     }
   ];
   constructor(private patientSourceReportingService:PatientSourceReportingService,
+    private patientReportingService: PatientReportingService,
     private clinicService:ClinicService) { super(); }
 
   ngOnInit(): void {
@@ -74,6 +77,7 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
         }),
         map((response: any) => {
           this.exportData = response.records;
+          console.log(JSON.stringify(this.exportData))
           return response.records;
         })
       )
@@ -81,7 +85,19 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
   
   }
   exportResult() {
-    throw new Error('Method not implemented.');
+    this.patientReportingService.exportPatientContact(this.exportData).subscribe(
+      (response) => {
+        const a = document.createElement('a')
+        const objectUrl = URL.createObjectURL(response)
+        a.href = objectUrl
+        var nameDatePart = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+        a.download = 'patient-' + nameDatePart + '.xlsx';
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      (error) => {
+        console.log(error)
+      });
   }
 
 }

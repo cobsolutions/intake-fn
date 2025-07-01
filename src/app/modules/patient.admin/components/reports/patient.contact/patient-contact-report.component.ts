@@ -18,4 +18,8 @@ export class PatientContactReportComponent implements OnInit {
   search() {
     throw new Error('Method not implemented.');
     }
+    exportResult() {
+      throw new Error('Method not implemented.');
+      }
+      
 }

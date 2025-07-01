@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./patient-contact-report.component.css']
 })
 export class PatientContactReportComponent implements OnInit {
+
   contactType: string|null = null;
   contactTime: string|null = null;
   patientName:string
@@ -14,5 +15,7 @@ export class PatientContactReportComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  search() {
+    throw new Error('Method not implemented.');
+    }
 }

@@ -39,7 +39,7 @@
                                     {{clinic.name}}</option>
                             </select>
                             <div *ngIf="searchForm.get('selectedClinic')?.invalid && searchForm.get('selectedClinic')?.touched"
-                                class="error">
+                                class="text-danger">
                                 Clinic is required
                             </div>
                         </c-col>
@@ -48,13 +48,13 @@
                             {{searchForm.get('startAt')?.invalid}}
                             <input type="date" formControlName="startAt" cFormControl />
                             <div *ngIf="searchForm.get('startAt')?.invalid && searchForm.get('startAt')?.touched"
-                                class="error">
+                                class="text-danger">
                                 Start date is required
                             </div>
                             <label>End At</label>
                             <input type="date" formControlName="endAt" cFormControl />
                             <div *ngIf="searchForm.get('endAt')?.invalid && searchForm.get('endAt')?.touched"
-                                class="error">
+                                class="text-danger">
                                 End date is required
                             </div>
                         </c-col>

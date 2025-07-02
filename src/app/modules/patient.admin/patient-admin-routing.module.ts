@@ -12,6 +12,7 @@ import { InsuranceCompanyListComponent } from './components/insurance.company/li
 import { PatientCreateComponent } from './components/patient.create/patient-create.component';
 import { PatientListComponent } from './components/patient.list/patient.list.component';
 import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
+import { PatientContactReportComponent } from './components/reports/patient.contact/patient-contact-report.component';
 import { RecommendationReportComponent } from './components/reports/recommendation.report.component';
 import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
 import { UserCreationComponent } from './components/user/create/user-creation.component';
@@ -144,6 +145,13 @@ const routes: Routes = [{
       component: ChnagesReportComponent,
       data: {
         title: 'Patient changes',
+      },
+    },
+    {
+      path: 'report/contact',
+      component: PatientContactReportComponent,
+      data: {
+        title: 'Patient Contact',
       },
     }
   ]

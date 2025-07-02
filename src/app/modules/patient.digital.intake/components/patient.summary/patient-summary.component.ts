@@ -146,6 +146,8 @@ export class PatientSummaryComponent implements OnInit {
     var patientPhysicalTherapy: PatientPhysicalTherapy = {}
     this.form.get('medical')?.valueChanges.forEach(selected => {
       patientMedical.appointmentBooking = selected.appointmentBooking;
+      patientMedical.communicationType = selected.communicationType;
+      patientMedical.communicationTime = selected.communicationTime
       patientMedical.primaryDoctor = selected.isPrimaryDoctor
       // patientMedical.familyResultSubmission = selected.isFamilyDoctorRequest
       this.pateint.patientMedical = patientMedical;

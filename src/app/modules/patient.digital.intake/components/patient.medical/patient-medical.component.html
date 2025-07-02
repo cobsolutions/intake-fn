@@ -47,6 +47,60 @@
                 </c-row>
             </c-card-body>
         </c-card>
+        <!--Best Way to Contact You  -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <label><strong>What is the best way to contact you?</strong>
+                        <span class="text-danger"> *</span>
+                    </label>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-input-group class="mb-1" sizing="sm">
+                    <select cSelect formControlName="communicationType" [ngClass]="{'is-invalid': this.form.get('medical')?.get('communicationType')?.invalid
+                    && this.form.get('medical')?.get('communicationType')?.touched}">
+                        <option value="null" disabled>Select</option>
+                        <option value="sms">Text Message (SMS)</option>
+                        <option value="call">Phone Call</option>
+                        <option value="email">Email</option>
+                        <option value="other">Other</option>
+                    </select>
+                </c-input-group>
+                <div *ngIf="this.form.get('medical')?.get('communicationType')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('communicationType')?.dirty ||this.form.get('medical')?.get('communicationType')?.touched)"
+                    class="text-danger mx-1">
+                    Contact Type is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--Best Way to Contact You  -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <label><strong>What is the best time to contact you?</strong>
+                        <span class="text-danger"> *</span>
+                    </label>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-input-group class="mb-1" sizing="sm">
+                    <select cSelect formControlName="communicationTime" [ngClass]="{'is-invalid': this.form.get('medical')?.get('communicationTime')?.invalid
+                    && this.form.get('medical')?.get('communicationTime')?.touched}">
+                        <option value="null" disabled>Select</option>
+                        <option value="morning">Morning (8 AM – 12 PM)</option>
+                        <option value="afternoon">Afternoon (12 PM – 4 PM)</option>
+                        <option value="evening">Evening (4 PM – 8 PM)</option>
+                        <option value="other">Other</option>
+                    </select>
+                </c-input-group>
+                <div *ngIf="this.form.get('medical')?.get('communicationTime')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('communicationTime')?.dirty ||this.form.get('medical')?.get('communicationTime')?.touched)"
+                    class="text-danger mx-1">
+                    Contact Time is required
+                </div>
+            </c-card-body>
+        </c-card>
         <!--Referring Provider-->
         <c-card class="mb-2">
             <c-card-header>

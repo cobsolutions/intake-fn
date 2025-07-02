@@ -104,6 +104,8 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'isReceivedPhysicalTherapy': new FormControl(null, [Validators.required]),
         'PhysicalTherapyLocation': new FormControl(null),
         'PhysicalTherapyNumber': new FormControl(null),
+        'communicationType': new FormControl(null,[Validators.required]),
+        'communicationTime': new FormControl(null,[Validators.required]),
       }),
       'medicalhistory': new FormGroup({
         'height': new FormControl(null, [Validators.required]),

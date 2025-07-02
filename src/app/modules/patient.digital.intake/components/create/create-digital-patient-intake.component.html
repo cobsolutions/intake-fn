@@ -4,56 +4,56 @@
         <c-card-body>
             <form [formGroup]="patientForm">
                 <mat-stepper linear="true" #stepper [orientation]="stepperOrientation" (selectionChange)="onStepChange($event)">
-                    <mat-step [stepControl]="patientForm.get('consent')!" formGroupName="consent" completed="false">
+                    <mat-step [stepControl]="patientForm.get('consent')!" formGroupName="consent" completed="true">
                         <ng-template matStepLabel>Consent</ng-template>
                         <patient-consent [form]="patientForm" [stepper]="patientStepper"></patient-consent>
                     </mat-step>
-                    <mat-step [stepControl]="patientForm.get('identity')!" formGroupName="identity" completed="false">
+                    <mat-step [stepControl]="patientForm.get('identity')!" formGroupName="identity" completed="true">
                         <ng-template matStepLabel>Identity Verification</ng-template>
                         <patient-identity-verification [form]="patientForm" [stepper]="patientStepper">
                         </patient-identity-verification>
                     </mat-step>
-                    <mat-step [stepControl]="patientForm.get('bio')!" formGroupName="bio" completed="false">
+                    <mat-step [stepControl]="patientForm.get('bio')!" formGroupName="bio" completed="true">
                         <ng-template matStepLabel>Photo</ng-template>
                         <patient-biometric-identification [form]="patientForm" [isActive]="activeStepIndex"
                             [stepper]="patientStepper"></patient-biometric-identification>
                     </mat-step>
-                    <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="false">
+                    <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="true">
                         <ng-template matStepLabel>Essential</ng-template>
                         <!-- <ng-template matStepLabel><svg cIcon name="cilUser" size="xxl"></svg></ng-template> -->
                         <patient-basic [form]="patientForm" [stepper]="patientStepper"></patient-basic>
                     </mat-step>
-                    <mat-step completed="false" [stepControl]="patientForm.get('address')!" formGroupName="address">
+                    <mat-step completed="true" [stepControl]="patientForm.get('address')!" formGroupName="address">
                         <ng-template matStepLabel>Address</ng-template>
                         <patient-address [form]="patientForm" [stepper]="patientStepper"></patient-address>
                     </mat-step>
-                    <mat-step completed="false" [stepControl]="patientForm.get('medical')!" formGroupName="medical">
+                    <mat-step completed="true" [stepControl]="patientForm.get('medical')!" formGroupName="medical">
                         <ng-template matStepLabel>Medical</ng-template>
                         <patient-medical [form]="patientForm" [stepper]="patientStepper"></patient-medical>
                     </mat-step>
-                    <mat-step completed="false" [stepControl]="patientForm.get('medicalhistory')!"
+                    <mat-step completed="true" [stepControl]="patientForm.get('medicalhistory')!"
                         formGroupName="medicalhistory">
                         <ng-template matStepLabel>Medical History</ng-template>
                         <patient-medical-history [form]="patientForm"
                             [stepper]="patientStepper"></patient-medical-history>
                     </mat-step>
-                    <mat-step completed="false" [stepControl]="patientForm.get('insurance')!" formGroupName="insurance">
+                    <mat-step completed="true" [stepControl]="patientForm.get('insurance')!" formGroupName="insurance">
                         <ng-template matStepLabel>Insurance</ng-template>
                         <patient-insurance [form]="patientForm" [stepper]="patientStepper"></patient-insurance>
                     </mat-step>
-                    <mat-step completed="false" [stepControl]="patientForm.get('agreement')!" formGroupName="agreement">
+                    <mat-step completed="true" [stepControl]="patientForm.get('agreement')!" formGroupName="agreement">
                         <ng-template matStepLabel>Agreements</ng-template>
                         <patient-agreement [form]="patientForm" [stepper]="patientStepper"></patient-agreement>
                     </mat-step>
-                    <mat-step completed="false" [stepControl]="patientForm.get('signature')!" formGroupName="signature">
+                    <mat-step completed="true" [stepControl]="patientForm.get('signature')!" formGroupName="signature">
                         <ng-template matStepLabel>Signature</ng-template>
                         <patient-signature [form]="patientForm" [stepper]="patientStepper"></patient-signature>
                     </mat-step>
-                    <mat-step completed="false" [stepControl]="patientForm.get('document')!" formGroupName="document">
+                    <mat-step completed="true" [stepControl]="patientForm.get('document')!" formGroupName="document">
                         <ng-template matStepLabel>Documents</ng-template>
                         <patient-document [form]="patientForm" [stepper]="patientStepper"></patient-document>
                     </mat-step>
-                    <mat-step completed="false">
+                    <mat-step completed="true">
                         <ng-template matStepLabel>Summary</ng-template>
                         <patient-summary [form]="patientForm"></patient-summary>
                     </mat-step>

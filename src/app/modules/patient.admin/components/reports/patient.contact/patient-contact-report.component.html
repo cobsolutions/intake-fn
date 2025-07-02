@@ -9,47 +9,54 @@
                 <p class="text-medium-emphasis small">
                     The ability to create patient reports using his/her contacts,
                 </p>
-                <form cForm>
+                <form [formGroup]="searchForm" (ngSubmit)="search()" class="search-form">
                     <c-row>
-                        <c-col xs="4" class="mb-2">
-                            <!--contact type-->
+                        <c-col xs="12" class="mb-2">
                             <label>Contact Type</label>
-                            <form cForm>
-                                <select cSelect cFormControl name="contact_type" [(ngModel)]="contactType">
-                                    <option value="null" disabled>Select</option>
-                                    <option value="sms">Text Message (SMS)</option>
-                                    <option value="call">Phone Call</option>
-                                    <option value="email">Email</option>
-                                </select>
-                            </form>
+                            <select formControlName="contactType" cSelect>
+                                <option *ngFor="let type of contactTypes" [value]="type.value">
+                                  {{ type.label }}
+                                </option>
+                              </select>
                         </c-col>
-                        <c-col xs="4" class="mb-2">
-                            <!--contact type-->
+                        <c-col xs="12" class="mb-2">
                             <label>Contact Time</label>
-                            <form cForm>
-                                <select cSelect cFormControl name="contact_time" [(ngModel)]="contactTime">
-                                    <option value="null" disabled>Select</option>
-                                    <option value="morning">Morning (8 AM – 12 PM)</option>
-                                    <option value="afternoon">Afternoon (12 PM – 4 PM)</option>
-                                    <option value="evening">Evening (4 PM – 8 PM)</option>
-                                </select>
-                            </form>
+                            <select formControlName="contactTime" cSelect>
+                                <option *ngFor="let time of contactTimes" [value]="time.value">
+                                  {{ time.label }}
+                                </option>
+                              </select>
                         </c-col>
-                        <c-col xs="4" class="mb-2">
-                            <label>Patient</label>
-                            <input cFormControl [(ngModel)]="patientName" placeholder="Patient Name"
-                                name="patient_name" />
+                        <c-col xs="12" class="mb-2">
+                            <label>Patient Name</label>
+                            <input type="text" formControlName="patientName" cFormControl />
+                        </c-col>
+                        <c-col xs="12" class="mb-2">
+                            <label>Start At</label>
+                            {{searchForm.get('startAt')?.invalid}}
+                            <input type="date" formControlName="startAt" cFormControl />
+                            <div *ngIf="searchForm.get('startAt')?.invalid && searchForm.get('startAt')?.touched"
+                                class="error">
+                                Start date is required
+                            </div>
+                            <label>End At</label>
+                            <input type="date" formControlName="endAt" cFormControl />
+                            <div *ngIf="searchForm.get('endAt')?.invalid && searchForm.get('endAt')?.touched"
+                                class="error">
+                                End date is required
+                            </div>
                         </c-col>
                     </c-row>
                     <c-row>
                         <c-col xs="12" class="text-center">
-                            <button cButton class="me-1" (click)="search()" color="primary" variant="outline"
-                                style="width: 15%;" [disabled]="contactType ===null && contactTime ===null">
+                            <button cButton class="me-1"  color="primary" variant="outline"  type="submit"
+                                 style="width: 15%;">
                                 Search
                             </button>
                         </c-col>
                     </c-row>
                 </form>
+
             </c-card-body>
         </c-card>
     </c-col>

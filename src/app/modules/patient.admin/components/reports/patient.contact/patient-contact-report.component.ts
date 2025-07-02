@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { IColumn } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import * as moment from 'moment';
 import { map, Observable, tap } from 'rxjs';
@@ -20,10 +21,25 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
   contactType: string | null = null;
   contactTime: string | null = null;
   patientName: string
-  clinics: Clinic[]
-  selectedClinic: number;
+
+
+  //New Search Citeria 
+  searchForm!: FormGroup;
+  contactTypes = [
+    { label: 'All', value: null },
+    { label: 'Text Message (SMS)', value: 'sms' },
+    { label: 'Phone Call', value: 'call' },
+    { label: 'Email', value: 'email' }
+  ];
+
+  contactTimes = [
+    { label: 'All', value: null },
+    { label: 'Morning (8 AM – 12 PM)', value: 'morning' },
+    { label: 'Afternoon (12 PM – 4 PM)', value: 'afternoon' },
+    { label: 'Evening (4 PM – 8 PM)', value: 'evening' }
+  ];
   patientData$!: Observable<IUsers[]>;
-  exportData : IUsers[];
+  exportData: IUsers[];
   readonly columns: (string | IColumn)[] = [
     {
       key: 'patientName',
@@ -42,28 +58,59 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
       label: 'Gender'
     }
   ];
-  constructor(private patientSourceReportingService:PatientSourceReportingService,
+  constructor(private patientSourceReportingService: PatientSourceReportingService,
     private patientReportingService: PatientReportingService,
-    private clinicService:ClinicService) { super(); }
+    private clinicService: ClinicService,
+    private fb: FormBuilder) { super(); }
 
   ngOnInit(): void {
-    this.clinicService.get().pipe(
-      map(result => result.body)
-    )
-      .subscribe((clinics: any) => {
-        this.clinics = clinics
-        if (this.clinics[0].id !== null)
-          this.selectedClinic = this.clinics[0].id
-      })
+    this.searchForm = this.fb.group(
+      {
+        contactType: [null],
+        contactTime: [null],
+        patientName: [''],
+        startAt: [null, Validators.required],
+        endAt: [null, Validators.required]
+      },
+      { validators: this.dateRangeValidator }
+    );
     this.initListComponent();
   }
-  search() {
-    var criteria:PatientContactSearchCriteria={
-      name:this.patientName === undefined || this.patientName ==='' ?null:this.patientName,
-      contactType:this.contactType!,
-      contactTime:this.contactTime!,
-      clinicId: this.selectedClinic
+  dateRangeValidator(group: AbstractControl): ValidationErrors | null {
+    const start = group.get('startAt')?.value;
+    const end = group.get('endAt')?.value;
+
+    if (!start || !end || start.trim?.() === '' || end.trim?.() === '') {
+      return { dateRangeRequired: true };
     }
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return { dateRangeInvalid: true };
+    }
+
+    if (startDate > endDate) {
+      return { dateRangeInvalid: true };
+    }
+
+    return null;
+  }
+
+  search() {
+    this.searchForm.markAllAsTouched();
+    if (this.searchForm.invalid) {
+      console.warn('❌ Form is invalid');
+      return; // ⛔ Prevent logic execution
+    }
+    console.log('Search criteria:', this.searchForm.value);
+    var criteria: PatientContactSearchCriteria = {
+      name: this.searchForm.value.patientName,
+      contactType: this.searchForm.value.contactType,
+      contactTime: this.searchForm.value.contactTime,
+    }
+    this.formatDate(criteria)
      this.clinicService.selectedClinic$.subscribe(clinicId => {
       criteria.clinicId = clinicId!
       this.patientData$ =  this.patientSourceReportingService.findByContact(this.apiParams$, criteria).pipe(
@@ -82,7 +129,7 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
         })
       )
     })
-  
+
   }
   exportResult() {
     this.patientReportingService.exportPatientContact(this.exportData).subscribe(
@@ -99,5 +146,22 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
         console.log(error)
       });
   }
-
+  private formatDate(criteria: PatientContactSearchCriteria): void {
+    let startDateLong = 0;
+    let endDateLong = 0;
+  
+    const startAt = this.searchForm.get('startAt')?.value;
+    const endAt = this.searchForm.get('endAt')?.value;
+  
+    if (startAt) {
+      startDateLong = moment(startAt).startOf('day').valueOf();
+    }
+  
+    if (endAt) {
+      endDateLong = moment(endAt).endOf('day').valueOf();
+    }
+    criteria.startTime=startDateLong
+    criteria.endTime = endDateLong
+  }
+  
 }

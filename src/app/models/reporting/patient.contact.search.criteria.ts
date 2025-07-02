@@ -3,5 +3,7 @@ export interface PatientContactSearchCriteria{
     contactType?:string,
     contactTime?:string,
     clinicId?:number
+    startTime?:number,
+    endTime?:number
 
 }

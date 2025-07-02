@@ -17,10 +17,8 @@ import { PatientSourceReportingService } from '../../../services/reporting/sourc
   styleUrls: ['./patient-contact-report.component.css']
 })
 export class PatientContactReportComponent extends PaginationListTemplate implements OnInit {
-
-  contactType: string | null = null;
-  contactTime: string | null = null;
-  patientName: string
+  clinics: Clinic[]
+  selectedClinic: number;
 
 
   //New Search Citeria 
@@ -70,10 +68,19 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
         contactTime: [null],
         patientName: [''],
         startAt: [null, Validators.required],
-        endAt: [null, Validators.required]
+        endAt: [null, Validators.required],
+        selectedClinic:[null,Validators.required]
       },
       { validators: this.dateRangeValidator }
     );
+    this.clinicService.get().pipe(
+      map(result => result.body)
+    )
+      .subscribe((clinics: any) => {
+        this.clinics = clinics
+        if (this.clinics[0].id !== null)
+          this.selectedClinic = this.clinics[0].id
+      })
     this.initListComponent();
   }
   dateRangeValidator(group: AbstractControl): ValidationErrors | null {
@@ -109,26 +116,24 @@ export class PatientContactReportComponent extends PaginationListTemplate implem
       name: this.searchForm.value.patientName,
       contactType: this.searchForm.value.contactType,
       contactTime: this.searchForm.value.contactTime,
+      clinicId : this.searchForm.value.selectedClinic
     }
     this.formatDate(criteria)
-     this.clinicService.selectedClinic$.subscribe(clinicId => {
-      criteria.clinicId = clinicId!
-      this.patientData$ =  this.patientSourceReportingService.findByContact(this.apiParams$, criteria).pipe(
-        tap((response: any) => {
-          this.totalItems$.next(response.number_of_matching_records);
-          if (response.number_of_records) {
-            this.errorMessage$.next('');
-          }
-          this.retry$.next(false);
-          this.loadingData$.next(false);
-        }),
-        map((response: any) => {
-          this.exportData = response.records;
-          console.log(JSON.stringify(this.exportData))
-          return response.records;
-        })
-      )
-    })
+    this.patientData$ =  this.patientSourceReportingService.findByContact(this.apiParams$, criteria).pipe(
+      tap((response: any) => {
+        this.totalItems$.next(response.number_of_matching_records);
+        if (response.number_of_records) {
+          this.errorMessage$.next('');
+        }
+        this.retry$.next(false);
+        this.loadingData$.next(false);
+      }),
+      map((response: any) => {
+        this.exportData = response.records;
+        console.log(JSON.stringify(this.exportData))
+        return response.records;
+      })
+    )
 
   }
   exportResult() {

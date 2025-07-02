@@ -31,7 +31,7 @@
                         </c-col>
                         <c-col xs="4" class="mb-2" *ngIf="clinics">
                             <label>Clinic</label>
-                            <select cSelect cFormControl name="clinic" [(ngModel)]="selectedClinic">
+                            <select cSelect cFormControl name="clinic" [(ngModel)]="selectedClinic" >
                                 <option *ngFor="let clinic of clinics" [value]="clinic.id">
                                     {{clinic.name}}</option>
                             </select>

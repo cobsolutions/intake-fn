@@ -31,6 +31,18 @@
                             <label>Patient Name</label>
                             <input type="text" formControlName="patientName" cFormControl />
                         </c-col>
+                        <c-col xs="12" class="mb-2" *ngIf="clinics">
+                            <label>Clinic</label>
+                            <select cSelect cFormControl name="clinic"  formControlName="selectedClinic">
+                                <option [value]="null">Select Clinic</option>
+                                <option *ngFor="let clinic of clinics" [value]="clinic.id">
+                                    {{clinic.name}}</option>
+                            </select>
+                            <div *ngIf="searchForm.get('selectedClinic')?.invalid && searchForm.get('selectedClinic')?.touched"
+                                class="error">
+                                Clinic is required
+                            </div>
+                        </c-col>
                         <c-col xs="12" class="mb-2">
                             <label>Start At</label>
                             {{searchForm.get('startAt')?.invalid}}

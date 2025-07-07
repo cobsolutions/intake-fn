@@ -92,7 +92,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       }),
       'medical': new FormGroup({
         'providerSearch': new FormControl(false),
-        'referringSearchType': new FormControl("l-name"),
+        'referringSearchType': new FormControl("npi"),
         'referringSearch': new FormControl(null),
         'providerSearchName': new FormControl(null),
         'providerName': new FormControl(null),

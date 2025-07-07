@@ -1,3 +1,48 @@
 .danger {
     border: 1px solid red;
   }
+  select[formControlName="gender"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="gender"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+
+  select[formControlName="marital"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="marital"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+
+  select[formControlName="phoneType"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="phoneType"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+  
+
+  select[formControlName="employment"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="employment"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+
+  select[formControlName="emergencyContact"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="emergencyContact"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }

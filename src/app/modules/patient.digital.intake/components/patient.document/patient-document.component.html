@@ -80,18 +80,18 @@
                         </td>
                         <td>
                             <c-row>
-                                <c-col xs="6">
+                                <div class="col-md-auto">
                                     <label class="form-label" style="font-size: medium;">Front</label>
                                     <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1" placeholder="Front"
                                         [formControlName]="patientInsurance._frontcontrollName"
                                         (change)="onImageUpload($event ,patientInsurance._frontcontrollName,patientInsurance._frontcontrollName)" />
-                                </c-col>
-                                <c-col xs="6">
+                                </div>
+                                <div class="col-md-auto">
                                     <label class="form-label" style="font-size: medium;">Back</label>
                                     <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1" placeholder="Back"
                                         [formControlName]="patientInsurance._backcontrollName"
                                         (change)="onImageUpload($event ,patientInsurance._backcontrollName,patientInsurance._backcontrollName)" />
-                                </c-col>
+                                </div>
                             </c-row>
                         </td>
                     </tr>

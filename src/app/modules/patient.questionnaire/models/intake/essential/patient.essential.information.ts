@@ -11,6 +11,7 @@ export interface PatientEssentialInformation {
     birthDate_date?:Date;
     birthDate_str?:string
     gender?: string;
+    genderDescribe?:string
     patientPhone?: PatientPhone;
     email?: string;
     maritalStatus?: string;

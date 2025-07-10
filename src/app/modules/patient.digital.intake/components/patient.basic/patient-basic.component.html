@@ -50,7 +50,7 @@
                 <label style="width: 150px;">Date Of Birth <span class="text-danger">*</span></label>
             </c-col>
             <c-col xl="12">
-                <input type="date" cFormControl sizing="sm" formControlName="dob">                
+                <input type="date" cFormControl sizing="sm" formControlName="dob">
             </c-col>
             <div *ngIf="this.form.get('basic')?.get('dob')?.errors?.['required'] && 
             (this.form.get('basic')?.get('dob')?.dirty ||this.form.get('basic')?.get('dob')?.touched)"
@@ -146,7 +146,7 @@
                 <label for="dsds" class="form-label" style="font-size: medium;">Gender<span
                         class="text-danger">*</span></label>
             </c-col>
-            <c-col xl="12">
+            <c-col xl="12" class="mb-1">
                 <select cSelect sizing="sm" formControlName="gender" [ngClass]="{'is-invalid': this.form.get('basic')?.get('gender')?.invalid
                 && this.form.get('basic')?.get('gender')?.touched}">
                     <option value="null" disabled>Select Gender</option>
@@ -158,12 +158,21 @@
                 </select>
             </c-col>
             <div *ngIf="!this.form.get('basic')?.get('gender')?.valid && 
-            (this.form.get('basic')?.get('gender')?.touched)" class="text-danger mx-1">
+            (this.form.get('basic')?.get('gender')?.touched)" class="text-danger mx-1 mb-1">
                 Gender is required
+            </div>
+            <c-col xl="12" *ngIf="this.form.get('basic')?.get('gender')?.value ==='Self_Describe'">
+                <input cFormControl class="form-control" [placeholder]="'To Self Describe'"
+                    formControlName="genderDescribe" sizing="sm" [ngClass]="{'is-invalid': this.form.get('basic')?.get('genderDescribe')?.invalid
+                    && this.form.get('basic')?.get('genderDescribe')?.touched}">
+            </c-col>
+            <div *ngIf="!this.form.get('basic')?.get('genderDescribe')?.valid && 
+            (this.form.get('basic')?.get('genderDescribe')?.touched)" class="text-danger mx-1 mb-1">
+                Self Describe required
             </div>
         </c-row>
         <!--Marital Status-->
-        <c-row class="mb-1">
+        <c-row class=" mb-1">
             <c-col xl="12">
                 <label style="width: 150px;">Marital Status <span class="text-danger">*</span></label>
             </c-col>

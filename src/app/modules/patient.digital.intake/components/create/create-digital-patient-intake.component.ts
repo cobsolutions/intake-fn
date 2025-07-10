@@ -67,6 +67,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'lastName': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
         'dob': new FormControl(null, [Validators.required, todayDOBValidator(), futureDateValidator(), maxDateValidator()]),
         'gender': new FormControl(null, [Validators.required]),
+        'genderDescribe': new FormControl(null),
         'marital': new FormControl(null, [Validators.required]),
         'phoneType': new FormControl(null, [Validators.required]),
         'phone': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),
@@ -92,7 +93,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       }),
       'medical': new FormGroup({
         'providerSearch': new FormControl(false),
-        'referringSearchType': new FormControl("l-name"),
+        'referringSearchType': new FormControl("npi"),
         'referringSearch': new FormControl(null),
         'providerSearchName': new FormControl(null),
         'providerName': new FormControl(null),
@@ -104,8 +105,8 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'isReceivedPhysicalTherapy': new FormControl(null, [Validators.required]),
         'PhysicalTherapyLocation': new FormControl(null),
         'PhysicalTherapyNumber': new FormControl(null),
-        'communicationType': new FormControl(null,[Validators.required]),
-        'communicationTime': new FormControl(null,[Validators.required]),
+        'communicationType': new FormControl(null, [Validators.required]),
+        'communicationTime': new FormControl(null, [Validators.required]),
       }),
       'medicalhistory': new FormGroup({
         'height': new FormControl(null, [Validators.required]),
@@ -126,7 +127,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       }),
       'insurance': new FormGroup({
         'type': new FormControl(null, [Validators.required]),
-        'selfPay':new FormControl(false),
+        'selfPay': new FormControl(false),
         'compensation-related-injury': new FormControl(null),
         'compensation-accident-date': new FormControl(null),
         'compensation-wroker-status': new FormControl(null),
@@ -172,6 +173,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     this.setXRayValidator();
     this.setReferringEntityOtherValidator();
     this.setMedicalPhysicalTherapyVisitsValidator()
+    this.setGenederDescribeValidator();
     PatientSourceValidator.addValidator(this.patientForm);
     PrescriptionValidator.addValidator(this.patientForm)
     XRayValidator.addValidator(this.patientForm)
@@ -225,6 +227,18 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         this.patientForm.get('medical')?.get('PhysicalTherapyNumber')?.clearValidators();
         this.patientForm.get('medical')?.get('PhysicalTherapyNumber')?.setErrors(null);
         this.patientForm.get('medical')?.get('PhysicalTherapyNumber')?.updateValueAndValidity();
+      }
+    })
+  }
+  private setGenederDescribeValidator() {
+    this.patientForm.get('basic')?.get('gender')?.valueChanges.subscribe((value: any) => {
+      if (value === 'Self_Describe') {
+        this.patientForm.get('basic')?.get('genderDescribe')?.setValidators(Validators.required)
+      } else {        
+        this.patientForm.get('basic')?.get('genderDescribe')?.clearValidators();
+        this.patientForm.get('basic')?.get('genderDescribe')?.setErrors(null);
+        this.patientForm.get('basic')?.get('genderDescribe')?.updateValueAndValidity();
+        this.patientForm.get('basic')?.get('genderDescribe')?.setValue(null)
       }
     })
   }

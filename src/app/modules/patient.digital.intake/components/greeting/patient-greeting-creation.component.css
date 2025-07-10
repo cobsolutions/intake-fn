@@ -1,29 +1,47 @@
-body{margin-top:20px;}
-.mail-seccess {
-    text-align: center;
-	background: #fff;
-	border-top: 1px solid #eee;
+.checkmark{
+	font-size:70px
 }
-.mail-seccess .success-inner {
-	display: inline-block;
-}
-.mail-seccess .success-inner h1 {
-	font-size: 100px;
-	text-shadow: 3px 5px 2px #3333;
-	color: #006DFE;
-	font-weight: 700;
-}
-.mail-seccess .success-inner h1 span {
-	display: block;
-	font-size: 25px;
-	color: #333;
-	font-weight: 600;
-	text-shadow: none;
-	margin-top: 20px;
-}
-.mail-seccess .success-inner p {
-	padding: 20px 15px;
-}
-.mail-seccess .success-inner .btn{
-	color:#fff;
-}
+.success-message-section {
+	min-height: 100vh;
+	background: linear-gradient(to right, #f8f9fa, #e9f1ff);
+  }
+  
+  .success-box {
+	max-width: 600px;
+	margin: auto;
+	animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .icon-circle {
+	background-color: #28a745;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	animation: popIn 0.5s ease;
+  }
+  
+  @keyframes fadeInUp {
+	from {
+	  transform: translateY(30px);
+	  opacity: 0;
+	}
+	to {
+	  transform: translateY(0);
+	  opacity: 1;
+	}
+  }
+  
+  @keyframes popIn {
+	0% {
+	  transform: scale(0.2);
+	  opacity: 0;
+	}
+	100% {
+	  transform: scale(1);
+	  opacity: 1;
+	}
+  }
+  

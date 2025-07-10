@@ -52,7 +52,7 @@ export class PatientSignatureComponent implements OnInit, AfterViewInit {
       this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('firstname')?.valueChanges,
       this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('lastName')?.valueChanges
     ]).subscribe((pName: any) => {
-      this.patientFullName = pName[0] + ' ' + pName[1]
+      this.patientFullName = this.capitalizeFirstLetter(pName[0]) + ' ' + this.capitalizeFirstLetter(pName[1])
     })
 
     this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('dob')!.valueChanges.subscribe(dob => {

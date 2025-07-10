@@ -11,6 +11,9 @@
             <br />
             <strong>Date Of Birth : </strong> {{pateint.patientEssentialInformation?.birthDate_str}}<br />
             <strong>Gender : </strong> {{pateint.patientEssentialInformation?.gender}}<br />
+            <span *ngIf="pateint.patientEssentialInformation?.gender ==='Self_Describe'">
+                <strong>Gender Describe: </strong> {{pateint.patientEssentialInformation?.genderDescribe}}<br />
+            </span>
             <strong>Marital Status : </strong> {{pateint.patientEssentialInformation?.maritalStatus}}<br />
             <strong>Phone : </strong> {{pateint.patientEssentialInformation?.patientPhone?.phoneType}} :
             {{pateint.patientEssentialInformation?.patientPhone?.phone}}<br />

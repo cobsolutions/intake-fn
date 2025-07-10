@@ -31,6 +31,7 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
       this.agreements = response.body;
       if (this.agreements !== null)
         for (let i = 0; i < this.agreements.length; i++) {
+          this.agreements[i].accept = false;
           if (this.agreements[i].id === 1)
             this.agreements[i].visible = true
           else
@@ -71,13 +72,14 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
     });
     return values;
   }
-  acceptConcent(agreement: AgreementHolder) {
+  acceptConcent(agreement: AgreementHolder, event:any) {
     if (this.agreements !== null)
       for (let i = 0; i < this.agreements?.length; i++) {
         if (this.agreements[i].id === agreement.id){
+          agreement.accept = (event.target as HTMLInputElement).checked
           this.agreements[i + 1].visible = true;
           this.agreements[i].visible = false;
-        }          
+        }
       }
   }
 }

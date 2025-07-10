@@ -178,7 +178,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
     //   });
     this.reportingService.exportNewPDF(data.patientId).subscribe(
       (response: any) => {
-        this.constructExportedFile(response, 'patient-', 'pdf')
+        this.constructExportedFile(response, 'digital-patient-', 'pdf')
       });
   }
   exportPatientIDDocument(data: IPatient, hasGuarantor?: boolean) {

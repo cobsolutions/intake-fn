@@ -41,9 +41,7 @@
 
         </div>
         <button cButton variant="outline" (click)="verifyOtp()" [disabled]="!isOtpComplete()">Verify OTP</button>
-        <p class="text-muted">
-          Enter 000000 for testing purpose.
-        </p>
+
       </div>
       <!-- Messages -->
       <p *ngIf="isValidOPT" class="validOPT">{{ message }}</p>

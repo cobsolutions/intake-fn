@@ -273,4 +273,8 @@ export class PatientSummaryComponent implements OnInit {
       }
     })();
   }
+  capitalizeFirstLetter(input: string | undefined): string |undefined {
+    if (!input) return input;
+    return input.charAt(0).toUpperCase() + input.slice(1);
+  }
 }

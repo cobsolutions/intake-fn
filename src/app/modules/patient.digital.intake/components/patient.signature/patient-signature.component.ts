@@ -65,7 +65,7 @@ export class PatientSignatureComponent implements OnInit, AfterViewInit {
           this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('guarantorFirstName')?.valueChanges,
           this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('guarantorLastName')?.valueChanges
         ]).subscribe((pName: any) => {
-          this.gPatientFullName = pName[0] + ' ' + pName[1]
+          this.gPatientFullName = this.capitalizeFirstLetter(pName[0]) + ' ' + this.capitalizeFirstLetter(pName[1])
         })
       else {
         this.gPatientFullName = undefined
@@ -73,7 +73,7 @@ export class PatientSignatureComponent implements OnInit, AfterViewInit {
           this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('firstname')?.valueChanges,
           this.componentReference.getPatientBasicComponent()?.form.get('basic')?.get('lastName')?.valueChanges
         ]).subscribe((pName: any) => {
-          this.patientFullName = pName[0] + ' ' + pName[1]
+          this.patientFullName = this.capitalizeFirstLetter(pName[0]) + ' ' + this.capitalizeFirstLetter(pName[1])
         })
       }
 
@@ -131,5 +131,9 @@ export class PatientSignatureComponent implements OnInit, AfterViewInit {
     this.form.get('signature')?.get('drawsign')?.setValue(this.signaturePad.toDataURL())
     this.isDrawsign = true;
     this.isGeneratesign = false
+  }
+  capitalizeFirstLetter(input: string | undefined): string |undefined {
+    if (!input) return input;
+    return input.charAt(0).toUpperCase() + input.slice(1);
   }
 }

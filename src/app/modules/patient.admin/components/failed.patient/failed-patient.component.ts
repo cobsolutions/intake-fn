@@ -13,6 +13,11 @@ import { FailedServiceService } from '../../services/failed.patient/failed-servi
 export class FailedPatientComponent extends PaginationListTemplate implements OnInit {
   //create model for failed pateint model
   patientData$!: Observable<FailedPatientRecord[]>;
+  errorMessageVisibility:boolean = false
+  dataVisibility:boolean = false
+  intakeErrorMessage:string;
+  errorData:any
+  copySuccess = false;
   readonly columns: (string | IColumn)[] = [
     {
       key: 'patientName',
@@ -37,6 +42,11 @@ export class FailedPatientComponent extends PaginationListTemplate implements On
     {
       key: 'patientIntakeUUID',
       label: 'Intake Numder'
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      sorter: false,
     }
   ];
   constructor(private failedServiceService:FailedServiceService) { super();}
@@ -57,5 +67,29 @@ export class FailedPatientComponent extends PaginationListTemplate implements On
       })
     )
   }
-
+  details_visible = Object.create({});
+  toggleDetails(item: any) {
+    this.details_visible[item] = !this.details_visible[item];
+  }
+  toggleShowErrorMessage(){
+    this.errorMessageVisibility = !this.errorMessageVisibility ;
+  }
+  toggleShowData(){
+    this.dataVisibility = !this.dataVisibility ;
+  }
+  onClickErrorMessage(intakeErrorMessage:string){
+    this.errorMessageVisibility =true;
+    this.intakeErrorMessage = intakeErrorMessage;
+  }
+  onClickShowData(errorData:any){
+    this.dataVisibility =true;
+    this.errorData = errorData;
+  }
+  copyJson() {
+    const formatted = JSON.stringify(this.errorData, null, 2);
+    navigator.clipboard.writeText(formatted).then(() => {
+      this.copySuccess = true;
+      setTimeout(() => this.copySuccess = false, 2000); // Hide after 2s
+    });
+  }
 }

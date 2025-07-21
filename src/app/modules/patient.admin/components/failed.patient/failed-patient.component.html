@@ -1,33 +1,50 @@
 <ngx-spinner></ngx-spinner>
 <ng-container *ngIf="props$ | async as props" fluid="true">
-    <c-smart-table [columns]="columns" [items]="(patientData$ | async) ?? []"
-        [itemsPerPage]="props.itemsPerPage" (itemsPerPageChange)="handleItemsPerPageChange($event)"
-        [itemsPerPageOptions]="[5,10,20]" [itemsPerPageSelect]="true"
-        [columnFilterValue]="props.columnFilterValue?? []" [sorterValue]="props.sorterValue"
+    <c-smart-table [columns]="columns" [items]="(patientData$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
+        (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
+        [itemsPerPageSelect]="true" [columnFilterValue]="props.columnFilterValue?? []" [sorterValue]="props.sorterValue"
         [tableProps]="{ hover: true, striped: true  }" [tableBodyProps]="{ align: 'middle' }"
         (sorterValueChange)="handleSorterValueChange($event)" header>
-        <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
-            let-tdContent="tdContent">
+        <ng-template cTemplateId="tableDetails" let-item="item">
+            <div [visible]="this.details_visible[item._id]===true" cCollapse>
+                <c-row>
+                    <c-col xs="12">
+                        <button cButton color="link" (click)="onClickErrorMessage(item.errorMessage)">Show Error
+                            Message</button>
+                    </c-col>
+                    <c-col xs="12">
+                        <button cButton color="link" (click)="onClickShowData(item.patient)">Show Data</button>
+                    </c-col>
+                </c-row>
+            </div>
+        </ng-template>
+        <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
             <td>
                 <ng-container [ngSwitch]="columnName">
                     <ng-container *ngSwitchCase="'patientName'">
-                        {{item.patient.patientEssentialInformation.patientName.lastName}} 
+                        {{item.patient.patientEssentialInformation.patientName.lastName}}
                         , {{item.patient.patientEssentialInformation.patientName.firstName}}
                     </ng-container>
                     <ng-container *ngSwitchCase="'email'">
-                        {{item.patient.patientEssentialInformation.email}} 
+                        {{item.patient.patientEssentialInformation.email}}
                     </ng-container>
                     <ng-container *ngSwitchCase="'gender'">
-                        {{item.patient.patientEssentialInformation.gender}} 
+                        {{item.patient.patientEssentialInformation.gender}}
                     </ng-container>
                     <ng-container *ngSwitchCase="'phoneNumber'">
-                        {{item.patient.patientEssentialInformation.patientPhone.phone}} 
+                        {{item.patient.patientEssentialInformation.patientPhone.phone}}
                     </ng-container>
                     <ng-container *ngSwitchCase="'maritalStatus'">
-                        {{item.patient.patientEssentialInformation.maritalStatus}} 
+                        {{item.patient.patientEssentialInformation.maritalStatus}}
                     </ng-container>
                     <ng-container *ngSwitchCase="'patientIntakeUUID'">
-                        {{item.patientIntakeUUID}} 
+                        {{item.patientIntakeUUID}}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'actions'" class="py-2">
+                        <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm"
+                            variant="outline">
+                            Show
+                        </button>
                     </ng-container>
                     <ng-container *ngSwitchDefault>
                         {{tdContent}}
@@ -39,3 +56,31 @@
     <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
         (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
 </ng-container>
+<c-modal id="errorMessageVisibility" [visible]="errorMessageVisibility" size="xl" backdrop="static">
+    <c-modal-header>
+        <h3 cModalTitle>Error Message</h3>
+        <button (click)="toggleShowErrorMessage()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        {{intakeErrorMessage}}
+    </c-modal-body>
+</c-modal>
+<c-modal id="dataVisibility" [visible]="dataVisibility" size="xl" backdrop="static">
+    <c-modal-header>
+        <h3 cModalTitle>Patient Data</h3>
+        <button (click)="toggleShowData()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <div class="json-header">
+            <button (click)="copyJson()" class="copy-btn">
+                <span *ngIf="!copySuccess" class="copy-btn">Copy</span>
+                <span *ngIf="copySuccess" class="copy-btn">Copied!</span>
+            </button>
+            
+          </div>
+          
+          <div class="json-box">
+            <pre><code>{{ errorData | json }}</code></pre>
+          </div>
+    </c-modal-body>
+</c-modal>

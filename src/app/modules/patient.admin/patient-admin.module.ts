@@ -81,6 +81,7 @@ import { EditPatientProviderComponent } from './components/patient.provider.upda
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
 import { PatientContactReportComponent } from './components/reports/patient.contact/patient-contact-report.component';
+import { FailedPatientComponent } from './components/failed.patient/failed-patient.component';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,7 @@ import { PatientContactReportComponent } from './components/reports/patient.cont
     PatientSourcePieChartComponent, 
     RequestDeviceRegistrationComponent, 
     RequestDeviceIntakeSubmissionComponent, 
-    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent, ChnagesReportComponent, PatientContactReportComponent
+    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent, ChnagesReportComponent, PatientContactReportComponent, FailedPatientComponent
   ],
   imports: [
     CommonModule,

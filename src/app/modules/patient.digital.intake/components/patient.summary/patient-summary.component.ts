@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { PatientEssentialInformation } from 'src/app/modules/patient.questionnaire/models/intake/essential/patient.essential.information';
+import { FailedIntake } from 'src/app/modules/patient.questionnaire/models/intake/failed.intake';
 import { PatientMedical } from "src/app/modules/patient.questionnaire/models/intake/medical/patient.medical";
 import { PatientMedicalHistory } from 'src/app/modules/patient.questionnaire/models/intake/medical/patient.medical.history';
 import { PatientPhysicalTherapy } from 'src/app/modules/patient.questionnaire/models/intake/medical/patient.physical.therapy';
@@ -27,7 +28,7 @@ export class PatientSummaryComponent implements OnInit {
   clinicId: string;
   submitting: boolean = false;
   isError: boolean = false;
-  errorMessage:string;
+  errorMessage: string;
   constructor(private componentReference: ComponentReferenceComponentService
     , private digitalIntakeService: DigitalIntakeService
     , private router: Router
@@ -59,10 +60,19 @@ export class PatientSummaryComponent implements OnInit {
         this.isError = false;
         this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
       }, error => {
+        // console.log(JSON.stringify(this.pateint))
+        // console.log(JSON.stringify(error))
         this.errorMessage = error.error.message
         this.submitting = false;
         this.isError = true;
         this.scrollUp();
+        var failedIntake: FailedIntake = {
+          patient: this.pateint,
+          errorMessage: this.errorMessage
+        }
+        this.digitalIntakeService.failedIntake(failedIntake).subscribe(r => {
+          console.log('Failed api called.')
+        })
       })
   }
   private fillPateintEssentialInformation() {
@@ -273,7 +283,7 @@ export class PatientSummaryComponent implements OnInit {
       }
     })();
   }
-  capitalizeFirstLetter(input: string | undefined): string |undefined {
+  capitalizeFirstLetter(input: string | undefined): string | undefined {
     if (!input) return input;
     return input.charAt(0).toUpperCase() + input.slice(1);
   }

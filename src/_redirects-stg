@@ -252,4 +252,6 @@
 /intake-service/api/patient/update/provider http://161.97.126.192:8050/intake-service/api/patient/update/provider 200
 /intake-service/api/reports/find/contact http://161.97.126.192:8050/intake-service/api/reports/find/contact 200
 /intake-service/api/reports/generator/excel/contact  http://161.97.126.192:8050/intake-service/api/reports/generator/excel/contact 200
+/intake-service/api/digital-intake/failed-intake http://161.97.126.192:8050/intake-service/api/digital-intake/failed-intake 200
+/intake-service/api/patient/find/failed/clinic/:clinicId http://161.97.126.192:8050/intake-service/api/patient/find/failed/clinic/:clinicId 200
 /*  /index.html   200

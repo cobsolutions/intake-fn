@@ -1,22 +1,24 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime, filter, finalize, switchMap, tap } from 'rxjs';
+import { debounceTime, filter, finalize, map, switchMap, switchMapTo, tap } from 'rxjs';
 import { BasicAddress } from 'src/app/models/common/basic.address';
 import { countries } from 'src/app/modules/common/components/address/country-data-store';
 import { Countries } from 'src/app/modules/common/components/address/model/country.model';
 import { states } from 'src/app/modules/common/components/address/state-data-store';
+import { FindLocationService } from 'src/app/modules/common/services/geolocation/find-location.service';
 import { noSpecialCharactersValidator } from 'src/app/modules/patient.digital.intake/components/create/validators/custom.validation/special.characters.validator';
 import { Clinic } from '../../../models/clinic.model';
+import { DeviceLocation } from '../../../models/trust.device/geolocation';
 import { ClinicService } from '../../../services/clinic/clinic.service';
-
 @Component({
   selector: 'clinic-creation',
   templateUrl: './clinic.creation.component.html',
   styleUrls: ['./clinic.creation.component.css']
 })
 export class ClinicCreationComponent implements OnInit {
+ 
   @Input() clinicId: number
   @Output() changeVisibility = new EventEmitter<string>()
   countries: Countries[] = countries;
@@ -26,8 +28,9 @@ export class ClinicCreationComponent implements OnInit {
   clinic: Clinic;
   validName: boolean | undefined = undefined;
   validNameMessage: string;
-  constructor(private clinicService: ClinicService, private toastrService: ToastrService) { }
+  constructor(private clinicService: ClinicService, private toastrService: ToastrService, private findLocation: FindLocationService) { }
   ngOnInit(): void {
+
     this.createClinicForm();
     if (this.clinicId !== undefined) {
       this.getSelectedClinic()
@@ -35,7 +38,6 @@ export class ClinicCreationComponent implements OnInit {
       this.checkUserName();
     }
   }
-
   private getSelectedClinic() {
     this.clinicService.getById(this.clinicId.toString()).subscribe((selectedClinic: any) => {
       this.clinic = selectedClinic;
@@ -62,24 +64,46 @@ export class ClinicCreationComponent implements OnInit {
       if (this.clinicForm?.valid) {
         this.isValidForm = false;
         this.fillClinicModel();
-        this.clinicService.create(this.clinic).subscribe(result => {
-          this.changeVisibility.emit('close-edit');
-          this.toastrService.success('Clinic Updated');
-        })
-      }else{
+        this.findLocation.find().pipe(
+          map(geolocation => {
+            var deviceLocation: DeviceLocation = {
+              accuracy: 0,
+              latitude: geolocation.coords.latitude,
+              longitude: geolocation.coords.longitude
+            }
+            return this.clinic.geolocation = deviceLocation;
+          }), switchMap((clinic: any) => {
+            return this.clinicService.create(this.clinic)
+          })).subscribe(result => {
+            this.changeVisibility.emit('close-edit');
+            this.toastrService.success('Clinic Updated');
+          })
+      } else {
         this.isValidForm = true;
       }
     } else {
       if (this.clinicForm?.valid && !this.validName) {
         this.isValidForm = false;
         this.fillClinicModel();
-        this.clinicService.create(this.clinic).subscribe(result => {
-          this.changeVisibility.emit('close-create');
-          this.toastrService.success('Clinic Created');
-        }, error => {
-          console.log('error during create clinic')
-          this.toastrService.success('Error. ' + JSON.stringify(error));
-        })
+        this.findLocation.find().pipe(
+          map(geolocation => {
+            var deviceLocation: DeviceLocation = {
+              accuracy: 0,
+              latitude: geolocation.coords.latitude,
+              longitude: geolocation.coords.longitude
+            }
+            this.clinic.geolocation = deviceLocation;
+          })
+          , switchMap((clinic: any) => {
+            return this.clinicService.create(this.clinic)
+          }
+          )).subscribe(result => {
+            this.changeVisibility.emit('close-create');
+            this.toastrService.success('Clinic Created');
+          }, error => {
+            console.log('error during create clinic')
+            this.toastrService.error('Error. ' + JSON.stringify(error));
+          })
       } else {
         this.isValidForm = true;
         Object.keys(this.clinicForm.controls).forEach(field => {
@@ -99,7 +123,6 @@ export class ClinicCreationComponent implements OnInit {
     })();
   }
   private fillClinicModel() {
-    console.log(JSON.stringify(this.clinic))
     this.clinic = {
       id: this.clinicId !== undefined ? this.clinicId : null,
       name: null,
@@ -163,4 +186,5 @@ export class ClinicCreationComponent implements OnInit {
         () => {
         });
   }
+
 }

@@ -6,6 +6,9 @@ export interface DashboardDataContainer {
     totalNumberOfPatient: number;
     totalNumberOfCompensationNoFaultPatient: number;
     totalNumberOfCommercialPatient: number;
+    totalNumberOfMedicare:number,
+    totalNumberOfMedicade:number
+    totalNumberOfSelfPay:number
     genderContainer: GenderContainer;
     patientSourceContainer: PatientSourceContainer;
     weekCounterContainer: WeekCounterContainer;

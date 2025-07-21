@@ -1,0 +1,51 @@
+<ngx-spinner></ngx-spinner>
+<c-row>
+    <c-col xs="12">
+        <h3>Trusted Devices</h3>
+    </c-col>
+    <c-col xs="12">
+        <!-- <app-cap></app-cap> -->
+    </c-col>
+    <c-col xs="12">
+        <div class="clinic-header" style="float: right;">
+            <button cButton color="primary" variant="outline" (click)="openGenertaeRequest()" size="sm">+ Add
+                Device</button>
+        </div>
+    </c-col>
+</c-row>
+<hr />
+<div class="clinic-container" *ngIf="!isError ; else emptyMessage">
+    <div class="device-list">
+        <!-- Device Card -->
+        <div class="device-card" *ngFor="let device of trustDevices | async">
+            <div class="device-icon">📱</div>
+            <div class="device-info">
+                <div class="device-name">{{ device.deviceName }}</div>
+                <div class="device-id">ID: {{ device.deviceId }}</div>
+                <div class="device-date">Created At: {{ device.createdAt | date: 'MMM d, y' }}</div>
+            </div>
+            <div class="device-actions">
+                <button cButton color="danger" variant="outline" (click)="revoke(device.deviceId)">
+                    <svg cIcon name="cilTrash"></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #emptyMessage>
+    <div class="empty-message">
+        <h4>No devices found in this clinic.</h4>
+        <img src="assets/images/empty-devices.svg" alt="No Devices" class="empty-img">
+        <p>Please add new devices to start managing them here.</p>
+    </div>
+</ng-template>
+<c-modal id="genertaeRequestModal" [visible]="genertaeRequestVisibility" size="lg" backdrop="static">
+    <c-modal-header>
+        <h5 cModalTitle>Add New Device</h5>
+        <button (click)="toggleGenertaeRequest()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <request-device-registration *ngIf="genertaeRequestVisibility"></request-device-registration>
+    </c-modal-body>
+</c-modal>

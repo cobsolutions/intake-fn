@@ -1,0 +1,18 @@
+<div class="container">
+  <div *ngIf="(!isLoading) && !error" class="message-container">
+    <div class="card">
+      <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+        <i class="checkmark">✓</i>
+      </div>
+      <h1>Success</h1>
+      <p class="lead">Device has been registered successfully!<br /></p>
+    </div>
+  </div>
+  <div *ngIf="(!isLoading) && error" class="message-container">
+    <div style="border-radius:200px; height:200px; width:200px; background: #F8FAF5; margin:0 auto;">
+      <i class="errorCheckmark">✗</i>
+    </div>
+    <h2>Registration Failed!</h2>
+    <p class="lead">{{errorMessage}}!<br /></p>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+/* Container for full-screen centered layout */
+.danger-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7a0b0b;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Message box with strong red theme */
+  .danger-box {
+    background-color: #ffcccc;
+    border: 2px solid #e60000;
+    border-radius: 10px;
+    padding: 40px;
+    max-width: 670px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
+    animation: shake 0.5s ease-in-out;
+  }
+  
+  /* Icon styling */
+  .icon {
+    font-size: 3em;
+    color: #e60000;
+    margin-bottom: 20px;
+  }
+  
+  /* Heading styling */
+  .danger-box h1 {
+    font-size: 1.8em;
+    color: #cc0000;
+    margin: 0 0 10px;
+  }
+  
+  /* Text styling */
+  .danger-box p {
+    margin: 10px 0;
+    font-size: 1em;
+    line-height: 1.5;
+    color: #7a0b0b;
+  }
+  
+  /* Button styling with strong color contrast */
+  .danger-box button {
+    background-color: #cc0000;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .danger-box button:hover {
+    background-color: #990000;
+  }
+  
+  /* Shake animation */
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-10px);
+    }
+    50% {
+      transform: translateX(10px);
+    }
+    75% {
+      transform: translateX(-10px);
+    }
+  }
+  

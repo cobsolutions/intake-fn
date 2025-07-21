@@ -26,7 +26,6 @@ export class WorkerCompComponent implements OnInit {
       this.patientInsuranceCompensationNoFault = {
         address: new Address(),
         injuryType:'',
-        workerStatus:'',
         caseStatus:''
       }
 

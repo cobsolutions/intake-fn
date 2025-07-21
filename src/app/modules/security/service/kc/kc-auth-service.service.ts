@@ -28,14 +28,11 @@ export class KcAuthServiceService {
   }
 
   public login(): void {
-    localStorage.removeItem('access-token')
     this.keycloakService.login();
   }
 
   public logout(): void {
-    localStorage.removeItem('access-token')
-    localStorage.removeItem('digital-access-token')
-    this.keycloakService.logout(window.location.origin);
+    this.keycloakService.logout();
   }
 
   public redirectToProfile(): void {

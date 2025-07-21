@@ -69,7 +69,7 @@ export class MedicalInfoComponent implements OnInit {
 
   }
   resultsfamilyQChange(val: string) {
-    this.patientMedical!.familyResultSubmission = val === 'yes' ? true : false
+    // this.patientMedical!.familyResultSubmission = val === 'yes' ? true : false
     this.isfamilyResultSubmission = val;
   }
   ngOnInit(): void {
@@ -83,7 +83,7 @@ export class MedicalInfoComponent implements OnInit {
       this.patientSource = this.patientStoreService.patientSource;
       this.isReferringDoctor = this.patientStoreService.patientSource?.doctorSource ? 'yes' : 'no'
       this.ispatientPhysicalTherapy = this.patientStoreService.patientMedical.hasPatientPhysicalTherapy ? 'yes' : 'no'
-      this.isfamilyResultSubmission = this.patientStoreService.patientMedical.familyResultSubmission ? 'yes' : 'no'
+      // this.isfamilyResultSubmission = this.patientStoreService.patientMedical.familyResultSubmission ? 'yes' : 'no'
     }
   }
   isRequiredField(name: string): boolean {

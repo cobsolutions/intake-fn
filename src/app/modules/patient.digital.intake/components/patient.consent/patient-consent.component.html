@@ -1,0 +1,16 @@
+<div [formGroup]="form" class="mt-3">    
+    <input type="hidden" formControlName="hideCon">
+    <div class="consent-container">
+        <h2 class="consent-title">Patient Consent</h2>
+        <p class="consent-text">
+            Thank you for choosing Physical Therapy of the City P.C to support your health and recovery. As part of your digital check-in, we kindly ask for your consent to collect and use the personal and medical information you provide.<br><br>
+            <strong>Your information will be securely stored and used only for treatment, billing, and healthcare operations, in full compliance with HIPAA and New York State regulations.
+            </strong><br><br>
+            We know the intake process might take a few minutes, but completing it helps us give you the best, most personalized care possible. Your time and effort mean a lot to us, and we truly appreciate your patience.<br><br>
+            By selecting <strong><span style="font-size: 17px;">Accept</span></strong>  you’re giving your consent to these terms and confirming the accuracy of the information and documents you provide. If you have any questions or need assistance, please don’t hesitate to contact our team, we’re here for you.
+        </p>
+        <div class="button-group">
+            <button cButton variant="outline" (click)="accept()">Accept</button>
+        </div>
+    </div>
+</div>

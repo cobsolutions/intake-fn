@@ -36,10 +36,13 @@ import {
 
 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { POSITION_OPTIONS } from '@ng-web-apis/geolocation';
+import { CookieService } from 'ngx-cookie-service';
 import { ToastrModule } from 'ngx-toastr';
 import {
   AdminHeaderComponent, DefaultAdminLayoutComponent, DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent
 } from './core';
+import { ScannerlayoutComponent } from './core/scannerlayout/scannerlayout.component';
 import { PatientListService } from './modules/patient.admin/services/patient-list.service';
 import { PatientService } from './modules/patient.questionnaire/service/patient.service';
 import { SecurityModule } from './modules/security';
@@ -63,7 +66,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, ...ADMIN_APP_CONTAINERS],
+  declarations: [AppComponent, ...APP_CONTAINERS, ...ADMIN_APP_CONTAINERS, ScannerlayoutComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -101,6 +104,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SecurityModule
   ],
   providers: [
+    [CookieService],
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy,
@@ -114,6 +118,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: POSITION_OPTIONS,
+      useValue: {enableHighAccuracy: true, timeout: 3000, maximumAge: 1000},
+  },
   ],
   bootstrap: [AppComponent]
 })

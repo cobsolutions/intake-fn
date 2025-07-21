@@ -39,3 +39,74 @@ button {
     font-family: 'Reenie Beanie',cursive;
     font-size: xx-large;
 }
+/* Parent container */
+.signature-dropdown {
+    position: relative;
+    width: 100%; 
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Dropdown container */
+  .dropdown {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    padding: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+  
+  /* Dropdown item */
+  .dropdown-item {
+    padding: 12px;
+    margin: 5px 0;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    text-align: center;
+  }
+  
+  /* Hover and selected styles */
+  .dropdown-item:hover {
+    background-color: var(--bs-info);
+    transform: scale(1.02);
+  }
+  
+  .dropdown-item.selected {
+    background-color: #532caf30;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  /* Scrollbar styling */
+  .dropdown::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .dropdown::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+  
+  .dropdown::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+  }
+  
+  /* Add a subtle animation on dropdown items */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .dropdown-item {
+    animation: fadeIn 0.5s ease both;
+  }
+  

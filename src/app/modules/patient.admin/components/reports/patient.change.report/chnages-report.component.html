@@ -1,0 +1,94 @@
+<ngx-spinner></ngx-spinner>
+<c-row>
+    <c-col xs="12" class="mb-4">
+        <c-card>
+            <c-card-header ngPreserveWhitespaces>
+                <strong>Patients Changes Reports</strong>
+            </c-card-header>
+
+            <c-card-body>
+                <p class="text-medium-emphasis small">
+                    The ability to create patient changes report ,
+                </p>
+                <c-callout color="danger" *ngIf="searchInputNotValid" class="m-2">
+                    <span class="text-danger fw-bold">{{errorMsg}}</span>
+                </c-callout>
+                <form cForm>
+                    <c-row>
+                        <c-col xs="4" class="mb-2">
+                            <!--Action-->
+                            <label>Change Action</label>
+                            <form cForm>
+                                <select cSelect cFormControl name="change_action" [(ngModel)]="action">
+                                    <option value="1">Referring Provider</option>
+                                </select>
+                            </form>
+                        </c-col>
+                        <c-col xs="4" class="mb-2">
+                            <label>Patient</label>
+                            <input cFormControl [(ngModel)]="patientName" placeholder="Patient Name"
+                                name="patient_name" />
+                        </c-col>
+                        <c-col xs="4" class="mb-2" *ngIf="clinics">
+                            <label>Clinic</label>
+                            <select cSelect cFormControl name="clinic" [(ngModel)]="selectedClinic" >
+                                <option *ngFor="let clinic of clinics" [value]="clinic.id">
+                                    {{clinic.name}}</option>
+                            </select>
+                        </c-col>
+                    </c-row>
+                    <c-row>
+                        <c-col xs="12" class="text-center">
+                            <button cButton class="me-1" (click)="search()" color="primary" variant="outline"
+                                style="width: 15%;">
+                                Search
+                            </button>
+                        </c-col>
+                    </c-row>
+                </form>
+            </c-card-body>
+        </c-card>
+    </c-col>
+    <c-container class="text-end">
+        <button cButton variant="outline" (click)="exportResult()">Export Result
+            <svg cIcon name="cilCloudDownload"></svg>
+        </button>
+    </c-container>
+    <c-col xs="12">
+        <ng-container *ngIf="props$ | async as props" fluid="true">
+            <c-smart-table [columns]="columns" [items]="(changes | async) ?? []" [itemsPerPage]="props.itemsPerPage"
+                (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
+                [itemsPerPageSelect]="true" [columnFilterValue]="props.columnFilterValue?? []"
+                [sorterValue]="props.sorterValue" [tableProps]="{ hover: true, striped: true  }"
+                [tableBodyProps]="{ align: 'middle' }" (sorterValueChange)="handleSorterValueChange($event)" header>
+                <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td>
+                        <ng-container [ngSwitch]="columnName">
+                            <ng-container *ngSwitchCase="'createdAt'">
+                                {{item.createdAt | date:'medium'}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'userName'">
+                                {{item.taker.name}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'userAccount'">
+                                {{item.taker.accountName}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'userEmail'">
+                                {{item.taker.email}}
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'userUUID'">
+                                {{item.taker.uuid}}
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                {{tdContent}}
+                            </ng-container>
+                        </ng-container>
+                    </td>
+                </ng-template>
+            </c-smart-table>
+            <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
+                (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
+        </ng-container>
+    </c-col>
+</c-row>

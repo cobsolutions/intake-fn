@@ -11,8 +11,9 @@ export class CacheClinicService {
     , private route: ActivatedRoute
     , private router: Router) { }
 
-  public getClinic(): number {
-    var sendClinic: number | null = this.pickURLClinic();
+  public getClinic(): string {
+    var sendClinic: string | null = this.pickURLClinic();
+    console.log(sendClinic)
     if (sendClinic === null)
       return this.getCachedClinic();
     else
@@ -22,35 +23,34 @@ export class CacheClinicService {
   //   var encryptClinicId = this.localService.encrypt(clinicId.toString())
   //   localStorage.setItem('clinicId', encryptClinicId);
   // }
-  private getCachedClinic(): number {
-    console.log(this.localService.decrypt(localStorage.getItem('clinicId') || '{}') )
+  private getCachedClinic(): any {
     var cahcedClinicId = localStorage.getItem('clinicId');
     if (cahcedClinicId === null)
       throw new Error('no  clinic');
     else {
-      if (this.localService.decrypt(localStorage.getItem('clinicId') || '{}') === '')
+      if ((localStorage.getItem('clinicId') || '{}') === '')
         throw new Error('corrupted clinic');
       else
-        return Number(this.localService.decrypt(localStorage.getItem('clinicId') || '{}'));
+        return localStorage.getItem('clinicId') || '{}';
     }
 
   }
-  private cahceClinic(clinicId: number): number {
-    var encryptClinicId = this.localService.simpleEncrypt(clinicId.toString())
-    localStorage.setItem('clinicId', encryptClinicId);
+  private cahceClinic(clinicId: string): string {
+    localStorage.setItem('clinicId', clinicId);
     return clinicId;
   }
-  private pickURLClinic(): number | null {
-    var clinicId: number = Number(this.route.snapshot.queryParamMap.get('clinicId'));
-    if (clinicId === 0 || clinicId === undefined || clinicId === null) {
+  private pickURLClinic(): string | null {
+    console.log(this.route.snapshot.queryParamMap.get('clinicId'))
+    var clinicId: string | null = this.route.snapshot.queryParamMap.get('clinicId');
+    if ( clinicId === undefined || clinicId === null) {
       return null;
     } else {
-      this.router.navigate([], {
-        queryParams: {
-          'clinicId': null,
-        },
-        queryParamsHandling: 'merge'
-      })
+      // this.router.navigate([], {
+      //   queryParams: {
+      //     'clinicId': null,
+      //   },
+      //   queryParamsHandling: 'merge'
+      // })
       return clinicId;
     }
   }

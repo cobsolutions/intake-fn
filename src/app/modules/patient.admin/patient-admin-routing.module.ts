@@ -11,7 +11,10 @@ import { InsuranceCompanyCreateComponent } from './components/insurance.company/
 import { InsuranceCompanyListComponent } from './components/insurance.company/list/insurance-company-list.component';
 import { PatientCreateComponent } from './components/patient.create/patient-create.component';
 import { PatientListComponent } from './components/patient.list/patient.list.component';
+import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
+import { PatientContactReportComponent } from './components/reports/patient.contact/patient-contact-report.component';
 import { RecommendationReportComponent } from './components/reports/recommendation.report.component';
+import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
 import { UserCreationComponent } from './components/user/create/user-creation.component';
 import { UserListComponent } from './components/user/list/user-list.component';
 import { UserUpdateComponent } from './components/user/update/user-update.component';
@@ -23,11 +26,6 @@ const routes: Routes = [{
   data: {
     title: 'Dashboard'
   }
-},
-{
-  path: '',
-  redirectTo: 'dashboard',
-  pathMatch: 'full',
 },
 {
   path: '',
@@ -120,6 +118,13 @@ const routes: Routes = [{
         title: 'insurance-company-create',
       }
     },
+    {
+      path: 'trust/devices/list',
+      component: ListTrustDevicesComponent,
+      data: {
+        title: 'insurance-company-create',
+      }
+    }
   ]
 },
 {
@@ -133,6 +138,20 @@ const routes: Routes = [{
       component: RecommendationReportComponent,
       data: {
         title: 'Patient Source',
+      },
+    },
+    {
+      path: 'report/changes',
+      component: ChnagesReportComponent,
+      data: {
+        title: 'Patient changes',
+      },
+    },
+    {
+      path: 'report/contact',
+      component: PatientContactReportComponent,
+      data: {
+        title: 'Patient Contact',
       },
     }
   ]
@@ -149,7 +168,7 @@ const routes: Routes = [{
       data: {
         title: 'audit-entity',
       },
-    },{
+    }, {
       path: 'audit/user-audit',
       component: UserAuditComponent,
       data: {

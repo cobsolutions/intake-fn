@@ -1,0 +1,127 @@
+/* General Styles */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #f5f6fa;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.email-verification-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Card Styles */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 40px 20px;
+  max-width: 400px;
+  width: 100%;
+  animation: fadeIn 0.5s ease;
+}
+
+.success {
+  border-top: 5px solid #28a745;
+}
+
+.error {
+  border-top: 5px solid #dc3545;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Spinner */
+.spinner {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 20px;
+  border: 5px solid #e0e0e0;
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Icon (for success and error) */
+.icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.success .icon {
+  color: #28a745;
+}
+
+.error .icon {
+  color: #dc3545;
+}
+
+/* Title */
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 10px 0;
+  color: #333;
+}
+
+/* Description */
+.description {
+  font-size: 1.25rem;
+  color: #555;
+  line-height: 1.5;
+  margin: 10px 0 20px;
+}
+
+/* Link */
+.link {
+  font-size: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.link:hover {
+  color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card {
+    padding: 30px 15px;
+  }
+  .title {
+    font-size: 1.25rem;
+  }
+  .description {
+    font-size: 0.9rem;
+  }
+}

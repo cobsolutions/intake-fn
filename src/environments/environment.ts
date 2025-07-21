@@ -6,8 +6,10 @@ import keycloakConfig from "./keycloak.config";
 
 export const environment = {
   production: false,
-  baseURL:"/intake-service/api/",
+  baseURL: "/intake-service/api/",
   keycloak: keycloakConfig,
+  wsurl: "localhost:8090/intake-service/api/websocket",
+  googleMapsApiKey: 'AIzaSyB6tlvxXDYoyzpZGKzVQjs_BFdlZsWgtbA'
 };
 
 /*

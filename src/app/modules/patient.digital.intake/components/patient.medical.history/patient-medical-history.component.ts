@@ -20,7 +20,7 @@ export class PatientMedicalHistoryComponent implements OnInit {
   initHeight: number = 0;
   initWeight: number
   patientConditions: IPatientCondition[] = PatientConditions.create();
-  dropdownSettings :IDropdownSettings = {};
+  dropdownSettings: IDropdownSettings = {};
   ngOnInit(): void {
     this.form?.get('medicalhistory')?.get('heightUnit')?.valueChanges.subscribe(value => {
       this.convertHeight(value);
@@ -39,32 +39,60 @@ export class PatientMedicalHistoryComponent implements OnInit {
   convertHeight(checked: boolean) {
     var heightValue: number = this.form?.get('medicalhistory')?.get('height')?.value;
     if (checked) {
-      // Convert cm to inch (1 cm = 0.032808 feet)
-      heightValue = Number((heightValue * 0.032808).toFixed(1));
+      heightValue = heightValue * 30.48
 
     } else {
-      // Convert inch to cm (1 feet = 2.54 cm)
-      heightValue = Math.round(heightValue / 0.032808)
+      heightValue = Number((heightValue / 30.48).toFixed(1));
+
     }
     this.form?.get('medicalhistory')?.get('height')?.setValue(heightValue, { emitEvent: false });
   }
   convertWeight(checked: boolean) {
     var weightValue: number = this.form?.get('medicalhistory')?.get('weight')?.value;
     if (checked) {
-      
+
       weightValue = Number((weightValue / 2.20462).toFixed(1));
     } else {
       weightValue = Math.round(weightValue * 2.20462)
     }
     this.form?.get('medicalhistory')?.get('weight')?.setValue(weightValue, { emitEvent: false });
   }
-  next(){
+  onWeightInput() {
+    let weightControl = this.form?.get('medicalhistory')?.get('weight')
+
+    if (weightControl) {
+      setTimeout(() => {
+        let value = weightControl?.value?.toString(); // Ensure it's a string
+        if (value === '0') {
+          weightControl?.setValue('', { emitEvent: false });
+        } else if (value?.startsWith('0') && value.length > 1) {
+          weightControl?.setValue(value.replace(/^0+/, ''), { emitEvent: false });
+        }
+      });
+    }
+  }
+  onHeightInput() {
+    let weightControl = this.form?.get('medicalhistory')?.get('height')
+
+    if (weightControl) {
+      setTimeout(() => {
+        let value = weightControl?.value?.toString();
+        if (value === '0') {
+          weightControl?.setValue('', { emitEvent: false });
+        } else if (value?.startsWith('0') && value.length > 1) {
+          weightControl?.setValue(value.replace(/^0+/, ''), { emitEvent: false });
+        }
+      });
+    }
+  }
+
+  next() {
     if (this.form.get('medicalhistory')?.valid) {
       this.stepper.next();
       this.isValidForm = false;
     } else {
       this.isValidForm = true;
-      ValidationExploder.explode(this.form, 'medicalhistory')      
+      ValidationExploder.explode(this.form, 'medicalhistory')
     }
   }
 }

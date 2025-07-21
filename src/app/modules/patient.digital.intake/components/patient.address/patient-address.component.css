@@ -1,0 +1,8 @@
+select[formControlName="state"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="state"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }

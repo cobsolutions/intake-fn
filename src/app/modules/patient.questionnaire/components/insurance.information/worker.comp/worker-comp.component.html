@@ -21,7 +21,7 @@
                         placeholder="Accident Date"></c-date-picker>
                 </div>
             </c-col>
-            <c-col xs="auto" class="mb-1">
+            <!-- <c-col xs="auto" class="mb-1">
                 <div [ngClass]="{ 'form-group required':isRequiredField('workerStatus') }">
                     <label for="injury" class="form-label">Worker Status</label>
                     <select cSelect sizing="sm" name="injury" style="line-height: 15px;" cFormControl
@@ -32,7 +32,7 @@
                         <option value="NotWork">Not-Work</option>
                     </select>
                 </div>
-            </c-col>
+            </c-col> -->
             <c-col xs="auto" class="mb-1">
                 <app-address [pateintAddressInfo]="patientInsuranceCompensationNoFault!.address!"
                     [requiredFields]="requiredFields"></app-address>

@@ -6,7 +6,7 @@
         <!--First Address-->
         <c-row>
             <c-col xl="12">
-                <label style="width: 150px;">First Address <span class="text-danger">*</span></label>
+                <label style="width: 150px;">Street address <span class="text-danger">*</span></label>
             </c-col>
             <c-col xl="12">
                 <input class="form-control" placeholder formControlName="firstAddress" sizing="sm" cFormControl
@@ -17,16 +17,14 @@
                 <div *ngIf="this.form.get('address')?.get('firstAddress')?.errors?.['required'] && 
             (this.form.get('address')?.get('firstAddress')?.dirty ||this.form.get('address')?.get('firstAddress')?.touched)"
                     class="text-danger mx-1">
-                    First address is required
+                    Street address is required
                 </div>
-                <div *ngIf="this.form.get('address')?.get('firstAddress')?.errors?.['noSpecialCharacters']"
-                    class="text-danger mx-1">First address cannot contain special characters.</div>
             </c-col>
         </c-row>
         <!-- Second Address-->
         <c-row>
             <c-col xs="12">
-                <label style="width: 150px;">Second Address</label>
+                <label style="width: 150px;"> Street address line 2</label>
             </c-col>
             <c-col xs="12">
                 <input class="form-control" placeholder formControlName="secondAddress" sizing="sm" cFormControl
@@ -43,8 +41,7 @@
                 <label style="width: 150px;">City<span class="text-danger">*</span></label>
             </c-col>
             <c-col xl="12">
-                <input class="form-control" placeholder formControlName="city" sizing="sm" cFormControl
-                    [ngClass]="{'is-invalid': this.form.get('address')?.get('city')?.invalid
+                <input class="form-control" placeholder formControlName="city" sizing="sm" cFormControl [ngClass]="{'is-invalid': this.form.get('address')?.get('city')?.invalid
                 && this.form.get('address')?.get('city')?.touched}" maxlength="60" input-trimmer>
             </c-col>
             <c-col xl=" 12">
@@ -55,6 +52,8 @@
                 </div>
                 <div *ngIf="this.form.get('address')?.get('city')?.errors?.['noSpecialCharacters']"
                     class="text-danger mx-1">City cannot contain special characters.</div>
+                <div *ngIf="this.form.get('address')?.get('city')?.errors?.['noNumbers']" class="text-danger mx-1">City
+                    cannot contains Numbers.</div>
             </c-col>
         </c-row>
         <!-- State-->
@@ -90,7 +89,7 @@
                     ZipCode is required
                 </div>
                 <div *ngIf="form.get('address')?.get('zipCode')?.errors?.['pattern']" class="text-danger mx-1">
-                    Invalid ZipCode format 
+                    Invalid ZipCode format
                 </div>
             </c-col>
         </c-row>

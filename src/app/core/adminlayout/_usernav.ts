@@ -7,11 +7,11 @@ export const userNavItems: INavData[] = [
     iconComponent: { name: 'cil-disabled' },
     children: [
       {
-        name: 'Patient List',
+        name: 'Patients',
         url: 'patient/list'
       },
       {
-        name: 'Patient Creation',
+        name: 'Submission',
         url: 'patient/create'
       }
     ]

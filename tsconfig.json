@@ -23,7 +23,8 @@
       "es2020",
       "dom",
       "dom.iterable"
-    ]
+    ],
+    "types": ["google.maps"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

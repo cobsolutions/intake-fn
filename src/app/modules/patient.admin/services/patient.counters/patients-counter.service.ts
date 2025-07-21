@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class PatientsCounterService {
-  url:string = environment.baseURL + '/patient/counter'
+  url:string = environment.baseURL + 'dashboard'
   public selectedYear$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   constructor(private http: HttpClient) { }
 

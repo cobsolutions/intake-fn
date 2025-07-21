@@ -22,4 +22,7 @@ export class InsuranceCompanyService {
   getById(id:number) {
     return this.http.get<InsuranceCompany[]>(`${this.userUrl}` + '/find/'+id, { observe: 'response' })
   }
+  getbyName(name:string){
+    return this.http.get<InsuranceCompany[]>(`${this.userUrl}` + '/find/name/'+name, { observe: 'response' })
+  }
 }

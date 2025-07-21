@@ -1,5 +1,6 @@
 import { FormGroup, Validators } from "@angular/forms";
 import { futureDateValidator } from "../../custom.validation/future.date.validator";
+import { noNumbersValidator } from "../../custom.validation/no.number.validator";
 import { noSpecialCharactersValidator } from "../../custom.validation/special.characters.validator";
 import { CompensationFields } from "./compensation.fields";
 
@@ -8,38 +9,39 @@ export class AddWorkerCompensationValidators {
         const phoneRgx = new RegExp("^[\+]?[0-9]{0,3}\W?[(]?[0-9]{3}[)]?[-\s\.]?[(]?[0-9]{3}[)][-\s\.]?[0-9]{4,6}$");
         const zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
         for (var i = 0; i < CompensationFields.length; i++) {
-            form.get('insurance')?.get(CompensationFields[i])?.setValidators(Validators.required)
-            if (CompensationFields[i] === 'compensation-phone'
-                || CompensationFields[i] === 'compensation-fax'
-                || CompensationFields[i] === 'compensation-adjuster-phone'
-                || CompensationFields[i] === 'compensation-attorney-phone') {
-                form.get('insurance')?.get(CompensationFields[i])?.setValidators([Validators.required, Validators.pattern(phoneRgx)])
+            if (CompensationFields[i] === 'compensation-insurance-company') {
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([noSpecialCharactersValidator(), Validators.required])
             }
-            if (CompensationFields[i] === 'compensation-zipcode') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, Validators.min(10), Validators.pattern(zipCodeRgx)])
+            if (CompensationFields[i] === 'compensation-claim-number') {
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([noSpecialCharactersValidator(), Validators.required])
+            }
+            if (CompensationFields[i] === 'compensation-adjuster-phone'
+                || CompensationFields[i] === 'compensation-attorney-phone') {
+                form.get('insurance')?.get(CompensationFields[i])?.setValidators([Validators.required,Validators.pattern(phoneRgx)])
             }
             if (CompensationFields[i] === 'compensation-accident-date') {
                 form.get('insurance')?.get(CompensationFields[i])?.addValidators([futureDateValidator()])
             }
             if (CompensationFields[i] === 'compensation-attorney-first-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-attorney-middle-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-attorney-last-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
             }
-
-
             if (CompensationFields[i] === 'compensation-adjuster-first-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-adjuster-middle-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator(), noNumbersValidator()])
             }
             if (CompensationFields[i] === 'compensation-adjuster-last-name') {
-                form.get('insurance')?.get(CompensationFields[i])?.addValidators([noSpecialCharactersValidator()])
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required, noSpecialCharactersValidator(), noNumbersValidator()])
+            }
+            if (CompensationFields[i] === 'compensation-case-status') {
+                form.get('insurance')?.get(CompensationFields[i])?.addValidators([Validators.required])
             }
             form.get('insurance')?.get(CompensationFields[i])?.updateValueAndValidity();
         }

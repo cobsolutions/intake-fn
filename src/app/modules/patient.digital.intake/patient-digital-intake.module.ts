@@ -6,7 +6,7 @@ import { CreateDigitalPatientIntakeComponent } from './components/create/create-
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AvatarModule, BadgeModule, BreadcrumbModule, ButtonGroupModule, ButtonModule, CardModule, DropdownModule, FooterModule, FormModule, GridModule, HeaderModule, ListGroupModule, NavModule, ProgressModule, SharedModule, SidebarModule, TabsModule, UtilitiesModule, DateRangePickerModule, AlertModule, MultiSelectModule, DatePickerModule, AccordionModule, CalloutModule } from '@coreui/angular-pro';
+import { AvatarModule, BadgeModule, BreadcrumbModule, ButtonGroupModule, ButtonModule, CardModule, DropdownModule, FooterModule, FormModule, GridModule, HeaderModule, ListGroupModule, NavModule, ProgressModule, SharedModule, SidebarModule, TabsModule, UtilitiesModule, DateRangePickerModule, AlertModule, MultiSelectModule, DatePickerModule, AccordionModule, CalloutModule, PopoverModule, LoadingButtonModule } from '@coreui/angular-pro';
 import { IconModule } from '@coreui/icons-angular';
 import { PatientBasicComponent } from './components/patient.basic/patient-basic.component';
 import { PatientCommonModule } from '../common';
@@ -21,7 +21,17 @@ import { PatientSignatureComponent } from './components/patient.signature/patien
 import { PatientSummaryComponent } from './components/patient.summary/patient-summary.component';
 import { PatientGreetingCreationComponent } from './components/greeting/patient-greeting-creation.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-
+import { CorruptedDeviceComponent } from './components/corrupted.device/corrupted-device.component';
+import { PatientIdentityVerificationComponent } from './components/patinet.identity.verification/patient-identity-verification.component';
+import { PatientConsentComponent } from './components/patient.consent/patient-consent.component';
+import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
+import { RegisterDeviceComponent } from './components/register.device/register-device.component';
+import { PreRegisterDeviceComponent } from './components/pre.register.device/pre-register-device.component';
+import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
+import { PatientBiometricIdentificationComponent } from './components/patient.biometric.identification/patient-biometric-identification.component';
+import { WebcamModule } from 'ngx-webcam';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 const COREUI_MODULES = [
   AvatarModule,
@@ -48,6 +58,8 @@ const COREUI_MODULES = [
   MultiSelectModule,
   DatePickerModule,
   CalloutModule,
+  PopoverModule,
+  LoadingButtonModule
 ]
 @NgModule({
   declarations: [
@@ -62,6 +74,14 @@ const COREUI_MODULES = [
     PatientSignatureComponent,
     PatientSummaryComponent,
     PatientGreetingCreationComponent,
+    CorruptedDeviceComponent,
+    PatientIdentityVerificationComponent,
+    PatientConsentComponent,
+    MailVerificationComponent,
+    RegisterDeviceComponent,
+    PreRegisterDeviceComponent,
+    PreCreateDigitalPatientIntakeComponentComponent,
+    PatientBiometricIdentificationComponent,
   ],
   imports: [
     CommonModule,
@@ -70,11 +90,17 @@ const COREUI_MODULES = [
     FormsModule,
     ReactiveFormsModule,
     PatientCommonModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
     ...COREUI_MODULES,
     AccordionModule,
     AutocompleteLibModule,
-    NgMultiSelectDropDownModule.forRoot()
+    WebcamModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
+    MatDatepickerModule,
+    MatNativeDateModule 
+  ],
+  providers: [  
+    MatDatepickerModule,  
   ],
 })
 export class PatientDigitalIntakeModule { }

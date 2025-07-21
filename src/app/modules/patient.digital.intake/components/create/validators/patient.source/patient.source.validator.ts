@@ -6,13 +6,10 @@ import { RemoveProviderValidator } from "./provider/remove.provider.validator";
 
 export class PatientSourceValidator {
     public static addValidator(form: FormGroup) {
-        form.get('medical')?.get('isReferring')?.valueChanges.subscribe(value => {
-            if (value === 'yes') {
+        form.get('medical')?.get('referringEntity')?.valueChanges.subscribe(value => {
+            if (value === 'referringDoctor') {
                 AddProviderSourceValidator.add(form);
-                RemoveEntityValidator.remove(form)
-            }
-            if (value === 'no') {
-                AddEntityValidator.add(form)
+            }else{
                 RemoveProviderValidator.remove(form)
             }
         })

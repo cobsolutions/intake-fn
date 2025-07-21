@@ -19,28 +19,20 @@
                 </div>
             </c-col>
             <c-col xs="12">
-                <select cSelect sizing="sm" (change)="generatesign($event)">
-                    <option value="null" disabled>Select Signature Template</option>
-                    <option value="signature-format-Dancing-Script"
-                        style="font-family:Dancing Script;font-size: xx-large;">Format
-                        Me..</option>
-                    <option value="signature-format-Gloria-Hallelujah"
-                        style="font-family:Gloria Hallelujah;font-size: xx-large;">
-                        Format Me..</option>
-                    <option value="signature-format-Great-Vibes" style="font-family:Great Vibes;font-size: xx-large;">
-                        Format Me..
-                    </option>
-                    <option value="signature-format-Homemade-Apple"
-                        style="font-family:Homemade Apple;font-size: xx-large;">Format
-                        Me</option>
-                    <option value="signature-format-Monsieur-La-Doulaise"
-                        style="font-family:Monsieur La Doulaise;font-size: xx-large;">Format Me</option>
-                    <option value="signature-format-Nanum-Brush-Script"
-                        style="font-family:Nanum Brush Script;font-size: xx-large;">Format Me</option>
-                    <option value="signature-format-Reenie-Beanie"
-                        style="font-family:Reenie Beanie;font-size: xx-large;">Format
-                        Me</option>
-                </select>
+                <div class="signature-dropdown">
+                    <strong><label for="signature">Select Signature Format:</label></strong>
+                    <div id="signature" class="dropdown">
+                      <div
+                        *ngFor="let signature of signatures"
+                        (click)="generatesign(signature)"
+                        [ngClass]="{ selected: signature.value === selectedSignature }"
+                        class="dropdown-item"
+                        [ngStyle]="{ 'font-family': signature.fontFamily, 'font-size': 'xx-large' }"
+                      >
+                        {{ signature.displayText }}
+                      </div>
+                    </div>
+                  </div>               
             </c-col>
             <c-col xs="12">
                 <!-- <button cButton (click)="generate()">Capture</button> -->

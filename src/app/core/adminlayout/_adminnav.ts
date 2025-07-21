@@ -12,11 +12,11 @@ export const adminNavItems: INavData[] = [
     iconComponent: { name: 'cil-disabled' },
     children: [
       {
-        name: 'Patient List',
+        name: 'Patients',
         url: 'patient/list'
       },
       {
-        name: 'Patient Creation',
+        name: 'Submission',
         url: 'patient/create'
       }
     ]
@@ -41,6 +41,10 @@ export const adminNavItems: INavData[] = [
       {
         name: 'Insurance Company',
         url: 'insurance/company/list'
+      },
+      {
+        name: 'Trust Devices',
+        url: 'trust/devices/list'
       }
     ],
   },
@@ -52,7 +56,15 @@ export const adminNavItems: INavData[] = [
       {
         name: 'Patient Source',
         url: 'report/recommendation'
-      }
+      },
+      {
+        name: 'Patient Changes',
+        url: 'report/changes'
+      },
+      {
+        name: 'Patient Contact',
+        url: 'report/contact'
+      },
     ]
   },
   // {

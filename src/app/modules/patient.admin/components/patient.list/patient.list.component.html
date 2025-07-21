@@ -1,102 +1,147 @@
 <ngx-spinner></ngx-spinner>
-<span *ngIf="!(noShow | async)">
-  <c-row>
-    <c-col xs="12" class="mb-2">
-      <h1>Patient List</h1>
-    </c-col>
-  </c-row>
-  <hr />
-  <ng-container *ngIf="props$ | async as props" fluid="true">
-    <c-smart-table [columns]="columns" [items]="(usersData$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
-      (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
-      [itemsPerPageSelect]="true" [columnFilterValue]="props.columnFilterValue?? []" [sorterValue]="props.sorterValue"
-      [tableProps]="{ hover: true, striped: true  }" [tableBodyProps]="{ align: 'middle' }"
-      (sorterValueChange)="handleSorterValueChange($event)" header>
-      <ng-template cTemplateId="tableDetails" let-item="item">
-        <div [visible]="this.details_visible[item._id]===true" cCollapse>
-          <!-- <p ><strong>Action has been taken at :</strong> {{item['patientId']}}</p> -->
-          <table cTable hover>
-            <thead>
-              <tr>
-                <th scope="col">Document Name</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Patient Intake</td>
-                <td>
-                  <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File">
-                    <svg cIcon name="cilCloudDownload"></svg>
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td *ngIf="!item['hasGuarantor']">Patient ID Document</td>
-                <td *ngIf="item['hasGuarantor']">Guarantor Document</td>
-                <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,item.hasGuarantor)"
-                    cTooltip="Id Document">
-                    <svg cIcon name="cilCloudDownload"></svg>
-                  </button></td>
-              </tr>
-              <tr *ngIf="!item['hasGuarantor']">
-                <td>Patient Insurance Document</td>
-                <td>
-                  <button cButton variant="outline" (click)="exportPatientInsuranceDocument(item)"
-                    *ngIf="!item.hasGuarantor" cTooltip="Insurance Document">
-                    <svg cIcon name="cilCloudDownload"></svg>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </ng-template>
-      <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
-        <td>
-          <ng-container [ngSwitch]="columnName">
-            <!-- <ng-container *ngSwitchCase="'actions'" class="py-2">
-              <div class="btn-group" role="group" aria-label="Basic example">
-                <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File">
-                  <svg cIcon name="cibAdobeAcrobatReader" class="text-danger"></svg>
-                </button>
-                <button cButton variant="outline" (click)="exportPatientIDDocument(item,item.hasGuarantor)" cTooltip="Id Document">
-                  <svg cIcon name="cilUser"></svg>
-                </button>
-                <button cButton variant="outline" (click)="exportPatientInsuranceDocument(item)" *ngIf="!item.hasGuarantor"
-                  cTooltip="Insurance Document" >
-                  <svg cIcon name="cilPaperPlane"></svg>
-                </button>
-              </div>
-            </ng-container> -->
-            <ng-container *ngSwitchCase="'hasGuarantor'">
-              <c-form-check>
-                <input cFormCheckInput type="checkbox" size="sm" disabled [checked]="item[columnName]" />
-              </c-form-check>
-            </ng-container>
-            <ng-container *ngSwitchDefault>
-              {{tdContent}}
-            </ng-container>
-            <ng-container *ngSwitchCase="'createAt'" class="py-2">
-              {{item.createdAt | date:"MM/dd/yyyy hh:mm a"}}
-            </ng-container>
-            <ng-container *ngSwitchCase="'actions'" class="py-2">
-              <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm" variant="outline">
-                Records
+<c-row>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header ngPreserveWhitespaces>
+        <strong>Patient Search</strong> <small>From patient list</small>
+      </c-card-header>
+      <c-card-body>
+        <p class="text-medium-emphasis small">
+          The Abiltiy to filter the patient list using his/her personal Info,
+          Also using the insurnace , provider and Facility data.
+        </p>
+        <form cForm>
+          <c-row>
+            <c-col class="mb-2" xs="12">
+              <input aria-describedby="basic-addon1" aria-label="Username" cFormControl placeholder="Name" sizing="sm"
+                [(ngModel)]="patientSearchCriteria.name" name="sc_pname" />
+            </c-col>
+            <c-col class="mb-2" xs="12">
+              <input aria-describedby="basic-addon1" aria-label="phone" cFormControl placeholder="Phone" sizing="sm"
+                [ngModel]="patientSearchCriteria.phone |phone" (ngModelChange)="patientSearchCriteria.phone=$event"
+                #phone="ngModel" name="phone" />
+            </c-col>
+            <c-col class="mb-2" xs="12">
+              <input aria-describedby="basic-addon1" aria-label="email" cFormControl placeholder="Email" sizing="sm"
+                [(ngModel)]="patientSearchCriteria.email" name="sc_pemail" />
+            </c-col>
+            <c-col class="mb-2" xs="12">
+              <c-date-range-picker [(startDate)]="patientSearchCriteria.startDate_date"
+                [(endDate)]="patientSearchCriteria.endDate_date" [placeholder]="['Created From ', 'Created To']"
+                [ranges]="customRanges"></c-date-range-picker>
+            </c-col>
+            <c-col class="mb-2" xs="12">
+              <select cSelect name="pSchedulefilter" (change)="isScheduleChanged($event)"
+                [(ngModel)]="patientSearchCriteria.isSchedule">
+                <option selected disabled value="undefined">Patient Schedule</option>
+                <option value="null">All</option>
+                <option value="true">Scheduled</option>
+                <option value="false">Not Scheduled</option>
+              </select>
+            </c-col>
+            <c-col xs="12" class="text-center">
+              <button cButton class="me-1" color="primary" style="width: 15%;" (click)="search()">
+                Search
               </button>
-            </ng-container>
+            </c-col>
+          </c-row>
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+<ng-container *ngIf="props$ | async as props" fluid="true">
+  <c-smart-table [columns]="columns" [items]="(usersData$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
+    (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
+    [itemsPerPageSelect]="true" [columnFilterValue]="props.columnFilterValue?? []" [sorterValue]="props.sorterValue"
+    [tableProps]="{ hover: true, striped: true  }" [tableBodyProps]="{ align: 'middle' }"
+    (sorterValueChange)="handleSorterValueChange($event)" header>
+    <ng-template cTemplateId="tableDetails" let-item="item">
+      <div [visible]="this.details_visible[item._id]===true" cCollapse>
+        <!-- <p ><strong>Action has been taken at :</strong> {{item['patientId']}}</p> -->
+        <table cTable hover>
+          <thead>
+            <tr>
+              <th scope="col">Document Name</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Patient Intake</td>
+              <td>
+                <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File">
+                  <svg cIcon name="cilCloudDownload"></svg>
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td *ngIf="!item['hasGuarantor']">Patient ID Document</td>
+              <td *ngIf="item['hasGuarantor']">Guarantor Document</td>
+              <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,false)"
+                  cTooltip="Id Document">
+                  <svg cIcon name="cilCloudDownload"></svg>
+                </button></td>
+            </tr>
+            <tr *ngIf="!item['hasGuarantor']">
+              <td>Patient Insurance Document</td>
+              <td>
+                <button cButton variant="outline" (click)="exportPatientInsuranceDocument(item)"
+                  *ngIf="!item.hasGuarantor" cTooltip="Insurance Document">
+                  <svg cIcon name="cilCloudDownload"></svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+    <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
+      <td>
+        <ng-container [ngSwitch]="columnName">
+          <ng-container *ngSwitchCase="'hasGuarantor'">
+            <c-form-check>
+              <input cFormCheckInput type="checkbox" size="sm" disabled [checked]="item[columnName]" />
+            </c-form-check>
           </ng-container>
-        </td>
-      </ng-template>
-    </c-smart-table>
-    <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
-      (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
-  </ng-container>
-  <ng-container *ngIf="errorMessage$ | async as errorMessage">
-    <hr>
-    <c-alert>{{errorMessage}}</c-alert>
-  </ng-container>
-</span>
+          <ng-container *ngSwitchDefault>
+            {{tdContent}}
+          </ng-container>
+          <ng-container *ngSwitchCase="'createAt'" class="py-2">
+            {{item.createdAt | date:"MM/dd/yyyy hh:mm a"}}
+          </ng-container>
+          <ng-container *ngSwitchCase="'actions'" class="py-2">
+            <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm" variant="outline">
+              Records
+            </button>
+          </ng-container>
+          <ng-container *ngSwitchCase="'name'" class="py-2">
+            {{item['lastName']}},{{item['firstName']}}
+          </ng-container>
+          <ng-container *ngSwitchCase="'provider'" class="py-2">
+            <c-form-check [switch]="true">
+              <input cFormCheckInput type="checkbox" (change)="assignProvider(item['patientId'])"
+                [disabled]="item['hasProvider']" [checked]="item['hasProvider']"  [(ngModel)]="item.hasProvider"/>
+            </c-form-check>
+          </ng-container>
+          <ng-container *ngSwitchCase="'schedule'" class="py-2">
+            <c-form-check [switch]="true">
+              <input cFormCheckInput type="checkbox" (change)="isSchedule(item)" [checked]="item.schedule"
+                [(ngModel)]="item.schedule" />
+            </c-form-check>
+          </ng-container>
+        </ng-container>
+      </td>
+    </ng-template>
+  </c-smart-table>
+  <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
+    (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
+</ng-container>
+<ng-container *ngIf="errorMessage$ | async as errorMessage">
+  <hr>
+  <c-alert>{{errorMessage}}</c-alert>
+</ng-container>
+
 
 <span *ngIf="noShow | async">
   <div class="container error-container">
@@ -106,3 +151,13 @@
     <a class="btn btn-primary" (click)="logout()">Logout</a>
   </div>
 </span>
+<c-modal id="editPatientProvider" [visible]="editPatientProvider" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>Udpate Provider</h3>
+    <button (click)="toggleEditPatientProvider()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <edit-patient-provider *ngIf="editPatientProvider" [patientId]="selectedPatientId"
+      (changeVisibility)="changeFacilityVisibility($event)"></edit-patient-provider>
+  </c-modal-body>
+</c-modal>

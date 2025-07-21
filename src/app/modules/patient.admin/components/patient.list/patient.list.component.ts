@@ -1,13 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IColumn, IColumnFilterValue, ISorterValue } from '@coreui/angular-pro/lib/smart-table/smart-table.type';
 import * as moment from 'moment';
-import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, retry, Subject, takeUntil, tap } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { combineLatest, debounceTime, distinctUntilChanged, map, Observable, retry, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
+import { PatientSearchCriteria } from '../../models/patient.search.criteria';
 import { ClinicService } from '../../services/clinic/clinic.service';
 import { PateintDocumentsService } from '../../services/documents/pateint-documents.service';
 import { IApiParams, IPatient, IUsers, PatientListService } from '../../services/patient-list.service';
 import { PatientReportingService } from '../../services/patient.reporting.service';
+import { PatientSearchService } from '../../services/patient.search/patient-search.service';
 export interface IParams {
   activePage?: number;
   columnFilterValue?: IColumnFilterValue;
@@ -21,24 +24,51 @@ export interface IParams {
   styleUrls: ['./patient.list.component.css']
 })
 export class PatientListComponent implements OnInit, OnDestroy {
-  noShow:BehaviorSubject<boolean|null>;
+
+  noShow: BehaviorSubject<boolean | null>;
   constructor(private patientListService: PatientListService
     , private reportingService: PatientReportingService
     , private pateintDocumentsService: PateintDocumentsService
-    ,private clinicService:ClinicService
-    ,private kcAuthServiceService: KcAuthServiceService) {
+    , private clinicService: ClinicService
+    , private kcAuthServiceService: KcAuthServiceService
+    , private toastrService: ToastrService
+    , private patientSearchService: PatientSearchService) {
   }
-
-  title = 'CoreUI Angular Smart Table Example';
+  patientSearchCriteria: PatientSearchCriteria = { isSchedule: undefined }
+  isSchedulePatient: boolean;
+  editPatientProvider: boolean;
+  selectedPatientId?: number
+  public customRanges = {
+    Today: [new Date(), new Date()],
+    Yesterday: [
+      new Date(new Date().setDate(new Date().getDate() - 1)),
+      new Date(new Date().setDate(new Date().getDate() - 1))
+    ],
+    'Last 7 Days': [
+      new Date(new Date().setDate(new Date().getDate() - 6)),
+      new Date(new Date())
+    ],
+    'Last 30 Days': [
+      new Date(new Date().setDate(new Date().getDate() - 29)),
+      new Date(new Date())
+    ],
+    'This Month': [
+      new Date(new Date().setDate(1)),
+      new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
+    ],
+    'Last Month': [
+      new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
+      new Date(new Date().getFullYear(), new Date().getMonth(), 0)
+    ],
+    'Clear': [
+      null,
+      null
+    ]
+  };
   readonly columns: (string | IColumn)[] = [
     {
-      key: 'lastName',
-      label: 'Last Name',
-      sorter: false,
-    },
-    {
-      key: 'firstName',
-      label: 'First Name',
+      key: 'name',
+      label: 'Name',
       sorter: false,
     },
     {
@@ -57,11 +87,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
       sorter: false,
     },
     {
-      key: 'insuranceType',
-      label: 'Insurance Type',
-      sorter: false,
-    },
-    {
       key: 'hasGuarantor',
       label: 'Has Guarantor',
       sorter: false,
@@ -69,6 +94,16 @@ export class PatientListComponent implements OnInit, OnDestroy {
     {
       key: 'createAt',
       label: 'Created At',
+      sorter: false,
+    },
+    {
+      key: 'schedule',
+      label: 'Schedule',
+      sorter: false,
+    },
+    {
+      key: 'provider',
+      label: 'Assign to Provider',
       sorter: false,
     },
     {
@@ -137,15 +172,19 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.kcAuthServiceService.logout()
   }
   exportPDF(data: IPatient) {
-    this.reportingService.exportPDF(data.patientId).subscribe(
+    // this.reportingService.exportPDF(data.patientId).subscribe(
+    //   (response: any) => {
+    //     this.constructExportedFile(response, 'patient-', 'pdf')
+    //   });
+    this.reportingService.exportNewPDF(data.patientId).subscribe(
       (response: any) => {
-        this.constructExportedFile(response,'patient-','pdf')
+        this.constructExportedFile(response, 'digital-patient-intake', 'pdf')
       });
   }
-  exportPatientIDDocument(data: IPatient , hasGuarantor?:boolean) {
-    this.pateintDocumentsService.exportPateintIdDocuments(data.patientId,hasGuarantor).subscribe(
+  exportPatientIDDocument(data: IPatient, hasGuarantor?: boolean) {
+    this.pateintDocumentsService.exportPateintIdDocuments(data.patientId, hasGuarantor).subscribe(
       (response: any) => {
-        this.constructExportedFile(response , 'patient-ID-Documents','zip')
+        this.constructExportedFile(response, 'patient-ID-Documents', 'zip')
       }
     )
 
@@ -153,7 +192,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
   exportPatientInsuranceDocument(data: IPatient) {
     this.pateintDocumentsService.exportPateintInsuranceDocuments(data.patientId).subscribe(
       (response: any) => {
-        this.constructExportedFile(response, 'patient-Insurance-Documents','zip')
+        this.constructExportedFile(response, 'patient-Insurance-Documents', 'zip')
       },
       (error) => {
 
@@ -161,12 +200,12 @@ export class PatientListComponent implements OnInit, OnDestroy {
     )
   }
 
-  constructExportedFile(response: any, fileName: string, extention:string) {
+  constructExportedFile(response: any, fileName: string, extention: string) {
     const a = document.createElement('a')
     const objectUrl = URL.createObjectURL(response)
     a.href = objectUrl
     var nameDatePart = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-    a.download = fileName + nameDatePart + '.' +extention;
+    a.download = fileName + nameDatePart + '.' + extention;
     a.click();
     URL.revokeObjectURL(objectUrl);
   }
@@ -257,6 +296,62 @@ export class PatientListComponent implements OnInit, OnDestroy {
   details_visible = Object.create({});
   toggleDetails(item: any) {
     this.details_visible[item] = !this.details_visible[item];
+  }
+  isSchedule(item: any) {
+    this.patientListService.updatePatientSchedule(item.patientId, item.schedule).subscribe(result => {
+      this.toastrService.success('Patient is scheduled');
+    }, error => {
+      this.toastrService.error('error during schedule patient');
+    })
+  }
+  search() {
+    if (this.patientSearchCriteria.startDate_date !== undefined)
+      this.patientSearchCriteria.startDate = moment(this.patientSearchCriteria.startDate_date).unix() * 1000;
+    if (this.patientSearchCriteria.endDate_date !== undefined)
+      this.patientSearchCriteria.endDate = moment(this.patientSearchCriteria.endDate_date).unix() * 1000;
+    this.patientSearchCriteria.timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    this.clinicService.selectedClinic$.subscribe(clinicId => {
+      this.patientSearchCriteria.clinicId = clinicId
+    })
+    this.usersData$ = this.patientSearchService.findFilter(this.apiParams$, this.patientSearchCriteria).pipe(
+      tap((response: any) => {
+        this.totalItems$.next(response.number_of_matching_records);
+        if (response.number_of_records) {
+          this.errorMessage$.next('');
+        }
+        this.retry$.next(false);
+        this.loadingData$.next(false);
+      }),
+      tap((response) => {
+        this.totalItems$.next(response.number_of_matching_records);
+        if (response.number_of_records) {
+          this.errorMessage$.next('');
+        }
+        this.retry$.next(false);
+        this.loadingData$.next(false);
+      }),
+      map((response) => {
+        return response.records;
+      })
+    );
+  }
+  isScheduleChanged(event: any) {
+    console.log(this.patientSearchCriteria.isSchedule)
+  }
+  assignProvider(patientId: number) {
+    this.editPatientProvider = true;
+    this.selectedPatientId = patientId;
+  }
+  updatePatientProvider(item: number) {
+    this.editPatientProvider = true;
+    this.selectedPatientId = item;
+  }
+  toggleEditPatientProvider() {
+    this.editPatientProvider = !this.editPatientProvider
+  }
+  changeFacilityVisibility(event: string) {
+    if (event === 'close')
+      this.editPatientProvider = false;
   }
 }
 

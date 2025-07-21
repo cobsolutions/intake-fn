@@ -78,10 +78,10 @@ export class PatientInsuranceQuestionnaireValidator extends PatientValidator {
             if (Number.isNaN(this.patientInsuranceCompensationNoFault!.accidentDate) || this.patientInsuranceCompensationNoFault!.accidentDate === undefined)
                 validator.push({ property: " Accident Date", message: '' });
         }
-        if (this.isRequiredField('workerStatus')) {
-            if (this.patientInsuranceCompensationNoFault!.workerStatus === '' || this.patientInsuranceCompensationNoFault!.workerStatus === undefined)
-                validator.push({ property: " Wroker Status", message: '' });
-        }
+        // if (this.isRequiredField('workerStatus')) {
+        //     if (this.patientInsuranceCompensationNoFault!.workerStatus === '' || this.patientInsuranceCompensationNoFault!.workerStatus === undefined)
+        //         validator.push({ property: " Wroker Status", message: '' });
+        // }
         if (this.isRequiredField('address')) {
             if (this.patientInsuranceCompensationNoFault!.address!.first === '' || this.patientInsuranceCompensationNoFault!.address!.first === undefined)
                 validator.push({ property: "First Address ", message: '' });

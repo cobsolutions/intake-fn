@@ -17,21 +17,6 @@ export function initializer(keycloak: KeycloakService
     },
     bearerExcludedUrls: []
   };
-  from(keycloak.keycloakEvents$)
-    .pipe(
-      filter(event => event.type === KeycloakEventType.OnTokenExpired))
-    .subscribe(() => {
-      if (fetshUrls.isDigitalIntakeURLS()) {
-        of(keycloak.getToken()).subscribe((newToken: any) => {
-          console.log('keycloak.updateToken(20);')
-          localStorage.removeItem('digital-access-token')
-          keycloak.updateToken(1800);
-          localStorage.setItem('digital-access-token', newToken)
-        })
-      }
-      else
-        kcAuthServiceService.logout();
-    })
   return () => keycloak.init(options);
 
 }

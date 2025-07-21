@@ -7,6 +7,7 @@ import { ClinicCreationComponent } from './components/clinic/create/clinic.creat
 import { ClinicListComponent } from './components/clinic/list/clinic.list.component';
 import { UpdateClinicComponent } from './components/clinic/update/update-clinic.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FailedPatientComponent } from './components/failed.patient/failed-patient.component';
 import { InsuranceCompanyCreateComponent } from './components/insurance.company/create/insurance-company-create.component';
 import { InsuranceCompanyListComponent } from './components/insurance.company/list/insurance-company-list.component';
 import { PatientCreateComponent } from './components/patient.create/patient-create.component';
@@ -36,6 +37,13 @@ const routes: Routes = [{
     {
       path: 'patient/list',
       component: PatientListComponent,
+      data: {
+        title: 'List',
+      },
+    },
+    {
+      path: 'patient/failed',
+      component: FailedPatientComponent,
       data: {
         title: 'List',
       },

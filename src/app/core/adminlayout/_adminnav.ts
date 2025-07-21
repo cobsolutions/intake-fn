@@ -17,7 +17,7 @@ export const adminNavItems: INavData[] = [
       },
       {
         name: 'Failed Patients',
-        url: 'patient/list'
+        url: 'patient/failed'
       },
       {
         name: 'Submission',

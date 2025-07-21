@@ -11,7 +11,23 @@
             <td>
                 <ng-container [ngSwitch]="columnName">
                     <ng-container *ngSwitchCase="'patientName'">
-                        {{item.lastName}} , {{item.firstName}}
+                        {{item.patient.patientEssentialInformation.patientName.lastName}} 
+                        , {{item.patient.patientEssentialInformation.patientName.firstName}}
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'email'">
+                        {{item.patient.patientEssentialInformation.email}} 
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'gender'">
+                        {{item.patient.patientEssentialInformation.gender}} 
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'phoneNumber'">
+                        {{item.patient.patientEssentialInformation.patientPhone.phone}} 
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'maritalStatus'">
+                        {{item.patient.patientEssentialInformation.maritalStatus}} 
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'patientIntakeUUID'">
+                        {{item.patientIntakeUUID}} 
                     </ng-container>
                     <ng-container *ngSwitchDefault>
                         {{tdContent}}

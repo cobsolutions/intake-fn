@@ -16,6 +16,10 @@ export const adminNavItems: INavData[] = [
         url: 'patient/list'
       },
       {
+        name: 'Failed Patients',
+        url: 'patient/list'
+      },
+      {
         name: 'Submission',
         url: 'patient/create'
       }

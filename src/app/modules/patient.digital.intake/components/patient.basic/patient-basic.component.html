@@ -50,7 +50,23 @@
                 <label style="width: 150px;">Date Of Birth <span class="text-danger">*</span></label>
             </c-col>
             <c-col xl="12">
-                <input type="date" cFormControl sizing="sm" formControlName="dob">
+                <div class="d-flex w-80 p-0 m-0" style="gap: 0;">
+                    <select formControlName="dobMonth" class="form-select dob-select">
+                      <option value="">Month</option>
+                      <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+                    </select>
+                  
+                    <select formControlName="dobDay" class="form-select dob-select">
+                      <option value="">Day</option>
+                      <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+                    </select>
+                  
+                    <select formControlName="dobYear" class="form-select dob-select">
+                      <option value="">Year</option>
+                      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                    </select>
+                  </div>
+                  
             </c-col>
             <div *ngIf="this.form.get('basic')?.get('dob')?.errors?.['required'] && 
             (this.form.get('basic')?.get('dob')?.dirty ||this.form.get('basic')?.get('dob')?.touched)"

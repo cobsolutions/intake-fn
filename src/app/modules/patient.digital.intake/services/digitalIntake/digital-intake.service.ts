@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { AgreementHolder } from 'src/app/models/patient/agreements/agreements.holder';
 import { InsuranceCompany } from 'src/app/modules/patient.admin/models/insurance.company.model';
 import { DigitalIntakeDevice } from 'src/app/modules/patient.admin/models/trust.device/digital.intake.device';
+import { FailedIntake } from 'src/app/modules/patient.questionnaire/models/intake/failed.intake';
+import { Patient } from 'src/app/modules/patient.questionnaire/models/intake/patient';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -29,6 +31,13 @@ export class DigitalIntakeService {
     }
     const createPatientURL = this.baseUrl + '/create';
     return this.http.post(createPatientURL, imageFormData, { observe: 'response', withCredentials: true, 'headers': headers })
+  }
+  failedIntake(failedIntake:FailedIntake) {
+    var headers: any = {
+      'token': this.token
+    }
+    const createPatientURL = this.baseUrl + '/failed-intake';
+    return this.http.post(createPatientURL, failedIntake, { observe: 'response', withCredentials: true, 'headers': headers })
   }
   findAgreements() {
     const findAgreementURL = this.baseUrl + '/lookups/find/agreement';

@@ -16,6 +16,9 @@ import { ZipcodeDirective } from './directives/zipcode.directive';
 import { PhonePipe } from './pipes/phone.pipe';
 import { TrimTextPipe } from './pipes/trimer/trim-text.pipe';
 import { InputTrimmerDirective } from './directives/trimmer/input-trimmer.directive';
+import { HeightFormatPipe } from './pipes/height/height-format.pipe';
+import { HeightFormatterDirective } from './directives/heightFormat/height-formatter.directive';
+import { WeightFormatPipe } from './pipes/weight/weight-format.pipe';
 
 
 
@@ -28,6 +31,9 @@ import { InputTrimmerDirective } from './directives/trimmer/input-trimmer.direct
     PhonePipe,
     TrimTextPipe,
     InputTrimmerDirective,
+    HeightFormatPipe,
+    HeightFormatterDirective,
+    WeightFormatPipe,
 
   ],
   imports: [
@@ -54,7 +60,10 @@ import { InputTrimmerDirective } from './directives/trimmer/input-trimmer.direct
     ZipcodeDirective,
     PhonePipe,
     TrimTextPipe,
-    InputTrimmerDirective
+    InputTrimmerDirective,
+    HeightFormatPipe,
+    HeightFormatterDirective,
+    WeightFormatPipe
   ]
 })
 export class PatientCommonModule { }

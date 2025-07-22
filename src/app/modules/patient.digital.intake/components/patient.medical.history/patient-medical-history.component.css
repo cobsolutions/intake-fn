@@ -1,0 +1,6 @@
+.helper-text {
+    font-size: 0.95rem;         /* slightly larger than default */
+    font-weight: 500;           /* semi-bold for clarity */
+    color: #495057;             /* darker gray for better contrast */
+    margin-top: 0.25rem;
+  }

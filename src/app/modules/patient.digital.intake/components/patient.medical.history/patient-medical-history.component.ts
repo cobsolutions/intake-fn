@@ -72,18 +72,33 @@ export class PatientMedicalHistoryComponent implements OnInit {
     }
   }
   onHeightInput() {
-    let weightControl = this.form?.get('medicalhistory')?.get('height')
+    const control = this.form.get('medicalhistory')?.get('height');
+  if (!control) return;
 
-    if (weightControl) {
-      setTimeout(() => {
-        let value = weightControl?.value?.toString();
-        if (value === '0') {
-          weightControl?.setValue('', { emitEvent: false });
-        } else if (value?.startsWith('0') && value.length > 1) {
-          weightControl?.setValue(value.replace(/^0+/, ''), { emitEvent: false });
-        }
-      });
-    }
+  let raw = control.value?.toString().replace(/[^\d]/g, '') || '';
+
+  // Ensure we only handle up to 4 digits (max: 99 feet + 11 inches)
+  raw = raw.substring(0, 4);
+
+  let formatted = '';
+  if (raw.length === 0) {
+    formatted = '';
+  } else if (raw.length === 1) {
+    formatted = `${raw}'`;
+  } else if (raw.length === 2) {
+    formatted = `${raw.charAt(0)}'${raw.charAt(1)}"`;
+  } else if (raw.length === 3) {
+    formatted = `${raw.charAt(0)}'${raw.substring(1)}"`;
+  } else {
+    const feet = raw.slice(0, raw.length - 2);
+    const inches = raw.slice(-2);
+    formatted = `${parseInt(feet)}'${parseInt(inches)}"`;
+  }
+
+  // Prevent loop: only update if formatted is different
+  if (control.value !== formatted) {
+    control.setValue(formatted, { emitEvent: false });
+  };
   }
 
   next() {

@@ -81,12 +81,10 @@
         <p cCardText>
             <strong>
                 Height : </strong>
-            {{pateint.patientMedical?.patientMedicalHistory?.height}} CM ,
             {{pateint.patientMedical?.patientMedicalHistory?.heightFT}} FT <br />
             <strong>
                 Weight : </strong>
-            {{pateint.patientMedical?.patientMedicalHistory?.weight}} KG,
-            {{pateint.patientMedical?.patientMedicalHistory?.weightPN}} Pound<br />
+            {{pateint.patientMedical?.patientMedicalHistory?.weight}} Lbs <br />
             <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.evaluationSubmission !== null">
                 <strong>
                     Reason for today’s evaluation : </strong>

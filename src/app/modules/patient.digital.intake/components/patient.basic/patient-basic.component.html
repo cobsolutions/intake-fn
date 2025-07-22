@@ -225,7 +225,7 @@
             </c-col>
             <c-col xl="12">
                 <input cFormControl class="form-control" placeholder formControlName="phone" sizing="sm"
-                    [value]="this.form.get('basic')?.get('phone')?.value | phone" maxlength="15" [placeholder]="'Phone'"
+                    [value]="this.form.get('basic')?.get('phone')?.value | phone" maxlength="14" [placeholder]="'Phone'"
                     [ngClass]="{'is-invalid': this.form.get('basic')?.get('phone')?.invalid
                     && this.form.get('basic')?.get('phone')?.touched}">
             </c-col>
@@ -350,7 +350,7 @@
                     <c-col xl="12">
                         <input class="form-control" placeholder formControlName="emergencyPhone" cFormControl
                             sizing="sm" [value]="this.form.get('basic')?.get('emergencyPhone')?.value | phone"
-                            maxlength="15" [ngClass]="{'is-invalid': this.form.get('basic')?.get('emergencyPhone')?.invalid
+                            maxlength="14" [ngClass]="{'is-invalid': this.form.get('basic')?.get('emergencyPhone')?.invalid
                             && this.form.get('basic')?.get('emergencyPhone')?.touched}">
                     </c-col>
                     <div *ngIf="!this.form.get('basic')?.get('emergencyPhone')?.valid && 

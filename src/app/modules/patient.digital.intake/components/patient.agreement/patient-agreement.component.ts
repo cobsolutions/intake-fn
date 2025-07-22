@@ -28,20 +28,32 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
   }
   private getAgreements() {
     this.form.get('medicalhistory')?.get('ptSpecialties')?.valueChanges.subscribe(ptVal => {
-      console.log(this.isPelvic(ptVal));      
-    })
-    this.digitalIntakeService.findAgreements().subscribe(response => {
-      this.agreements = response.body;
-      if (this.agreements !== null)
-        for (let i = 0; i < this.agreements.length; i++) {
-          this.agreements[i].accept = false;
-          if (this.agreements[i].id === 1)
-            this.agreements[i].visible = true
-          else
-            this.agreements[i].visible = false
-
+      this.digitalIntakeService.findAgreements().subscribe(response => {
+        this.agreements = response.body;
+        if (this.agreements !== null)
+          for (let i = 0; i < this.agreements.length; i++) {
+            this.agreements[i].accept = false;
+            if (this.agreements[i].id === 1)
+              this.agreements[i].visible = true
+            else
+              this.agreements[i].visible = false
+          }
+        if (this.isPelvic(ptVal)) {
+          this.agreements?.forEach(agreement => {
+            if (agreement.id === 12) {
+              agreement.required = true;
+            }
+          });
+          this.initForm(this.agreements)
+        } else {
+          this.agreements?.forEach(agreement => {
+            if (agreement.id === 12) {
+              agreement.required = false;
+            }
+          });
+          this.initForm(this.agreements)
         }
-      this.initForm(this.agreements)
+      })
     })
   }
   private isPelvic(list: string[]): boolean {

@@ -198,6 +198,7 @@ export class PatientSummaryComponent implements OnInit {
       patientMedicalHistory.medicationPrescriptionText = select.PhysicalTherapyLocationText
       patientMedicalHistory.scanningTest = select.isXRay === 'yes' ? true : false
       patientMedicalHistory.scanningTestValue = select.isXRayValue
+      patientMedicalHistory.ptSpecialties = select.ptSpecialties
       patientMedicalHistory.pacemaker = select.isPacemaker === 'yes' ? true : false
       patientMedicalHistory.metalImplantation = select.isMetalImplants === 'yes' ? true : false
       patientMedicalHistory.surgeriesList = select.surgeriesListText

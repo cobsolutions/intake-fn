@@ -199,6 +199,26 @@
                 </div>
             </c-card-body>
         </c-card>
+        <!--Specialties Question-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Which type of therapy are you seeking today?<span class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-multi-select multiple formControlName="ptSpecialties" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('ptSpecialties')?.invalid
+                && this.form.get('medicalhistory')?.get('ptSpecialties')?.touched}"
+                    placeholder="Please select physical therapy specialties">
+                    <c-multi-select-option value="pelpt">Pelvic Floor Therapy</c-multi-select-option>
+                    <c-multi-select-option value="oncpt">Oncology Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedphppt">Pediatric Physical Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedspppt">Pediatric Speech Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedoccppt">Pediatric Occupational Therapy</c-multi-select-option>
+
+                </c-multi-select>
+            </c-card-body>
+        </c-card>
         <!--Metal Implants -->
         <c-card class="mb-2">
             <c-card-header>

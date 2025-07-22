@@ -27,6 +27,9 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
     this.getAgreements();
   }
   private getAgreements() {
+    this.form.get('medicalhistory')?.get('ptSpecialties')?.valueChanges.subscribe(ptVal => {
+      console.log(this.isPelvic(ptVal));      
+    })
     this.digitalIntakeService.findAgreements().subscribe(response => {
       this.agreements = response.body;
       if (this.agreements !== null)
@@ -40,6 +43,9 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
         }
       this.initForm(this.agreements)
     })
+  }
+  private isPelvic(list: string[]): boolean {
+    return list.includes('pelpt');
   }
   private initForm(agreements: AgreementHolder[] | null) {
     for (var i = 0; i < agreements!.length; i++) {
@@ -72,10 +78,10 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
     });
     return values;
   }
-  acceptConcent(agreement: AgreementHolder, event:any) {
+  acceptConcent(agreement: AgreementHolder, event: any) {
     if (this.agreements !== null)
       for (let i = 0; i < this.agreements?.length; i++) {
-        if (this.agreements[i].id === agreement.id){
+        if (this.agreements[i].id === agreement.id) {
           agreement.accept = (event.target as HTMLInputElement).checked
           this.agreements[i + 1].visible = true;
           this.agreements[i].visible = false;

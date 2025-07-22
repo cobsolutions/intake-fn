@@ -9,8 +9,8 @@
           <div *ngIf="!otpSent" class="phone-section">
             <label for="phoneNumber">Enter your phone number:</label>
             <input type="text" id="phoneNumber" formControlName="pPhoneNumber"
-              [value]="this.form.get('identity')?.get('pPhoneNumber')?.value | phone" maxlength="15"
-              placeholder="e.g. (333)(333)-3333" required [ngClass]="{'is-invalid': this.form.get('identity')?.get('pPhoneNumber')?.invalid
+              [value]="this.form.get('identity')?.get('pPhoneNumber')?.value | phone" maxlength="14"
+              placeholder="e.g. (333) 333-3333" required [ngClass]="{'is-invalid': this.form.get('identity')?.get('pPhoneNumber')?.invalid
               && this.form.get('identity')?.get('pPhoneNumber')?.touched}" />
 
             <div

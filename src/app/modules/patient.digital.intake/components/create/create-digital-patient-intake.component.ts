@@ -65,6 +65,9 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
         'middleName': new FormControl(null, [noSpecialCharactersValidator(), noNumbersValidator()]),
         'lastName': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
+        'dobMonth': new FormControl(''),
+        'dobDay': new FormControl(''),
+        'dobYear': new FormControl(''),
         'dob': new FormControl(null, [Validators.required, todayDOBValidator(), futureDateValidator(), maxDateValidator()]),
         'gender': new FormControl(null, [Validators.required]),
         'genderDescribe': new FormControl(null),
@@ -234,7 +237,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     this.patientForm.get('basic')?.get('gender')?.valueChanges.subscribe((value: any) => {
       if (value === 'Self_Describe') {
         this.patientForm.get('basic')?.get('genderDescribe')?.setValidators(Validators.required)
-      } else {        
+      } else {
         this.patientForm.get('basic')?.get('genderDescribe')?.clearValidators();
         this.patientForm.get('basic')?.get('genderDescribe')?.setErrors(null);
         this.patientForm.get('basic')?.get('genderDescribe')?.updateValueAndValidity();

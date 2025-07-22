@@ -46,3 +46,16 @@
   select[formControlName="emergencyContact"]:focus {
     background-color: #f0f0f0; /* Light gray when select is focused (opened) */
   }
+  .dob-select {
+    flex: 1;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    margin: 0 2px;
+    height: 38px;
+  }
+  
+  .dob-select option {
+    padding: 8px 12px;
+  }
+  

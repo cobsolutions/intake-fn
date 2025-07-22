@@ -14,6 +14,7 @@ export interface PatientMedicalHistory {
   patientCondition?: IPatientCondition[];
   scanningTest?: boolean;
   scanningTestValue?: string[];
+  ptSpecialties?:string[],
   metalImplantation?: boolean;
   pacemaker?: boolean;
   surgeriesList?: string;

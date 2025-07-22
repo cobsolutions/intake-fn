@@ -51,7 +51,7 @@
                     <c-col xs="12">
                         <input class="form-control col-xs-2 mx-2" placeholder formControlName="weight" type="number"
                             onKeyDown="if(this.value.length==3 && event.keyCode!=8) return false;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('weight')?.invalid
-                            && this.form.get('medicalhistory')?.get('weight')?.touched}"  (input)="onWeightInput()">
+                            && this.form.get('medicalhistory')?.get('weight')?.touched}" (input)="onWeightInput()">
                     </c-col>
                     <c-col xs="12">
                         <div *ngIf="this.form.get('medicalhistory')?.get('weight')?.errors?.['required'] === true && 
@@ -59,7 +59,8 @@
                             class="text-danger mx-1">
                             Weight is required
                         </div>
-                        <div *ngIf="this.form.get('medicalhistory')?.get('weight')?.errors?.['invalidNumber']" class="text-danger mx-1">
+                        <div *ngIf="this.form.get('medicalhistory')?.get('weight')?.errors?.['invalidNumber']"
+                            class="text-danger mx-1">
                             height can't start with zero.</div>
                     </c-col>
                 </c-row>
@@ -77,18 +78,20 @@
         </c-row>
         <!--primary reason for today’s evaluation -->
         <c-card class="mb-2">
-            <c-card-header><strong style="font-size: medium;">What is your primary reason for today’s evaluation?</strong></c-card-header>
+            <c-card-header><strong style="font-size: medium;">What is your primary reason for today’s
+                    evaluation?</strong></c-card-header>
             <c-card-body>
                 <textarea cFormControl sizing="sm" formControlName="evaluationReason" maxlength="200" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('evaluationReason')?.invalid
-                            && this.form.get('medicalhistory')?.get('evaluationReason')?.touched}"
-                    input-trimmer placeholder="Please add primary reason for today’s evaluation"></textarea>
+                            && this.form.get('medicalhistory')?.get('evaluationReason')?.touched}" input-trimmer
+                    placeholder="Please add primary reason for today’s evaluation"></textarea>
             </c-card-body>
         </c-card>
         <!--prescription or non-prescription medication-->
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <strong style="font-size: medium;">Are you taking any prescription or non-prescription medication?<span class="text-danger">*</span></strong>
+                    <strong style="font-size: medium;">Are you taking any prescription or non-prescription
+                        medication?<span class="text-danger">*</span></strong>
                 </label>
             </c-card-header>
             <c-card-body>
@@ -160,7 +163,8 @@
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <strong style="font-size: medium;">Have you ever had any of the following imaging tests done (MRI, CT, or X-ray)?<span class="text-danger">*</span></strong>
+                    <strong style="font-size: medium;">Have you ever had any of the following imaging tests done (MRI,
+                        CT, or X-ray)?<span class="text-danger">*</span></strong>
                 </label>
             </c-card-header>
             <c-card-body>
@@ -199,11 +203,38 @@
                 </div>
             </c-card-body>
         </c-card>
+        <!--Specialties Question-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Which type of therapy are you seeking today?<span
+                            class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-multi-select multiple formControlName="ptSpecialties" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('ptSpecialties')?.invalid
+                && this.form.get('medicalhistory')?.get('ptSpecialties')?.touched}"
+                    placeholder="Please select physical therapy specialties">
+                    <c-multi-select-option value="pelpt">Pelvic Floor Therapy</c-multi-select-option>
+                    <c-multi-select-option value="oncpt">Oncology Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedphppt">Pediatric Physical Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedspppt">Pediatric Speech Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedoccppt">Pediatric Occupational Therapy</c-multi-select-option>
+
+                </c-multi-select>
+                <div *ngIf="this.form.get('medicalhistory')?.get('ptSpecialties')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('ptSpecialties')?.dirty ||this.form.get('medicalhistory')?.get('ptSpecialties')?.touched)"
+                    class="text-danger mx-1">
+                    physical therapy specialties is required
+                </div>
+            </c-card-body>
+        </c-card>
         <!--Metal Implants -->
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <strong style="font-size: medium;">Do you currently have any metal implants?<span class="text-danger">*</span></strong>
+                    <strong style="font-size: medium;">Do you currently have any metal implants?<span
+                            class="text-danger">*</span></strong>
                 </label>
             </c-card-header>
             <c-card-body>
@@ -226,7 +257,8 @@
         <c-card class="mb-2">
             <c-card-header>
                 <label for="dsds" class="form-label">
-                    <strong style="font-size: medium;">Do you currently have a pacemaker?<span class="text-danger">*</span></strong>
+                    <strong style="font-size: medium;">Do you currently have a pacemaker?<span
+                            class="text-danger">*</span></strong>
                 </label>
             </c-card-header>
             <c-card-body>
@@ -264,7 +296,8 @@
                 </c-form-check>
                 <span *ngIf="this.form.get('medicalhistory')?.get('surgeriesList')?.value ==='yes'">
                     <textarea cFormControl sizing="sm" formControlName="surgeriesListText" maxlength="200" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('surgeriesListText')?.invalid
-                    && this.form.get('medicalhistory')?.get('surgeriesListText')?.touched}" input-trimmer placeholder="Please add surgeries or other conditions not listed above"></textarea>
+                    && this.form.get('medicalhistory')?.get('surgeriesListText')?.touched}" input-trimmer
+                        placeholder="Please add surgeries or other conditions not listed above"></textarea>
                     <div *ngIf="this.form.get('medicalhistory')?.get('surgeriesListText')?.errors?.['required'] === true && 
                 (this.form.get('medicalhistory')?.get('surgeriesListText')?.dirty ||this.form.get('medicalhistory')?.get('surgeriesListText')?.touched)"
                         class="text-danger mx-1">

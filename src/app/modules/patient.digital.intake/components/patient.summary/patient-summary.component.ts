@@ -230,7 +230,6 @@ export class PatientSummaryComponent implements OnInit {
   }
   private getSignture() {
     this.form.get('signature')?.get('generatesign')?.valueChanges.subscribe((valu: any) => {
-      console.log(valu)
       this.patientSignature.signature = valu;
       this.pateint.signature = valu;
     })
@@ -249,32 +248,53 @@ export class PatientSummaryComponent implements OnInit {
   private calculateHeight(unit: boolean, value: string): string[] {
     var heightUnit: string = unit ? 'Inch' : 'cm'
     var height: string[] = []
-    switch (heightUnit) {
-      case 'cm':
-        height[0] = value;
-        height[1] = Number((Number(value) * 30.48).toFixed(1)).toString();
-        break;
-      case 'Inch':
-        height[0] = Math.round(Number(value) / 30.48).toString();
-        height[1] = value;
-        break;
-    }
+    height[0] = this.normalizeHeight(value);
+    // switch (heightUnit) {
+    //   case 'cm':
+    //     height[0] = value;
+    //     height[1] = Number((Number(value) * 30.48).toFixed(1)).toString();
+    //     break;
+    //   case 'Inch':
+    //     height[0] = Math.round(Number(value) / 30.48).toString();
+    //     height[1] = value;
+    //     break;
+    // }
     return height;
   }
   private calculateWeight(unit: boolean, value: string): string[] {
     var weightUnit: string = unit ? 'kg' : 'pound'
     var weight: string[] = []
-    switch (weightUnit) {
-      case 'kg':
-        weight[0] = value;
-        weight[1] = Number((Number(value) * 2.20462).toFixed(1)).toString();
-        break;
-      case 'pound':
-        weight[0] = Math.round(Number(value) / 2.20462).toString()
-        weight[1] = value
-        break;
-    }
+    weight[0] = value;
+    // switch (weightUnit) {
+    //   case 'kg':
+    //     weight[0] = value;
+    //     weight[1] = Number((Number(value) * 2.20462).toFixed(1)).toString();
+    //     break;
+    //   case 'pound':
+    //     weight[0] = Math.round(Number(value) / 2.20462).toString()
+    //     weight[1] = value
+    //     break;
+    // }
     return weight;
+  }
+  private normalizeHeight(input: string): string {
+    // Extract digits only
+    const digitsOnly = input.replace(/\D/g, '').slice(0, 4); // Max 4 digits
+  
+    if (digitsOnly.length === 0) return '';
+  
+    let feet = '';
+    let inches = '';
+  
+    if (digitsOnly.length <= 2) {
+      feet = digitsOnly.charAt(0);
+      inches = digitsOnly.slice(1);
+    } else {
+      feet = digitsOnly.slice(0, digitsOnly.length - 2);
+      inches = digitsOnly.slice(-2);
+    }
+  
+    return `${parseInt(feet)}'${parseInt(inches)}"`;
   }
   private scrollUp() {
     (function smoothscroll() {

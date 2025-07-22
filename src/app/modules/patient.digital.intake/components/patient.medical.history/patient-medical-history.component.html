@@ -15,8 +15,8 @@
                     <c-col xs="12">
                         <input class="form-control col-xs-2 mx-2" placeholder formControlName="height"
                             [value]="this.form.get('medicalhistory')?.get('height')?.value | heightFormat" maxlength="5"
-                            placeholder="e.g. 5'11&quot;"
-                            onKeyDown="if(this.value.length==3 && event.keyCode!=8) return false;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('height')?.invalid
+                            (input)="onHeightInput()"
+                            placeholder="e.g. 5'11&quot;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('height')?.invalid
                 && this.form.get('medicalhistory')?.get('height')?.touched}" (input)="onHeightInput()">
                     </c-col>
                     <c-col xs=" 12">

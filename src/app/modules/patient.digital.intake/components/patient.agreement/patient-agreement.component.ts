@@ -15,56 +15,39 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
   @Input() stepper: MatStepper
   isValidForm: boolean = false;
   @Input() form: FormGroup;
-  agreements: AgreementHolder[] | null = null
+  
   agreementFormArray: FormArray;
   visibleAgreement: boolean
+  agreements: AgreementHolder[] | null = null
   constructor(private sanitizer: DomSanitizer
     , private digitalIntakeService: DigitalIntakeService) { }
   ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
-    this.getAgreements();
+    this.digitalIntakeService.findAgreements().subscribe(response => {
+      this.agreements = response.body ?? [];
+  
+      // Initialize default properties
+      this.agreements.forEach(agreement => {
+        agreement.accept = false;
+        agreement.visible = agreement.id === 1;
+      });
+  
+      this.initForm(this.agreements); // Initial form setup
+  
+      // Watch for pelvic selection changes
+      this.form.get('medicalhistory')?.get('ptSpecialties')?.valueChanges.subscribe(ptVal => {
+        this.updateAgreementRequirement(ptVal);
+      });
+  
+      // Apply rules for initial value
+      const initialVal = this.form.get('medicalhistory')?.get('ptSpecialties')?.value;
+      this.updateAgreementRequirement(initialVal);
+    });
   }
-  private getAgreements() {
-    this.form.get('medicalhistory')?.get('ptSpecialties')?.valueChanges.subscribe(ptVal => {
-      this.digitalIntakeService.findAgreements().subscribe(response => {
-        this.agreements = response.body;
-        if (this.agreements !== null)
-          for (let i = 0; i < this.agreements.length; i++) {
-            this.agreements[i].accept = false;
-            if (this.agreements[i].id === 1)
-              this.agreements[i].visible = true
-            else
-              this.agreements[i].visible = false
-          }
-        if (this.isPelvic(ptVal)) {
-          this.agreements?.forEach(agreement => {
-            if (agreement.id === 12) {
-              agreement.required = true;
-            }
-          });
-          this.initForm(this.agreements)
-        } else {
-          this.agreements?.forEach(agreement => {
-            if (agreement.id === 12) {
-              agreement.required = false;
-            }
-          });
-          this.initForm(this.agreements)
-        }
-      })
-    })
-  }
-  private isPelvic(list: string[]): boolean {
-    return list.includes('pelpt');
-  }
-  private initForm(agreements: AgreementHolder[] | null) {
-    for (var i = 0; i < agreements!.length; i++) {
-      var agreement: AgreementHolder = agreements![i];
-      (this.form.get('agreement') as FormGroup).addControl(agreement.fieldName, new FormControl(null, agreement.required ? [Validators.requiredTrue] : []))
-    }
-  }
+
+
   next() {
     if (this.form.get('agreement')?.valid) {
       this.stepper.next();
@@ -99,5 +82,37 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
           this.agreements[i].visible = false;
         }
       }
+  }
+  private isPelvic(list: string[]): boolean {
+    return list?.includes('pelpt') ?? false;
+  }
+  private updateAgreementRequirement(ptVal: string[]): void {
+    const pelvicSelected = this.isPelvic(ptVal);
+  
+    this.agreements?.forEach(agreement => {
+      if (agreement.id === 12) {
+        agreement.required = pelvicSelected;
+      }
+    });
+  
+    this.initForm(this.agreements);
+  }
+  private initForm(agreements: AgreementHolder[] | null): void {
+    const agreementGroup = this.form.get('agreement') as FormGroup;
+  
+    agreements?.forEach(agreement => {
+      const controlExists = agreementGroup.contains(agreement.fieldName);
+      const validators = agreement.required ? [Validators.requiredTrue] : [];
+  
+      if (controlExists) {
+        // Update validators if control exists
+        const control = agreementGroup.get(agreement.fieldName);
+        control?.setValidators(validators);
+        control?.updateValueAndValidity();
+      } else {
+        // Add new control if it doesn't exist
+        agreementGroup.addControl(agreement.fieldName, new FormControl(null, validators));
+      }
+    });
   }
 }

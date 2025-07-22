@@ -248,7 +248,8 @@ export class PatientSummaryComponent implements OnInit {
   private calculateHeight(unit: boolean, value: string): string[] {
     var heightUnit: string = unit ? 'Inch' : 'cm'
     var height: string[] = []
-    height[0] = this.normalizeHeight(value);
+    if (value !== null)
+      height[0] = this.normalizeHeight(value);
     // switch (heightUnit) {
     //   case 'cm':
     //     height[0] = value;
@@ -280,12 +281,12 @@ export class PatientSummaryComponent implements OnInit {
   private normalizeHeight(input: string): string {
     // Extract digits only
     const digitsOnly = input.replace(/\D/g, '').slice(0, 4); // Max 4 digits
-  
+
     if (digitsOnly.length === 0) return '';
-  
+
     let feet = '';
     let inches = '';
-  
+
     if (digitsOnly.length <= 2) {
       feet = digitsOnly.charAt(0);
       inches = digitsOnly.slice(1);
@@ -293,7 +294,7 @@ export class PatientSummaryComponent implements OnInit {
       feet = digitsOnly.slice(0, digitsOnly.length - 2);
       inches = digitsOnly.slice(-2);
     }
-  
+
     return `${parseInt(feet)}'${parseInt(inches)}"`;
   }
   private scrollUp() {

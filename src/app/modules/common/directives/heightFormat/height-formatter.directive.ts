@@ -6,29 +6,23 @@ import { NgControl } from '@angular/forms';
 })
 export class HeightFormatterDirective {
   private regex = /^\d{0,1}(\.\d{0,2})?$/; // max 1 digit before and 2 digits after decimal
-  constructor(private el: ElementRef, private control: NgControl) {}
+  constructor(private control: NgControl) {}
 
-  @HostListener('input', ['$event'])
-  onInput(event: Event): void {
-    let input = this.el.nativeElement.value.replace(/\D/g, '');
-    
-    let formatted = '';
-    if (input.length <= 1) {
-      formatted = input;
-    } else if (input.length <= 3) {
-      const feet = input.charAt(0);
-      const inches = input.slice(1);
-      formatted = `${feet}'${inches}"`;
-    } else {
-      const feet = input.slice(0, input.length - 2);
-      const inches = input.slice(-2);
-      formatted = `${feet}'${inches}"`;
-    }
+  @HostListener('input', ['$event.target.value'])
+  onInput(value: string) {
+    if (!value) return;
 
-    // Update input value visually
-    this.el.nativeElement.value = formatted;
+    // Remove all non-digit and extra dots
+    let cleaned = value.replace(/[^0-9.]/g, '');
 
-    // Update the underlying form control with raw or formatted value
+    // Only allow one dot
+    const parts = cleaned.split('.');
+    const integer = parts[0].slice(0, 3); // up to 3 digits
+    const decimal = parts[1]?.slice(0, 2); // up to 2 decimal digits
+
+    const formatted = decimal !== undefined ? `${integer}.${decimal}` : integer;
+
+    // Set value to the form control without emitting extra event
     this.control.control?.setValue(formatted, { emitEvent: false });
   }
 }

@@ -15,8 +15,7 @@
                     <c-col xs="12">
                         <input class="form-control col-xs-2 mx-2" placeholder formControlName="height"
                             [value]="this.form.get('medicalhistory')?.get('height')?.value | heightFormat" maxlength="5"
-                            (input)="onHeightInput()"
-                            placeholder="e.g. 5'11&quot;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('height')?.invalid
+                            (input)="onHeightInput()" placeholder="e.g. 5'11&quot;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('height')?.invalid
                 && this.form.get('medicalhistory')?.get('height')?.touched}" (input)="onHeightInput()">
                     </c-col>
                     <c-col xs=" 12">
@@ -55,8 +54,9 @@
             <c-col xl="4">
                 <c-row>
                     <c-col xs="12">
-                        <input class="form-control col-xs-2 mx-2" placeholder formControlName="weight" type="number"
-                            onKeyDown="if(this.value.length==3 && event.keyCode!=8) return false;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('weight')?.invalid
+                        <input class="form-control col-xs-2 mx-2" placeholder formControlName="weight"
+                        appHeightFormatter
+                            [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('weight')?.invalid
                             && this.form.get('medicalhistory')?.get('weight')?.touched}" (input)="onWeightInput()">
                     </c-col>
                     <c-col xs="12">
@@ -73,7 +73,7 @@
             </c-col>
             <c-col xl="2">
                 <div class="helper-text">
-                    Please enter your weight in pounds (e.g. <strong>150</strong>).
+                    Please enter your weight in pounds (e.g. <strong>150.39</strong>).
                 </div>
             </c-col>
         </c-row>

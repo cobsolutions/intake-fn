@@ -13,7 +13,9 @@
             <c-col xl="4">
                 <c-row>
                     <c-col xs="12">
-                        <input class="form-control col-xs-2 mx-2" placeholder formControlName="height" type="number"
+                        <input class="form-control col-xs-2 mx-2" placeholder formControlName="height"
+                            [value]="this.form.get('medicalhistory')?.get('height')?.value | heightFormat" maxlength="5"
+                            placeholder="e.g. 5'11&quot;"
                             onKeyDown="if(this.value.length==3 && event.keyCode!=8) return false;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('height')?.invalid
                 && this.form.get('medicalhistory')?.get('height')?.touched}" (input)="onHeightInput()">
                     </c-col>
@@ -24,19 +26,23 @@
                             Height is required
                         </div>
                     </c-col>
-                    <div *ngIf="this.form.get('medicalhistory')?.get('height')?.errors?.['invalidNumber']" class="text-danger mx-1">
+                    <div *ngIf="this.form.get('medicalhistory')?.get('height')?.errors?.['invalidNumber']"
+                        class="text-danger mx-1">
                         height can't start with zero.</div>
                 </c-row>
             </c-col>
-            <c-col xl="2">
-                <c-form-check [switch]="true" class="mb-3" sizing="lg">
+            <c-col xl="3">
+                <!-- <c-form-check [switch]="true" class="mb-3" sizing="lg">
                     <input cFormCheckInput type="checkbox" formControlName="heightUnit" />
                     <label cFormCheckLabel>
                         <span
                             [ngClass]="{ 'fw-bold':!this.form.get('medicalhistory')?.get('heightUnit')?.value}">FT</span>/<span
                             [ngClass]="{ 'fw-bold':this.form.get('medicalhistory')?.get('heightUnit')?.value }">CM</span>
                     </label>
-                </c-form-check>
+                </c-form-check> -->
+                <div class="helper-text">
+                    Please enter your height in feet and inches (e.g. <strong>5'11"</strong>).
+                </div>
             </c-col>
         </c-row>
         <!--Weight -->
@@ -66,14 +72,9 @@
                 </c-row>
             </c-col>
             <c-col xl="2">
-                <c-form-check [switch]="true" class="mb-3" sizing="lg">
-                    <input cFormCheckInput type="checkbox" formControlName="weightUnit" />
-                    <label cFormCheckLabel>
-                        <span
-                            [ngClass]="{ 'fw-bold':!this.form.get('medicalhistory')?.get('weightUnit')?.value }">Pound</span>/<span
-                            [ngClass]="{ 'fw-bold':this.form.get('medicalhistory')?.get('weightUnit')?.value }">Kg</span>
-                    </label>
-                </c-form-check>
+                <div class="helper-text">
+                    Please enter your weight in pounds (e.g. <strong>150</strong>).
+                </div>
             </c-col>
         </c-row>
         <!--primary reason for today’s evaluation -->

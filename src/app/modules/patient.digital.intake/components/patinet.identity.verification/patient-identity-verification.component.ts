@@ -19,9 +19,13 @@ export class PatientIdentityVerificationComponent implements OnInit {
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
   patientUUID: string
   @Input() stepper: MatStepper
+  resendDisabled = true;
+  countdown = 20;
+  interval: any;
   constructor(private digitalIntakeService: DigitalIntakeService) { }
 
   ngOnInit(): void {
+    this.startCountdown();
     this.checkValidNumber();
   }
   private checkValidNumber() {
@@ -39,6 +43,26 @@ export class PatientIdentityVerificationComponent implements OnInit {
         this.otpSent = true;
         this.message = 'OTP has been sent to your phone number.';
       })
+      this.resetCountdown();
+  }
+  onResendClick(): void {
+    if (this.resendDisabled) return;
+    this.sendOtp();
+  }
+  private startCountdown(): void {
+    this.resendDisabled = true;
+    this.countdown = 20;
+    this.interval = setInterval(() => {
+      this.countdown--;
+      if (this.countdown === 0) {
+        this.resendDisabled = false;
+        clearInterval(this.interval);
+      }
+    }, 1000);
+  }
+  private resetCountdown(): void {
+    clearInterval(this.interval);
+    this.startCountdown();
   }
   isOtpComplete(): boolean {
     const result = this.otpArray.every((digit) => digit.trim() !== '' && digit.length === 1 && !isNaN(Number(digit)));
@@ -55,7 +79,7 @@ export class PatientIdentityVerificationComponent implements OnInit {
     }, error => {
       this.isValidOPT = false;
       this.form.get('identity')?.get('validOTP')?.setValue(null)
-      this.message = error.error.message + 'check and send it again'
+      this.message = error.error.message + ' check and send it again'
     })
   }
   next() {

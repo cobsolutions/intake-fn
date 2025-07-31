@@ -41,7 +41,9 @@
 
         </div>
         <button cButton variant="outline" (click)="verifyOtp()" [disabled]="!isOtpComplete()">Verify OTP</button>
-
+        <p class="resend-link" [class.disabled]="resendDisabled" (click)="onResendClick()">
+          {{ resendDisabled ? 'Resend OTP (' + countdown + 's)' : 'Resend OTP' }}
+        </p>
       </div>
       <!-- Messages -->
       <p *ngIf="isValidOPT" class="validOPT">{{ message }}</p>

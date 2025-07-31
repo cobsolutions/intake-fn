@@ -78,3 +78,13 @@ input[type="text"] {
     opacity: 1;
   }
 }
+.resend-link {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+.resend-link.disabled {
+  color: gray;
+  pointer-events: none;
+}

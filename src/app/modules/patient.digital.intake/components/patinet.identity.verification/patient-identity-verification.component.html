@@ -22,7 +22,7 @@
             <div *ngIf="this.form.get('identity')?.get('pPhoneNumber')?.errors?.['pattern']" class="text-danger mx-1">
               Phone number format is invalid
             </div>
-            <button cButton variant="outline" (click)="sendOtp()" [disabled]="!this.form.get('identity')?.valid">Send
+            <button cButton variant="outline" (click)="sendOtp()" [disabled]="!isValidNumber">Send
               OTP</button>
           </div>
 
@@ -41,7 +41,9 @@
 
         </div>
         <button cButton variant="outline" (click)="verifyOtp()" [disabled]="!isOtpComplete()">Verify OTP</button>
-
+        <p class="resend-link" [class.disabled]="resendDisabled" (click)="onResendClick()">
+          {{ resendDisabled ? 'Resend OTP (' + countdown + 's)' : 'Resend OTP' }}
+        </p>
       </div>
       <!-- Messages -->
       <p *ngIf="isValidOPT" class="validOPT">{{ message }}</p>

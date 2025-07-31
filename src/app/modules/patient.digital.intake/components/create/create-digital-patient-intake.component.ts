@@ -58,6 +58,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       }),
       'identity': new FormGroup({
         'pPhoneNumber': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),
+        'validOTP':new FormControl(null,[Validators.required])
       }),
       'bio': new FormGroup({
         'capturedImage': new FormControl(null, [Validators.required]),

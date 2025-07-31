@@ -19,16 +19,18 @@ export class PatientIdentityVerificationComponent implements OnInit {
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
   patientUUID: string
   @Input() stepper: MatStepper
-  constructor(private digitalIntakeService:DigitalIntakeService) { }
+  constructor(private digitalIntakeService: DigitalIntakeService) { }
 
   ngOnInit(): void {
     this.checkValidNumber();
   }
   private checkValidNumber() {
-    if (this.form.get('identity')?.valid)
-      this.isValidNumber = true
-    else
-      this.isValidNumber = false
+    this.form.get('identity')?.get('pPhoneNumber')?.valueChanges.subscribe(rr => {
+      if (this.form.get('identity')?.get('pPhoneNumber')?.invalid)
+        this.isValidNumber = false
+      else
+        this.isValidNumber = true
+    })
   }
   sendOtp() {
     this.patientUUID = uuidv4();
@@ -48,13 +50,15 @@ export class PatientIdentityVerificationComponent implements OnInit {
     const otpNumber = this.otpArray.join('').toString();
     this.digitalIntakeService.validate(this.patientUUID, otpNumber).subscribe(result => {
       this.isValidOPT = true;
+      this.form.get('identity')?.get('validOTP')?.setValue(true)
       this.message = 'OTP Verified Successfully.';
     }, error => {
       this.isValidOPT = false;
+      this.form.get('identity')?.get('validOTP')?.setValue(null)
       this.message = error.error.message + 'check and send it again'
     })
   }
-  next(){
+  next() {
     this.stepper.next();
   }
 }

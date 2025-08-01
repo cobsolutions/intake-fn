@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Patient } from 'src/app/models/patient/patient.model';
 import { MedicalHistroyInformation } from 'src/app/models/questionnaire/medical/history/medical.history.info';
-import { MedicalHistoryInfoRequired } from 'src/app/models/validation/medical.history.info.required';
-import { LocalService } from 'src/app/modules/common';
+import { MedicalHistoryInformation } from 'src/app/models/validation/new/medical.history.information';
+import { MdicalHistoryValidator } from 'src/app/validators/patient.validator/patient.medical.history.validator';
+import { ValidatorContainer } from 'src/app/validators/ValidatorContainer';
+import { PatientMedicalHistory } from '../../models/intake/medical/patient.medical.history';
+import { PatientStoreService } from '../../service/store/patient-store.service';
 import { IPatientCondition } from './patient.condition';
 
 @Component({
@@ -12,50 +14,28 @@ import { IPatientCondition } from './patient.condition';
 })
 export class MedicalHistoryInformationComponent implements OnInit {
   model: MedicalHistroyInformation = new MedicalHistroyInformation();
-  @Input() requiredFields: MedicalHistoryInfoRequired;
+  patientMedicalHistory?: PatientMedicalHistory;
+  @Input() requiredFields?: MedicalHistoryInformation;
   isScanning: string = '';
   isMetalImplantation: string = '';
   isPacemaker: string = ''
   patientConditions: IPatientCondition[];
   heightUnit: boolean = false;
   weightUnit: boolean = false;
-  constructor(private localService: LocalService) { }
+  constructor(private patientStoreService: PatientStoreService) { }
 
   ngOnInit(): void {
     this.createPatientConditions();
-    if (localStorage.getItem('patient') !== null) {
-      var pateint: Patient = JSON.parse(localStorage.getItem('patient') || '{}')
-      if (pateint.medicalHistoryInformation !== undefined) {
-        this.model = pateint.medicalHistoryInformation;
-        if (pateint.medicalHistoryInformation.metalImplantation)
-          this.isMetalImplantation = 'yes'
-        else if (pateint.medicalHistoryInformation.metalImplantation === false)
-          this.isMetalImplantation = 'no'
-        //pateint.medicalHistoryInformation.metalImplantation ? this.isMetalImplantation = 'yes' : this.isMetalImplantation = 'no'
-        if (pateint.medicalHistoryInformation.pacemaker)
-          this.isPacemaker = 'yes'
-        else if (pateint.medicalHistoryInformation.pacemaker === false)
-          this.isPacemaker = 'no'
-        //pateint.medicalHistoryInformation.pacemaker ? this.isPacemaker = 'yes' : this.isPacemaker = 'no'
-        if (pateint.medicalHistoryInformation.scanningTest)
-          this.isScanning = 'yes'
-        else if (pateint.medicalHistoryInformation.scanningTest === false)
-          this.isScanning = 'no'
-        //pateint.medicalHistoryInformation.scanningTest ? this.isScanning = 'yes' : this.isScanning = 'no'
-        if (this.model.patientCondition !== undefined)
-          this.model.patientCondition.forEach(name => {
-            this.patientConditions.forEach(condition => {
-              if (name === condition.name)
-                condition.selected = true
-            })
-          });
+    if (this.patientStoreService.patientMedicalHistory === undefined) {
+      this.patientMedicalHistory = {
+        scanningTestValue: []
       }
-      else
-        this.model = new MedicalHistroyInformation();
     } else {
-      this.model = new MedicalHistroyInformation();
+      this.patientMedicalHistory = this.patientStoreService.patientMedicalHistory;
+      this.isScanning = this.patientStoreService.patientMedicalHistory.scanningTest ? 'yes' : 'no'
+      this.isMetalImplantation = this.patientStoreService.patientMedicalHistory.metalImplantation ? 'yes' : 'no'
+      this.isPacemaker = this.patientStoreService.patientMedicalHistory.pacemaker ? 'yes' : 'no'
     }
-
   }
 
 
@@ -63,19 +43,19 @@ export class MedicalHistoryInformationComponent implements OnInit {
     this.isScanning = val;
 
     if (val === 'yes') {
-      this.model.scanningTest = true
+      this.patientMedicalHistory!.scanningTest = true
     } else {
-      this.model.scanningTestValue = ''
-      this.model.scanningTest = false;
+      this.patientMedicalHistory!.scanningTestValue = []
+      this.patientMedicalHistory!.scanningTest = false;
     }
   }
   metalImplantsChange(val: string) {
     this.isMetalImplantation = val;
-    val === 'yes' ? this.model.metalImplantation = true : this.model.metalImplantation = false;
+    val === 'yes' ? this.patientMedicalHistory!.metalImplantation = true : this.patientMedicalHistory!.metalImplantation = false;
   }
   paceMakerChange(val: string) {
     this.isPacemaker = val;
-    val === 'yes' ? this.model.pacemaker = true : this.model.pacemaker = false;
+    val === 'yes' ? this.patientMedicalHistory!.pacemaker = true : this.patientMedicalHistory!.pacemaker = false;
   }
   createPatientConditions() {
     this.patientConditions =
@@ -145,34 +125,39 @@ export class MedicalHistoryInformationComponent implements OnInit {
   }
   changeHeightUnit(event: any) {
     if (this.heightUnit) {
-      this.model.heightUnit = 'cm'
-      this.model.height = (Number(this.model.height) / 0.3937 ).toFixed(2)+ '';
+      this.patientMedicalHistory!.heightUnit = 'cm'
+      this.patientMedicalHistory!.height = (Number(this.patientMedicalHistory!.height) / 0.3937).toFixed(2) + '';
     }
     if (!this.heightUnit) {
-      this.model.heightUnit = 'inch'
-      this.model.height = (Number(this.model.height) * 0.3937 ).toFixed(2)+ '';
+      this.patientMedicalHistory!.heightUnit = 'inch'
+      this.patientMedicalHistory!.height = (Number(this.patientMedicalHistory!.height) * 0.3937).toFixed(2) + '';
     }
   }
 
   changeWeightUnit(event: any) {
     if (this.weightUnit) {
-      this.model.weightUnit = 'kg'
-      this.model.weight = (Number(this.model.weight) * 0.45359237  ).toFixed(2)+ '';
+      this.patientMedicalHistory!.weightUnit = 'kg'
+      this.patientMedicalHistory!.weight = (Number(this.patientMedicalHistory!.weight) * 0.45359237).toFixed(2) + '';
     }
     if (!this.weightUnit) {
-      this.model.weightUnit = 'pound'
-      this.model.weight = (Number(this.model.weight) / 0.45359237  ).toFixed(2)+ '';
+      this.patientMedicalHistory!.weightUnit = 'pound'
+      this.patientMedicalHistory!.weight = (Number(this.patientMedicalHistory!.weight) / 0.45359237).toFixed(2) + '';
     }
   }
 
   isRequiredField(name: string): boolean {
     var field: boolean = false;
-    Object.entries(this.requiredFields)
+    Object.entries(this.requiredFields!)
       .forEach(([key, value]) => {
         if (key === name) {
           field = value;
         }
       })
     return field;
+  }
+
+  public validate(): ValidatorContainer {
+    var patientValidator = new MdicalHistoryValidator(this.patientMedicalHistory || {}, this.requiredFields!)
+    return patientValidator.validate();
   }
 }

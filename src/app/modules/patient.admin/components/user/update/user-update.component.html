@@ -9,145 +9,165 @@
                 <c-card-body>
                     <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
                     <form cForm #userCreateForm="ngForm" (ngSubmit)="create()" (change)="resetError()">
-                        <div class="form-group">
-                            <c-input-group class="mb-3">
-                                <input  cFormControl id="uuid" name="uuid"
-                                    placeholder="Enter User Name" disabled="true"
-                                    [ngClass]="{'is-invalid': uuid.invalid && (uuid.dirty || uuid.touched)}"
-                                    [(ngModel)]="form.uuid" #uuid="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <c-input-group class="mb-3">
-                                <input  cFormControl id="name" name="name"
-                                    placeholder="Enter User Name" disabled="true"
-                                    [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}"
-                                    [(ngModel)]="form.name" #name="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <c-form-check [switch]="true" class="mb-3" sizing="lg">
-                            <input cFormCheckInput type="checkbox" [(ngModel)]="resetpassword"  name="resetpassword"/>
-                            <label cFormCheckLabel>
-                                Reset Password
-                            </label>
-                        </c-form-check>
-                        <div class="form-group" *ngIf="resetpassword">
-                            <div class="form-group">
-                                <small *ngIf="password.invalid && (password.dirty || password.touched)"
-                                    class="form-text text-danger">
-                                    user password is required
-                                </small>
-                                <c-input-group class="mb-3">
-                                    <input autoComplete="password" cFormControl id="password" name="password"
-                                        type="password" placeholder="Enter User Password" required
-                                        [ngClass]="{'is-invalid': password.invalid && (password.dirty || password.touched)}"
-                                        [(ngModel)]="form.password" #password="ngModel" />
-                                </c-input-group>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <small *ngIf="useraddress.invalid && (useraddress.dirty || useraddress.touched)"
-                                class="form-text text-danger">
-                                clinic Address is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input autoComplete="clinicaddressvalue" cFormControl id="useraddress"
-                                    name="useraddress" placeholder="Enter Address" required
-                                    [ngClass]="{'is-invalid': useraddress.invalid && (useraddress.dirty || useraddress.touched)}"
-                                    [(ngModel)]="form.useraddress" #useraddress="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <small
-                                *ngIf="useraddresscountry.invalid && (useraddresscountry.dirty || useraddresscountry.touched)"
-                                class="form-text text-danger">
-                                clinic County is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <select cSelect sizing="sm" cFormControl autoComplete="useraddresscountry"
-                                    name="useraddresscountry" id="useraddresscountry"
-                                    [ngClass]="{'is-invalid': useraddresscountry.invalid && (useraddresscountry.dirty || useraddresscountry.touched )}"
-                                    [(ngModel)]="form.useraddresscountry" #useraddresscountry="ngModel">
-                                    <option value="null">Select County</option>
-                                    <option *ngFor="let country of countries" [value]="country.name">
-                                        {{country.name}}
-                                    </option>
-                                </select>
-                            </c-input-group>
-                        </div>
-                        <div class="form-group" *ngIf="form.useraddresscountry === 'United States of America'">
-                            <c-input-group class="mb-3">
-                                <select cSelect sizing="sm" autoComplete="clinicaddressstate" name="clinicaddressstate"
-                                    id="clinicaddressstate" [(ngModel)]="form.useraddressstate"
-                                    #useraddressstate="ngModel">
-                                    <option value="null">Select State</option>
-                                    <option *ngFor="let state of states" [value]="state">
-                                        {{state}}
-                                    </option>
-                                </select>
-                            </c-input-group>
-                        </div>
-                        <div class="form-group"
-                            *ngIf="form.useraddresscountry !== 'United States of America' && (form.useraddresscountry!== null)">
-                            <small
-                                *ngIf="useraddressprovince.invalid && (useraddressprovince.dirty || useraddressprovince.touched)"
-                                class="form-text text-danger">
-                                User Address Province is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input autoComplete="clinicaddressprovince" cFormControl id="clinicaddressprovince"
-                                    name="clinicaddressprovince" placeholder="Enter Province" required
-                                    [ngClass]="{'is-invalid': useraddressprovince.invalid && (useraddressprovince.dirty || useraddressprovince.touched)}"
-                                    [(ngModel)]="form.useraddressprovince" #useraddressprovince="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <small *ngIf="useraddresscity.invalid && (useraddresscity.dirty || useraddresscity.touched)"
-                                class="form-text text-danger">
-                                User Address City is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input autoComplete="useraddresscity" cFormControl id="useraddresscity"
-                                    name="useraddresscity" placeholder="Enter City" required
-                                    [ngClass]="{'is-invalid': useraddresscity.invalid && (useraddresscity.dirty || useraddresscity.touched)}"
-                                    [(ngModel)]="form.useraddresscity" #useraddresscity="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <small
-                                *ngIf="useraddresszipcode.invalid && (useraddresszipcode.dirty || useraddresszipcode.touched)"
-                                class="form-text text-danger">
-                                User Address Zip Code is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input zipcode autoComplete="useraddresszipcode" cFormControl id="useraddresszipcode"
-                                    name="useraddresszipcode" placeholder="Enter Zip Code" required
-                                    [ngClass]="{'is-invalid': useraddresszipcode.invalid && (useraddresszipcode.dirty || useraddresszipcode.touched)}"
-                                    [(ngModel)]="form.useraddresszipcode" #useraddresszipcode="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <c-input-group class="mb-3">
-                                <select cSelect sizing="sm" autoComplete="userrole" name="userrole" id="userrole"
-                                    [(ngModel)]="form.userrole" #userrole="ngModel">
-                                    <option value="null">Select Role</option>
-                                    <option *ngFor="let role of userRoles" [value]="role.value">
-                                        {{role.name}}
-                                    </option>
-                                </select>
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <c-input-group class="mb-3">
-                                <c-multi-select *ngIf="returnClinics" multiple cSelect sizing="sm"
-                                    autoComplete="selectedClinics" name="selectedClinics" id="selectedClinics"
-                                    [(ngModel)]="form.selectedClinics" #selectedClinics="ngModel">
-                                    <c-multi-select-option *ngFor="let clinic of returnClinics"
-                                        [value]="clinic.id?.toString()"
-                                        [selected]="clinic.selected">{{clinic.name}}</c-multi-select-option>
-                                </c-multi-select>
-                            </c-input-group>
-                        </div>
+                        <c-row>
+                            <c-col xs="12">
+                                <c-card class="mb-3 ustify-content-center">
+                                    <c-card-header>
+                                        <h5>User Essential Inforamtion</h5>
+                                    </c-card-header>
+                                    <c-card-body>
+                                        <div class="form-group">
+                                            <small *ngIf="fname.invalid && (fname.dirty || fname.touched)"
+                                                class="form-text text-danger">
+                                                first name is required
+                                            </small>
+                                            <c-input-group class="mb-3">
+                                                <input cFormControl id="fname" name="fname" sizing="sm"
+                                                    placeholder="Enter First Name" readonly="true" required
+                                                    [ngClass]="{'is-invalid': fname.invalid && (fname.dirty || fname.touched)}"
+                                                    [(ngModel)]="form.firstName" #fname="ngModel" />
+                                            </c-input-group>
+                                        </div>
+                                        <div class="form-group">
+                                            <small *ngIf="lname.invalid && (lname.dirty || lname.touched)"
+                                                class="form-text text-danger">
+                                                first name is required
+                                            </small>
+                                            <c-input-group class="mb-3">
+                                                <input cFormControl id="lname" name="lname" sizing="sm"
+                                                    placeholder="Enter Last Name" readonly="true" required
+                                                    [ngClass]="{'is-invalid': lname.invalid && (lname.dirty || lname.touched)}"
+                                                    [(ngModel)]="form.lastName" #lname="ngModel" />
+                                            </c-input-group>
+                                        </div>
+                                        <div class="form-group">
+                                            <small *ngIf="usremail.invalid && (usremail.dirty || usremail.touched)"
+                                                class="form-text text-danger">
+                                                Email is required
+                                            </small>
+                                            <c-input-group class="mb-3">
+                                                <input cFormControl id="usremail" name="usremail" sizing="sm"
+                                                    placeholder="Enter Email" required readonly="true"
+                                                    [ngClass]="{'is-invalid': usremail.invalid && (usremail.dirty || usremail.touched)}"
+                                                    [(ngModel)]="form.email" #usremail="ngModel" />
+                                            </c-input-group>
+                                        </div>
+                                        <div class="form-group">
+                                            <c-input-group class="mb-3">
+                                                <input cFormControl id="uuid" name="uuid" placeholder="Enter User Name"
+                                                    readonly="true"
+                                                    [ngClass]="{'is-invalid': uuid.invalid && (uuid.dirty || uuid.touched)}"
+                                                    [(ngModel)]="form.uuid" #uuid="ngModel" />
+                                            </c-input-group>
+                                        </div>
+                                        <div class="form-group">
+                                            <c-input-group class="mb-3">
+                                                <input cFormControl id="name" name="name" placeholder="Enter User Name"
+                                                    readonly="true"
+                                                    [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}"
+                                                    [(ngModel)]="form.name" #name="ngModel" />
+                                            </c-input-group>
+                                        </div>
+                                    </c-card-body>
+                                </c-card>
+                            </c-col>
+                            <c-col xs="6">
+                                <c-card class="mb-3 ustify-content-center">
+                                    <c-card-header>
+                                        <h5>User Address Inforamtion</h5>
+                                    </c-card-header>
+                                    <c-card-body>
+                                        <div class="form-group">
+                                            <small
+                                                *ngIf="useraddress.invalid && (useraddress.dirty || useraddress.touched)"
+                                                class="form-text text-danger">
+                                                clinic Address is required
+                                            </small>
+                                            <c-input-group class="mb-3">
+                                                <input autoComplete="clinicaddressvalue" cFormControl id="useraddress"
+                                                    name="useraddress" placeholder="Enter Address" required
+                                                    [ngClass]="{'is-invalid': useraddress.invalid && (useraddress.dirty || useraddress.touched)}"
+                                                    [(ngModel)]="form.useraddress" #useraddress="ngModel" />
+                                            </c-input-group>
+                                        </div>
+                                        <div class="form-group">
+                                            <c-input-group class="mb-3">
+                                                <select cSelect sizing="sm" autoComplete="clinicaddressstate"
+                                                    name="clinicaddressstate" id="clinicaddressstate"
+                                                    [(ngModel)]="form.useraddressstate" #useraddressstate="ngModel">
+                                                    <option value="null">Select State</option>
+                                                    <option *ngFor="let state of states" [value]="state">
+                                                        {{state}}
+                                                    </option>
+                                                </select>
+                                            </c-input-group>
+                                        </div>
+                                        <div class="form-group">
+                                            <small
+                                                *ngIf="useraddresscity.invalid && (useraddresscity.dirty || useraddresscity.touched)"
+                                                class="form-text text-danger">
+                                                User Address City is required
+                                            </small>
+                                            <c-input-group class="mb-3">
+                                                <input autoComplete="useraddresscity" cFormControl id="useraddresscity"
+                                                    name="useraddresscity" placeholder="Enter City" required
+                                                    [ngClass]="{'is-invalid': useraddresscity.invalid && (useraddresscity.dirty || useraddresscity.touched)}"
+                                                    [(ngModel)]="form.useraddresscity" #useraddresscity="ngModel" />
+                                            </c-input-group>
+                                        </div>
+                                        <div class="form-group">
+                                            <small
+                                                *ngIf="useraddresszipcode.invalid && (useraddresszipcode.dirty || useraddresszipcode.touched)"
+                                                class="form-text text-danger">
+                                                User Address Zip Code is required
+                                            </small>
+                                            <c-input-group class="mb-3">
+                                                <input zipcode autoComplete="useraddresszipcode" cFormControl
+                                                    id="useraddresszipcode" name="useraddresszipcode"
+                                                    placeholder="Enter Zip Code" required
+                                                    [ngClass]="{'is-invalid': useraddresszipcode.invalid && (useraddresszipcode.dirty || useraddresszipcode.touched)}"
+                                                    [(ngModel)]="form.useraddresszipcode"
+                                                    #useraddresszipcode="ngModel" />
+                                            </c-input-group>
+                                        </div>
+                                    </c-card-body>
+                                </c-card>
+                            </c-col>
+                            <c-col xs="6">
+                                <c-card class="mb-3 ustify-content-center">
+                                    <c-card-header>
+                                        <h5>User Address Inforamtion</h5>
+                                    </c-card-header>
+                                    <c-card-body>
+                                        <div class="form-group">
+                                            <c-input-group class="mb-3">
+                                                <select cSelect sizing="sm" autoComplete="userrole" name="userrole"
+                                                    id="userrole" [(ngModel)]="form.userrole" #userrole="ngModel"
+                                                    (change)="ocRoleChange()">
+                                                    <option value="null">Select Role</option>
+                                                    <option *ngFor="let role of userRoles" [value]="role.value">
+                                                        {{role.name}}
+                                                    </option>
+                                                </select>
+                                            </c-input-group>
+                                        </div>
+                                        <div class="form-group">
+                                            <c-input-group class="mb-3">
+                                                <c-multi-select *ngIf="returnClinics" multiple cSelect
+                                                    style="max-height: 100px;" autoComplete="selectedClinics"
+                                                    name="selectedClinics" id="selectedClinics"
+                                                    [(ngModel)]="form.selectedClinics" #selectedClinics="ngModel">
+                                                    <c-multi-select-option *ngFor="let clinic of returnClinics"
+                                                        [value]="clinic.id?.toString()"
+                                                        [selected]="clinic.selected">{{clinic.name}}</c-multi-select-option>
+                                                </c-multi-select>
+                                            </c-input-group>
+                                        </div>
+                                    </c-card-body>
+                                </c-card>
+                            </c-col>
+                        </c-row>
+
                         <div class="text-center">
                             <button cButton type="submit" size="sm" color="primary" variant="outline">
                                 Update

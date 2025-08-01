@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Address } from 'src/app/models/patient/address.info.model';
-import { AddressInfoRequired } from 'src/app/models/validation/address.info.required';
+import { AddressInformation } from 'src/app/models/validation/new/address.information';
 import { countries } from './country-data-store';
 import { Countries } from './model/country.model';
 import { states } from './state-data-store';
@@ -14,7 +14,7 @@ export class AddressComponent implements OnInit {
   countries: Countries[] = countries;
   states: string[] = states;
   @Input() pateintAddressInfo: Address
-  @Input() requiredFields: AddressInfoRequired;
+  @Input() requiredFields: AddressInformation;
   constructor() { }
 
   ngOnInit(): void {

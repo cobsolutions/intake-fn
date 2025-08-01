@@ -2,10 +2,10 @@
     <form cForm [gutter]="{gy: 2, gx: 4}">
         <c-col xs="auto" class="mb-2">
 
-            <div [ngClass]="{ 'form-group required':isRequiredField('firstName') }">
+            <div [ngClass]="{ 'form-group required':true }">
                 <label for="fname" class="form-label">First Name</label>
-                <input aria-label="First name" cFormControl [(ngModel)]="pateintBasicInfo.firstName" name="fname"
-                    sizing="sm">
+                <input aria-label="First name" cFormControl
+                    [(ngModel)]="patientEssentialInformation!.patientName!.firstName" name="fname" sizing="sm">
             </div>
         </c-col>
 
@@ -13,63 +13,70 @@
 
             <div [ngClass]="{ 'form-group required':isRequiredField('middleName') }">
                 <label for="mname" class="form-label">Middle Name</label>
-                <input aria-label="Middle name" cFormControl [(ngModel)]="pateintBasicInfo.middleName" name="mname"
-                    sizing="sm" />
+                <input aria-label="Middle name" cFormControl
+                    [(ngModel)]="patientEssentialInformation!.patientName!.middleName" name="mname" sizing="sm" />
             </div>
 
         </c-col>
         <c-col xs="auto" class="mb-2">
 
-            <div [ngClass]="{ 'form-group required':isRequiredField('lastName') }">
+            <div [ngClass]="{ 'form-group required':true }">
                 <label for="lname" class="form-label">Last Name</label>
-                <input aria-label="Last name" cFormControl [(ngModel)]="pateintBasicInfo.lastName" name="lname"
-                    sizing="sm" />
+                <input aria-label="Last name" cFormControl
+                    [(ngModel)]="patientEssentialInformation!.patientName!.lastName" name="lname" sizing="sm" />
             </div>
 
         </c-col>
         <c-col xs="auto" class="mb-2">
-            <div [ngClass]="{ 'form-group required':isRequiredField('birthDate') }">
+            <div [ngClass]="{ 'form-group required':true }">
                 <label for="dob" class="form-label">Date Of Birth</label>
                 <c-date-picker closeOnSelect placeholder="Date Of Birth" size="sm" name="dob"
-                    [(ngModel)]="pateintBasicInfo.birthDate_date" (dateChange)="checkAge($event)"></c-date-picker>
+                    [(ngModel)]="patientEssentialInformation!.birthDate_date"
+                    (dateChange)="checkAge($event)"></c-date-picker>
             </div>
         </c-col>
         <span *ngIf="isPatientUnderage">
             <c-col xs="auto" class="mb-2">
                 <label for="lname" class="form-label">Guarantor First Name</label>
-                <input aria-label="Guarantor First name" cFormControl name="g-lname" sizing="sm" [(ngModel)]="pateintBasicInfo.pateintGrantor.firstName"/>
+                <input aria-label="Guarantor First name" cFormControl name="g-lname" sizing="sm"
+                    [(ngModel)]="patientGrantor.firstName" />
             </c-col>
             <c-col xs="auto" class="mb-2">
                 <label for="lname" class="form-label">Guarantor Middle Name</label>
-                <input aria-label="Guarantor Middle name" cFormControl name="g-lname" sizing="sm"  [(ngModel)]="pateintBasicInfo.pateintGrantor.middleName"/>
+                <input aria-label="Guarantor Middle name" cFormControl name="g-lname" sizing="sm"
+                    [(ngModel)]="patientGrantor.middleName" />
             </c-col>
             <c-col xs="auto" class="mb-2">
                 <label for="lname" class="form-label">Guarantor Last Name</label>
-                <input aria-label="Guarantor Last name" cFormControl name="g-lname" sizing="sm" [(ngModel)]="pateintBasicInfo.pateintGrantor.lastName"/>
+                <input aria-label="Guarantor Last name" cFormControl name="g-lname" sizing="sm"
+                    [(ngModel)]="patientGrantor.lastName" />
             </c-col>
             <label for="emergencyName" class="form-label">guarantor Relationship</label>
-            <select cFormControl cSelect class="mb-2" sizing="sm" id="guarantor-relation" name="guarantor-relation"  [(ngModel)]="pateintBasicInfo.pateintGrantor.relation">
-                <option value="null" disabled selected>Select Guarantor Relation</option>
-                <option *ngFor="let  relation of guarantorRelationship" [value]="relation">
-                    {{relation}}
+            <select cFormControl cSelect class="mb-2" sizing="sm" id="guarantor-relation" name="guarantor-relation"
+                [(ngModel)]="patientGrantor.relation">
+                <option value="" disabled selected>Select Patient Guarantor Relation</option>
+                <option *ngFor="let relation of relationShip | keyvalue" [value]="relation.value">
+                    {{relation.key}}
                 </option>
             </select>
             <div class="mb-3">
                 <label cLabel for="pIdfront">Guarantor ID Front</label>
-                <input cFormControl id="g-pIdfront" accept="image/*" type="file" capture="environment" class="mb-1" (change)="onImageUpload($event ,'guarantorIdfront')" />
+                <input cFormControl id="g-pIdfront" accept="image/*" type="file" capture="environment" class="mb-1"
+                    (change)="onImageUpload($event ,'guarantorIdfront')" />
             </div>
             <div class="mb-3">
                 <label cLabel for="pIdback">Guarantor ID Back</label>
-                <input cFormControl id="g-pIdback" accept="image/*" type="file" capture="environment" class="mb-1" (change)="onImageUpload($event ,'guarantorIdback')" />
+                <input cFormControl id="g-pIdback" accept="image/*" type="file" capture="environment" class="mb-1"
+                    (change)="onImageUpload($event ,'guarantorIdback')" />
 
             </div>
         </span>
         <c-col xs="auto" class="mb-2">
 
-            <div [ngClass]="{ 'form-group required':isRequiredField('gender') }">
+            <div [ngClass]="{ 'form-group required':true }">
                 <label for="gender" class="form-label">Gender</label>
                 <select cSelect sizing="sm" name="gender" style="line-height: 15px;" cFormControl
-                    [(ngModel)]="pateintBasicInfo.gender">
+                    [(ngModel)]="patientEssentialInformation!.gender">
                     <option value="">Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -82,10 +89,10 @@
 
         <c-col xs="auto" class="mb-2">
 
-            <div [ngClass]="{ 'form-group required':isRequiredField('maritalStatus') }">
+            <div [ngClass]="{ 'form-group required':true }">
                 <label for="maritalStatus" class="form-label">Marital Status</label>
                 <select cSelect sizing="sm" style="line-height: 15px;" cFormControl
-                    [(ngModel)]="pateintBasicInfo.maritalStatus" name="maritalStatus">
+                    [(ngModel)]="patientEssentialInformation!.maritalStatus" name="maritalStatus">
                     <option value="">Select Marital Status</option>
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
@@ -98,10 +105,10 @@
 
 
         <c-col xs="12" class="mb-2">
-            <div [ngClass]="{ 'form-group required':isRequiredField('phone') }">
+            <div [ngClass]="{ 'form-group required':true }">
                 <label for="phonetype" class="form-label">Phone</label>
                 <select cSelect sizing="sm" style="line-height: 15px;" cFormControl
-                    [(ngModel)]="pateintBasicInfo.phoneType" name="phonetype">
+                    [(ngModel)]="patientEssentialInformation!.patientPhone!.phoneType" name="phonetype">
                     <option value="">Select Phone Type</option>
                     <option value="Home">Home</option>
                     <option value="Work">Work</option>
@@ -110,11 +117,13 @@
             </div>
         </c-col>
         <c-col xs="12" class="mb-2">
-            <div [ngClass]="{ 'form-group required':isRequiredField('phone') }">
+            <div [ngClass]="{ 'form-group required':true }">
                 <c-input-group class="mb-3" sizing="sm">
                     <span cInputGroupText id="basic-addon1">+1</span>
-                    <input numbers aria-label="Username" cFormControl [ngModel]="pateintBasicInfo.phoneNumber | phone"
-                        (ngModelChange)="pateintBasicInfo.phoneNumber=$event" name="phone" maxlength="15" />
+                    <input numbers aria-label="Username" cFormControl
+                        [ngModel]="patientEssentialInformation!.patientPhone!.phone | phone"
+                        (ngModelChange)="patientEssentialInformation!.patientPhone!.phone=$event" name="phone"
+                        maxlength="15" />
                 </c-input-group>
             </div>
         </c-col>
@@ -122,75 +131,16 @@
         <c-col xs="12" class="mb-2">
             <div [ngClass]="{ 'form-group required':isRequiredField('email') }">
                 <label for="email" class="form-label">Email</label>
-                <input aria-describedby="basic-addon2" cFormControl sizing="sm" [(ngModel)]="pateintBasicInfo.email"
-                    name="email" />
+                <input aria-describedby="basic-addon2" cFormControl sizing="sm"
+                    [(ngModel)]="patientEssentialInformation!.email" name="email" />
             </div>
         </c-col>
-        <!-- <c-col xs="12" class="mb-2">
-            <div [ngClass]="{ 'form-group required':isRequiredField('patientId') }" class="mb-1">
-                <label for="pIdType" class="form-label">Patient ID</label>
-                <select cSelect sizing="sm" style="line-height: 15px;" cFormControl
-                    [(ngModel)]="pateintBasicInfo.idType" name="pIdType">
-                    <option value="">Select ID Type</option>
-                    <option value="SSN">SSN</option>
-                    <option value="Driving_Licence">Drive licence</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-            <div [ngClass]="{ 'form-group required':isRequiredField('patientId') }" class="mb-2">
-                <input cFormControl [(ngModel)]="pateintBasicInfo.patientId" sizing="sm" name="pId" />
-            </div>
-        </c-col> -->
-        <!-- <c-col xs="12" class="mb-2">
-            <div [ngClass]="{ 'form-group required':isRequiredField('patientId') }">
-                <label for="ideffictivefrom" class="form-label">ID Effective From</label>
-                <c-date-picker closeOnSelect size="sm" cFormControl
-                    [(ngModel)]="pateintBasicInfo.id_effective_from_date" name="ideffictivefrom"></c-date-picker>
-            </div>
-        </c-col> -->
-        <!-- <c-col xs="12" class="mb-2">
-
-            <div [ngClass]="{ 'form-group required':isRequiredField('patientId') }">
-                <label for="ideffictiveto" class="form-label">ID Effective To</label>
-                <c-date-picker closeOnSelect size="sm" cFormControl [(ngModel)]="pateintBasicInfo.id_effective_to_date"
-                    name="ideffictiveto"></c-date-picker>
-            </div>
-
-        </c-col> -->
-
-        <div cRow>
-            <c-col xs="12" class="mb-2">
-                <label for="emergencyName" class="form-label">Emergency Contact</label>
-                <select cFormControl cSelect class="mb-2" sizing="sm" id="EmergencyRelation" name="EmergencyRelation"
-                    [(ngModel)]="pateintBasicInfo.emergencyRelation">
-                    <option value="null" disabled selected>Select Relation</option>
-                    <option *ngFor="let  relation of emergencyRelations" [value]="relation">
-                        {{relation}}
-                    </option>
-                </select>
-            </c-col>
-            <c-col xs="12" class="mb-2">
-                <div [ngClass]="{ 'form-group required':isRequiredField('emergencyContact') }">
-                    <input cFormControl [(ngModel)]="pateintBasicInfo.emergencyName" name="emergencyName" sizing="sm"
-                        placeholder="Emergency Name" />
-                </div>
-            </c-col>
-            <c-col xs="12" class="mb-2">
-                <div [ngClass]="{ 'form-group required':isRequiredField('emergencyContact') }">
-                    <c-input-group class="mb-3" sizing="sm">
-                        <span cInputGroupText id="basic-addon1">+1</span>
-                        <input numbers aria-label="" cFormControl [ngModel]="pateintBasicInfo.emergencyPhone | phone"
-                            (ngModelChange)="pateintBasicInfo.emergencyPhone=$event" name="emergencyphone"
-                            maxlength="15" />
-                    </c-input-group>
-                </div>
-            </c-col>
-        </div>
         <c-col xs="auto" class="mb-2">
-            <div [ngClass]="{ 'form-group required':isRequiredField('employmentStatus') }">
+            <div [ngClass]="{ 'form-group required':true }">
                 <label for="employmentStatus" class="form-label">Employment Status</label>
                 <select cSelect sizing="sm" style="line-height: 15px;" cFormControl
-                    [(ngModel)]="pateintBasicInfo.employmentStatus" name="employmentStatus">
+                    [(ngModel)]="patientEssentialInformation!.patientEmployment!.employmentStatus"
+                    name="employmentStatus">
                     <option value="">Select Employment status</option>
                     <option value="Employed">Employed</option>
                     <option value="Student">Student</option>
@@ -199,9 +149,44 @@
                 </select>
             </div>
         </c-col>
-        <c-col xs="auto" class="mb-2" *ngIf="pateintBasicInfo.employmentStatus === 'Employed'">
-            <input cFormControl [(ngModel)]="pateintBasicInfo.employmentCompany" sizing="sm" name="employedcompnay"
-                placeholder="Company" />
+        <c-col xs="auto" class="mb-2"
+            *ngIf="patientEssentialInformation!.patientEmployment!.employmentStatus === 'Employed'">
+            <input cFormControl [(ngModel)]="patientEssentialInformation!.patientEmployment!.employmentCompany"
+                sizing="sm" name="employedcompnay" placeholder="Company" />
         </c-col>
+
+        <div cRow>
+            <div [ngClass]="{ 'form-group required':isRequiredField('emergencyContact') }">
+                <c-col xs="12" class="mb-2">
+                    <label for="emergencyName" class="form-label">Emergency Contact</label>
+                    <select cFormControl cSelect class="mb-2" sizing="sm" id="EmergencyRelation"
+                        name="EmergencyRelation"
+                        [(ngModel)]="patientEssentialInformation!.patientEmergencyContact!.emergencyRelation">
+                        <option value="" disabled selected>Select Patient Emergency contact Relation</option>
+                        <option *ngFor="let relation of relationShip | keyvalue" [value]="relation.value">
+                            {{relation.key}}
+                        </option>
+                    </select>
+                </c-col>
+            </div>
+            <c-col xs="12" class="mb-2">
+                <div [ngClass]="{ 'form-group required':isRequiredField('emergencyContact') }">
+                    <input cFormControl
+                        [(ngModel)]="patientEssentialInformation!.patientEmergencyContact!.emergencyName"
+                        name="emergencyName" sizing="sm" placeholder="Emergency contact name" />
+                </div>
+            </c-col>
+            <c-col xs="12" class="mb-2">
+                <div [ngClass]="{ 'form-group required':isRequiredField('emergencyContact') }">
+                    <c-input-group class="mb-3" sizing="sm">
+                        <span cInputGroupText id="basic-addon1">+1</span>
+                        <input numbers aria-label="" cFormControl
+                            [ngModel]="patientEssentialInformation!.patientEmergencyContact!.emergencyPhone | phone"
+                            (ngModelChange)="patientEssentialInformation!.patientEmergencyContact!.emergencyPhone=$event"
+                            name="emergencyphone" maxlength="15" />
+                    </c-input-group>
+                </div>
+            </c-col>
+        </div>
     </form>
 </c-row>

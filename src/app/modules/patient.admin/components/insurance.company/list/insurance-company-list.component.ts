@@ -9,19 +9,41 @@ import { InsuranceCompanyService } from '../../../services/insurance.company/ins
   styleUrls: ['./insurance-company-list.component.css']
 })
 export class InsuranceCompanyListComponent implements OnInit {
-
   InsuranceCompanies: InsuranceCompany[] = new Array();
-  constructor(private router: Router,private insuranceCompanyService: InsuranceCompanyService) { }
+  isCreateInsuranceCompany: boolean = false;
+  isEditInsuranceCompany: boolean = false;
+  selectedInsuranceCompanyId: number;
+  constructor(private router: Router, private insuranceCompanyService: InsuranceCompanyService) { }
 
   ngOnInit(): void {
+    this.getInsuranceCompanies();
+  }
+  private getInsuranceCompanies() {
+    this.InsuranceCompanies=[]
     this.insuranceCompanyService.get().subscribe((response) => {
       response.body?.forEach(element => {
         this.InsuranceCompanies?.push(element);
       });
     })
   }
-  create() {
-    this.router.navigateByUrl('/admin/insurance/company/create');
+  showCreateInsuranceCompany() {
+    this.isCreateInsuranceCompany = true;
   }
-
+  toggleCreateInsuranceCompany() {
+    this.isCreateInsuranceCompany = !this.isCreateInsuranceCompany;
+  }
+  changeClinicVisibility(event: any) {
+    if (event === 'close-create')
+      this.isCreateInsuranceCompany = false;
+    if (event === 'close-edit')
+      this.isEditInsuranceCompany = false;
+    this.getInsuranceCompanies();
+  }
+  showEditInsuranceCompany(id: number | undefined | null) {
+    this.selectedInsuranceCompanyId = id!;
+    this.isEditInsuranceCompany = true;
+  }
+  toggleEditInsuranceCompany() {
+    this.isEditInsuranceCompany = !this.isEditInsuranceCompany;
+  }
 }

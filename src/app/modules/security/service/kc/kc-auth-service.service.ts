@@ -1,3 +1,4 @@
+import { HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
@@ -27,13 +28,11 @@ export class KcAuthServiceService {
   }
 
   public login(): void {
-    localStorage.removeItem('access-token')
     this.keycloakService.login();
   }
 
   public logout(): void {
-    localStorage.removeItem('access-token')
-    this.keycloakService.logout(window.location.origin);
+    this.keycloakService.logout();
   }
 
   public redirectToProfile(): void {
@@ -49,5 +48,14 @@ export class KcAuthServiceService {
   }
   public getToken(): Promise<string> {
     return this.keycloakService.getToken()
+  }
+  public updateToken(minValidity: number): Promise<boolean> {
+    return this.keycloakService.updateToken(minValidity);
+  }
+  public isTokenExpired(): boolean {
+    return this.keycloakService.isTokenExpired();
+  }
+  public shouldUpdateToken(request: HttpRequest<unknown>) {
+    return this.keycloakService.shouldAddToken(request);
   }
 }

@@ -1,47 +1,76 @@
-<ngx-spinner></ngx-spinner>
-<c-container fluid>
-    <c-row class="justify-content-center">
-        <c-col class="col">
-            <c-card class="mb-3 ustify-content-center">
-                <c-card-header>
-                    <h3>Insurance Company Creation</h3>
-                </c-card-header>
-                <c-card-body>
-                    <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
-                    <form cForm #insuranceCompanyCreateForm="ngForm" (ngSubmit)="create()" (change)="resetError()">
-                        <div class="form-group">
-                            <small *ngIf="name.invalid && (name.dirty || name.touched)" class="form-text text-danger">
-                                Insurance Company name is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input autoComplete="name" cFormControl id="name" name="name"
-                                    placeholder="Enter Insurance Company name" required
-                                    [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}"
-                                    [(ngModel)]="form.name" #name="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <c-input-group class="mb-3">
-                                <c-multi-select *ngIf="returnClinics" multiple cSelect sizing="sm"
-                                    autoComplete="selectedClinics" name="selectedClinics" id="selectedClinics"
-                                    [(ngModel)]="form.selectedClinics" #selectedClinics="ngModel">
-                                    <c-multi-select-option *ngFor="let clinic of returnClinics"
-                                        [value]="clinic.id?.toString()" [selected]="clinic.selected">
-                                        {{clinic.name}}
-                                    </c-multi-select-option>
-                                </c-multi-select>
-                            </c-input-group>
-                        </div>
-                      
-                        <div class="text-center">
-                            <button cButton type="submit" size="sm" color="primary" variant="outline">
-                                Create
-                            </button>
-                        </div>
-                    </form>
-
-                </c-card-body>
-            </c-card>
+<c-callout color="danger" *ngIf="isValidForm">
+    <span class="text-danger fw-bold">Please fill in all the required fields before submitting  Insurance Company</span>
+</c-callout>
+<form [formGroup]="insuranceCompanyForm">
+    <!--Insurance Company Name-->
+    <c-row class="mb-2">
+        <c-col xl="12">
+            <label>Insurance Company Name <span class="text-danger">*</span></label>
+        </c-col>
+        <c-col xl="12">
+            <input class="form-control" placeholder formControlName="insurance-company-name" sizing="sm" cFormControl
+                [ngClass]="{'is-invalid': this.insuranceCompanyForm.get('insurance-company-name')?.invalid
+                && this.insuranceCompanyForm.get('insurance-company-name')?.touched}" maxlength="60" input-trimmer>
+        </c-col>
+        <c-col xl=" 12">
+            <div *ngIf="this.insuranceCompanyForm.get('insurance-company-name')?.errors?.['required'] && 
+        (this.insuranceCompanyForm.get('insurance-company-name')?.dirty ||this.insuranceCompanyForm.get('insurance-company-name')?.touched)"
+                class="text-danger mx-1">
+                Insurance company name is required
+            </div>
+            <div *ngIf="this.insuranceCompanyForm.get('insurance-company-name')?.errors?.['noSpecialCharacters']"
+                class="text-danger mx-1">
+                Name cannot contain special character</div>
+            <span *ngIf="validName === false">
+                <label>
+                    <span class="text-success">Typed insurance company name is unique</span>
+                    <svg cIcon name="cilCheck" cTextColor="success" size="lg"></svg>
+                </label>
+            </span>
+            <span *ngIf="validName === true">
+                <label>
+                    {{validNameMessage}}
+                    <svg cIcon name="cilReportSlash" cTextColor="danger" size="lg"></svg>
+                </label>
+            </span>
         </c-col>
     </c-row>
-</c-container>
+    <c-row class="mb-2">
+        <c-col xl="12">
+            <label style="width: 150px;">Clinics<span class="text-danger">*</span></label>
+        </c-col>
+        <c-col xl="12">
+            <c-multi-select  multiple cSelect sizing="sm" formControlName="clinic">
+                <c-multi-select-option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.id?.toString()"
+                    [selected]="clinic.selected">
+                    {{clinic.name}}
+                </c-multi-select-option>
+            </c-multi-select>
+        </c-col>
+        <c-col xs="12">
+            <div *ngIf="!this.insuranceCompanyForm.get('clinic')?.valid && 
+                    (this.insuranceCompanyForm.get('clinic')?.dirty ||this.insuranceCompanyForm.get('clinic')?.touched)"
+                class="text-danger mx-1">
+                Clinic is required
+            </div>
+        </c-col>
+    </c-row>
+    <c-row>
+        <c-col xs="12">
+            <c-form-check [switch]="true" class="mb-3" sizing="lg">
+                <input cFormCheckInput type="checkbox" formControlName="insurance-company-status" />
+                <label cFormCheckLabel>
+                    <span
+                        [ngClass]="{ 'fw-bold':this.insuranceCompanyForm.get('insurance-company-status')?.value}">Active</span>/<span
+                        [ngClass]="{ 'fw-bold':!this.insuranceCompanyForm.get('insurance-company-status')?.value }">In-Active</span>
+                </label>
+            </c-form-check>
+        </c-col>
+    </c-row>
+    <div class="mt-3 text-center">
+        <button cButton size="sm" variant="outline" class="mx-2" (click)="create()">
+            <span *ngIf="!selectedCompany">Create</span>
+            <span *ngIf="selectedCompany">Update</span>
+        </button>
+    </div>
+</form>

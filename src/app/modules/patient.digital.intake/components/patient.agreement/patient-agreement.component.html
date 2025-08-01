@@ -1,0 +1,52 @@
+<c-callout color="danger" *ngIf="isValidForm">
+    Please accept all mandatory agreements <strong class="text-danger">marked with red star</strong> before navigating
+    to next
+    step
+</c-callout>
+<div [formGroup]="form" class="mt-3">
+    <div formArrayName="agreement">
+        <c-accordion [alwaysOpen]="false" [flush]="false" class="shadow">
+            <c-accordion-item #item0="cAccordionItem" [visible]="agreement.visible"
+                *ngFor="let agreement of agreements; index as i;">
+                <ng-template cTemplateId="accordionHeaderTemplate">
+                    <span *ngIf="agreement.required">
+                        <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton
+                            [style]="agreement.accept?'color:#2d1cc5':'color:#e03f3f'">
+                            <h5>{{agreement.agreementName}} <span class="text-danger"
+                                    *ngIf="agreement.required">*</span>
+                            </h5>
+                        </button>
+                    </span>
+                    <span *ngIf="!agreement.required">
+                        <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton style="color:#2d1cc5">
+                            <h5>{{agreement.agreementName}} <span class="text-danger"
+                                    *ngIf="agreement.required">*</span>
+                            </h5>
+                        </button>
+                    </span>
+                </ng-template>
+                <ng-template cTemplateId="accordionBodyTemplate">
+                    <c-row>
+                        <c-col xs="12">
+                            <div [innerHTML]="agreement.agreementText" class="accordion-body">
+                            </div>
+                        </c-col>
+                        <c-col xs="12" class="ms-2">
+                            <c-form-check>
+                                <input cFormCheckInput type="checkbox" [formControlName]="agreement.fieldName"
+                                    (change)="acceptConcent(agreement,$event)" />
+                                <label cFormCheckLabel for="release">I accept</label>
+                            </c-form-check>
+                        </c-col>
+                    </c-row>
+                </ng-template>
+            </c-accordion-item>
+
+
+        </c-accordion>
+    </div>
+    <div class="mt-3">
+        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
+        <button cButton variant="outline" size="sm" (click)="next()">Next</button>
+    </div>
+</div>

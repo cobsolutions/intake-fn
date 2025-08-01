@@ -17,9 +17,9 @@ export class PhonePipe implements PipeTransform {
         return val;
     }
     if (len > 3 && len <= 6) {
-        return "(" + val.substr(0, 3) + ")" + '(' + val.substr(3, 3) + ')'
+        return "(" + val.substr(0, 3) + ")" + ' ' + val.substr(3, 3)
     } else {
-        return "(" + val.substr(0, 3) + ")" + '(' + val.substr(3, 3) + ')' + "-" + val.substr(6, 4);
+        return "(" + val.substr(0, 3) + ")" + ' ' + val.substr(3, 3)  + "-" + val.substr(6, 4);
     }
 
 }

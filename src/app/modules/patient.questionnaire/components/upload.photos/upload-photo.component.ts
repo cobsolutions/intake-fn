@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { PatientStoreService } from '../../service/store/patient-store.service';
 
 @Component({
   selector: 'app-upload-photo',
@@ -8,10 +9,12 @@ import { NgxImageCompressService } from 'ngx-image-compress';
 })
 export class UploadPhotoComponent implements OnInit {
   imageFormData: FormData = new FormData();
-
-  constructor(private imageCompress: NgxImageCompressService) { }
+  isWorkerCompensationNoFault: boolean = false
+  constructor(private imageCompress: NgxImageCompressService, private patientStoreService: PatientStoreService) { }
 
   ngOnInit(): void {
+    if (this.patientStoreService.patientInsuranceCompensationNoFault !== undefined)
+      this.isWorkerCompensationNoFault = true;
   }
 
   public onImageUpload(event: any, photoType: string) {

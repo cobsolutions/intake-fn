@@ -12,11 +12,15 @@ export const adminNavItems: INavData[] = [
     iconComponent: { name: 'cil-disabled' },
     children: [
       {
-        name: 'Patient List',
+        name: 'Patients',
         url: 'patient/list'
       },
       {
-        name: 'Patient Creation',
+        name: 'Failed Patients',
+        url: 'patient/failed'
+      },
+      {
+        name: 'Submission',
         url: 'patient/create'
       }
     ]
@@ -26,10 +30,10 @@ export const adminNavItems: INavData[] = [
     url: '',
     iconComponent: { name: 'cil-applicationsSettings' },
     children: [
-      {
-        name: 'Validation List',
-        url: 'validation/list'
-      },
+      // {
+      //   name: 'Validation List',
+      //   url: 'validation/list'
+      // },
       {
         name: 'Clinics',
         url: 'clinic/list'
@@ -41,6 +45,10 @@ export const adminNavItems: INavData[] = [
       {
         name: 'Insurance Company',
         url: 'insurance/company/list'
+      },
+      {
+        name: 'Trust Devices',
+        url: 'trust/devices/list'
       }
     ],
   },
@@ -52,22 +60,30 @@ export const adminNavItems: INavData[] = [
       {
         name: 'Patient Source',
         url: 'report/recommendation'
-      }
-    ]
-  },
-  {
-    name: 'Auditing',
-    url: '',
-    iconComponent: { name: 'cil-monitor' },
-    children: [
-      {
-        name: 'Entity Actions',
-        url: 'audit/entity-audit'
       },
       {
-        name: 'User Action',
-        url: 'audit/user-audit'
-      }
+        name: 'Patient Changes',
+        url: 'report/changes'
+      },
+      {
+        name: 'Patient Contact',
+        url: 'report/contact'
+      },
     ]
-  }
+  },
+  // {
+  //   name: 'Auditing',
+  //   url: '',
+  //   iconComponent: { name: 'cil-monitor' },
+  //   children: [
+  //     {
+  //       name: 'Entity Actions',
+  //       url: 'audit/entity-audit'
+  //     },
+  //     {
+  //       name: 'User Action',
+  //       url: 'audit/user-audit'
+  //     }
+  //   ]
+  // }
 ];

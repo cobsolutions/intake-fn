@@ -1,0 +1,53 @@
+<c-callout color="danger" *ngIf="!isValidForm">
+    <span class="text-danger fw-bold">Please create your signature before navigating to next step</span>
+</c-callout>
+<c-nav variant="underline">
+    <c-nav-item *ngFor="let nav of panes; index as i; first as isFirst; last as isLast">
+        <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="i" cNavLink>
+            {{nav.name}}
+        </a>
+    </c-nav-item>
+</c-nav>
+<c-tab-content #tabContent="cTabContent" (activeTabPaneIdxChange)="onTabChange($event)" [activeTabPaneIdx]="activePane">
+    <!-- generate-->
+    <c-tab-pane class="p-3">
+        <c-row>
+            <c-col xs="12">
+                <div class="w-60 p-3 border border-default mb-3" style="background-color: #eee;">
+                    <span [class]="signatureClass" style="font-size: xx-large; background-color: transparent;"
+                        #patientsig id="sig">{{gPatientFullName?gPatientFullName:patientFullName }}</span>
+                </div>
+            </c-col>
+            <c-col xs="12">
+                <div class="signature-dropdown">
+                    <strong><label for="signature">Select Signature Format:</label></strong>
+                    <div id="signature" class="dropdown">
+                      <div
+                        *ngFor="let signature of signatures"
+                        (click)="generatesign(signature)"
+                        [ngClass]="{ selected: signature.value === selectedSignature }"
+                        class="dropdown-item"
+                        [ngStyle]="{ 'font-family': signature.fontFamily, 'font-size': 'xx-large' }"
+                      >
+                        {{ signature.displayText }}
+                      </div>
+                    </div>
+                  </div>               
+            </c-col>
+            <c-col xs="12">
+                <!-- <button cButton (click)="generate()">Capture</button> -->
+            </c-col>
+        </c-row>
+    </c-tab-pane>
+    <!-- Draw-->
+    <c-tab-pane class="p-3">
+        <canvas #canvas width="700" height="200" (mouseleave)="stopDrawing()" (touchend)="touchStopDrawing()"></canvas>
+        <div class="buttons flex justify-between">
+            <button cButton (click)="clearPad()">Clear</button>
+        </div>
+    </c-tab-pane>
+</c-tab-content>
+<div class="mt-3">
+    <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
+    <button cButton variant="outline" size="sm" (click)="next()">Next</button>
+</div>

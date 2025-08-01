@@ -1,6 +1,5 @@
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginComponent } from './components/login.component';
 
 import {
   AlertModule,
@@ -38,9 +37,10 @@ import { initializer } from './keycloak-initializer';
 import { KeycloakService } from 'keycloak-angular';
 import { KcAuthServiceService } from './service/kc/kc-auth-service.service';
 import { KCAuthGuardGuard } from './service/kc/kcauth-guard.guard';
+import { FetshDigitalPatientIntakeUrlsService } from './service/digital.intake.urls/fetsh-digital-patient-intake-urls.service';
 @NgModule({
   declarations: [
-    LoginComponent
+    
   ],
   imports: [
     CommonModule,
@@ -78,7 +78,7 @@ import { KCAuthGuardGuard } from './service/kc/kcauth-guard.guard';
         provide: APP_INITIALIZER,
         useFactory: initializer,
         multi: true,
-        deps: [KeycloakService]
+        deps: [KeycloakService,FetshDigitalPatientIntakeUrlsService,KcAuthServiceService]
     },
     KeycloakService,
     KcAuthServiceService,

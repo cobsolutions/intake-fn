@@ -1,0 +1,90 @@
+.otp-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.otp-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.otp-inputs input[type="text"] {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 1.2rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+.validOPT {
+  /* Larger font size */
+  font-family: 'Verdana', sans-serif;
+  /* A pleasant green color */
+  font-weight: bold;
+  /* Make the message stand out */
+  text-align: center;
+  /* Center the message */
+  margin-top: 10px;
+  /* Space above or below as needed */
+  animation: fadeIn 1s ease-in-out;
+  font-size: calc(0.5rem + 1vw); 
+}
+
+.invalidOPT {
+  margin-top: 15px;
+  font-size: 1.0rem;
+  color: #A40606;
+}
+
+.otp-section p {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+.resend-link {
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
+}
+
+.resend-link.disabled {
+  color: gray;
+  pointer-events: none;
+}

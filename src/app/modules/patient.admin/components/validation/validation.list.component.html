@@ -17,102 +17,96 @@
                 </c-card-header>
                 <c-card-body>
                     <form cForm *ngIf="patientFields">
-                        <c-form-check sizing="lg" switch>
-                            <input [checked]="patientFields.basicInfo.name"
-                                (change)="patientFields.basicInfo.name = !patientFields.basicInfo.name" cFormCheckInput
-                                checked type="checkbox" />
-                            <label cFormCheckLabel>Name</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch *ngIf="patientFields.basicInfo.name">
-                            <input [checked]="patientFields.basicInfo.firstName"
-                                (change)="patientFields.basicInfo.firstName = !patientFields.basicInfo.firstName"
+                        <!-- <c-form-check sizing="lg" switch *ngIf="true">
+                            <input [checked]="patientFields.essentialInformation!.firstName"
+                                (change)="patientFields.essentialInformation!.firstName = !patientFields.essentialInformation!.firstName"
                                 cFormCheckInput checked type="checkbox" />
                             <label cFormCheckLabel>First Name</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch *ngIf="patientFields.basicInfo.name">
-                            <input [checked]="patientFields.basicInfo.middleName"
-                                (change)="patientFields.basicInfo.middleName = !patientFields.basicInfo.middleName"
+                        </c-form-check> -->
+                        <c-form-check sizing="lg" switch *ngIf="true">
+                            <input [checked]="patientFields.essentialInformation!.middleName"
+                                (change)="patientFields.essentialInformation!.middleName = !patientFields.essentialInformation!.middleName"
                                 cFormCheckInput checked type="checkbox" />
                             <label cFormCheckLabel>Middle Name</label>
                         </c-form-check>
-                        <c-form-check sizing="lg" switch *ngIf="patientFields.basicInfo.name">
-                            <input [checked]="patientFields.basicInfo.lastName"
-                                (change)="patientFields.basicInfo.lastName = !patientFields.basicInfo.lastName"
+                        <!-- <c-form-check sizing="lg" switch *ngIf="true">
+                            <input [checked]="patientFields.essentialInformation!.lastName"
+                                (change)="patientFields.essentialInformation!.lastName = !patientFields.essentialInformation!.lastName"
                                 cFormCheckInput checked type="checkbox" />
                             <label cFormCheckLabel>Last Name</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.basicInfo.birthDate"
-                                (change)="patientFields.basicInfo.birthDate = !patientFields.basicInfo.birthDate"
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.essentialInformation!.birthDate"
+                                (change)="patientFields.essentialInformation!.birthDate = !patientFields.essentialInformation!.birthDate"
                                 type="checkbox" />
                             <label cFormCheckLabel>Birth Date</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.basicInfo.gender"
-                                (change)="patientFields.basicInfo.gender= !patientFields.basicInfo.gender"
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.essentialInformation!.gender"
+                                (change)="patientFields.essentialInformation!.gender= !patientFields.essentialInformation!.gender"
                                 type="checkbox" />
                             <label cFormCheckLabel>Gender</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.basicInfo.maritalStatus"
-                                (change)="patientFields.basicInfo.maritalStatus= !patientFields.basicInfo.maritalStatus"
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.essentialInformation!.maritalStatus"
+                                (change)="patientFields.essentialInformation!.maritalStatus= !patientFields.essentialInformation!.maritalStatus"
                                 type="checkbox" />
                             <label cFormCheckLabel>MaritalStatus</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.basicInfo.phone"
-                                (change)="patientFields.basicInfo.phone= !patientFields.basicInfo.phone"
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.essentialInformation!.phone"
+                                (change)="patientFields.essentialInformation!.phone= !patientFields.essentialInformation!.phone"
                                 type="checkbox" />
                             <label cFormCheckLabel>Phone</label>
-                        </c-form-check>
+                        </c-form-check> -->
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.basicInfo.email"
-                                (change)="patientFields.basicInfo.email= !patientFields.basicInfo.email"
+                            <input cFormCheckInput [checked]="patientFields.essentialInformation!.email"
+                                (change)="patientFields.essentialInformation!.email= !patientFields.essentialInformation!.email"
                                 type="checkbox" />
                             <label cFormCheckLabel>Email</label>
                         </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.basicInfo.patientId"
-                                (change)="patientFields.basicInfo.patientId= !patientFields.basicInfo.patientId"
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.essentialInformation!.patientId"
+                                (change)="patientFields.essentialInformation!.patientId= !patientFields.essentialInformation!.patientId"
                                 type="checkbox" />
                             <label cFormCheckLabel>Id</label>
-                        </c-form-check>
+                        </c-form-check> -->
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.basicInfo.emergencyContact"
-                                (change)="patientFields.basicInfo.emergencyContact= !patientFields.basicInfo.emergencyContact"
+                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.essentialInformation!.emergencyContact"
+                                (change)="patientFields.essentialInformation!.emergencyContact= !patientFields.essentialInformation!.emergencyContact"
                                 type="checkbox" />
                             <label cFormCheckLabel>Emergency Contact</label>
                         </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInfoRequired.type"
-                                (change)="patientFields.addressInfoRequired.type= !patientFields.addressInfoRequired.type"
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInformation!.type"
+                                (change)="patientFields.addressInformation!.type= !patientFields.addressInformation!.type"
                                 type="checkbox" />
                             <label cFormCheckLabel>Address Type</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInfoRequired.first"
-                                (change)="patientFields.addressInfoRequired.first= !patientFields.addressInfoRequired.first"
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInformation!.first"
+                                (change)="patientFields.addressInformation!.first= !patientFields.addressInformation!.first"
                                 type="checkbox" />
                             <label cFormCheckLabel>First Address</label>
-                        </c-form-check>
+                        </c-form-check> -->
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInfoRequired.second"
-                                (change)="patientFields.addressInfoRequired.second= !patientFields.addressInfoRequired.second"
+                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInformation!.second"
+                                (change)="patientFields.addressInformation!.second= !patientFields.addressInformation!.second"
                                 type="checkbox" />
                             <label cFormCheckLabel>Second Address</label>
                         </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInfoRequired.country"
-                                (change)="patientFields.addressInfoRequired.country= !patientFields.addressInfoRequired.country"
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInformation!.country"
+                                (change)="patientFields.addressInformation!.country= !patientFields.addressInformation!.country"
                                 type="checkbox" />
                             <label cFormCheckLabel>Address-Country</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInfoRequired.zipCode"
-                                (change)="patientFields.addressInfoRequired.zipCode= !patientFields.addressInfoRequired.zipCode"
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput cFormCheckInput [checked]="patientFields.addressInformation!.zipCode"
+                                (change)="patientFields.addressInformation!.zipCode= !patientFields.addressInformation!.zipCode"
                                 type="checkbox" />
                             <label cFormCheckLabel>Address-ZipCode</label>
-                        </c-form-check>
+                        </c-form-check> -->
                     </form>
                 </c-card-body>
                 <c-card-footer>
@@ -131,185 +125,185 @@
                 </c-card-header>
                 <c-card-body>
                     <select cSelect sizing="sm" style="line-height: 15px;" [(ngModel)]="workerType" class="mb-3">
-                        <option value="">Select Worker Type</option>
+                        <option value="">Select patient insurance type</option>
                         <option *ngFor="let type of workersTypes" [value]="type.typeValue">
                             {{type.typeName}}
                         </option>
                     </select>
                     <div *ngIf="workerType === 'comp'">
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.relatedInjury"
-                                (change)="patientFields.insurnaceCompInfoRequired.relatedInjury = !patientFields.insurnaceCompInfoRequired.relatedInjury"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.relatedInjury"
+                                (change)="patientFields.insuranceCompensationInformation!.relatedInjury = !patientFields.insuranceCompensationInformation!.relatedInjury"
                                 type="checkbox" />
                             <label cFormCheckLabel>Worker Related Injury/Auto-Accident</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.accidentDate"
-                                (change)="patientFields.insurnaceCompInfoRequired.accidentDate = !patientFields.insurnaceCompInfoRequired.accidentDate"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.accidentDate"
+                                (change)="patientFields.insuranceCompensationInformation!.accidentDate = !patientFields.insuranceCompensationInformation!.accidentDate"
                                 type="checkbox" />
                             <label cFormCheckLabel>Accident Date</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.workerStatus"
-                                (change)="patientFields.insurnaceCompInfoRequired.workerStatus = !patientFields.insurnaceCompInfoRequired.workerStatus"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.workerStatus"
+                                (change)="patientFields.insuranceCompensationInformation!.workerStatus = !patientFields.insuranceCompensationInformation!.workerStatus"
                                 type="checkbox" />
                             <label cFormCheckLabel>Worker Status</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.address"
-                                (change)="patientFields.insurnaceCompInfoRequired.address = !patientFields.insurnaceCompInfoRequired.address"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.address"
+                                (change)="patientFields.insuranceCompensationInformation!.address = !patientFields.insuranceCompensationInformation!.address"
                                 type="checkbox" />
                             <label cFormCheckLabel>Address</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.fax"
-                                (change)="patientFields.insurnaceCompInfoRequired.fax = !patientFields.insurnaceCompInfoRequired.fax"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.fax"
+                                (change)="patientFields.insuranceCompensationInformation!.fax = !patientFields.insuranceCompensationInformation!.fax"
                                 type="checkbox" />
                             <label cFormCheckLabel>Fax</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.insuranceName"
-                                (change)="patientFields.insurnaceCompInfoRequired.insuranceName = !patientFields.insurnaceCompInfoRequired.insuranceName"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.insuranceName"
+                                (change)="patientFields.insuranceCompensationInformation!.insuranceName = !patientFields.insuranceCompensationInformation!.insuranceName"
                                 type="checkbox" />
                             <label cFormCheckLabel>Insurance Name</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.claimNumber"
-                                (change)="patientFields.insurnaceCompInfoRequired.claimNumber = !patientFields.insurnaceCompInfoRequired.claimNumber"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.claimNumber"
+                                (change)="patientFields.insuranceCompensationInformation!.claimNumber = !patientFields.insuranceCompensationInformation!.claimNumber"
                                 type="checkbox" />
                             <label cFormCheckLabel>Claim Number/ WC Case Number</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.adjusterName"
-                                (change)="patientFields.insurnaceCompInfoRequired.adjusterName = !patientFields.insurnaceCompInfoRequired.adjusterName"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.adjusterName"
+                                (change)="patientFields.insuranceCompensationInformation!.adjusterName = !patientFields.insuranceCompensationInformation!.adjusterName"
                                 type="checkbox" />
                             <label cFormCheckLabel>Adjuster Name</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.adjusterPhone"
-                                (change)="patientFields.insurnaceCompInfoRequired.adjusterPhone = !patientFields.insurnaceCompInfoRequired.adjusterPhone"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.adjusterPhone"
+                                (change)="patientFields.insuranceCompensationInformation!.adjusterPhone = !patientFields.insuranceCompensationInformation!.adjusterPhone"
                                 type="checkbox" />
                             <label cFormCheckLabel>Adjuster Phone</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.attorneyName"
-                                (change)="patientFields.insurnaceCompInfoRequired.attorneyName = !patientFields.insurnaceCompInfoRequired.attorneyName"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.attorneyName"
+                                (change)="patientFields.insuranceCompensationInformation!.attorneyName = !patientFields.insuranceCompensationInformation!.attorneyName"
                                 type="checkbox" />
                             <label cFormCheckLabel>Attorney Name</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.attorneyPhone"
-                                (change)="patientFields.insurnaceCompInfoRequired.attorneyPhone = !patientFields.insurnaceCompInfoRequired.attorneyPhone"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.attorneyPhone"
+                                (change)="patientFields.insuranceCompensationInformation!.attorneyPhone = !patientFields.insuranceCompensationInformation!.attorneyPhone"
                                 type="checkbox" />
                             <label cFormCheckLabel>Attorney Phone</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnaceCompInfoRequired.caseStatus"
-                                (change)="patientFields.insurnaceCompInfoRequired.caseStatus = !patientFields.insurnaceCompInfoRequired.caseStatus"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCompensationInformation!.caseStatus"
+                                (change)="patientFields.insuranceCompensationInformation!.caseStatus = !patientFields.insuranceCompensationInformation!.caseStatus"
                                 type="checkbox" />
                             <label cFormCheckLabel>Case Status</label>
                         </c-form-check>
                     </div>
                     <div *ngIf="workerType === 'commercial'">
-                        <c-form-check sizing="lg" switch>
+                        <!-- <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.insuranceCompany"
-                                (change)="patientFields.insurnacecommerialInfoRequired.insuranceCompany = !patientFields.insurnacecommerialInfoRequired.insuranceCompany"
+                                [checked]="patientFields.insuranceCommercialInformation!.insuranceCompany"
+                                (change)="patientFields.insuranceCommercialInformation!.insuranceCompany = !patientFields.insuranceCommercialInformation!.insuranceCompany"
                                 type="checkbox" />
                             <label cFormCheckLabel>Insurance Company</label>
-                        </c-form-check>
+                        </c-form-check> -->
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnacecommerialInfoRequired.memberId"
-                                (change)="patientFields.insurnacecommerialInfoRequired.memberId = !patientFields.insurnacecommerialInfoRequired.memberId"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCommercialInformation!.memberId"
+                                (change)="patientFields.insuranceCommercialInformation!.memberId = !patientFields.insuranceCommercialInformation!.memberId"
                                 type="checkbox" />
                             <label cFormCheckLabel>Member Id</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnacecommerialInfoRequired.ploicyId"
-                                (change)="patientFields.insurnacecommerialInfoRequired.ploicyId = !patientFields.insurnacecommerialInfoRequired.ploicyId"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCommercialInformation!.ploicyId"
+                                (change)="patientFields.insuranceCommercialInformation!.ploicyId = !patientFields.insuranceCommercialInformation!.ploicyId"
                                 type="checkbox" />
                             <label cFormCheckLabel>Policy Id</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.insurnacecommerialInfoRequired.relationship"
-                                (change)="patientFields.insurnacecommerialInfoRequired.relationship = !patientFields.insurnacecommerialInfoRequired.relationship"
+                            <input cFormCheckInput [checked]="patientFields.insuranceCommercialInformation!.relationship"
+                                (change)="patientFields.insuranceCommercialInformation!.relationship = !patientFields.insuranceCommercialInformation!.relationship"
                                 type="checkbox" />
                             <label cFormCheckLabel>relationship</label>
                         </c-form-check>
-                        <c-form-check sizing="lg" switch>
+                        <!-- <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.secondryInsurance"
-                                (change)="patientFields.insurnacecommerialInfoRequired.secondryInsurance = !patientFields.insurnacecommerialInfoRequired.secondryInsurance"
+                                [checked]="patientFields.insuranceCommercialInformation!.secondryInsurance"
+                                (change)="patientFields.insuranceCommercialInformation!.secondryInsurance = !patientFields.insuranceCommercialInformation!.secondryInsurance"
                                 type="checkbox" />
                             <label cFormCheckLabel>secondryInsurance</label>
-                        </c-form-check>
+                        </c-form-check> -->
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.policyHolderFirstName"
-                                (change)="patientFields.insurnacecommerialInfoRequired.policyHolderFirstName = !patientFields.insurnacecommerialInfoRequired.policyHolderFirstName"
+                                [checked]="patientFields.insuranceCommercialInformation!.policyHolderFirstName"
+                                (change)="patientFields.insuranceCommercialInformation!.policyHolderFirstName = !patientFields.insuranceCommercialInformation!.policyHolderFirstName"
                                 type="checkbox" />
                             <label cFormCheckLabel>policyHolderFirstName</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.policyHolderMiddleName"
-                                (change)="patientFields.insurnacecommerialInfoRequired.policyHolderMiddleName = !patientFields.insurnacecommerialInfoRequired.policyHolderMiddleName"
+                                [checked]="patientFields.insuranceCommercialInformation!.policyHolderMiddleName"
+                                (change)="patientFields.insuranceCommercialInformation!.policyHolderMiddleName = !patientFields.insuranceCommercialInformation!.policyHolderMiddleName"
                                 type="checkbox" />
                             <label cFormCheckLabel>policyHolderMiddleName</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.policyHolderLastName"
-                                (change)="patientFields.insurnacecommerialInfoRequired.policyHolderLastName = !patientFields.insurnacecommerialInfoRequired.policyHolderLastName"
+                                [checked]="patientFields.insuranceCommercialInformation!.policyHolderLastName"
+                                (change)="patientFields.insuranceCommercialInformation!.policyHolderLastName = !patientFields.insuranceCommercialInformation!.policyHolderLastName"
                                 type="checkbox" />
                             <label cFormCheckLabel>policyHolderLastName</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.secondryInsuranceCompany"
-                                (change)="patientFields.insurnacecommerialInfoRequired.secondryInsuranceCompany = !patientFields.insurnacecommerialInfoRequired.secondryInsuranceCompany"
+                                [checked]="patientFields.insuranceCommercialInformation!.secondryInsuranceCompany"
+                                (change)="patientFields.insuranceCommercialInformation!.secondryInsuranceCompany = !patientFields.insuranceCommercialInformation!.secondryInsuranceCompany"
                                 type="checkbox" />
                             <label cFormCheckLabel>secondryInsuranceCompany</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.secondryInsuranceMemberId"
-                                (change)="patientFields.insurnacecommerialInfoRequired.secondryInsuranceMemberId = !patientFields.insurnacecommerialInfoRequired.secondryInsuranceMemberId"
+                                [checked]="patientFields.insuranceCommercialInformation!.secondryInsuranceMemberId"
+                                (change)="patientFields.insuranceCommercialInformation!.secondryInsuranceMemberId = !patientFields.insuranceCommercialInformation!.secondryInsuranceMemberId"
                                 type="checkbox" />
                             <label cFormCheckLabel>secondryInsuranceMemberId</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.medicareCoverage"
-                                (change)="patientFields.insurnacecommerialInfoRequired.medicareCoverage = !patientFields.insurnacecommerialInfoRequired.medicareCoverage"
+                                [checked]="patientFields.insuranceCommercialInformation!.medicareCoverage"
+                                (change)="patientFields.insuranceCommercialInformation!.medicareCoverage = !patientFields.insuranceCommercialInformation!.medicareCoverage"
                                 type="checkbox" />
                             <label cFormCheckLabel>medicareCoverage</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.employerFirstName"
-                                (change)="patientFields.insurnacecommerialInfoRequired.employerFirstName = !patientFields.insurnacecommerialInfoRequired.employerFirstName"
+                                [checked]="patientFields.insuranceCommercialInformation!.employerFirstName"
+                                (change)="patientFields.insuranceCommercialInformation!.employerFirstName = !patientFields.insuranceCommercialInformation!.employerFirstName"
                                 type="checkbox" />
                             <label cFormCheckLabel>medicareCoverage-employerFirstName</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.employerMiddleName"
-                                (change)="patientFields.insurnacecommerialInfoRequired.employerMiddleName = !patientFields.insurnacecommerialInfoRequired.employerMiddleName"
+                                [checked]="patientFields.insuranceCommercialInformation!.employerMiddleName"
+                                (change)="patientFields.insuranceCommercialInformation!.employerMiddleName = !patientFields.insuranceCommercialInformation!.employerMiddleName"
                                 type="checkbox" />
                             <label cFormCheckLabel>medicareCoverage-employerMiddleName</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.employerLastName"
-                                (change)="patientFields.insurnacecommerialInfoRequired.employerLastName = !patientFields.insurnacecommerialInfoRequired.employerLastName"
+                                [checked]="patientFields.insuranceCommercialInformation!.employerLastName"
+                                (change)="patientFields.insuranceCommercialInformation!.employerLastName = !patientFields.insuranceCommercialInformation!.employerLastName"
                                 type="checkbox" />
                             <label cFormCheckLabel>medicareCoverage-employerLastName</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.insurnacecommerialInfoRequired.employerPhone"
-                                (change)="patientFields.insurnacecommerialInfoRequired.employerPhone = !patientFields.insurnacecommerialInfoRequired.employerPhone"
+                                [checked]="patientFields.insuranceCommercialInformation!.employerPhone"
+                                (change)="patientFields.insuranceCommercialInformation!.employerPhone = !patientFields.insuranceCommercialInformation!.employerPhone"
                                 type="checkbox" />
                             <label cFormCheckLabel>medicareCoverage-employerPhone</label>
                         </c-form-check>
@@ -332,90 +326,76 @@
                 </c-card-header>
                 <c-card-body>
                     <form cForm *ngIf="patientFields">
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalInfoRequired.recommendation"
-                                (change)="patientFields.medicalInfoRequired.recommendation = !patientFields.medicalInfoRequired.recommendation"
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.medicalInformation!.recommendation"
+                                (change)="patientFields.medicalInformation!.recommendation = !patientFields.medicalInformation!.recommendation"
                                 type="checkbox" />
-                            <label cFormCheckLabel>Did the doctor recommend us or referred you to us?</label>
-                        </c-form-check>
-                        <div *ngIf="patientFields.medicalInfoRequired.recommendation">
-                            <c-form-check sizing="lg" switch>
+                            <label cFormCheckLabel>Doctor Referral?</label>
+                        </c-form-check> -->
+                        <!-- <div *ngIf="patientFields.medicalInformation!.recommendation"> -->
+                            <!-- <c-form-check sizing="lg" switch>
                                 <input cFormCheckInput
-                                    [checked]="patientFields.medicalInfoRequired.recommendedDoctorName"
-                                    (change)="patientFields.medicalInfoRequired.recommendedDoctorName = !patientFields.medicalInfoRequired.recommendedDoctorName"
+                                    [checked]="patientFields.medicalInformation!.recommendedDoctorName"
+                                    (change)="patientFields.medicalInformation!.recommendedDoctorName = !patientFields.medicalInformation!.recommendedDoctorName"
                                     type="checkbox" />
                                 <label cFormCheckLabel>Recommended Doctor Name</label>
-                            </c-form-check>
-                            <c-form-check sizing="lg" switch>
-                                <input cFormCheckInput
-                                    [checked]="patientFields.medicalInfoRequired.recommendedDoctorNpi"
-                                    (change)="patientFields.medicalInfoRequired.recommendedDoctorNpi = !patientFields.medicalInfoRequired.recommendedDoctorNpi"
-                                    type="checkbox" />
-                                <label cFormCheckLabel>Recommended Doctor NPI</label>
-                            </c-form-check>
-                            <!-- <c-form-check sizing="lg" switch>
-                                <input cFormCheckInput
-                                    [checked]="patientFields.medicalInfoRequired.recommendedDoctorFax"
-                                    (change)="patientFields.medicalInfoRequired.recommendedDoctorFax = !patientFields.medicalInfoRequired.recommendedDoctorFax"
-                                    type="checkbox" />
-                                <label cFormCheckLabel>Recommended Doctor Fax</label>
-                            </c-form-check> -->
-                            <!-- <c-form-check sizing="lg" switch>
-                                <input cFormCheckInput
-                                    [checked]="patientFields.medicalInfoRequired.recommendedDoctorAddress"
-                                    (change)="patientFields.medicalInfoRequired.recommendedDoctorAddress = !patientFields.medicalInfoRequired.recommendedDoctorAddress"
-                                    type="checkbox" />
-                                <label cFormCheckLabel>Recommended Doctor Address</label>
                             </c-form-check> -->
                             <c-form-check sizing="lg" switch>
                                 <input cFormCheckInput
-                                    [checked]="patientFields.medicalInfoRequired.recommendedEntityName"
-                                    (change)="patientFields.medicalInfoRequired.recommendedEntityName = !patientFields.medicalInfoRequired.recommendedEntityName"
+                                    [checked]="patientFields.medicalInformation!.recommendedDoctorNpi"
+                                    (change)="patientFields.medicalInformation!.recommendedDoctorNpi = !patientFields.medicalInformation!.recommendedDoctorNpi"
+                                    type="checkbox" />
+                                <label cFormCheckLabel>Doctor Referral NPI</label>
+                            </c-form-check>
+                            <!-- <c-form-check sizing="lg" switch>
+                                <input cFormCheckInput
+                                    [checked]="patientFields.medicalInformation!.recommendedEntityName"
+                                    (change)="patientFields.medicalInformation!.recommendedEntityName = !patientFields.medicalInformation!.recommendedEntityName"
                                     type="checkbox" />
                                 <label cFormCheckLabel>Recommended Entity Name</label>
-                            </c-form-check>
-                        </div>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalInfoRequired.appointmentBooking"
-                                (change)="patientFields.medicalInfoRequired.appointmentBooking = !patientFields.medicalInfoRequired.appointmentBooking"
+                            </c-form-check> -->
+                        <!-- </div> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.medicalInformation!.appointmentBooking"
+                                (change)="patientFields.medicalInformation!.appointmentBooking = !patientFields.medicalInformation!.appointmentBooking"
                                 type="checkbox" />
                             <label cFormCheckLabel>How did you book your appointment
                             </label>
-                        </c-form-check>
+                        </c-form-check> -->
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalInfoRequired.primaryDoctor"
-                                (change)="patientFields.medicalInfoRequired.primaryDoctor = !patientFields.medicalInfoRequired.primaryDoctor"
+                            <input cFormCheckInput [checked]="patientFields.medicalInformation!.primaryDoctor"
+                                (change)="patientFields.medicalInformation!.primaryDoctor = !patientFields.medicalInformation!.primaryDoctor"
                                 type="checkbox" />
                             <label cFormCheckLabel>What is your primary doctor name</label>
                         </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalInfoRequired.resultSubmissionFamily"
-                                (change)="patientFields.medicalInfoRequired.resultSubmissionFamily = !patientFields.medicalInfoRequired.resultSubmissionFamily"
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.medicalInformation!.resultSubmissionFamily"
+                                (change)="patientFields.medicalInformation!.resultSubmissionFamily = !patientFields.medicalInformation!.resultSubmissionFamily"
                                 type="checkbox" />
                             <label cFormCheckLabel>Would you like your results sent to your family doctor?</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalInfoRequired.physicalTherapy"
-                                (change)="patientFields.medicalInfoRequired.physicalTherapy = !patientFields.medicalInfoRequired.physicalTherapy"
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.medicalInformation!.physicalTherapy"
+                                (change)="patientFields.medicalInformation!.physicalTherapy = !patientFields.medicalInformation!.physicalTherapy"
                                 type="checkbox" />
                             <label cFormCheckLabel>Have you received physical therapy this year somewhere else?</label>
-                        </c-form-check>
-                        <div *ngIf="patientFields.medicalInfoRequired.physicalTherapy">
+                        </c-form-check> -->
+                        <!-- <div *ngIf="patientFields.medicalInformation!.physicalTherapy">
                             <c-form-check sizing="lg" switch>
                                 <input cFormCheckInput
-                                    [checked]="patientFields.medicalInfoRequired.physicalTherapyLocation"
-                                    (change)="patientFields.medicalInfoRequired.physicalTherapyLocation = !patientFields.medicalInfoRequired.physicalTherapyLocation"
+                                    [checked]="patientFields.medicalInformation!.physicalTherapyLocation"
+                                    (change)="patientFields.medicalInformation!.physicalTherapyLocation = !patientFields.medicalInformation!.physicalTherapyLocation"
                                     type="checkbox" />
                                 <label cFormCheckLabel>Physical Therapy Location</label>
                             </c-form-check>
                             <c-form-check sizing="lg" switch>
                                 <input cFormCheckInput
-                                    [checked]="patientFields.medicalInfoRequired.physicalTherapyNumberOfVisit"
-                                    (change)="patientFields.medicalInfoRequired.physicalTherapyNumberOfVisit = !patientFields.medicalInfoRequired.physicalTherapyNumberOfVisit"
+                                    [checked]="patientFields.medicalInformation!.physicalTherapyNumberOfVisit"
+                                    (change)="patientFields.medicalInformation!.physicalTherapyNumberOfVisit = !patientFields.medicalInformation!.physicalTherapyNumberOfVisit"
                                     type="checkbox" />
                                 <label cFormCheckLabel>Physical Therapy Number of visits</label>
                             </c-form-check>
-                        </div>
+                        </div> -->
                     </form>
                 </c-card-body>
                 <c-card-footer>
@@ -434,63 +414,63 @@
                 </c-card-header>
                 <c-card-body>
                     <form cForm *ngIf="patientFields">
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInfoRequired.height"
-                                (change)="patientFields.medicalHistoryInfoRequired.height = !patientFields.medicalHistoryInfoRequired.height"
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInformation!.height"
+                                (change)="patientFields.medicalHistoryInformation!.height = !patientFields.medicalHistoryInformation!.height"
                                 type="checkbox" />
                             <label cFormCheckLabel>Height</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInfoRequired.weight"
-                                (change)="patientFields.medicalHistoryInfoRequired.weight = !patientFields.medicalHistoryInfoRequired.weight"
+                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInformation!.weight"
+                                (change)="patientFields.medicalHistoryInformation!.weight = !patientFields.medicalHistoryInformation!.weight"
                                 type="checkbox" />
                             <label cFormCheckLabel>Weight</label>
-                        </c-form-check>
+                        </c-form-check> -->
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInfoRequired.evaluationReason"
-                                (change)="patientFields.medicalHistoryInfoRequired.evaluationReason = !patientFields.medicalHistoryInfoRequired.evaluationReason"
+                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInformation!.evaluationReason"
+                                (change)="patientFields.medicalHistoryInformation!.evaluationReason = !patientFields.medicalHistoryInformation!.evaluationReason"
                                 type="checkbox" />
                             <label cFormCheckLabel>What is your primary reason for today’s evaluation?</label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.medicalHistoryInfoRequired.medicationPrescription"
-                                (change)="patientFields.medicalHistoryInfoRequired.medicationPrescription = !patientFields.medicalHistoryInfoRequired.medicationPrescription"
+                                [checked]="patientFields.medicalHistoryInformation!.medicationPrescription"
+                                (change)="patientFields.medicalHistoryInformation!.medicationPrescription = !patientFields.medicalHistoryInformation!.medicationPrescription"
                                 type="checkbox" />
                             <label cFormCheckLabel>Please list any prescription or non-prescription medication you
                                 are taking
                             </label>
                         </c-form-check>
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInfoRequired.patientCondition"
-                                (change)="patientFields.medicalHistoryInfoRequired.patientCondition = !patientFields.medicalHistoryInfoRequired.patientCondition"
+                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInformation!.patientCondition"
+                                (change)="patientFields.medicalHistoryInformation!.patientCondition = !patientFields.medicalHistoryInformation!.patientCondition"
                                 type="checkbox" />
                             <label cFormCheckLabel>Please select each condition that you have been told you have (or
                                 had)</label>
                         </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInfoRequired.scanningTest"
-                                (change)="patientFields.medicalHistoryInfoRequired.scanningTest = !patientFields.medicalHistoryInfoRequired.scanningTest"
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInformation!.scanningTest"
+                                (change)="patientFields.medicalHistoryInformation!.scanningTest = !patientFields.medicalHistoryInformation!.scanningTest"
                                 type="checkbox" />
                             <label cFormCheckLabel>MRI, CT scan and X-Ray
                             </label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
                             <input cFormCheckInput
-                                [checked]="patientFields.medicalHistoryInfoRequired.metalImplantation"
-                                (change)="patientFields.medicalHistoryInfoRequired.metalImplantation = !patientFields.medicalHistoryInfoRequired.metalImplantation"
+                                [checked]="patientFields.medicalHistoryInformation!.metalImplantation"
+                                (change)="patientFields.medicalHistoryInformation!.metalImplantation = !patientFields.medicalHistoryInformation!.metalImplantation"
                                 type="checkbox" />
                             <label cFormCheckLabel>Metal Implants</label>
-                        </c-form-check>
-                        <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInfoRequired.pacemaker"
-                                (change)="patientFields.medicalHistoryInfoRequired.pacemaker = !patientFields.medicalHistoryInfoRequired.pacemaker"
+                        </c-form-check> -->
+                        <!-- <c-form-check sizing="lg" switch>
+                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInformation!.pacemaker"
+                                (change)="patientFields.medicalHistoryInformation!.pacemaker = !patientFields.medicalHistoryInformation!.pacemaker"
                                 type="checkbox" />
                             <label cFormCheckLabel>Pacemaker</label>
-                        </c-form-check>
+                        </c-form-check> -->
                         <c-form-check sizing="lg" switch>
-                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInfoRequired.surgeriesList"
-                                (change)="patientFields.medicalHistoryInfoRequired.surgeriesList = !patientFields.medicalHistoryInfoRequired.surgeriesList"
+                            <input cFormCheckInput [checked]="patientFields.medicalHistoryInformation!.surgeriesList"
+                                (change)="patientFields.medicalHistoryInformation!.surgeriesList = !patientFields.medicalHistoryInformation!.surgeriesList"
                                 type="checkbox" />
                             <label cFormCheckLabel>Please list any Surgeries you may have had or any other conditions
                                 not listed above</label>

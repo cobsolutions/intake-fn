@@ -5,47 +5,58 @@
     </c-col>
     <c-col xs="12">
         <div style="float: right;">
-            <button cButton color="primary" variant="outline" (click)="create()">
+            <button cButton color="primary" variant="outline" (click)="showCreateUser()">
                 Create User
             </button>
         </div>
     </c-col>
 </c-row>
 <hr />
-<table cTable *ngIf="users">
+<table cTable *ngIf="users" small>
     <thead cTableColor="light">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Use Name</th>
-            <th scope="col">User Role</th>
-            <th scope="col">User Clinics</th>
-            <th scope="col">Action</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Created At</th>
+            <th scope="col" style="width: 10%;">Action</th>
             <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
         <tr *ngFor="let user of users; index as i;">
-            <td>{{user.id}}</td>
             <td>{{user.name}}</td>
-            <td>{{user.userRole}}</td>
+            <td>{{user.email}}</td>
             <td>
-                <ul>
-                    <li *ngFor="let clinic of user.clinics">{{clinic.name}}</li>
-                </ul>
-
+                <c-badge color="primary" *ngIf="user.userRole === 'administrator'">{{user.userRole}}</c-badge>
+                <c-badge color="warning" *ngIf="user.userRole === 'normal'">{{user.userRole}}</c-badge>
             </td>
+            <td>{{user.createdAt | date:"MM/dd/yyyy  hh:mm a"}}</td>
             <td>
-                <button cButton variant="outline" class="me-3" (click)="update(user.uuid)" [disabled]="isLoggedInUser(user.uuid)">
-                    <svg cIcon name="cilPen"></svg>
-                </button>
-                <button cButton variant="outline" (click)="delete(user.uuid)" [disabled]="isLoggedInUser(user.uuid)">
-                    <svg cIcon name="cilTrash"></svg>
-                </button>
-            </td>
-            <td>
-                <span *ngIf="isLoggedIn">LoggedIn</span>
+                <c-button-group aria-label="Basic example" role="group" size="sm">
+                    <button cButton variant="outline" (click)="showEditUser(user.uuid!)">
+                        <svg cIcon name="cilPen"></svg>
+                    </button>
+                </c-button-group>
             </td>
         </tr>
-
     </tbody>
 </table>
+<c-modal id="createUSer" [visible]="isCreateUSer" size="xl" backdrop="static">
+    <c-modal-header>
+        <h3 cModalTitle>User Creation</h3>
+        <button (click)="toggleCreateUser()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <user-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isCreateUSer"></user-creation>
+    </c-modal-body>
+</c-modal>
+<c-modal id="editUSer" [visible]="isEditUser" size="xl" backdrop="static">
+    <c-modal-header>
+        <h3 cModalTitle>Edit User</h3>
+        <button (click)="toggleEditUser()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <user-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isEditUser" [selectedUser]="selectedUser"></user-creation>
+    </c-modal-body>
+</c-modal>

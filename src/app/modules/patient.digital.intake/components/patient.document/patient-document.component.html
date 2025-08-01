@@ -1,0 +1,106 @@
+<c-callout color="danger" *ngIf="isValidForm">
+    <span class="text-danger fw-bold">Please fill in all the required fields before navigating to next step</span>
+</c-callout>
+<div [formGroup]="form" class="mt-3">
+    <div formArrayName="document">
+        <!--Patient  Document-->
+        <span>
+            <!--Patient id front-->
+            <c-row class="mb-2">
+                <c-col xl="12">
+                    <div *ngFor="let docGroup of document.controls; let i = index" [formGroupName]="i">
+                        <label for="dsds" class="form-label" style="font-size: medium;"
+                            *ngIf="docGroup.get('id-front')">Id Front <span class="text-danger">*</span></label>
+                        <input cFormControl type="file" formControlName="id-front" placeholder="ID Front"
+                            accept="image/*" type="file" *ngIf="docGroup.get('id-front')" capture="environment"
+                            class="mb-1" (change)="onImageUpload($event ,'patientIdfront' ,'id-front')">
+                        <label for="dsds" class="form-label" style="font-size: medium;"
+                            *ngIf="docGroup.get('id-back')">Id Back <span class="text-danger">*</span></label>
+                        <input cFormControl type="file" formControlName="id-back" *ngIf="docGroup.get('id-back')"
+                            placeholder="ID Back" accept="image/*" type="file" capture="environment" class="mb-1"
+                            (change)="onImageUpload($event ,'patientIdback' ,'id-back')">
+                    </div>
+                    <div *ngIf="this.form.get('document')?.get('0')!.get('id-front')?.errors?.['required'] && 
+                        (this.form.get('document')?.get('0')!.get('id-front')?.dirty ||this.form.get('document')!.get('0')?.get('id-front')?.touched) "
+                        class="text-danger mx-1">
+                        <span *ngIf="!isGuarantor">
+                            Patient ID Front is required
+                        </span>
+                        <span *ngIf="isGuarantor">
+                            Guarantor Patient ID Front is required
+                        </span>
+                    </div>
+                    <div *ngIf="this.form.get('document')?.get('0')!.get('id-back')?.errors?.['required'] && 
+                        (this.form.get('document')?.get('0')!.get('id-back')?.dirty ||this.form.get('document')!.get('0')?.get('id-back')?.touched) "
+                        class="text-danger mx-1">
+                        <span *ngIf="!isGuarantor">
+                            Patient ID Back is required
+                        </span>
+                        <span *ngIf="isGuarantor">
+                            Guarantor Patient ID Front is required
+                        </span>
+                    </div>
+                </c-col>
+            </c-row>
+        </span>
+        <span>
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">Insurance Type</th>
+                        <th scope="col">Insurance Data</th>
+                        <th style="width: 40%;">Uplodad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let patientInsurance of patientInsurances; let i = index">
+                        <td>
+                            <span *ngIf="patientInsurance.type ==='worker'">Worker Compensation</span>
+                            <span *ngIf="patientInsurance.type ==='auto_acc'">auto Accident</span>
+                            <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>
+                            <span *ngIf="patientInsurance.type ==='medicare'">Medicare</span>
+                            <span *ngIf="patientInsurance.type ==='medicaid'">Medicaid</span>
+                        </td>
+                        <td>
+                            <span *ngIf="patientInsurance.type ==='worker'">
+                                <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
+                            </span>
+                            <span *ngIf="patientInsurance.type ==='auto_acc'">
+                                <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
+                            </span>
+                            <span *ngIf="patientInsurance.type ==='commercial'">
+                                <strong> Insurance Company : </strong>{{$any(patientInsurance).name}}
+                            </span>
+                            <span *ngIf="patientInsurance.type ==='medicare'">
+                                <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
+                            </span>
+                            <span *ngIf="patientInsurance.type ==='medicaid'">
+                                <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
+                            </span>
+                        </td>
+                        <td>
+                            <c-row>
+                                <div class="col-md-auto">
+                                    <label class="form-label" style="font-size: medium;">Front</label>
+                                    <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1" placeholder="Front"
+                                        [formControlName]="patientInsurance._frontcontrollName"
+                                        (change)="onImageUpload($event ,patientInsurance._frontcontrollName,patientInsurance._frontcontrollName)" />
+                                </div>
+                                <div class="col-md-auto">
+                                    <label class="form-label" style="font-size: medium;">Back</label>
+                                    <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1" placeholder="Back"
+                                        [formControlName]="patientInsurance._backcontrollName"
+                                        (change)="onImageUpload($event ,patientInsurance._backcontrollName,patientInsurance._backcontrollName)" />
+                                </div>
+                            </c-row>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </span>
+    </div>
+    <div class="mt-3">
+        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
+        <button cButton variant="outline" size="sm" (click)="next()">Next</button>
+    </div>
+</div>

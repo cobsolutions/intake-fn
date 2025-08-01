@@ -4,21 +4,15 @@
     <c-col xs="12" class="mb-4">
         <c-card>
             <c-card-header ngPreserveWhitespaces>
-                <strong>Patient Source  Reports</strong> <small>From patient list</small>
+                <strong>Patients Source Reports</strong>
             </c-card-header>
             <c-card-body>
-                <p class="text-medium-emphasis small">
-                    The Abiltiy to create patient reports using his/her recommendation inputs,
-                    the recommendation may be doctor or another entity
-                </p>
+                <div *ngIf="searchErrorMessage !==undefined" class="mb-2">
+                    <label class="text-danger fw-normal fst-italic">{{searchErrorMessage}}</label>
+                </div>
                 <c-callout color="danger" *ngIf="searchInputNotValid">
-                    {{errorMsg}}
+                    <span class="text-danger fw-bold">{{errorMsg}}</span>
                 </c-callout>
-                <!--
-              <div style="float: left;margin-top: 4%;">
-              <svg cIcon name="cilFindInPage" title="cilFindInPage" size="7xl"></svg>
-            </div>
-          -->
                 <form cForm>
                     <c-row>
                         <c-col xs="6" class="mb-2">
@@ -32,37 +26,41 @@
                                     <c-col class="mb-2" xs="12">
                                         <form cForm>
                                             <select cSelect cFormControl name="recommendation"
-                                                [(ngModel)]="patientSearchCriteria.type">
-                                                <option value=null>Select Patient Recommendation</option>
-                                                <option value="Doctor">Doctor</option>
-                                                <option value="Entity">Entity</option>                                        
+                                                [(ngModel)]="patientSearchCriteria.sourceType" (change)="changeSourceType()">
+                                                <option value="null" disabled>Select Patient Source</option>
+                                                <option value="referring">Referring Provider</option>
+                                                <option value="direct">Direct Access</option>
                                             </select>
                                         </form>
                                     </c-col>
-                                    <div *ngIf="patientSearchCriteria.type === 'Doctor'">
+                                    <!--Referring Doctor -->
+                                    <div *ngIf="patientSearchCriteria.sourceType === 'referring'">
                                         <c-col class="mb-2" xs="12">
                                             <form cForm>
-                                                <label for="doctor-name" class="form-label"> Doctor Name</label>
-                                                <input cFormControl placeholder="Doctor Name" name="doctor-name"
+                                                <label for="doctor-name" class="form-label">Provider Name</label>
+                                                <input cFormControl placeholder="Provider Name" name="doctor-name"
                                                     [(ngModel)]="patientSearchCriteria.doctorName" />
                                             </form>
                                         </c-col>
                                         <c-col class="mb-2" xs="12">
                                             <form cForm>
-                                                <label for="doctor-npi" class="form-label"> Doctor NPI</label>
-                                                <input numbers cFormControl placeholder="Doctor NPI" name="doctor-npi"
-                                                    [(ngModel)]="patientSearchCriteria.doctorNPI"  maxlength="10"/>
+                                                <label for="doctor-npi" class="form-label">Provider NPI</label>
+                                                <input numbers cFormControl placeholder="Provider NPI" name="doctor-npi"
+                                                    [(ngModel)]="patientSearchCriteria.doctorNPI" maxlength="10" />
                                             </form>
                                         </c-col>
                                     </div>
-                                    <div *ngIf="patientSearchCriteria.type === 'Entity'">
+                                    <div *ngIf="patientSearchCriteria.sourceType !== null">
                                         <c-col class="mb-2" xs="12">
                                             <form cForm>
-                                                <c-multi-select multiple [(ngModel)]="patientSearchCriteria.entityNames"
-                                                    name="sssss">
-                                                    <c-multi-select-option *ngFor="let entity of entityValues"
-                                                        [value]="entity.entityValue"
-                                                        [selected]="entity.selected">{{entity.entityName}}</c-multi-select-option>
+                                                <label for="doctor-name" class="form-label">Source</label>
+                                                <c-multi-select multiple selectionType="counter"
+                                                    (valueChange)="changeSources($event)">
+                                                    <c-multi-select-option *ngFor="let patientSource of patientSources"
+                                                        [value]="patientSource.entityValue"
+                                                        [selected]="patientSource.selected">
+                                                        {{patientSource.entityName}}
+                                                    </c-multi-select-option>
                                                 </c-multi-select>
                                             </form>
                                         </c-col>
@@ -96,28 +94,34 @@
         </c-card>
     </c-col>
     <c-container class="text-end">
-        <button cButton [disabled]="result.result.length < 1" (click)="exportResult()" variant="outline">Export Result
+        <button cButton (click)="exportResult()" variant="outline">Export Result
             <svg cIcon name="cilCloudDownload"></svg>
         </button>
     </c-container>
     <c-col xs="12">
-
-        <c-smart-table [columnSorter]="true" [columns]="columns" [items]="result.result" [activePage]="1"
-            [itemsPerPage]="5" [itemsPerPageSelect]="true" [itemsPerPage]="5"
-            [sorterValue]="{ column: 'name', state: 'asc' }" [tableHeadProps]="{color: ''}"
-            [tableProps]="{ hover: true, striped: true, responsive: true }" header pagination>
-            <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
-                <td>
-                    <ng-container [ngSwitch]="columnName">
-                        <ng-container *ngSwitchCase="'createdAt'">
-                              {{(item[columnName]) | date}}
-                          </ng-container>
-                        <ng-container *ngSwitchDefault>
-                            {{tdContent}}
+        <ng-container *ngIf="props$ | async as props" fluid="true">
+            <c-smart-table [columns]="columns" [items]="(patients$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
+                (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
+                [itemsPerPageSelect]="true" [columnFilterValue]="props.columnFilterValue?? []"
+                [sorterValue]="props.sorterValue" [tableProps]="{ hover: true, striped: true  }"
+                [tableBodyProps]="{ align: 'middle' }" (sorterValueChange)="handleSorterValueChange($event)" header>
+                <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item"
+                    let-tdContent="tdContent">
+                    <td>
+                        <ng-container [ngSwitch]="columnName">
+                            <ng-container *ngSwitchCase="'createdAt'">
+                                {{(item[columnName]) | date}}
+                            </ng-container>
+                            <ng-container *ngSwitchDefault>
+                                {{tdContent}}
+                            </ng-container>
                         </ng-container>
-                    </ng-container>
-                </td>
-            </ng-template>
-        </c-smart-table>
+                    </td>
+                </ng-template>
+            </c-smart-table>
+            <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
+                (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
+        </ng-container>
+
     </c-col>
 </c-row>

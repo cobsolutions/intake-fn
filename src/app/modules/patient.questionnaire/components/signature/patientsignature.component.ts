@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import SignaturePad from 'signature_pad';
 import { Patient } from 'src/app/models/patient/patient.model';
 import { PatientSignature } from '../../models/patient/signature.model';
+import { PatientStoreService } from '../../service/store/patient-store.service';
 
 @Component({
   selector: 'app-patientsignature',
@@ -24,10 +25,10 @@ export class PatientsignatureComponent implements OnInit, AfterViewInit {
   model: PatientSignature = new PatientSignature();
   faSignature = faSignature;
   screenTmp: ElementRef;
-  constructor() { }
+  constructor(private patientStorService: PatientStoreService) { }
   public panes = [
-    { name: 'Draw Signature' },
-    { name: 'Generate Signature' }
+    { name: 'Generate Signature' },
+    { name: 'Draw Signature' }
   ];
 
   activePane = 0;
@@ -39,9 +40,8 @@ export class PatientsignatureComponent implements OnInit, AfterViewInit {
     this.activePane = $event;
   }
   ngOnInit(): void {
-    var pateint: Patient = JSON.parse(localStorage.getItem('patient') || '{}')
-    this.patientFirstName = pateint.basicInfo !== undefined ? pateint.basicInfo.firstName : 'mohamed';
-    this.patientLastName = pateint.basicInfo !== undefined ? pateint.basicInfo.lastName : 'Adel';
+    this.patientFirstName = this.patientStorService.patientEssentialInformation?.patientName?.firstName!;
+    this.patientLastName = this.patientStorService.patientEssentialInformation?.patientName?.lastName!;
   }
   ngAfterViewInit(): void {
     this.signaturePad = new SignaturePad(this.canvasEl.nativeElement);
@@ -70,8 +70,9 @@ export class PatientsignatureComponent implements OnInit, AfterViewInit {
   }
 
   generate(): Promise<HTMLCanvasElement> {
-
+    this.patientsig.nativeElement.name = 'patientsig'
     document.body.appendChild(this.patientsig.nativeElement);
+    //var dd: HTMLElement = document.getElementById('sig')!;
     return html2canvas(this.patientsig.nativeElement, { backgroundColor: null });
   }
 

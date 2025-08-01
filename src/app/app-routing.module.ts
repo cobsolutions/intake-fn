@@ -1,41 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DefaultAdminLayoutComponent, DefaultLayoutComponent } from './core';
-import {  LoginComponent } from './modules/security';
+import { ScannerlayoutComponent } from './core/scannerlayout/scannerlayout.component';
+import { DigitalIntakeGuard } from './modules/security/service/digital.intake.guard/digital-intake.guard';
 import { KCAuthGuardGuard } from './modules/security/service/kc/kcauth-guard.guard';
 
 
 const routes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: '',
-    redirectTo: 'admin',
-    pathMatch: 'full',
-  },
-  {
-    path: '',
-    component: DefaultLayoutComponent,
-    data: {
-      title: 'Home'
-    },
-    children: [
-      {
-        path: 'questionnaire',
-        loadChildren: () =>
-          import('./modules/patient.questionnaire/patient-questionnaire.module').then((m) => m.PatientQuestionnaireModule)
-      },
-    ]
-  },
   {
     path: 'admin',
     component: DefaultAdminLayoutComponent,
     canActivate: [KCAuthGuardGuard],
     data: {
       title: '',
-      roles: ['administrator','normal']
+      roles: ['administrator', 'normal']
     },
     children: [
       {
@@ -45,6 +23,18 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: '',
+    component: DefaultLayoutComponent,
+    children: [
+      {
+        path:'digital-intake',
+        canActivate: [DigitalIntakeGuard],
+        loadChildren: ()=>
+        import('./modules/patient.digital.intake/patient-digital-intake.module').then((m) => m.PatientDigitalIntakeModule)
+      }
+    ]
+  }
 
 ];
 

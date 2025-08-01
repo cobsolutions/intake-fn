@@ -1,38 +1,40 @@
 <c-card class="mb-2">
     <c-card-header>
-        <div [ngClass]="{ 'form-group required':isRequiredField('height') }">
+        <div [ngClass]="{ 'form-group required':true }">
             <label for="dsds" class="form-label">
                 <strong style="font-size: medium;">What is your Height ?</strong>
             </label>
         </div>
     </c-card-header>
     <c-card-body>
-        <c-form-check [switch]="true" class="mb-3" sizing="lg">
-            <input cFormCheckInput type="checkbox" [(ngModel)]="heightUnit" (change)="changeHeightUnit($event)"/>
+        <!-- <c-form-check [switch]="true" class="mb-3" sizing="lg">
+            <input cFormCheckInput type="checkbox" [(ngModel)]="patientMedicalHistory!.heightUnit" (change)="changeHeightUnit($event)"/>
             <label cFormCheckLabel>
                 <span  [ngClass]="{ 'fw-bold':!heightUnit }">Inch</span>/<span [ngClass]="{ 'fw-bold':heightUnit }">Centimeter</span>
             </label>
-        </c-form-check>
-        <input cFormControl sizing="sm" [(ngModel)]="model.height" type="number" step="1" />
+        </c-form-check> -->
+        <input cFormControl sizing="sm" [(ngModel)]="patientMedicalHistory!.height" step="1" />
     </c-card-body>
 </c-card>
 <c-card class="mb-2">
     <c-card-header>
-        <div [ngClass]="{ 'form-group required':isRequiredField('weight') }">
+        <div [ngClass]="{ 'form-group required':true }">
             <label for="dsds" class="form-label">
                 <strong style="font-size: medium;">What is your Weight ?</strong>
             </label>
         </div>
     </c-card-header>
     <c-card-body>
-        <!-- <input cFormControl sizing="sm" [(ngModel)]="model.weight" type="number" step="1" class="mb-3" /> -->
+
         <c-form-check [switch]="true" class="mb-3" sizing="lg">
-            <input cFormCheckInput type="checkbox" [(ngModel)]="weightUnit" (change)="changeWeightUnit($event)"/>
+            <input cFormCheckInput type="checkbox" [(ngModel)]="patientMedicalHistory!.weightUnit"
+                (change)="changeWeightUnit($event)" />
             <label cFormCheckLabel>
-                <span  [ngClass]="{ 'fw-bold':!weightUnit }">Pound</span>/<span [ngClass]="{ 'fw-bold':weightUnit }">kg</span>
+                <span [ngClass]="{ 'fw-bold':!weightUnit }">Pound</span>/<span
+                    [ngClass]="{ 'fw-bold':weightUnit }">kg</span>
             </label>
         </c-form-check>
-        <input cFormControl sizing="sm" [(ngModel)]="model.weight" type="number" step="1" />
+        <input cFormControl sizing="sm" [(ngModel)]="patientMedicalHistory!.weight" type="number" step="1" />
     </c-card-body>
 </c-card>
 
@@ -45,7 +47,7 @@
         </div>
     </c-card-header>
     <c-card-body>
-        <input cFormControl sizing="sm" [(ngModel)]="model.evaluationReason" />
+        <input cFormControl sizing="sm" [(ngModel)]="patientMedicalHistory!.evaluationSubmission" />
     </c-card-body>
 </c-card>
 <c-card class="mb-2">
@@ -58,7 +60,7 @@
         </div>
     </c-card-header>
     <c-card-body>
-        <textarea cFormControl sizing="sm" [(ngModel)]="model.medicationPrescription"></textarea>
+        <textarea cFormControl sizing="sm" [(ngModel)]="patientMedicalHistory!.medicationPrescription"></textarea>
     </c-card-body>
 </c-card>
 <c-card class="mb-2">
@@ -71,7 +73,7 @@
         </div>
     </c-card-header>
     <c-card-body>
-        <c-multi-select multiple [(ngModel)]="model.patientCondition">
+        <c-multi-select multiple [(ngModel)]="patientMedicalHistory!.patientCondition">
             <c-multi-select-option *ngFor="let option of patientConditions" [value]="option.name"
                 [selected]="option.selected">{{option.name}}</c-multi-select-option>
         </c-multi-select>
@@ -79,7 +81,7 @@
 </c-card>
 <c-card class="mb-2">
     <c-card-header>
-        <div [ngClass]="{ 'form-group required':isRequiredField('scanningTest') }">
+        <div [ngClass]="{ 'form-group required':true }">
             <label for="dsds" class="form-label">
                 <strong style="font-size: medium;">MRI, CT scan and X-Ray</strong>
             </label>
@@ -100,20 +102,18 @@
         </c-col>
         <c-col xs="6">
             <c-card class="mb-3" *ngIf="isScanning === 'yes'">
-                <select cSelect sizing="sm" style="line-height: 15px;" cFormControl
-                    [(ngModel)]="model.scanningTestValue">
-                    <option value="">Select</option>
-                    <option value="MRI">MRI</option>
-                    <option value="CT">CT scan</option>
-                    <option value="X-ray">X-ray</option>
-                </select>
+                <c-multi-select multiple [(ngModel)]="patientMedicalHistory!.scanningTestValue">
+                    <c-multi-select-option value="MRI">MRI</c-multi-select-option>
+                    <c-multi-select-option value="CT">CT</c-multi-select-option>
+                    <c-multi-select-option value="X-ray">X-ray</c-multi-select-option>
+                </c-multi-select>
             </c-card>
         </c-col>
     </c-card-body>
 </c-card>
 <c-card class="mb-2">
     <c-card-header>
-        <div [ngClass]="{ 'form-group required':isRequiredField('metalImplantation') }">
+        <div [ngClass]="{ 'form-group required':true }">
             <label for="dsds" class="form-label">
                 <strong style="font-size: medium;">Metal Implants</strong>
             </label>
@@ -135,7 +135,7 @@
 </c-card>
 <c-card class="mb-2">
     <c-card-header>
-        <div [ngClass]="{ 'form-group required':isRequiredField('pacemaker') }">
+        <div [ngClass]="{ 'form-group required':true }">
             <label for="dsds" class="form-label">
                 <strong style="font-size: medium;">Pacemaker</strong>
             </label>
@@ -164,6 +164,6 @@
         </div>
     </c-card-header>
     <c-card-body>
-        <textarea cFormControl sizing="sm" [(ngModel)]="model.surgeriesList"></textarea>
+        <textarea cFormControl sizing="sm" [(ngModel)]="patientMedicalHistory!.surgeriesList"></textarea>
     </c-card-body>
 </c-card>

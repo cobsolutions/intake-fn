@@ -14,6 +14,11 @@ import { AddressComponent } from './components/address/address.component';
 import { NumberonlyDirective } from './directives/numberonly.directive';
 import { ZipcodeDirective } from './directives/zipcode.directive';
 import { PhonePipe } from './pipes/phone.pipe';
+import { TrimTextPipe } from './pipes/trimer/trim-text.pipe';
+import { InputTrimmerDirective } from './directives/trimmer/input-trimmer.directive';
+import { HeightFormatPipe } from './pipes/height/height-format.pipe';
+import { HeightFormatterDirective } from './directives/heightFormat/height-formatter.directive';
+import { WeightFormatPipe } from './pipes/weight/weight-format.pipe';
 
 
 
@@ -23,7 +28,13 @@ import { PhonePipe } from './pipes/phone.pipe';
     AddressComponent,
     NumberonlyDirective,
     ZipcodeDirective,
-    PhonePipe
+    PhonePipe,
+    TrimTextPipe,
+    InputTrimmerDirective,
+    HeightFormatPipe,
+    HeightFormatterDirective,
+    WeightFormatPipe,
+
   ],
   imports: [
     CommonModule,
@@ -47,7 +58,12 @@ import { PhonePipe } from './pipes/phone.pipe';
     AddressComponent,
     NumberonlyDirective,
     ZipcodeDirective,
-    PhonePipe
+    PhonePipe,
+    TrimTextPipe,
+    InputTrimmerDirective,
+    HeightFormatPipe,
+    HeightFormatterDirective,
+    WeightFormatPipe
   ]
 })
 export class PatientCommonModule { }

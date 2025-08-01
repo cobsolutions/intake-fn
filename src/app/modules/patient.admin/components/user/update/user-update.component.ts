@@ -20,11 +20,13 @@ interface UserRole {
   styleUrls: ['./user-update.component.css']
 })
 export class UserUpdateComponent implements OnInit {
+  isRoleChanges: boolean = false;
+  currentRole: string | undefined = undefined;
   countries: Countries[] = countries;
   states: string[] = states;
   userRoles: UserRole[] = [
-    { name: "Administrator", value: "Administrator" },
-    { name: "Normal User", value: "Normal" }
+    { name: "Administrator", value: "administrator" },
+    { name: "Normal User", value: "normal" }
   ]
   resetpassword: boolean = false;
   userId: string | null;
@@ -40,8 +42,11 @@ export class UserUpdateComponent implements OnInit {
   form = {
     uuid: '',
     name: '',
+    firstName: '',
+    lastName: '',
+    email: '',
     password: '',
-    useraddress: '',
+    useraddress: {},
     useraddresscountry: '',
     useraddressstate: '',
     useraddressprovince: '',
@@ -53,31 +58,28 @@ export class UserUpdateComponent implements OnInit {
   capitalizeFirstLetter(value: string) {
     var v: string = value[0].toUpperCase() +
       value.slice(1)
-    console.log(v)
     return v;
   }
   minusculeFirstLetter(value: string) {
     var v: string = value[0].toLowerCase() +
       value.slice(1)
-    console.log(v)
     return v;
   }
   ngOnInit(): void {
     this.userId = this.activatedRoute.snapshot.paramMap.get('userId') !== null ? this.activatedRoute.snapshot.paramMap.get('userId') : '';
-    this.userService.getById(this.userId).subscribe((result) => {
-      var addressParts: string[] = this.converStringToAddress(result.address)
+    this.userService.getById(this.userId).subscribe((result: any) => {
       this.form.uuid = result.uuid;
       this.form.name = result.name !== null ? result.name : '';
+      this.form.firstName = result.firstName !== null ? result.firstName : '';
+      this.form.lastName = result.lastName !== null ? result.lastName : '';
+      this.form.email = result.email !== null ? result.email : '';
       this.form.password = result.password !== null ? result.password : '';
-      this.form.useraddress = result.address !== null ? addressParts[0] : '';
-      this.form.useraddresscountry = result.address !== null ? addressParts[1] : '';
-      if (this.form.useraddresscountry !== 'United States of America')
-        this.form.useraddressprovince = result.address !== null ? addressParts[2] : '';
-      else
-        this.form.useraddressstate = result.address !== null ? addressParts[2] : '';
-      this.form.useraddresscity = result.address !== null ? addressParts[3] : '';
-      this.form.useraddresszipcode = result.address !== null ? addressParts[4] : '';
-      this.form.userrole = result.userRole !== null ? this.capitalizeFirstLetter(result.userRole) : '';
+      this.form.useraddress = result.address.address;
+      this.form.useraddressstate = result.address.state;
+      this.form.useraddresscity = result.address.city;
+      this.form.useraddresszipcode = result.address.zipCode;
+      this.form.userrole = result.userRole ;
+      this.currentRole = this.form.userrole;
       var clinicIds: number[] = _.map(result.clinics, (clinic) => {
         return clinic.id !== null ? clinic.id : 0;
       });
@@ -104,11 +106,16 @@ export class UserUpdateComponent implements OnInit {
       id: null,
       uuid: this.form.uuid,
       name: this.form.name,
+      firstName: this.form.firstName,
+      lastName: this.form.lastName,
+      email: this.form.email,
       password: this.resetpassword ? this.localService.encrypt(this.form.password !== null ? this.form.password : '') : null,
-      address: this.convertAddressToString(),
+      address: this.createAddressModel(),
       userRole: this.minusculeFirstLetter(this.form.userrole),
-      clinics: this.createClinics(this.form.selectedClinics)
+      clinics: this.createClinics(this.form.selectedClinics),
     }
+    if (this.isRoleChanges)
+      user.currentRole = this.currentRole;
     if (this.userCreateForm.valid) {
       this.userService.update(user).subscribe(
         (response) => {
@@ -120,17 +127,13 @@ export class UserUpdateComponent implements OnInit {
       this.errorMessage = 'Please enter valid data';
     }
   }
-  convertAddressToString(): string {
-    let address: string = ""
-    address = address + this.form.useraddress + ",";
-    address = address + this.form.useraddresscountry + ",";
-    if (this.form.useraddressstate)
-      address = address + this.form.useraddressstate + ",";
-    if (this.form.useraddressprovince)
-      address = address + this.form.useraddressprovince + ",";
-    address = address + this.form.useraddresscity + ",";
-    address = address + this.form.useraddresszipcode;
-    return address
+  createAddressModel(): any {
+    return {
+      address: this.form.useraddress,
+      state: this.form.useraddressstate,
+      city: this.form.useraddresscity,
+      zipCode: this.form.useraddresszipcode
+    }
   }
   createClinics(ids: number[] | null) {
 
@@ -153,5 +156,10 @@ export class UserUpdateComponent implements OnInit {
   converStringToAddress(address: string | null) {
     var result: string[] | undefined = address?.split(",")
     return result !== undefined ? result : ['']
+  }
+  ocRoleChange() {
+    this.isRoleChanges = true;
+    if (this.form.userrole === this.currentRole)
+      this.currentRole = undefined
   }
 }

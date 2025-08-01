@@ -1,0 +1,323 @@
+<c-callout color="danger" *ngIf="isValidForm">
+    <span class="text-danger fw-bold">Please fill in all the required fields before navigating to next step</span>
+</c-callout>
+<div [formGroup]="form" class="mt-3">
+    <div formGroupName="medicalhistory">
+        <!--Height -->
+        <c-row>
+            <c-col xl="12">
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">What is your height? <span class="text-danger">*</span></strong>
+                </label>
+            </c-col>
+            <c-col xl="4">
+                <c-row>
+                    <c-col xs="12">
+                        <input class="form-control col-xs-2 mx-2" placeholder formControlName="height"
+                            [value]="this.form.get('medicalhistory')?.get('height')?.value | heightFormat" maxlength="5"
+                            (input)="onHeightInput()" placeholder="e.g. 5'11&quot;" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('height')?.invalid
+                && this.form.get('medicalhistory')?.get('height')?.touched}" (input)="onHeightInput()">
+                    </c-col>
+                    <c-col xs=" 12">
+                        <div *ngIf="this.form.get('medicalhistory')?.get('height')?.errors?.['required'] === true && 
+                    (this.form.get('medicalhistory')?.get('height')?.dirty ||this.form.get('medicalhistory')?.get('height')?.touched)"
+                            class="text-danger mx-1">
+                            Height is required
+                        </div>
+                    </c-col>
+                    <div *ngIf="this.form.get('medicalhistory')?.get('height')?.errors?.['invalidNumber']"
+                        class="text-danger mx-1">
+                        height can't start with zero.</div>
+                </c-row>
+            </c-col>
+            <c-col xl="3">
+                <!-- <c-form-check [switch]="true" class="mb-3" sizing="lg">
+                    <input cFormCheckInput type="checkbox" formControlName="heightUnit" />
+                    <label cFormCheckLabel>
+                        <span
+                            [ngClass]="{ 'fw-bold':!this.form.get('medicalhistory')?.get('heightUnit')?.value}">FT</span>/<span
+                            [ngClass]="{ 'fw-bold':this.form.get('medicalhistory')?.get('heightUnit')?.value }">CM</span>
+                    </label>
+                </c-form-check> -->
+                <div class="helper-text">
+                    Please enter your height in feet and inches (e.g. <strong>5'11"</strong>).
+                </div>
+            </c-col>
+        </c-row>
+        <!--Weight -->
+        <c-row class="mb-2">
+            <c-col xl="12">
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">What is your weight? <span class="text-danger">*</span></strong>
+                </label>
+            </c-col>
+            <c-col xl="4">
+                <c-row>
+                    <c-col xs="12">
+                        <input class="form-control col-xs-2 mx-2" placeholder formControlName="weight"
+                            appHeightFormatter [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('weight')?.invalid
+                            && this.form.get('medicalhistory')?.get('weight')?.touched}" (input)="onWeightInput()">
+                    </c-col>
+                    <c-col xs="12">
+                        <div *ngIf="this.form.get('medicalhistory')?.get('weight')?.errors?.['required'] === true && 
+                        (this.form.get('medicalhistory')?.get('weight')?.dirty ||this.form.get('medicalhistory')?.get('weight')?.touched)"
+                            class="text-danger mx-1">
+                            Weight is required
+                        </div>
+                        <div *ngIf="this.form.get('medicalhistory')?.get('weight')?.errors?.['invalidNumber']"
+                            class="text-danger mx-1">
+                            height can't start with zero.</div>
+                    </c-col>
+                </c-row>
+            </c-col>
+            <c-col xl="2">
+                <div class="helper-text">
+                    Please enter your weight in pounds (e.g. <strong>150.39</strong>).
+                </div>
+            </c-col>
+        </c-row>
+        <!--primary reason for today’s evaluation -->
+        <c-card class="mb-2">
+            <c-card-header><strong style="font-size: medium;">What is your primary reason for today’s
+                    evaluation?</strong></c-card-header>
+            <c-card-body>
+                <textarea cFormControl sizing="sm" formControlName="evaluationReason" maxlength="200" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('evaluationReason')?.invalid
+                            && this.form.get('medicalhistory')?.get('evaluationReason')?.touched}" input-trimmer
+                    placeholder="Please add primary reason for today’s evaluation"></textarea>
+            </c-card-body>
+        </c-card>
+        <!--prescription or non-prescription medication-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Are you taking any prescription or non-prescription
+                        medication?<span class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="prescriptionMedication" size="sm"
+                        [value]="'yes'" />
+                    <label cFormCheckLabel>Yes</label>
+                </c-form-check>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="prescriptionMedication" size="sm"
+                        [value]="'no'" />
+                    <label cFormCheckLabel>No</label>
+                </c-form-check>
+                <span *ngIf="this.form.get('medicalhistory')?.get('prescriptionMedication')?.value ==='yes'">
+                    <textarea cFormControl sizing="sm" formControlName="PhysicalTherapyLocationText" maxlength="200"
+                        placeholder="Please add any prescription or non-prescription medication " [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.invalid
+                    && this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.touched}"
+                        input-trimmer></textarea>
+                    <div *ngIf="this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.dirty ||this.form.get('medicalhistory')?.get('PhysicalTherapyLocationText')?.touched)"
+                        class="text-danger mx-1">
+                        Prescription Medication Value is required
+                    </div>
+                </span>
+                <div *ngIf="this.form.get('medicalhistory')?.get('prescriptionMedication')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('prescriptionMedication')?.dirty ||this.form.get('medicalhistory')?.get('prescriptionMedication')?.touched)"
+                    class="text-danger mx-1">
+                    Prescription Medication is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--patient condition -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Have you ever been diagnosed with any medical conditions?
+                        <span class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="patientConditions" size="sm" [value]="'yes'" />
+                    <label cFormCheckLabel>Yes</label>
+                </c-form-check>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="patientConditions" size="sm" [value]="'no'" />
+                    <label cFormCheckLabel>No</label>
+                </c-form-check>
+                <span *ngIf="this.form.get('medicalhistory')?.get('patientConditions')?.value ==='yes'">
+                    <ng-multiselect-dropdown formControlName="patientConditionsSelections" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('patientConditionsSelections')?.invalid
+                    && this.form.get('medicalhistory')?.get('patientConditionsSelections')?.touched}"
+                        [settings]="dropdownSettings" [data]="patientConditions"
+                        placeholder="Please select medical conditions">
+                    </ng-multiselect-dropdown>
+                    <div *ngIf="this.form.get('medicalhistory')?.get('patientConditionsSelections')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('patientConditionsSelections')?.dirty ||this.form.get('medicalhistory')?.get('patientConditionsSelections')?.touched)"
+                        class="text-danger mx-1">
+                        Conditions selections is required
+                    </div>
+                </span>
+                <div *ngIf="this.form.get('medicalhistory')?.get('patientConditions')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('patientConditions')?.dirty ||this.form.get('medicalhistory')?.get('patientConditions')?.touched)"
+                    class="text-danger mx-1">
+                    Medical Conditions is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--XRay-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Have you ever had any of the following imaging tests done (MRI,
+                        CT, or X-ray)?<span class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="isXRay" size="sm" [value]="'yes'" />
+                    <label cFormCheckLabel>Yes</label>
+                </c-form-check>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="isXRay" size="sm" [value]="'no'" />
+                    <label cFormCheckLabel>No</label>
+                </c-form-check>
+                <span *ngIf="form.get('medicalhistory')?.get('isXRay')?.value ==='yes'">
+                    <c-row>
+                        <c-col xs="12">
+                            <c-multi-select multiple formControlName="isXRayValue" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('isXRayValue')?.invalid
+                            && this.form.get('medicalhistory')?.get('isXRayValue')?.touched}"
+                                placeholder="Please select imaging tests">
+                                <c-multi-select-option value="MRI">MRI</c-multi-select-option>
+                                <c-multi-select-option value="CT">CT</c-multi-select-option>
+                                <c-multi-select-option value="X-ray">X-ray</c-multi-select-option>
+                            </c-multi-select>
+                        </c-col>
+                        <c-col xs="12">
+                            <div *ngIf="this.form.get('medicalhistory')?.get('isXRayValue')?.errors?.['required'] === true && 
+                            (this.form.get('medicalhistory')?.get('isXRayValue')?.dirty ||this.form.get('medicalhistory')?.get('isXRayValue')?.touched)"
+                                class="text-danger mx-1">
+                                XRay Value is Required
+                            </div>
+                        </c-col>
+                    </c-row>
+                </span>
+                <div *ngIf="this.form.get('medicalhistory')?.get('isXRay')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('isXRay')?.dirty ||this.form.get('medicalhistory')?.get('isXRay')?.touched)"
+                    class="text-danger mx-1">
+                    XRay is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--Specialties Question-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Which type of therapy are you seeking today?<span
+                            class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-multi-select multiple formControlName="ptSpecialties" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('ptSpecialties')?.invalid
+                && this.form.get('medicalhistory')?.get('ptSpecialties')?.touched}"
+                    placeholder="Please select physical therapy specialties">
+                    <c-multi-select-option value="pelpt">Pelvic Floor Therapy</c-multi-select-option>
+                    <c-multi-select-option value="cuppt">Cupping Treatment</c-multi-select-option>
+                    <c-multi-select-option value="Lympt">Lymphedema Therapy</c-multi-select-option>
+                    <c-multi-select-option value="oncpt">Oncology Therapy</c-multi-select-option>
+                    <c-multi-select-option value="Pedoccpt">Pediatric Occupational Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedpt">Pediatric Physical Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedsppt">Pediatric Speech Therapy</c-multi-select-option>
+                    <c-multi-select-option value="strreh">Stroke and Neurological Rehabilitation</c-multi-select-option>
+                    <c-multi-select-option value="vesreh">Vestibular Rehabilitation</c-multi-select-option>
+
+                </c-multi-select>
+                <div *ngIf="this.form.get('medicalhistory')?.get('ptSpecialties')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('ptSpecialties')?.dirty ||this.form.get('medicalhistory')?.get('ptSpecialties')?.touched)"
+                    class="text-danger mx-1">
+                    physical therapy specialties is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--Metal Implants -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Do you currently have any metal implants?<span
+                            class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="isMetalImplants" size="sm" [value]="'yes'" />
+                    <label cFormCheckLabel>Yes</label>
+                </c-form-check>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="isMetalImplants" size="sm" [value]="'no'" />
+                    <label cFormCheckLabel>No</label>
+                </c-form-check>
+                <div *ngIf="this.form.get('medicalhistory')?.get('isMetalImplants')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('isMetalImplants')?.dirty ||this.form.get('medicalhistory')?.get('isMetalImplants')?.touched)"
+                    class="text-danger mx-1">
+                    Metal implants is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--Pacemaker -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Do you currently have a pacemaker?<span
+                            class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="isPacemaker" size="sm" [value]="'yes'" />
+                    <label cFormCheckLabel>Yes</label>
+                </c-form-check>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="isPacemaker" size="sm" [value]="'no'" />
+                    <label cFormCheckLabel>No</label>
+                </c-form-check>
+                <div *ngIf="this.form.get('medicalhistory')?.get('isPacemaker')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('isPacemaker')?.dirty ||this.form.get('medicalhistory')?.get('isPacemaker')?.touched)"
+                    class="text-danger mx-1">
+                    Pacemaker is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--Please list any surgeries you may have had or any other conditions not listed above -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Have you had any surgeries or other conditions not listed above?
+                        <span class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="surgeriesList" size="sm" [value]="'yes'" />
+                    <label cFormCheckLabel>Yes</label>
+                </c-form-check>
+                <c-form-check>
+                    <input cFormCheckInput type="radio" formControlName="surgeriesList" size="sm" [value]="'no'" />
+                    <label cFormCheckLabel>No</label>
+                </c-form-check>
+                <span *ngIf="this.form.get('medicalhistory')?.get('surgeriesList')?.value ==='yes'">
+                    <textarea cFormControl sizing="sm" formControlName="surgeriesListText" maxlength="200" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('surgeriesListText')?.invalid
+                    && this.form.get('medicalhistory')?.get('surgeriesListText')?.touched}" input-trimmer
+                        placeholder="Please add surgeries or other conditions not listed above"></textarea>
+                    <div *ngIf="this.form.get('medicalhistory')?.get('surgeriesListText')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('surgeriesListText')?.dirty ||this.form.get('medicalhistory')?.get('surgeriesListText')?.touched)"
+                        class="text-danger mx-1">
+                        Other surgeries value is required
+                    </div>
+                </span>
+                <div *ngIf="this.form.get('medicalhistory')?.get('surgeriesList')?.errors?.['required'] === true && 
+                (this.form.get('medicalhistory')?.get('surgeriesList')?.dirty ||this.form.get('medicalhistory')?.get('surgeriesList')?.touched)"
+                    class="text-danger mx-1">
+                    Any other surgeries is required
+                </div>
+            </c-card-body>
+        </c-card>
+    </div>
+    <div class="mt-3">
+        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
+        <button cButton variant="outline" size="sm" (click)="next()">Next</button>
+    </div>
+</div>

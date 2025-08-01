@@ -32,8 +32,6 @@ export class PateintFilesValidator extends PatientValidator {
         }
         if (!this.imageFormData.has('files'))
             validator.push({ property: " All Files are missed ", message: '' });
-        if (uploadedFiles.length < 4)
-            validator.push({ property: " Some Files are missed ", message: '' });
     }
     protected isRequiredField(name: string): boolean {
         return true;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PatientRequiredFields } from 'src/app/models/validation/patient.fields';
+import { PatientField } from 'src/app/models/validation/new/patient.field';
+import { ClinicService } from '../../services/clinic/clinic.service';
 import { PatientRequiredFieldsService } from '../../services/patient.required.fields.service';
 export interface WorkerTypes {
   typeName: string,
@@ -12,23 +13,22 @@ export interface WorkerTypes {
 })
 
 export class ValidationListComponent implements OnInit {
-  patientFields: PatientRequiredFields;
+  patientFields: PatientField;
   isBasicInfoReuqiredChanged: boolean = false;
   isMedicalInfoReuqiredChanged: boolean = false;
   isMedicalHistoryInfoReuqiredChanged: boolean = false;
   isInsuranceInfoReuqiredChanged: boolean = false;
   workersTypes: WorkerTypes[] = [
-    { typeName: 'CompNoFault-Worker', typeValue: 'comp' },
-    { typeName: 'Commercial-Worker', typeValue: 'commercial' }
+    { typeName: 'CompensationNoFault', typeValue: 'comp' },
+    { typeName: 'Commercial', typeValue: 'commercial' }
   ]
   workerType: string = '';
-  constructor(private patientRequiredFieldsService: PatientRequiredFieldsService) { }
+  constructor(private clinicService: ClinicService , private patientRequiredFieldsService: PatientRequiredFieldsService) { }
 
   ngOnInit(): void {
     this.retrieveBaiscInfoRequiredFields();
   }
   changeRequiredFields(model: string) {
-    console.log(JSON.stringify(this.patientFields))
     this.patientRequiredFieldsService.change(this.patientFields).subscribe(
       (response) => {
         this.handleInfoFlags(model, true);
@@ -52,95 +52,22 @@ export class ValidationListComponent implements OnInit {
       this.isInsuranceInfoReuqiredChanged = value;
   }
   retrieveBaiscInfoRequiredFields() {
-    this.patientRequiredFieldsService.retrieve().subscribe(patientFields => {
-      if (patientFields !== null) {
-        this.patientFields = <PatientRequiredFields>patientFields;;
-      } else {
-        this.patientFields = new PatientRequiredFields();
-        this.patientFields.basicInfo = {
-          id: null,
-          name:true,
-          firstName: true,
-          middleName:true,
-          lastName:true,
-          birthDate: true,
-          gender: true,
-          maritalStatus: true,
-          phone: true,
-          email: true,
-          patientId: true,
-          emergencyContact: true
+    this.clinicService.selectedClinic$.subscribe(clinicId=>{
+      this.patientRequiredFieldsService.retrieve(clinicId!).subscribe(patientFields => {
+        if (patientFields !== null) {
+          this.patientFields = <PatientField>patientFields;;
+        } else {
+          this.patientFields ={
+            essentialInformation:{},
+            addressInformation:{},
+            medicalInformation:{},
+            medicalHistoryInformation:{},
+            insuranceCompensationInformation:{},
+            insuranceCommercialInformation:{},
+          }
         }
-
-        this.patientFields.addressInfoRequired = {
-          id: null,
-          type: true,
-          first: true,
-          second: true,
-          country: true,
-          zipCode: true
-        }
-        this.patientFields.medicalInfoRequired = {
-          id: null,
-          recommendation: false,
-          recommendedDoctorName: false,
-          recommendedDoctorNpi: false,
-          recommendedDoctorFax: false,
-          recommendedDoctorAddress: false,
-          recommendedEntityName: false,
-          physicalTherapy: false,
-          physicalTherapyLocation: false,
-          physicalTherapyNumberOfVisit: false,
-          appointmentBooking: false,
-          resultSubmissionFamily: false,
-          primaryDoctor: false,
-        }
-        this.patientFields.medicalHistoryInfoRequired = {
-          id: null,
-          height: false,
-          weight: false,
-          evaluationReason: false,
-          medicationPrescription: false,
-          patientCondition: false,
-          scanningTest: false,
-          scanningTestValue: false,
-          metalImplantation: false,
-          pacemaker: false,
-          surgeriesList: false,
-        }
-        this.patientFields.insurnaceCompInfoRequired = {
-          compNoFault: true,
-          relatedInjury: false,
-          accidentDate: false,
-          workerStatus: false,
-          address: false,
-          fax: false,
-          insuranceName: false,
-          claimNumber: false,
-          adjusterName: false,
-          adjusterPhone: false,
-          attorneyName: false,
-          attorneyPhone: false,
-          caseStatus: false
-        }
-        this.patientFields.insurnacecommerialInfoRequired = {
-          insuranceCompany: false,
-          memberId: false,
-          ploicyId: false,
-          relationship: false,
-          secondryInsurance: false,
-          policyHolderFirstName: false,
-          policyHolderMiddleName: false,
-          policyHolderLastName: false,
-          secondryInsuranceCompany: false,
-          secondryInsuranceMemberId: false,
-          medicareCoverage: false,
-          employerFirstName: false,
-          employerMiddleName: false,
-          employerLastName: false,
-          employerPhone: false
-        }
-      }
-    });
+      });
+    })
+   
   }
 }

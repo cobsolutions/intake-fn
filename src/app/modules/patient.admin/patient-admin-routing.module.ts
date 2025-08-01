@@ -7,11 +7,15 @@ import { ClinicCreationComponent } from './components/clinic/create/clinic.creat
 import { ClinicListComponent } from './components/clinic/list/clinic.list.component';
 import { UpdateClinicComponent } from './components/clinic/update/update-clinic.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FailedPatientComponent } from './components/failed.patient/failed-patient.component';
 import { InsuranceCompanyCreateComponent } from './components/insurance.company/create/insurance-company-create.component';
 import { InsuranceCompanyListComponent } from './components/insurance.company/list/insurance-company-list.component';
 import { PatientCreateComponent } from './components/patient.create/patient-create.component';
 import { PatientListComponent } from './components/patient.list/patient.list.component';
+import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
+import { PatientContactReportComponent } from './components/reports/patient.contact/patient-contact-report.component';
 import { RecommendationReportComponent } from './components/reports/recommendation.report.component';
+import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
 import { UserCreationComponent } from './components/user/create/user-creation.component';
 import { UserListComponent } from './components/user/list/user-list.component';
 import { UserUpdateComponent } from './components/user/update/user-update.component';
@@ -26,27 +30,29 @@ const routes: Routes = [{
 },
 {
   path: '',
-  redirectTo: 'dashboard',
-  pathMatch: 'full',
-},
-{
-  path: '',
   data: {
-    title: 'pateint',
+    title: 'Patient',
   },
   children: [
     {
       path: 'patient/list',
       component: PatientListComponent,
       data: {
-        title: 'list',
+        title: 'List',
+      },
+    },
+    {
+      path: 'patient/failed',
+      component: FailedPatientComponent,
+      data: {
+        title: 'List',
       },
     },
     {
       path: 'patient/create',
       component: PatientCreateComponent,
       data: {
-        title: 'create',
+        title: 'Create',
       },
     }
   ]
@@ -54,7 +60,7 @@ const routes: Routes = [{
 {
   path: '',
   data: {
-    title: 'administration',
+    title: 'Administration',
   },
   children: [
     {
@@ -68,49 +74,49 @@ const routes: Routes = [{
       path: 'clinic/list',
       component: ClinicListComponent,
       data: {
-        title: 'clinics-list',
+        title: 'Clinics List',
       },
     },
     {
       path: 'clinic/creation',
       component: ClinicCreationComponent,
       data: {
-        title: 'clinic-Creation',
+        title: 'Clinic Creation',
       },
     },
     {
       path: 'clinic/update/:clinicId',
       component: UpdateClinicComponent,
       data: {
-        title: 'clinic-update',
+        title: 'Clinic Update',
       },
     },
     {
       path: 'user/list',
       component: UserListComponent,
       data: {
-        title: 'users-list',
+        title: 'Users List',
       },
     },
     {
       path: 'user/creation',
       component: UserCreationComponent,
       data: {
-        title: 'user-Creation',
+        title: 'User Creation',
       },
     },
     {
       path: 'user/update/:userId',
       component: UserUpdateComponent,
       data: {
-        title: 'user-update',
+        title: 'User update',
       }
     },
     {
       path: 'insurance/company/list',
       component: InsuranceCompanyListComponent,
       data: {
-        title: 'insurance-company-list',
+        title: 'Insurance Companies List',
       }
     },
     {
@@ -120,6 +126,13 @@ const routes: Routes = [{
         title: 'insurance-company-create',
       }
     },
+    {
+      path: 'trust/devices/list',
+      component: ListTrustDevicesComponent,
+      data: {
+        title: 'insurance-company-create',
+      }
+    }
   ]
 },
 {
@@ -132,7 +145,21 @@ const routes: Routes = [{
       path: 'report/recommendation',
       component: RecommendationReportComponent,
       data: {
-        title: 'patient-source',
+        title: 'Patient Source',
+      },
+    },
+    {
+      path: 'report/changes',
+      component: ChnagesReportComponent,
+      data: {
+        title: 'Patient changes',
+      },
+    },
+    {
+      path: 'report/contact',
+      component: PatientContactReportComponent,
+      data: {
+        title: 'Patient Contact',
       },
     }
   ]
@@ -149,7 +176,7 @@ const routes: Routes = [{
       data: {
         title: 'audit-entity',
       },
-    },{
+    }, {
       path: 'audit/user-audit',
       component: UserAuditComponent,
       data: {

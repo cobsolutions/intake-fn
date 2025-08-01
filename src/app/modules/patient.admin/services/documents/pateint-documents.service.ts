@@ -10,8 +10,8 @@ export class PateintDocumentsService {
 
   constructor(private httpClient: HttpClient) { }
 
-  exportPateintIdDocuments(patientId: number) {
-    const pateintIdDocumentsURL = this.baseUrl + 'id/patientId/' + patientId;
+  exportPateintIdDocuments(patientId: number, hasGuarantor?: boolean) {
+    const pateintIdDocumentsURL = this.baseUrl + 'id/patientId/' + patientId + '/hasGuarantor/' + hasGuarantor;
     return this.httpClient.get(pateintIdDocumentsURL, { responseType: 'blob' })
   }
 

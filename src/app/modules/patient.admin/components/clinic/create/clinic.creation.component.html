@@ -1,118 +1,156 @@
 <ngx-spinner></ngx-spinner>
-<c-container fluid>
-    <c-row class="justify-content-center">
-        <c-col class="col">
-            <c-card class="mb-3 ustify-content-center">
-                <c-card-header>
-                    <h3>Clinic Creation</h3>
-                </c-card-header>
-                <c-card-body>
-                    <p class="text-danger" *ngIf="errorMessage">{{ errorMessage }}</p>
-                    <form cForm #clinicCreateForm="ngForm" (ngSubmit)="create()" (change)="resetError()">
-                        <div class="form-group">
-                            <small *ngIf="name.invalid && (name.dirty || name.touched)" class="form-text text-danger">
-                                clinic name is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input autoComplete="name" cFormControl id="name" name="name"
-                                    placeholder="Enter Clinic Name" required
-                                    [ngClass]="{'is-invalid': name.invalid && (name.dirty || name.touched)}"
-                                    [(ngModel)]="form.name" #name="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <small
-                                *ngIf="clinicaddressvalue.invalid && (clinicaddressvalue.dirty || clinicaddressvalue.touched)"
-                                class="form-text text-danger">
-                                clinic Address is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input autoComplete="clinicaddressvalue" cFormControl id="clinicaddressvalue"
-                                    name="clinicaddressvalue" placeholder="Enter Address" required
-                                    [ngClass]="{'is-invalid': clinicaddressvalue.invalid && (clinicaddressvalue.dirty || clinicaddressvalue.touched)}"
-                                    [(ngModel)]="form.clinicaddressvalue" #clinicaddressvalue="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <small
-                                *ngIf="clinicaddresscountry.invalid && (clinicaddresscountry.dirty || clinicaddresscountry.touched)"
-                                class="form-text text-danger">
-                                clinic County is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <select cSelect sizing="sm" cFormControl autoComplete="clinicaddresscountry"
-                                    name="clinicaddresscountry" id="clinicaddresscountry"
-                                    [ngClass]="{'is-invalid': clinicaddresscountry.invalid && (clinicaddresscountry.dirty || clinicaddresscountry.touched )}"
-                                    [(ngModel)]="form.clinicaddresscountry" #clinicaddresscountry="ngModel">
-                                    <option value="null">Select County</option>
-                                    <option *ngFor="let country of countries" [value]="country.name">
-                                        {{country.name}}
-                                    </option>
-                                </select>
-                            </c-input-group>
-                            <div class="form-group" *ngIf="form.clinicaddresscountry === 'United States of America'">
-                                <c-input-group class="mb-3">
-                                    <select cSelect sizing="sm" autoComplete="clinicaddressstate"
-                                        name="clinicaddressstate" id="clinicaddressstate"
-                                        [(ngModel)]="form.clinicaddressstate" #clinicaddressstate="ngModel">
-                                        <option value="null">Select State</option>
-                                        <option *ngFor="let state of states" [value]="state">
-                                            {{state}}
-                                        </option>
-                                    </select>
-                                </c-input-group>
-                            </div>
-                            <div class="form-group"
-                                *ngIf="form.clinicaddresscountry !== 'United States of America' && (form.clinicaddresscountry!== null)">
-                                <small
-                                    *ngIf="clinicaddressprovince.invalid && (clinicaddressprovince.dirty || clinicaddressprovince.touched)"
-                                    class="form-text text-danger">
-                                    Clinic Address Province is required
-                                </small>
-                                <c-input-group class="mb-3">
-                                    <input autoComplete="clinicaddressprovince" cFormControl id="clinicaddressprovince"
-                                        name="clinicaddressprovince" placeholder="Enter Province" required
-                                        [ngClass]="{'is-invalid': clinicaddressprovince.invalid && (clinicaddressprovince.dirty || clinicaddressprovince.touched)}"
-                                        [(ngModel)]="form.clinicaddressprovince" #clinicaddressprovince="ngModel" />
-                                </c-input-group>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <small
-                                *ngIf="clinicaddresscity.invalid && (clinicaddresscity.dirty || clinicaddresscity.touched)"
-                                class="form-text text-danger">
-                                Clinic Address City is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input autoComplete="clinicaddresscity" cFormControl id="clinicaddresscity"
-                                    name="clinicaddresscity" placeholder="Enter City" required
-                                    [ngClass]="{'is-invalid': clinicaddresscity.invalid && (clinicaddresscity.dirty || clinicaddresscity.touched)}"
-                                    [(ngModel)]="form.clinicaddresscity" #clinicaddresscity="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="form-group">
-                            <small
-                                *ngIf="clinicaddresszipcode.invalid && (clinicaddresszipcode.dirty || clinicaddresszipcode.touched)"
-                                class="form-text text-danger">
-                                Clinic Address Zip Code is required
-                            </small>
-                            <c-input-group class="mb-3">
-                                <input zipcode autoComplete="clinicaddresszipcode" cFormControl
-                                    id="clinicaddresszipcode" name="clinicaddresszipcode" placeholder="Enter Zip Code"
-                                    required
-                                    [ngClass]="{'is-invalid': clinicaddresszipcode.invalid && (clinicaddresszipcode.dirty || clinicaddresszipcode.touched)}"
-                                    [(ngModel)]="form.clinicaddresszipcode" #clinicaddresszipcode="ngModel" />
-                            </c-input-group>
-                        </div>
-                        <div class="text-center">
-                            <button cButton type="submit" size="sm" color="primary" variant="outline">
-                                Create
-                            </button>
-                        </div>
-                    </form>
-                </c-card-body>
-
-            </c-card>
+<c-callout color="danger" *ngIf="isValidForm">
+    <span class="text-danger fw-bold">Please fill in all the required fields before submitting clinic</span>
+</c-callout>
+<form [formGroup]="clinicForm">
+    <!--Clinic Name -->
+    <c-row class="mb-2">
+        <c-col xl="12">
+            <label style="width: 150px;">Clinic Name <span class="text-danger">*</span></label>
+        </c-col>
+        <c-col xl="12">
+            <input class="form-control" placeholder formControlName="clinic-name" sizing="sm" cFormControl [ngClass]="{'is-invalid': this.clinicForm.get('clinic-name')?.invalid
+                && this.clinicForm.get('clinic-name')?.touched}" maxlength="60" input-trimmer>
+        </c-col>
+        <c-col xl=" 12">
+            <div *ngIf="this.clinicForm.get('clinic-name')?.errors?.['required'] && 
+        (this.clinicForm.get('clinic-name')?.dirty ||this.clinicForm.get('clinic-name')?.touched)"
+                class="text-danger mx-1">
+                Clinic name is required
+            </div>
+            <div *ngIf="this.clinicForm.get('clinic-name')?.errors?.['noSpecialCharacters']" class="text-danger mx-1">
+                Clinic name cannot contain special characters.</div>
+            <span *ngIf="validName === false">
+                <label>
+                    <span class="text-success">Typed clinic name is unique</span>
+                    <svg cIcon name="cilCheck" cTextColor="success" size="lg"></svg>
+                </label>
+            </span>
+            <span *ngIf="validName === true">
+                <label>
+                    {{validNameMessage}}
+                    <svg cIcon name="cilReportSlash" cTextColor="danger" size="lg"></svg>
+                </label>
+            </span>
         </c-col>
     </c-row>
-</c-container>
+    <!--Address-->
+    <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}">
+        <c-card-body>
+            <h6 cCardSubtitle class="mb-2 text-medium-emphasis">Address</h6>
+            <!--First Address-->
+            <c-row class="mb-2">
+                <c-col xl="12">
+                    <label style="width: 150px;">First Address <span class="text-danger">*</span></label>
+                </c-col>
+                <c-col xl="12">
+                    <input class="form-control" placeholder formControlName="first-address" sizing="sm" cFormControl
+                        [ngClass]="{'is-invalid': this.clinicForm.get('first-address')?.invalid
+                        && this.clinicForm.get('first-address')?.touched}" maxlength="60" input-trimmer>
+                </c-col>
+                <c-col xl=" 12">
+                    <div *ngIf="this.clinicForm.get('first-address')?.errors?.['required'] && 
+                (this.clinicForm.get('first-address')?.dirty ||this.clinicForm.get('first-address')?.touched)"
+                        class="text-danger mx-1">
+                        First address is required
+                    </div>
+                    <div *ngIf="this.clinicForm.get('first-address')?.errors?.['noSpecialCharacters']"
+                        class="text-danger mx-1">First address cannot contain special characters.</div>
+                </c-col>
+            </c-row>
+            <!--Second Address-->
+            <c-row class="mb-2">
+                <c-col xl="12">
+                    <label style="width: 150px;">Second Address</label>
+                </c-col>
+                <c-col xl="12">
+                    <input class="form-control" placeholder formControlName="second-address" sizing="sm" cFormControl
+                        [ngClass]="{'is-invalid': this.clinicForm.get('second-address')?.invalid
+                        && this.clinicForm.get('second-address')?.touched}" maxlength="60" input-trimmer>
+                </c-col>
+                <c-col xl=" 12">
+                    <div *ngIf="this.clinicForm.get('second-address')?.errors?.['noSpecialCharacters']"
+                        class="text-danger mx-1">second address cannot contain special characters.</div>
+                </c-col>
+            </c-row>
+            <!--City-->
+            <c-row class="mb-2">
+                <c-col xl="12">
+                    <label style="width: 150px;">City<span class="text-danger">*</span></label>
+                </c-col>
+                <c-col xl="12">
+                    <input class="form-control" placeholder formControlName="city-address" sizing="sm" cFormControl
+                        [ngClass]="{'is-invalid': this.clinicForm.get('city-address')?.invalid
+                        && this.clinicForm.get('city-address')?.touched}" maxlength="60" input-trimmer>
+                </c-col>
+                <c-col xl=" 12">
+                    <div *ngIf="this.clinicForm.get('city-address')?.errors?.['required'] && 
+                (this.clinicForm.get('city-address')?.dirty ||this.clinicForm.get('city-address')?.touched)"
+                        class="text-danger mx-1">
+                        City is required
+                    </div>
+                    <div *ngIf="this.clinicForm.get('city-address')?.errors?.['noSpecialCharacters']"
+                        class="text-danger mx-1">City cannot contain special characters.</div>
+                </c-col>
+            </c-row>
+            <!--state-->
+            <c-row class="mb-2">
+                <c-col xl="12">
+                    <label style="width: 150px;">State<span class="text-danger">*</span></label>
+                </c-col>
+                <c-col xl="12">
+                    <select cSelect sizing="sm" formControlName="state-address">
+                        <option value="null" disabled>Select State</option>
+                        <option *ngFor="let state of states" [value]="state">
+                            {{state}}
+                        </option>
+                    </select>
+                </c-col>
+                <c-col xs="12">
+                    <div *ngIf="!this.clinicForm.get('state-address')?.valid && 
+                            (this.clinicForm.get('state-address')?.dirty ||this.clinicForm.get('state-address')?.touched)"
+                        class="text-danger mx-1">
+                        State is required
+                    </div>
+                </c-col>
+            </c-row>
+            <!--Zip Code-->
+            <c-row class="mb-2">
+                <c-col xs="12"><label style="width: 150px;">ZipCode <span class="text-danger">*</span></label></c-col>
+                <c-col xs="12">
+                    <input class="form-control" placeholder formControlName="zipcode-address" zipcode maxlength="10"
+                        sizing="sm" cFormControl [ngClass]="{'is-invalid': this.clinicForm.get('zipcode-address')?.invalid
+                        && this.clinicForm.get('zipcode-address')?.touched}">
+                </c-col>
+                <c-col xs="12">
+                    <div *ngIf="this.clinicForm.get('zipcode-address')?.errors?.['required'] === true && 
+                    (this.clinicForm.get('zipcode-address')?.dirty ||this.clinicForm.get('zipcode-address')?.touched)"
+                        class="text-danger mx-1">
+                        ZipCode is required
+                    </div>
+                    <div *ngIf="clinicForm.get('zipcode-address')?.errors?.['pattern']" class="text-danger mx-1">
+                        Invalid ZipCode format
+                    </div>
+                </c-col>
+            </c-row>
+        </c-card-body>
+    </c-card>
+    <!--status-->
+    <c-row>
+        <c-col xs="12">
+            <c-form-check [switch]="true" class="mb-3" sizing="lg">
+                <input cFormCheckInput type="checkbox" formControlName="clinic-status" />
+                <label cFormCheckLabel>
+                    <span [ngClass]="{ 'fw-bold':this.clinicForm.get('clinic-status')?.value}">Active</span>/<span
+                        [ngClass]="{ 'fw-bold':!this.clinicForm.get('clinic-status')?.value }">In-Active</span>
+                </label>
+            </c-form-check>
+        </c-col>
+    </c-row>
+    <div class="mt-3 text-center">
+        <button cButton size="sm" variant="outline" class="mx-2" (click)="create()">
+            <span *ngIf="!clinicId">Create</span>
+            <span *ngIf="clinicId">Update</span>
+        </button>
+    </div>
+</form>

@@ -2,7 +2,7 @@ export class SecondaryInsurance {
     policyHolderFirstName: string;
     policyHolderMeddileName: string;
     policyHolderLastName: string;
-    policyHolderPhone: string
+    policyHolderPhone?: string
     insuranceCompany:string
     memberId:string
 }

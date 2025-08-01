@@ -23,11 +23,9 @@ export class UserAuditComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.get().subscribe(response => {
-
+      console.log(JSON.stringify(response.body))
       response.body?.forEach(element => {
-        if (element.clinics?.length !== undefined && element.clinics?.length > 0) {
-          this.users?.push(element)
-        }
+        this.users?.push(element)
       });
     },
       error => {

@@ -5,7 +5,9 @@ import { AgreementHolder } from 'src/app/models/patient/agreements/agreements.ho
 import { Agreements } from 'src/app/models/patient/agreements/agreements.model';
 import { Patient } from 'src/app/models/patient/patient.model';
 import { LocalService } from 'src/app/modules/common';
+import { PatientAgreement } from '../../models/intake/patient.agreement';
 import { PatientService } from '../../service/patient.service';
+import { PatientStoreService } from '../../service/store/patient-store.service';
 @Component({
   selector: 'app-aggreements',
   templateUrl: './aggreements.component.html',
@@ -23,22 +25,17 @@ export class AggreementsComponent implements OnInit {
   agreementHolder: AgreementHolder[] | null;
   patientName: string = ''
   model: Agreements
+  patientAgreements?: PatientAgreement;
   nowDate = moment().format("MM.DD.YYYY");
   constructor(private sanitizer: DomSanitizer
-    , private localService: LocalService,
+    , private patientStoreService: PatientStoreService,
     private patientService: PatientService) { }
 
   ngOnInit(): void {
-    if (localStorage.getItem('patient') !== null) {
-      var pateint: Patient = JSON.parse(localStorage.getItem('patient') || '{}')
-      this.constructorPatientName(pateint);
-      if (pateint.agreements !== undefined) {
-        this.model = pateint.agreements;
-      } else {
-        this.model = new Agreements();
-      }
-    } else {
-      this.model = new Agreements();
+    if(this.patientStoreService.patientAgreements === undefined){
+      this.patientAgreements = {}
+    }else{
+      this.patientAgreements = this.patientStoreService.patientAgreements;
     }
     this.patientService.getAgreement().subscribe(response => {
       this.agreementHolder = response.body
@@ -73,15 +70,10 @@ export class AggreementsComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustHtml(paragraph);
   }
 
-  constructorPatientName(pateint: Patient) {
-    var fName = pateint.basicInfo.firstName.charAt(0).toUpperCase() + pateint.basicInfo.firstName.slice(1);
-    var mName = pateint.basicInfo.middleName.charAt(0).toUpperCase();
-    var lName = pateint.basicInfo.lastName.charAt(0).toUpperCase() + pateint.basicInfo.lastName.slice(1);
-    this.patientName = fName + ',' + mName + '.,' + lName
-  }
+
   getHIPAAAcknowledgement() {
     const paragraph = `<p style="font-family:Lucida ">
-    ${this.HIPAAAcknowledgementParagraph}Signature of Patient or Legal Representative:&#160;<b>${this.patientName}</b> &#160;Date: ${this.nowDate} </p>
+    ${this.HIPAAAcknowledgementParagraph}</p>
 `;
     return this.sanitizer.bypassSecurityTrustHtml(paragraph);
 
@@ -89,21 +81,20 @@ export class AggreementsComponent implements OnInit {
 
   getCupping() {
     const paragraph = `<p style="font-family:Lucida ">
-    ${this.CuppingParagraph}<p style="font-family:Lucida ">Patient/Guardian Name:&#160; <b>${this.patientName}</b> &#160; Date ${this.nowDate}<br/> Signature of Patient/Guardian:&#160; <b>${this.patientName}</b> &#160; Date ${this.nowDate}</p>
+    ${this.CuppingParagraph}<p style="font-family:Lucida "></p>
 `;
     return this.sanitizer.bypassSecurityTrustHtml(paragraph);
   }
 
   getPelvic() {
     const paragraph = `<p style="font-family:Lucida">
-    ${this.PelvicParagraph}Patient Name: &#160; <b>${this.patientName}</b><br/>Patient Signature: &#160; <b>${this.patientName}</b> &#160;Date :${this.nowDate}</p>
+    ${this.PelvicParagraph}</p>
 `;
     return this.sanitizer.bypassSecurityTrustHtml(paragraph);
   }
 
   getPhotoVideo() {
-    const paragraph = `<p style="font-family:Lucida">I,<b>${this.patientName}</b><br/>  ${this.PhotoVideoParagraph}
-    I acknowledge that I am <b>${this.patientName}</b>  over the age of 18 <br/><br/>Date: ${this.nowDate}      signature:<b>${this.patientName}</b></p>
+    const paragraph = `${this.PhotoVideoParagraph}</p>
 `;
     return this.sanitizer.bypassSecurityTrustHtml(paragraph);
   }

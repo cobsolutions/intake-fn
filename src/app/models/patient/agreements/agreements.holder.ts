@@ -1,5 +1,10 @@
 export interface AgreementHolder{
     id:number,
+    order:number,
+    required:boolean
     agreementName:string;
-    agreementText:string    
+    fieldName:string
+    agreementText:string
+    visible:boolean  |null
+    accept?:boolean
 }

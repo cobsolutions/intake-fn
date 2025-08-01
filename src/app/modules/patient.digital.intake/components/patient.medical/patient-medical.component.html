@@ -1,0 +1,337 @@
+<c-callout color="danger" *ngIf="isValidForm">
+    <span class="text-danger fw-bold">Please fill in all the required fields before navigating to next step</span>
+</c-callout>
+<div [formGroup]="form" class="mt-3">
+    <div formGroupName="medical">
+        <!-- How you heard about us-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <label><strong>How did you hear about us? </strong><span class="text-danger">*</span></label>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-row>
+                    <c-col xs="12" class="mb-2">
+                        <select cSelect sizing="sm" formControlName="referringEntity" [ngClass]="{'is-invalid': this.form.get('medical')?.get('referringEntity')?.invalid
+                            && this.form.get('medical')?.get('referringEntity')?.touched}">
+                            <option value="null" disabled>Select</option>
+                            <option *ngFor="let entity of entityValues" [value]="entity.entityValue"
+                                [selected]="entity.selected">{{entity.entityName}}</option>
+                        </select>
+                    </c-col>
+                    <span *ngIf="this.form.get('medical')?.get('referringEntity')?.value ==='clinic_staff' ||
+                        this.form.get('medical')?.get('referringEntity')?.value ==='word_Of_mouse' ||
+                        this.form.get('medical')?.get('referringEntity')?.value ==='other'">
+                        <c-col xs="12">
+                            <label style="width: 150px;">Other <span class="text-danger">*</span></label>
+                        </c-col>
+                        <div *ngIf="this.form.get('medical')?.get('referringEntityOther')?.errors?.['required'] && 
+            (this.form.get('medical')?.get('referringEntityOther')?.dirty ||this.form.get('medical')?.get('referringEntityOther')?.touched)"
+                            class="text-danger mx-1">
+                            Please enter other value
+                        </div>
+                        <c-col xs="12">
+                            <input class="form-control" placeholder formControlName="referringEntityOther"
+                                maxlength="60">
+                        </c-col>
+                    </span>
+
+                    <c-col xs="12">
+                        <div *ngIf="this.form.get('medical')?.get('referringEntity')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('referringEntity')?.dirty ||this.form.get('medical')?.get('referringEntity')?.touched)"
+                            class="text-danger mx-1">
+                            Referring input is required
+                        </div>
+                    </c-col>
+                </c-row>
+            </c-card-body>
+        </c-card>
+        <!--Best Way to Contact You  -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <label><strong>What is the best way to contact you?</strong>
+                        <span class="text-danger"> *</span>
+                    </label>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-input-group class="mb-1" sizing="sm">
+                    <select cSelect formControlName="communicationType" [ngClass]="{'is-invalid': this.form.get('medical')?.get('communicationType')?.invalid
+                    && this.form.get('medical')?.get('communicationType')?.touched}">
+                        <option value="null" disabled>Select</option>
+                        <option value="sms">Text Message (SMS)</option>
+                        <option value="call">Phone Call</option>
+                        <option value="email">Email</option>
+                        <option value="other">Other</option>
+                    </select>
+                </c-input-group>
+                <div *ngIf="this.form.get('medical')?.get('communicationType')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('communicationType')?.dirty ||this.form.get('medical')?.get('communicationType')?.touched)"
+                    class="text-danger mx-1">
+                    Contact Type is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--Best Way to Contact You  -->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <label><strong>What is the best time to contact you?</strong>
+                        <span class="text-danger"> *</span>
+                    </label>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-input-group class="mb-1" sizing="sm">
+                    <select cSelect formControlName="communicationTime" [ngClass]="{'is-invalid': this.form.get('medical')?.get('communicationTime')?.invalid
+                    && this.form.get('medical')?.get('communicationTime')?.touched}">
+                        <option value="null" disabled>Select</option>
+                        <option value="morning">Morning (8 AM – 12 PM)</option>
+                        <option value="afternoon">Afternoon (12 PM – 4 PM)</option>
+                        <option value="evening">Evening (4 PM – 8 PM)</option>
+                        <option value="other">Other</option>
+                    </select>
+                </c-input-group>
+                <div *ngIf="this.form.get('medical')?.get('communicationTime')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('communicationTime')?.dirty ||this.form.get('medical')?.get('communicationTime')?.touched)"
+                    class="text-danger mx-1">
+                    Contact Time is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--Referring Provider-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <label><strong>Could you please provide us with the information of your Referring
+                            Doctor? </strong>
+                        <span class="text-danger"
+                            *ngIf="this.form.get('medical')?.get('referringEntity')?.value ==='referringDoctor'">*</span>
+                    </label>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <div class="row height d-flex">
+                    <div class="col-md-12" *ngIf="nppesError">
+                        <label class="text-danger fw-normal fst-italic">{{nppesErrorMessage}} </label>
+                    </div>
+                    <div class="col-md-12" *ngIf="isReferringSearchNotValid">
+                        <label class="text-danger fw-normal fst-italic">{{referringSearchErrorMessage}} </label>
+                    </div>
+                    <div class="col-md-12" *ngIf="prodiverNotfound">
+                        <label class="text-danger fw-normal fst-italic">No Provider has been found</label>
+                    </div>
+                    <div class="col-md-2">
+                        <label></label>
+                        <select cSelect formControlName="referringSearchType" sizing="sm" class="form-control"
+                            style="height: 40px;">
+                            <option value="l-name">Last Name</option>
+                            <option value="f-name">First Name</option>
+                            <option value="full-name">Full Name</option>
+                            <option value="npi">NPI</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-1">
+                        <label>
+                            <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='full-name'">
+                                <label>
+                                    <span class="fst-italic">Search criteria: LastName, FirstName </span> <span
+                                        class="text-primary">Example: Linda, John</span>
+                                </label>
+                            </span>
+                        </label>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='full-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider Full Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='f-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider first Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='l-name'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider last Name" formControlName="referringSearch">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                        <span *ngIf="this.form.get('medical')?.get('referringSearchType')?.value ==='npi'">
+                            <c-input-group sizing="sm">
+                                <input cFormControl placeholder="Provider NPI" formControlName="referringSearch"
+                                    type="number">
+                                <span cInputGroupText>
+                                    <button cButton variant="ghost" size="sm" (click)="search()" cLoadingButton
+                                        [loading]="loadingProvider">
+                                        <svg cIcon name="cilSearch" title="cilUser"></svg>
+                                    </button>
+                                </span>
+                            </c-input-group>
+                        </span>
+                    </div>
+
+                    <div class="col-md-10 mb-2" *ngIf="providers">
+                        <ng-autocomplete [itemTemplate]="itemTemplate" placeholder="Select.." [data]="providers"
+                            [notFoundTemplate]="notFoundTemplate" (selected)="pickProvider($event)" [searchKeyword]="''"
+                            style="width: 90%;" (inputCleared)="unpickProvider()">
+                        </ng-autocomplete>
+                        <ng-template #itemTemplate let-item>
+                            <a [innerHTML]="item"></a>
+                        </ng-template>
+                        <ng-template #notFoundTemplate let-notFound>
+                            <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                    </div>
+                </div>
+                <c-row *ngIf="(this.form.get('medical')?.get('providerName')?.value !==null) 
+                    && (this.form.get('medical')?.get('providerNPI')?.value !== null)">
+                    <c-col xs="4">
+                        <c-input-group class="mb-3" sizing="sm">
+                            <span cInputGroupText id="basic-addon1">&#64;</span>
+                            <input cFormControl placeholder="Doctor Name" maxlength="60" readonly
+                                formControlName="providerName">
+                        </c-input-group>
+                        <c-input-group class="mb-3" sizing="sm">
+                            <span cInputGroupText id="basic-addon2">#</span>
+                            <input cFormControl placeholder="NPI" maxlength="60" readonly formControlName="providerNPI">
+                        </c-input-group>
+                    </c-col>
+                </c-row>
+                <c-col xs="12">
+                    <div *ngIf="this.form.get('medical')?.get('providerNPI')?.errors?.['required'] === true && 
+                    (this.form.get('medical')?.get('providerNPI')?.touched)" class="text-danger mx-1">
+                        Referring Doctor Information is required
+                    </div>
+                </c-col>
+
+            </c-card-body>
+        </c-card>
+        <!-- Appointment Booking-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">How did you book your appointment? <span
+                            class="text-danger">*</span>
+                    </strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-input-group class="mb-1" sizing="sm">
+                    <select cSelect formControlName="appointmentBooking" [ngClass]="{'is-invalid': this.form.get('medical')?.get('appointmentBooking')?.invalid
+                    && this.form.get('medical')?.get('appointmentBooking')?.touched}">
+                        <option value="null" disabled>Select Appointment Booking</option>
+                        <option value="Website">Our website www.ptofthecity.com/Google</option>
+                        <option value="Zocdoc">Zocdoc</option>
+                        <option value="Calls">Phone Call/Text</option>
+                        <option value="Walkin">Walk-in</option>
+                    </select>
+                </c-input-group>
+                <div *ngIf="this.form.get('medical')?.get('appointmentBooking')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('appointmentBooking')?.dirty ||this.form.get('medical')?.get('appointmentBooking')?.touched)"
+                    class="text-danger mx-1">
+                    Appointment booking is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--Primary Doctor-->
+        <c-card class="mb-2">
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">What is your primary doctor name?<span class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-input-group class="mb-1" sizing="sm">
+                    <input class="form-control" placeholder formControlName="isPrimaryDoctor" [ngClass]="{'is-invalid': this.form.get('medical')?.get('isPrimaryDoctor')?.invalid
+                    && this.form.get('medical')?.get('isPrimaryDoctor')?.touched}" maxlength="60" input-trimmer>
+                </c-input-group>
+                <div *ngIf="this.form.get('medical')?.get('isPrimaryDoctor')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('isPrimaryDoctor')?.dirty ||this.form.get('medical')?.get('isPrimaryDoctor')?.touched)"
+                    class="text-danger mx-1">
+                    Primary doctor is required
+                </div>
+            </c-card-body>
+        </c-card>
+        <!--received physical therapy -->
+        <c-card>
+            <c-card-header>
+                <label for="dsds" class="form-label">
+                    <strong style="font-size: medium;">Have you received physical therapy elsewhere this year?<span class="text-danger">*</span></strong>
+                </label>
+            </c-card-header>
+            <c-card-body>
+                <c-form-check class="mb-2">
+                    <input cFormCheckInput type="radio" formControlName="isReceivedPhysicalTherapy" size="sm"
+                        [value]="'yes'" />
+                    <label cFormCheckLabel>Yes</label>
+                </c-form-check>
+                <c-form-check class="mb-4">
+                    <input cFormCheckInput type="radio" formControlName="isReceivedPhysicalTherapy" size="sm"
+                        [value]="'no'" />
+                    <label cFormCheckLabel>No</label>
+                </c-form-check>
+                <span *ngIf="this.form.get('medical')?.get('isReceivedPhysicalTherapy')?.value ==='yes'">
+                    <c-row>
+                        <c-col xs="12"><label style="width: 150px;">Clinic Name</label></c-col>
+                        <c-col xs="12">
+                            <input class="form-control" placeholder formControlName="PhysicalTherapyLocation"
+                                cFormControl sizing="sm" [ngClass]="{'is-invalid': this.form.get('medical')?.get('PhysicalTherapyLocation')?.invalid
+                                && this.form.get('medical')?.get('PhysicalTherapyLocation')?.touched}" maxlength="60"
+                                input-trimmer>
+                        </c-col>
+                        <div *ngIf="this.form.get('medical')?.get('PhysicalTherapyLocation')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('PhysicalTherapyLocation')?.dirty ||this.form.get('medical')?.get('PhysicalTherapyLocation')?.touched)"
+                            class="text-danger mx-1">
+                            Location is required
+                        </div>
+                    </c-row>
+                    <c-row>
+                        <c-col xs="12">
+                            <label style="width: 150px;">How Many Visits?</label>
+                        </c-col>
+                        <c-col xs="12">
+                            <input class="form-control" placeholder formControlName="PhysicalTherapyNumber" numbers
+                                onKeyDown="if(this.value.length==2 && event.keyCode!=8) return false;" cFormControl
+                                sizing="sm" [ngClass]="{'is-invalid': this.form.get('medical')?.get('PhysicalTherapyNumber')?.invalid
+                                && this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched}"
+                                (input)="onPhysicalTherapyNumberInput()">
+                        </c-col>
+                        <div *ngIf="this.form.get('medical')?.get('PhysicalTherapyNumber')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('PhysicalTherapyNumber')?.dirty ||this.form.get('medical')?.get('PhysicalTherapyNumber')?.touched)"
+                            class="text-danger mx-1">
+                            Number of visit is required
+                        </div>
+                    </c-row>
+                </span>
+                <div *ngIf="this.form.get('medical')?.get('isReceivedPhysicalTherapy')?.errors?.['required'] === true && 
+                (this.form.get('medical')?.get('isReceivedPhysicalTherapy')?.dirty ||this.form.get('medical')?.get('isReceivedPhysicalTherapy')?.touched)"
+                    class="text-danger mx-1">
+                    Physical therapy treatment is required
+                </div>
+            </c-card-body>
+        </c-card>
+    </div>
+    <div class="mt-3">
+        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
+        <button cButton variant="outline" size="sm" (click)="next()">Next</button>
+    </div>
+</div>

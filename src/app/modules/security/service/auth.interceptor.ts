@@ -3,26 +3,31 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { KeycloakService } from 'keycloak-angular';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { catchError, finalize, from, mergeMap, Observable, throwError } from 'rxjs';
-import { UserRoleURLS } from 'src/app/core/adminlayout/header/user.role.urls';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, finalize, from, map, mergeMap, Observable } from 'rxjs';
+import { FetshDigitalPatientIntakeUrlsService } from './digital.intake.urls/fetsh-digital-patient-intake-urls.service';
 import { KcAuthServiceService } from './kc/kc-auth-service.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private kcAuthServiceService: KcAuthServiceService
-    , private spinner: NgxSpinnerService) { }
-
+  constructor(private kcAuthServiceService: KcAuthServiceService, private keycloakService: KeycloakService
+    , private spinner: NgxSpinnerService
+    , private fetshUrls: FetshDigitalPatientIntakeUrlsService
+    , private toastrService: ToastrService,
+    private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.spinner.show();
+    if(request.url.includes('/digital-intake')){
+      this.spinner.hide();
+      return next.handle(request);
+    }
     return from(this.kcAuthServiceService.getToken())
       .pipe(
         mergeMap(token => {
-          if (localStorage.getItem('access-token') === null) {
-            localStorage.setItem('access-token', token)
-          }
           request = request.clone({
-            setHeaders: { Authorization: `Bearer ${localStorage.getItem('access-token')}` }
+            setHeaders: { Authorization: `Bearer ${token}` }
           });
           return next.handle(request);
         }
@@ -31,23 +36,27 @@ export class AuthInterceptor implements HttpInterceptor {
           this.spinner.hide();
         }),
         catchError(error => {
+          console.log(error)
+          if (error.status === 401) {
+           this.kcAuthServiceService.logout();
+          }
           if (error.error.errorCode === 'UNAUTHORIZED') {
-            console.log('token is expired');
             this.kcAuthServiceService.logout();
-          } else {
-            return throwError(error);
+          }
+          else {
+            this.scrollUp()
+            this.toastrService.error('Error during');
+            throw error;
           }
           return [];
         }))
   }
-
-  private getNotSecuredURL(): string[] {
-
-    var notSecuredURLS: string[] = new Array();
-    UserRoleURLS.forEach(element => {
-      if (element.name === 'PERMITTED')
-        notSecuredURLS = element.urls;
-    });
-    return notSecuredURLS;
+  private scrollUp() {
+    (function smoothscroll() {
+      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      if (currentScroll > 0) {
+        window.scrollTo(0, 0);
+      }
+    })();
   }
 }

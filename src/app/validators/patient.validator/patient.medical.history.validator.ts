@@ -1,13 +1,13 @@
 import * as _ from "lodash";
-import { MedicalHistroyInformation } from "src/app/models/questionnaire/medical/history/medical.history.info";
-import { MedicalHistoryInfoRequired } from "src/app/models/validation/medical.history.info.required";
+import { MedicalHistoryInformation } from "src/app/models/validation/new/medical.history.information";
+import { PatientMedicalHistory } from "src/app/modules/patient.questionnaire/models/intake/medical/patient.medical.history";
 import { PropertyValidator } from "../PropertyValidator";
 import { ValidatorContainer } from "../ValidatorContainer";
 import { PatientValidator } from "./patient.validator";
 export class MdicalHistoryValidator extends PatientValidator {
-    model: MedicalHistroyInformation;
-    requiredFields: MedicalHistoryInfoRequired;
-    constructor(model: MedicalHistroyInformation, requiredFields: MedicalHistoryInfoRequired) {
+    model: PatientMedicalHistory;
+    requiredFields: MedicalHistoryInformation;
+    constructor(model: PatientMedicalHistory, requiredFields: MedicalHistoryInformation) {
         super();
         this.model = model;
         this.requiredFields = requiredFields;
@@ -28,16 +28,16 @@ export class MdicalHistoryValidator extends PatientValidator {
 
     }
     protected validateInfo(validator: PropertyValidator[]) {
-        if (this.isRequiredField('height')) {
+        //if (this.isRequiredField('height')) {
             if (this.model.height === '' || this.model.height === undefined)
                 validator.push({ property: "Height", message: '' });
-        }
-        if (this.isRequiredField('weight')) {
+        //}
+        //if (this.isRequiredField('weight')) {
             if (this.model.weight === '' || this.model.weight === undefined)
                 validator.push({ property: "Weight", message: '' });
-        }
+        //}
         if (this.isRequiredField('evaluationReason')) {
-            if (this.model.evaluationReason === '' || this.model.evaluationReason === undefined)
+            if (this.model.evaluationSubmission === '' || this.model.evaluationSubmission === undefined)
                 validator.push({ property: "What is your primary reason for today’s evaluation", message: '' });
         }
         if (this.isRequiredField('medicationPrescription')) {
@@ -52,22 +52,22 @@ export class MdicalHistoryValidator extends PatientValidator {
                 validator.push({ property: "Please select each condition that you have been", message: '' });
 
         }
-        if (this.isRequiredField('scanningTest')) {
+        //if (this.isRequiredField('scanningTest')) {
             if (this.model.scanningTest === undefined)
                 validator.push({ property: "Please Select : MRI , CT Or X-Ray", message: '' });
 
-            else if ((this.model.scanningTestValue === '' || this.model.scanningTestValue === undefined) && (this.model.scanningTest))
+            else if ((this.model.scanningTestValue === undefined || this.model.scanningTestValue.length < 1) && (this.model.scanningTest))
                 validator.push({ property: "MRI , CT Or X-Ray Values", message: '' });
-        }
+        //}
 
-        if (this.isRequiredField('metalImplantation')) {
+        //if (this.isRequiredField('metalImplantation')) {
             if (this.model.metalImplantation === undefined)
                 validator.push({ property: "Please Select : Metal Implants", message: '' });
-        }
-        if (this.isRequiredField('pacemaker')) {
+        //}
+        //if (this.isRequiredField('pacemaker')) {
             if (this.model.pacemaker === undefined)
                 validator.push({ property: "Please Select : Pacemaker", message: '' });
-        }
+        //}
         if (this.isRequiredField('surgeriesList')) {
             if (this.model.surgeriesList === '' || this.model.surgeriesList === undefined)
                 validator.push({ property: "Please Select : list any Surgeries you may have had ", message: '' });

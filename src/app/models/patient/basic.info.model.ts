@@ -1,4 +1,5 @@
-import { EmergencyRelation } from "src/app/modules/patient.questionnaire/models/patient/emergency.relation";
+
+import { Relation } from "src/app/modules/patient.questionnaire/enums/emergency.relation";
 import { PateintGrantorModel } from "./patient.grantor.model";
 
 export class Basic {
@@ -19,7 +20,7 @@ export class Basic {
     // id_effective_to_date = new Date();
     // idEffectiveTo: number = 0;
     emergencyName: string = '';
-    emergencyRelation: EmergencyRelation | null = null;
+    emergencyRelation:Relation | null = null;
     emergencyPhone: string = '';
     employmentStatus: string = '';
     employmentCompany :string = ''

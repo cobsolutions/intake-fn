@@ -39,8 +39,7 @@
                     <h3>{{cards[0].name}}</h3>
                 </c-card-header>
                 <c-card-body>
-                    <app-essential-info *ngIf="patientFields"
-                        [requiredFields]="patientFields.basicInfo"></app-essential-info>
+                    <app-essential-info *ngIf="patientFields" [requiredFields]="patientFields.essentialInformation"></app-essential-info>
                 </c-card-body>
                 <c-card-footer>
                     <button cButton (click)="next('basic')" size="sm" color="primary" variant="outline"
@@ -59,7 +58,7 @@
                 </c-card-header>
                 <c-card-body>
                     <app-address-information *ngIf="patientFields"
-                        [requiredFields]="patientFields.addressInfoRequired"></app-address-information>
+                        [requiredFields]="patientFields.addressInformation"></app-address-information>
                 </c-card-body>
                 <c-card-footer>
                     <button cButton (click)="back()" size="sm" color="primary" variant="outline" class="auto me-1">
@@ -79,7 +78,7 @@
                 </c-card-header>
                 <c-card-body>
                     <app-medical-info *ngIf="patientFields"
-                        [requiredFields]="patientFields.medicalInfoRequired"></app-medical-info>
+                        [requiredFields]="patientFields.medicalInformation"></app-medical-info>
                 </c-card-body>
                 <c-card-footer>
                     <button cButton (click)="back()" size="sm" color="primary" variant="outline"
@@ -98,7 +97,7 @@
                 </c-card-header>
                 <c-card-body>
                     <app-medical-history-information *ngIf="patientFields"
-                        [requiredFields]="patientFields.medicalHistoryInfoRequired"></app-medical-history-information>
+                        [requiredFields]="patientFields.medicalHistoryInformation"></app-medical-history-information>
                 </c-card-body>
                 <c-card-footer>
                     <button cButton (click)="back()" size="sm" color="primary" variant="outline"
@@ -118,8 +117,8 @@
                 </c-card-header>
                 <c-card-body>
                     <app-insurance-information *ngIf="patientFields"
-                        [insurnaceCompInfoRequired]="patientFields.insurnaceCompInfoRequired"
-                        [insurnacecommerialInfoRequired]="patientFields.insurnacecommerialInfoRequired"></app-insurance-information>
+                        [insurnaceCompInfoRequired]="patientFields.insuranceCompensationInformation"
+                        [insurnacecommerialInfoRequired]="patientFields.insuranceCommercialInformation"></app-insurance-information>
                 </c-card-body>
                 <c-card-footer>
                     <button cButton (click)="back()" size="sm" color="primary" variant="outline"
@@ -158,7 +157,7 @@
                 <app-aggreements></app-aggreements>
             </c-card-body>
             <c-card-footer>
-                <button cButton (click)="back()" size="sm" color="primary" variant="outline"
+                <button cButton (click)="back('insurance')" size="sm" color="primary" variant="outline"
                     class="auto me-1">Back</button>
                 <button cButton (click)="next('aggreements')" size="sm" color="primary" variant="outline"
                     class="auto me-1">next</button>

@@ -89,7 +89,7 @@ export class AuditComponent extends PaginationListTemplate implements OnInit {
       return this.showClinicValues(entity)
     if (entityName === 'InsuranceCompanyEntity')
       return this.showInsuranceCompanyValues(entity)
-    if (entityName === 'Patient')
+    if (entityName === 'PatientEntity')
       return this.showPatientValues(entity);
   }
   showClinicValues(entity: any) {
@@ -113,8 +113,11 @@ export class AuditComponent extends PaginationListTemplate implements OnInit {
   showPatientValues(entity: any) {
     let paragraph = `<strong>Patient Values</strong> </br>`;
     for (const key in entity) {
-      if (key === 'name') {
-        paragraph = paragraph + `${key}: ${entity[key]} </br>`;
+      if (key === 'patientName') {
+        paragraph = paragraph + `${key}: ${entity[key].firstName} , ${entity[key].lastName} </br>`;
+      }
+      if (key === 'patientPhone') {
+        paragraph = paragraph + `Phone Type: ${entity[key].phoneType} </br> Phone:  ${entity[key].phone} </br>`;
       }
       if (key === 'dateOfBirth') {
         paragraph = paragraph + `${key}: ${moment(entity[key]).format("MM/DD/YYYY")} </br>`;

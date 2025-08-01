@@ -1,0 +1,56 @@
+select[formControlName="referringEntity"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="referringEntity"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+
+
+  select[formControlName="communicationType"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="communicationType"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+
+  
+  select[formControlName="communicationTime"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="communicationTime"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+
+  select[formControlName="referringSearchType"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="referringSearchType"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+
+  select[formControlName="appointmentBooking"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="appointmentBooking"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }
+
+  
+  select[formControlName="appointmentBooking"] {
+    background-color: white;
+    transition: background-color 0.3s ease;
+  }
+  
+  select[formControlName="appointmentBooking"]:focus {
+    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
+  }

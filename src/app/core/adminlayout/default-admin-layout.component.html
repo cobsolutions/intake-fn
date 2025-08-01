@@ -1,11 +1,18 @@
 <!--sidebar-->
-<c-sidebar #sidebar1="cSidebar" class="d-print-none sidebar sidebar-fixed" id="sidebar1" visible>
-  <c-sidebar-brand [brandNarrow]="{
-      src: 'assets/img/brand/coreui-signet-white.svg',
+<c-sidebar #sidebar1="cSidebar" class="d-print-none sidebar sidebar-fixed" id="sidebar1" [visible]="!(noShow | async)">
+  <c-sidebar-brand [brandFull]="{
+      src: 'assets/img/brand/cob-logo.png',
+      width: 100,
+      height: 46,
+      alt: 'CoreUI Logo'
+    }" 
+    [brandNarrow]="{
+      src: 'assets/img/brand/cob-logo.png',
       width: 46,
       height: 46,
       alt: 'CoreUI Logo'
-    }" [routerLink]="[]">
+    }"
+    [routerLink]="[]">
   </c-sidebar-brand>
 
   <perfect-scrollbar [config]="perfectScrollbarConfig">

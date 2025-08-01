@@ -14,7 +14,7 @@
                 </c-col>
                 <c-col xs="auto" class="ms-3">
                     <c-form-check>
-                        <input cFormCheckInput id="release" type="checkbox" [(ngModel)]="model.acceptReleaseAgreements" />
+                        <input cFormCheckInput id="release" type="checkbox" [(ngModel)]="patientAgreements!.acceptReleaseAgreements" />
                         <label cFormCheckLabel for="release">I accept</label>
                     </c-form-check>
                 </c-col>
@@ -37,7 +37,7 @@
                 </c-col>
                 <c-col xs="12" class="ms-3">
                     <c-form-check>
-                        <input cFormCheckInput id="Financial" type="checkbox" [(ngModel)]="model.acceptFinancialResponsibilityAgreements"/>
+                        <input cFormCheckInput id="Financial" type="checkbox" [(ngModel)]="patientAgreements!.acceptFinancialResponsibilityAgreements"/>
                         <label cFormCheckLabel for="Financial">I accept</label>
                     </c-form-check>
                 </c-col>
@@ -60,7 +60,7 @@
                 <c-col xs="auto" class="ms-3">
                     <c-form-check>
                         <input cFormCheckInput id="fagreement" type="checkbox"
-                            [(ngModel)]="model.acceptFinancialAgreementAgreements" />
+                            [(ngModel)]="patientAgreements!.acceptFinancialAgreementAgreements" />
                         <label cFormCheckLabel for="fagreement">I accept</label>
                     </c-form-check>
                 </c-col>
@@ -83,7 +83,7 @@
                 </c-col>
                 <c-col xs="auto" class="ms-3">
                     <c-form-check>
-                        <input cFormCheckInput id="insurancebeneﬁts" type="checkbox" [(ngModel)]="model.acceptInsuranceAgreement" />
+                        <input cFormCheckInput id="insurancebeneﬁts" type="checkbox" [(ngModel)]="patientAgreements!.acceptInsuranceAgreement" />
                         <label cFormCheckLabel for="insurancebeneﬁts">I accept</label>
                     </c-form-check>
                 </c-col>
@@ -106,7 +106,7 @@
                 </c-col>
                 <c-col xs="auto" class="ms-3">
                     <c-form-check>
-                        <input cFormCheckInput id="HIPAA" type="checkbox" [(ngModel)]="model.acceptHIPAAAgreements" />
+                        <input cFormCheckInput id="HIPAA" type="checkbox" [(ngModel)]="patientAgreements!.acceptHIPAAAgreements" />
                         <label cFormCheckLabel for="HIPAA">I accept</label>
                     </c-form-check>
                 </c-col>
@@ -129,7 +129,7 @@
                 </c-col>
                 <c-col xs="auto" class="ms-3">
                     <c-form-check>
-                        <input cFormCheckInput id="Cupping" type="checkbox" [(ngModel)]="model.acceptCuppingAgreements" />
+                        <input cFormCheckInput id="Cupping" type="checkbox" [(ngModel)]="patientAgreements!.acceptCuppingAgreements" />
                         <label cFormCheckLabel for="Cupping">I accept</label>
                     </c-form-check>
                 </c-col>
@@ -152,7 +152,7 @@
                 </c-col>
                 <c-col xs="auto" class="ms-3">
                     <c-form-check>
-                        <input cFormCheckInput id="Pelvic" type="checkbox" [(ngModel)]="model.acceptPelvicAgreements" />
+                        <input cFormCheckInput id="Pelvic" type="checkbox" [(ngModel)]="patientAgreements!.acceptPelvicAgreements" />
                         <label cFormCheckLabel for="Pelvic">I accept</label>
                     </c-form-check>
                 </c-col>
@@ -175,7 +175,7 @@
                 </c-col>
                 <c-col xs="auto" class="ms-3">
                     <c-form-check>
-                        <input cFormCheckInput id="photovideo" type="checkbox" [(ngModel)]="model.acceptPhotoVideoAgreements" />
+                        <input cFormCheckInput id="photovideo" type="checkbox" [(ngModel)]="patientAgreements!.acceptPhotoVideoAgreements" />
                         <label cFormCheckLabel for="photovideo">I accept</label>
                     </c-form-check>
                 </c-col>

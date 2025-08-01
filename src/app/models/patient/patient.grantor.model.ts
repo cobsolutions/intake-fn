@@ -1,10 +1,11 @@
-import { EmergencyRelation } from "src/app/modules/patient.questionnaire/models/patient/emergency.relation";
+import { Relation } from "src/app/modules/patient.questionnaire/enums/emergency.relation";
+
 
 export class PateintGrantorModel {
     id: number;
     firstName: string;
     middleName: string;
     lastName: string;
-    relation:EmergencyRelation;
-    files: FormData =  new FormData()
+    relation: Relation | null = null;
+    files: FormData = new FormData()
 }

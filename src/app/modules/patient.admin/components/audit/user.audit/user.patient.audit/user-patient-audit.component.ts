@@ -65,8 +65,11 @@ export class UserPatientAuditComponent extends PaginationListTemplate implements
   showClinicValues(entity: any) {
     let paragraph = `<strong>Patient Values</strong> </br>`;
     for (const key in entity) {
-      if (key === 'name') {
-        paragraph = paragraph + `${key}: ${entity[key]} </br>`;
+      if (key === 'patientName') {
+        paragraph = paragraph + `${key}: ${entity[key].firstName} , ${entity[key].lastName} </br>`;
+      }
+      if (key === 'patientPhone') {
+        paragraph = paragraph + `Phone Type: ${entity[key].phoneType} </br> Phone:  ${entity[key].phone} </br>`;
       }
       if (key === 'dateOfBirth') {
         paragraph = paragraph + `${key}: ${moment(entity[key]).format("MM/DD/YYYY")} </br>`;

@@ -1,16 +1,15 @@
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { IconModule, IconSetService } from '@coreui/icons-angular';
 
 import {
-  PerfectScrollbarModule,
-  PERFECT_SCROLLBAR_CONFIG,
-  PerfectScrollbarConfigInterface,
+  PerfectScrollbarConfigInterface, PerfectScrollbarModule,
+  PERFECT_SCROLLBAR_CONFIG
 } from 'ngx-perfect-scrollbar';
 
 import {
@@ -32,23 +31,24 @@ import {
   SharedModule,
   SidebarModule,
   TabsModule,
-  UtilitiesModule,
+  UtilitiesModule
 } from '@coreui/angular-pro';
 
 
-import {
-  DefaultLayoutComponent,
-  DefaultHeaderComponent,
-  DefaultFooterComponent,
-  DefaultAdminLayoutComponent,
-  AdminHeaderComponent
-} from './core';
-import { PatientService } from './modules/patient.questionnaire/service/patient.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { PatientListService } from './modules/patient.admin/services/patient-list.service';
+import { POSITION_OPTIONS } from '@ng-web-apis/geolocation';
+import { CookieService } from 'ngx-cookie-service';
 import { ToastrModule } from 'ngx-toastr';
+import {
+  AdminHeaderComponent, DefaultAdminLayoutComponent, DefaultFooterComponent, DefaultHeaderComponent, DefaultLayoutComponent
+} from './core';
+import { ScannerlayoutComponent } from './core/scannerlayout/scannerlayout.component';
+import { PatientListService } from './modules/patient.admin/services/patient-list.service';
+import { PatientService } from './modules/patient.questionnaire/service/patient.service';
 import { SecurityModule } from './modules/security';
 import { AuthInterceptor } from './modules/security/service/auth.interceptor';
+
+
 
 
 
@@ -66,7 +66,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, ...ADMIN_APP_CONTAINERS],
+  declarations: [AppComponent, ...APP_CONTAINERS, ...ADMIN_APP_CONTAINERS, ScannerlayoutComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -96,16 +96,18 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     FormsModule,
     DateRangePickerModule,
     ToastrModule.forRoot({
-      timeOut: 600000,
+      timeOut: 10000,
       closeButton: true,
       progressBar: true,
+      progressAnimation:'decreasing'
     }),
     SecurityModule
   ],
   providers: [
+    [CookieService],
     {
       provide: LocationStrategy,
-      useClass: HashLocationStrategy,
+      useClass: PathLocationStrategy,
     },
     IconSetService,
     Title,
@@ -115,7 +117,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: POSITION_OPTIONS,
+      useValue: {enableHighAccuracy: true, timeout: 3000, maximumAge: 1000},
+  },
   ],
   bootstrap: [AppComponent]
 })

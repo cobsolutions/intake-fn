@@ -1,20 +1,20 @@
 <ngx-spinner></ngx-spinner>
 <c-col xs="auto" class="mb-3">
-    <h5>Is it, worker's comp/No fault?</h5>
+    <h5>Patient Insurance Type</h5>
     <c-form-check>
         <input cFormCheckInput type="radio" (change)="workerCompNoFaultQChange('yes')" value="Yes"
-            name="flexRadioDefault" size="sm" [checked]="isWorkerCompNoFault ==='yes'" />
-        <label cFormCheckLabel>Yes</label>
+            name="flexRadioDefault" size="sm" [checked]="patientInsuranceType === 'CompensationNoFault'" />
+        <label cFormCheckLabel>Worker's Compensation/No Fault</label>
     </c-form-check>
     <c-form-check>
         <input cFormCheckInput type="radio" (change)="workerCompNoFaultQChange('no')" value="no" name="flexRadioDefault"
-            size="sm" [checked]="isWorkerCompNoFault ==='no'" />
-        <label cFormCheckLabel>No</label>
+            size="sm" [checked]="patientInsuranceType === 'Commercial'" />
+        <label cFormCheckLabel>Commercial Insurance</label>
     </c-form-check>
 </c-col>
-<c-col xs="auto" *ngIf="isWorkerCompNoFault === 'yes'" class="mb-3">
+<c-col xs="auto" *ngIf="patientInsuranceType === 'CompensationNoFault'" class="mb-3">
     <app-worker-comp [insurnaceCompInfoRequired]="insurnaceCompInfoRequired"></app-worker-comp>
 </c-col>
-<c-col xs="auto" *ngIf="isWorkerCompNoFault === 'no'" class="mb-3">
+<c-col xs="auto" *ngIf="patientInsuranceType === 'Commercial'" class="mb-3">
     <app-worker-not-comp [insurnacecommerialInfoRequired]="insurnacecommerialInfoRequired"></app-worker-not-comp>
 </c-col>

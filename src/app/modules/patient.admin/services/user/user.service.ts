@@ -28,4 +28,13 @@ export class UserService {
   getById(id:string | null) {
     return this.http.get<User>(`${this.userUrl}` + '/find/' + id)
   }
+
+  checkUserName(userName:string){
+    var url = this.userUrl +'/check/username/' + userName
+    return this.http.get(url);
+  }
+  checkEmail(email:string){
+    var url = this.userUrl +'/check/email/' + email
+    return this.http.get(url);
+  }
 }

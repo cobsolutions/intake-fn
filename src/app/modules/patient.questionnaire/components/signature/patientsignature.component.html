@@ -6,21 +6,7 @@
   </c-nav-item>
 </c-nav>
 <c-tab-content #tabContent="cTabContent" (activeTabPaneIdxChange)="onTabChange($event)" [activeTabPaneIdx]="activePane">
-  <c-tab-pane class="p-3">
-    <canvas #canvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)" width="700" height="200"></canvas>
-    <p class="error-message" *ngIf="signatureNeeded">Signature is required</p>
-
-    <div class="buttons flex justify-between">
-      <button cButton (click)="clearPad()" >Clear</button>
-      <!-- <button cButton (click)="draw()" [disabled]="!signatureNeeded">Capture</button> -->
-      <!-- <button cButton (click)="show()">Show</button> -->
-    </div>
-    <!-- <div *ngIf="signatureNeeded === false">
-      <p>Signature in Base64Encoded Format</p>
-      <img src="{{ signatureImg }}" alt="" srcset="" />
-    </div> -->
-    <!-- <img *ngIf="signatureImgTest" src="{{ signatureImgTest }}" alt="" srcset="" /> -->
-  </c-tab-pane>
+ 
   <c-tab-pane class="p-3">
     <c-row>
       <c-col xs="12">
@@ -51,5 +37,20 @@
         <!-- <button cButton (click)="generate()">Capture</button> -->
       </c-col>
     </c-row>
+  </c-tab-pane>
+  <c-tab-pane class="p-3">
+    <canvas #canvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)" width="700" height="200"></canvas>
+    <p class="error-message" *ngIf="signatureNeeded">Signature is required</p>
+
+    <div class="buttons flex justify-between">
+      <button cButton (click)="clearPad()" >Clear</button>
+      <!-- <button cButton (click)="draw()" [disabled]="!signatureNeeded">Capture</button> -->
+      <!-- <button cButton (click)="show()">Show</button> -->
+    </div>
+    <!-- <div *ngIf="signatureNeeded === false">
+      <p>Signature in Base64Encoded Format</p>
+      <img src="{{ signatureImg }}" alt="" srcset="" />
+    </div> -->
+    <!-- <img *ngIf="signatureImgTest" src="{{ signatureImgTest }}" alt="" srcset="" /> -->
   </c-tab-pane>
 </c-tab-content>

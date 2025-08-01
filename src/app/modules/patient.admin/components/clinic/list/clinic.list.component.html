@@ -1,17 +1,16 @@
 <ngx-spinner></ngx-spinner>
 <c-row>
   <c-col xs="12">
-    <h1>Clinic List</h1>
+    <h1>Clinics</h1>
   </c-col>
   <c-col xs="12">
     <div style="float: right;">
-      <button cButton color="primary" variant="outline" (click)="create()">
+      <button cButton color="primary" variant="outline" (click)="showCreateClinic()">
         Create Clinic
       </button>
     </div>
   </c-col>
 </c-row>
-<hr />
 <c-alert color="danger" *ngIf="errorMessage !== ''">{{ errorMessage }}</c-alert>
 <table cTable>
   <thead cTableColor="light">
@@ -19,9 +18,7 @@
       <th scope="col">#</th>
       <th scope="col">Clinic Name</th>
       <th scope="col">Address</th>
-      <th scope="col">Country</th>
-      <th scope="col">Province/State</th>
-      <th scope="col">Zip Code</th>
+      <th scope="col">Created At</th>
       <th scope="col">Action</th>
     </tr>
   </thead>
@@ -30,18 +27,46 @@
       <td>{{clinic.id}}</td>
       <td>{{clinic.name}}</td>
       <td>{{clinic.address}}</td>
-      <td>{{clinic.country}}</td>
-      <td>{{clinic.ps}}</td>
-      <td>{{clinic.zipcode}}</td>
+      <td>{{clinic.createdAt | date:"MM/dd/yyyy hh:mm a"}}</td>
       <td>
-        <button cButton variant="outline" class="me-3" (click)="update(clinic.id)">
-          <svg cIcon name="cilPen"></svg>
-        </button>
-        <!-- <button cButton variant="outline" (click)="deleteClinic(clinic.id)">
-          <svg cIcon name="cilTrash"></svg>
-        </button> -->
+        <div class="btn-group" role="group">
+          <button cButton variant="outline" (click)="showEditClinic(clinic.id)" size="sm">
+            <svg cIcon name="cilPen"></svg>
+          </button>
+          <!-- <button cButton variant="outline" (click)="showLocation(clinic.id)" size="sm">
+            <svg cIcon name="cilLocationPin"></svg>
+          </button> -->
+        </div>
       </td>
     </tr>
-
   </tbody>
 </table>
+<c-modal id="createClinic" [visible]="isCreateClinic" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>Clinic Creation</h3>
+    <button (click)="toggleCreateClinic()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <clinic-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isCreateClinic"></clinic-creation>
+  </c-modal-body>
+</c-modal>
+
+<c-modal id="editClinic" [visible]="isEditClinic" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>Update Clinic</h3>
+    <button (click)="toggleEditClinic()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <clinic-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isEditClinic"
+      [clinicId]="selectedClinicId"></clinic-creation>
+  </c-modal-body>
+</c-modal>
+<c-modal id="editClinicLocation" [visible]="isEditClinicLocation" size="xl" backdrop="static">
+  <c-modal-header>
+    <button (click)="toggleEditClinicLocation()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <edit-clinic-location (changeVisibility)="changeClinicLocationVisibility($event)" *ngIf="isEditClinicLocation"
+      [clinicId]="selectedClinicId"></edit-clinic-location>
+  </c-modal-body>
+</c-modal>

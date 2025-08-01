@@ -5,7 +5,7 @@
     </c-col>
     <c-col xs="12">
         <div style="float: right;">
-            <button cButton color="primary" variant="outline" (click)="create()">
+            <button cButton color="primary" variant="outline" (click)="showCreateInsuranceCompany()">
                 Create Insurance Company
             </button>
         </div>
@@ -16,8 +16,10 @@
     <thead cTableColor="light">
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Use Name</th>
+            <th scope="col">insurance Company</th>
             <th scope="col">Clinic</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -25,10 +27,40 @@
             <td>{{insuranceCompany.id}}</td>
             <td>{{insuranceCompany.name}}</td>
             <!-- <td>{{insuranceCompany.clinic.name}}</td> -->
-            <td><ul>
-                <li *ngFor="let clinic of insuranceCompany.clinics">{{clinic.name}}</li>
-            </ul></td>
+            <td>
+                <ul>
+                    <li *ngFor="let clinic of insuranceCompany.clinics">{{clinic.name}}</li>
+                </ul>
+            </td>
+            <td>{{insuranceCompany.createdAt | date:"MM/dd/yyyy  hh:mm a"}}</td>
+            <td>
+                <div class="btn-group" role="group">
+                    <button cButton variant="outline" (click)="showEditInsuranceCompany(insuranceCompany.id)" size="sm">
+                        <svg cIcon name="cilPen"></svg>
+                    </button>
+                </div>
+            </td>
         </tr>
 
     </tbody>
 </table>
+<c-modal id="createinsuranceComany" [visible]="isCreateInsuranceCompany" size="xl" backdrop="static">
+    <c-modal-header>
+        <h3 cModalTitle>Insurance Company Creation</h3>
+        <button (click)="toggleCreateInsuranceCompany()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <insurance-company-create (changeVisibility)="changeClinicVisibility($event)"
+            *ngIf="isCreateInsuranceCompany"></insurance-company-create>
+    </c-modal-body>
+</c-modal>
+<c-modal id="editinsuranceComany" [visible]="isEditInsuranceCompany" size="xl" backdrop="static">
+    <c-modal-header>
+        <h3 cModalTitle>Edit Insurance Company</h3>
+        <button (click)="toggleEditInsuranceCompany()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <insurance-company-create (changeVisibility)="changeClinicVisibility($event)"
+            *ngIf="isEditInsuranceCompany" [selectedCompany]="selectedInsuranceCompanyId"></insurance-company-create>
+    </c-modal-body>
+</c-modal>

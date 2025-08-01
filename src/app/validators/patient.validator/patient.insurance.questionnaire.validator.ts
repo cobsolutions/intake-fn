@@ -1,24 +1,33 @@
 import * as _ from "lodash";
-import { InsuranceQuestionnaireInfo } from "src/app/models/questionnaire/insurance.questionnaire.info";
-import { InsurnacecommerialInfoRequired } from "src/app/models/validation/insurnace.commerial.info.required";
-import { InsurnaceCompInfoRequired } from "src/app/models/validation/insurnace.comp.info.required";
-import requiredFields from '../../modules/patient.questionnaire/service/_patient.require.fields.service';
+import { InsuranceCommercialInformation } from "src/app/models/validation/new/insurance.commercial.information";
+import { InsuranceCompensationInformation } from "src/app/models/validation/new/insurance.compensation.information";
+import { PatientCommercialInsurance } from "src/app/modules/patient.questionnaire/models/intake/Insurance/patient.commercial.insurance";
+import { PatientInsuranceCompensationNoFault } from "src/app/modules/patient.questionnaire/models/intake/Insurance/patient.insurance.compensation.no.fault";
 import { PropertyValidator } from "../PropertyValidator";
 import { ValidatorContainer } from "../ValidatorContainer";
 import { PatientValidator } from "./patient.validator";
 export class PatientInsuranceQuestionnaireValidator extends PatientValidator {
-    model: InsuranceQuestionnaireInfo
-    insurnaceCompInfoRequired: InsurnaceCompInfoRequired;
-    InsurnacecommerialInfoRequired: InsurnacecommerialInfoRequired;
-    constructor(model: InsuranceQuestionnaireInfo
-        , insurnaceCompInfoRequired: InsurnaceCompInfoRequired
-        , InsurnacecommerialInfoRequired: InsurnacecommerialInfoRequired) {
+    insurnaceCompInfoRequired?: InsuranceCompensationInformation;
+    InsurnacecommerialInfoRequired?: InsuranceCommercialInformation;
+    patientInsuranceCompensationNoFault?: PatientInsuranceCompensationNoFault;
+    patientCommercialInsurance?: PatientCommercialInsurance;
+    constructor() {
         super();
-        this.model = model;
-        this.insurnaceCompInfoRequired = insurnaceCompInfoRequired;
-        this.InsurnacecommerialInfoRequired = InsurnacecommerialInfoRequired;
     }
 
+    public setInsurnacecommerialInfoRequired(InsurnacecommerialInfoRequired: InsuranceCommercialInformation) {
+        this.InsurnacecommerialInfoRequired = InsurnacecommerialInfoRequired;
+    }
+    public setInsurnaceCompInfoRequired(insurnaceCompInfoRequired: InsuranceCompensationInformation) {
+        this.insurnaceCompInfoRequired = insurnaceCompInfoRequired;
+    }
+
+    public setComnsetationModel(patientInsuranceCompensationNoFault?: PatientInsuranceCompensationNoFault) {
+        this.patientInsuranceCompensationNoFault = patientInsuranceCompensationNoFault;
+    }
+    public setCommmersialMode(patientCommercialInsurance?: PatientCommercialInsurance) {
+        this.patientCommercialInsurance = patientCommercialInsurance;
+    }
     protected missingFields(validatorContainer: ValidatorContainer): void {
         var validators: PropertyValidator[] = new Array();
         this.validateInfo(validators);
@@ -33,130 +42,146 @@ export class PatientInsuranceQuestionnaireValidator extends PatientValidator {
 
     }
     protected validateInfo(validator: PropertyValidator[]): void {
-        if (this.model.isCompNoFault === null || this.model.isCompNoFault === undefined)
-            validator.push({ property: "worker's comp/No fault", message: '' });
-        else if (this.model.isCompNoFault) {
+        if (this.insurnaceCompInfoRequired === undefined && this.InsurnacecommerialInfoRequired === undefined)
+            this.validateWrokerAll(validator)
+        if (this.insurnaceCompInfoRequired !== undefined)
             this.validateWrokerComp(validator)
-        }
-        else {
+        if (this.InsurnacecommerialInfoRequired !== undefined)
             this.validateWrokerNotComp(validator)
-        }
     }
     protected isRequiredField(name: string): boolean {
         var field: boolean = false;
-        Object.entries(this.model.isCompNoFault ? this.insurnaceCompInfoRequired : this.InsurnacecommerialInfoRequired)
-            .forEach(([key, value]) => {
-                if (key === name) {
-                    field = value;
-                }
-            })
+        if (this.InsurnacecommerialInfoRequired !== undefined) {
+            Object.entries(this.InsurnacecommerialInfoRequired)
+                .forEach(([key, value]) => {
+                    if (key === name) {
+                        field = value;
+                    }
+                })
+        }
+        if (this.insurnaceCompInfoRequired !== undefined) {
+            Object.entries(this.insurnaceCompInfoRequired)
+                .forEach(([key, value]) => {
+                    if (key === name) {
+                        field = value;
+                    }
+                })
+        }
         return field;
     }
     private validateWrokerComp(validator: PropertyValidator[]) {
-        console.log('ddd ' + this.model.insuranceWorkerCompNoFault?.injuryType)
         if (this.isRequiredField('relatedInjury')) {
-            if (this.model.insuranceWorkerCompNoFault?.injuryType === '' || this.model.insuranceWorkerCompNoFault?.injuryType === undefined)
+            if (this.patientInsuranceCompensationNoFault!.injuryType === '' || this.patientInsuranceCompensationNoFault!.injuryType === undefined)
                 validator.push({ property: " Injury Type", message: '' });
         }
         if (this.isRequiredField('accidentDate')) {
-            if (Number.isNaN(this.model.insuranceWorkerCompNoFault?.accidentDate_date) || this.model.insuranceWorkerCompNoFault?.accidentDate === 0)
+            if (Number.isNaN(this.patientInsuranceCompensationNoFault!.accidentDate) || this.patientInsuranceCompensationNoFault!.accidentDate === undefined)
                 validator.push({ property: " Accident Date", message: '' });
         }
-        if (this.isRequiredField('workerStatus')) {
-            if (this.model.insuranceWorkerCompNoFault?.workerStatus === '' || this.model.insuranceWorkerCompNoFault?.workerStatus === undefined)
-                validator.push({ property: " Wroker Status", message: '' });
-        }
+        // if (this.isRequiredField('workerStatus')) {
+        //     if (this.patientInsuranceCompensationNoFault!.workerStatus === '' || this.patientInsuranceCompensationNoFault!.workerStatus === undefined)
+        //         validator.push({ property: " Wroker Status", message: '' });
+        // }
         if (this.isRequiredField('address')) {
-            if (this.model.insuranceWorkerCompNoFault?.workerCompAddress.first === '' || this.model.insuranceWorkerCompNoFault?.workerCompAddress.first === undefined)
+            if (this.patientInsuranceCompensationNoFault!.address!.first === '' || this.patientInsuranceCompensationNoFault!.address!.first === undefined)
                 validator.push({ property: "First Address ", message: '' });
-            if (this.model.insuranceWorkerCompNoFault?.workerCompAddress.second === '' || this.model.insuranceWorkerCompNoFault?.workerCompAddress.second === undefined)
+            if (this.patientInsuranceCompensationNoFault!.address!.second === '' || this.patientInsuranceCompensationNoFault!.address!.second === undefined)
                 validator.push({ property: "Second Address", message: '' });
-            if (this.model.insuranceWorkerCompNoFault?.workerCompAddress.type === '' || this.model.insuranceWorkerCompNoFault?.workerCompAddress.type === undefined)
+            if (this.patientInsuranceCompensationNoFault!.address!.type === '' || this.patientInsuranceCompensationNoFault!.address!.type === undefined)
                 validator.push({ property: "Address Type", message: '' });
-            if (this.model.insuranceWorkerCompNoFault?.workerCompAddress.country === '' || this.model.insuranceWorkerCompNoFault?.workerCompAddress.country === undefined)
+            if (this.patientInsuranceCompensationNoFault!.address!.country === '' || this.patientInsuranceCompensationNoFault!.address!.country === undefined)
                 validator.push({ property: "Address country", message: '' });
-            if (this.model.insuranceWorkerCompNoFault?.workerCompAddress.city === '' || this.model.insuranceWorkerCompNoFault?.workerCompAddress.city === undefined)
+            if (this.patientInsuranceCompensationNoFault!.address!.city === '' || this.patientInsuranceCompensationNoFault!.address!.city === undefined)
                 validator.push({ property: "Address city", message: '' });
-            if (this.model.insuranceWorkerCompNoFault?.workerCompAddress.zipCode === '' || this.model.insuranceWorkerCompNoFault?.workerCompAddress.zipCode === undefined)
+            if (this.patientInsuranceCompensationNoFault!.address!.zipCode === '' || this.patientInsuranceCompensationNoFault!.address!.zipCode === undefined)
                 validator.push({ property: "Address zipCode", message: '' });
         }
         if (this.isRequiredField('fax')) {
-            if (this.model.insuranceWorkerCompNoFault?.fax === '' || this.model.insuranceWorkerCompNoFault?.fax === undefined)
+            if (this.patientInsuranceCompensationNoFault!.fax === '' || this.patientInsuranceCompensationNoFault!.fax === undefined)
                 validator.push({ property: " Fax", message: '' });
         }
-        if (this.isRequiredField('insuranceName')) {
-            if (this.model.insuranceWorkerCompNoFault?.insuranceName === '' || this.model.insuranceWorkerCompNoFault?.insuranceName === undefined)
-                validator.push({ property: " Insurance Name", message: '' });
-        }
-        // if (this.isRequiredField('claimNumber')) {
-        //     if (this.model.insuranceWorkerCompNoFault?.claimNumber === 0 || this.model.insuranceWorkerCompNoFault?.claimNumber === undefined)
-        //         validator.push({ property: "Claim Number/ WC Case Number", message: '' });
-        // }
-         if (this.isRequiredField('claimNumber')) {
-            if (this.model.insuranceWorkerCompNoFault?.claimNumber === '' || this.model.insuranceWorkerCompNoFault?.claimNumber === undefined)
+        // if (this.isRequiredField('insuranceName')) {
+        if (this.patientInsuranceCompensationNoFault!.insuranceName === '' || this.patientInsuranceCompensationNoFault!.insuranceName === undefined)
+            validator.push({ property: " Insurance Name", message: '' });
+        //}
+        if (this.isRequiredField('claimNumber')) {
+            if (this.patientInsuranceCompensationNoFault!.claimNumber === '' || this.patientInsuranceCompensationNoFault!.claimNumber === undefined)
                 validator.push({ property: "Claim Number/ WC Case Number", message: '' });
         }
         if (this.isRequiredField('adjusterName')) {
-            if (this.model.insuranceWorkerCompNoFault?.adjusterInfoName === '' || this.model.insuranceWorkerCompNoFault?.adjusterInfoName === undefined)
+            if (this.patientInsuranceCompensationNoFault!.adjusterInfoName === '' || this.patientInsuranceCompensationNoFault!.adjusterInfoName === undefined)
                 validator.push({ property: "Adjuster Name", message: '' });
         }
         if (this.isRequiredField('adjusterPhone')) {
-            if (this.model.insuranceWorkerCompNoFault?.adjusterInfoPhone === '' || this.model.insuranceWorkerCompNoFault?.adjusterInfoPhone === undefined)
+            if (this.patientInsuranceCompensationNoFault!.adjusterInfoPhone === '' || this.patientInsuranceCompensationNoFault!.adjusterInfoPhone === undefined)
                 validator.push({ property: "Adjuster Phone", message: '' });
         }
         if (this.isRequiredField('attorneyName')) {
-            if (this.model.insuranceWorkerCompNoFault?.attorneyInfoName === '' || this.model.insuranceWorkerCompNoFault?.attorneyInfoName === undefined)
+            if (this.patientInsuranceCompensationNoFault!.attorneyInfoName === '' || this.patientInsuranceCompensationNoFault!.attorneyInfoName === undefined)
                 validator.push({ property: "Attorney Name", message: '' });
         }
         if (this.isRequiredField('attorneyPhone')) {
-            if (this.model.insuranceWorkerCompNoFault?.attorneyInfoPhone === '' || this.model.insuranceWorkerCompNoFault?.attorneyInfoPhone === undefined)
+            if (this.patientInsuranceCompensationNoFault!.attorneyInfoPhone === '' || this.patientInsuranceCompensationNoFault!.attorneyInfoPhone === undefined)
                 validator.push({ property: "Attorney Phone", message: '' });
         }
         if (this.isRequiredField('caseStatus')) {
-            if (this.model.insuranceWorkerCompNoFault?.caseStatus === '' || this.model.insuranceWorkerCompNoFault?.caseStatus === undefined)
+            if (this.patientInsuranceCompensationNoFault!.caseStatus === '' || this.patientInsuranceCompensationNoFault!.caseStatus === undefined)
                 validator.push({ property: "Case Status", message: '' });
         }
     }
 
     private validateWrokerNotComp(validator: PropertyValidator[]) {
-        if (this.isRequiredField('insuranceCompany')) {
-            if (this.model.insuranceWorkerCommercial?.insuranceCompanyId === '' || this.model.insuranceWorkerCommercial?.insuranceCompanyId === undefined)
+        //if (this.isRequiredField('insuranceCompany')) {
+            console.log('this.patientCommercialInsurance!.insuranceCompanyId ' + this.patientCommercialInsurance!.insuranceCompanyId)
+            if (this.patientCommercialInsurance!.insuranceCompanyId === undefined || this.patientCommercialInsurance!.insuranceCompanyId === -1)
                 validator.push({ property: "Insurance Company", message: '' });
-        }
+        //}
         if (this.isRequiredField('memberId')) {
-            if (this.model.insuranceWorkerCommercial?.memberId === '' || this.model.insuranceWorkerCommercial?.memberId === undefined)
+            if (this.patientCommercialInsurance!.memberId === '' || this.patientCommercialInsurance!.memberId === undefined)
                 validator.push({ property: "Member ID", message: '' });
         }
         if (this.isRequiredField('ploicyId')) {
-            if (this.model.insuranceWorkerCommercial?.policyId === '' || this.model.insuranceWorkerCommercial?.policyId === undefined)
+            if (this.patientCommercialInsurance!.policyId === '' || this.patientCommercialInsurance!.policyId === undefined)
                 validator.push({ property: "Ploicy ID", message: '' });
         }
         if (this.isRequiredField('relationship')) {
-            if (this.model.insuranceWorkerCommercial?.relationship === '' || this.model.insuranceWorkerCommercial?.relationship === undefined)
+            if (this.patientCommercialInsurance!.relationship === '' || this.patientCommercialInsurance!.relationship === undefined)
                 validator.push({ property: "Policyholders Relationship", message: '' });
         }
-        if (this.model.insuranceWorkerCommercial?.relationship !== 'Self') {
+        if (this.patientCommercialInsurance!.relationship !== 'Self') {
             if (this.isRequiredField('policyRelationshipFirstName-wrokernotcomp')) {
-                if (this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipFirstName === '' || this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipFirstName === undefined)
+                if (this.patientCommercialInsurance!.patientRelationship?.patientRelationshipFirstName === '' || this.patientCommercialInsurance!.patientRelationship?.patientRelationshipFirstName === undefined)
                     validator.push({ property: "Policy Holder’s First Name", message: '' });
             }
             if (this.isRequiredField('policyRelationshipMiddleName-wrokernotcomp')) {
-                if (this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipMeddileName === '' || this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipMeddileName === undefined)
+                if (this.patientCommercialInsurance!.patientRelationship?.patientRelationshipMiddleName === '' || this.patientCommercialInsurance!.patientRelationship?.patientRelationshipMiddleName === undefined)
                     validator.push({ property: "Policy Holder’s Middle Name", message: '' });
             }
             if (this.isRequiredField('policyRelationshipLastName-wrokernotcomp')) {
-                if (this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipLastName === '' || this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipLastName === undefined)
+                if (this.patientCommercialInsurance!.patientRelationship?.patientRelationshipLastName === '' || this.patientCommercialInsurance!.patientRelationship?.patientRelationshipLastName === undefined)
                     validator.push({ property: "Policy Holder’s Last Name", message: '' });
             }
             if (this.isRequiredField('policyRelationshipPhone-wrokernotcomp')) {
-                if (this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipPhone === '' || this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipPhone === undefined)
+                if (this.patientCommercialInsurance!.patientRelationship?.patientRelationshipPhone === '' || this.patientCommercialInsurance!.patientRelationship?.patientRelationshipPhone === undefined)
                     validator.push({ property: "Policy Holder’s Phone", message: '' });
             }
             if (this.isRequiredField('policyRelationshipEmployerName-wrokernotcomp')) {
-                if (this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipPhone === '' || this.model.insuranceWorkerCommercial?.patientRelationshipDTO?.patientRelationshipPhone === undefined)
+                if (this.patientCommercialInsurance!.patientRelationship?.patientRelationshipPhone === '' || this.patientCommercialInsurance!.patientRelationship?.patientRelationshipPhone === undefined)
                     validator.push({ property: "Policy Holder’s Employer Name", message: '' });
             }
         }
+        if (this.patientCommercialInsurance!.hasSecondaryInsurance === undefined)
+            validator.push({ property: "Mandatory : Do you have secondry insurance?", message: '' });
+        else {
+            if ((this.patientCommercialInsurance!.hasSecondaryInsurance) &&
+                (this.patientCommercialInsurance!.hasMedicareCoverage === undefined))
+                validator.push({ property: "Mandatory : Do you have Medicare Coverage?", message: '' });
+        }
+    }
+    public validateWrokerAll(validator: PropertyValidator[]) {
+        console.log(this.insurnaceCompInfoRequired + ' ' + this.InsurnacecommerialInfoRequired)
+        if (this.insurnaceCompInfoRequired === undefined && this.InsurnacecommerialInfoRequired === undefined)
+            validator.push({ property: "Mandatory : Patient Insurance Type ", message: '' });
     }
 
 }

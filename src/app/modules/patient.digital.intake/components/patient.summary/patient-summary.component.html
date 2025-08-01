@@ -1,0 +1,210 @@
+<c-callout color="danger" *ngIf="isError">
+    <span class="text-danger fw-bold">{{errorMessage}} . Please contact PT of City support </span>
+</c-callout>
+<!--Essential Information-->
+<c-card class="mb-3 mt-3">
+    <c-card-body>
+        <h5 cCardTitle>Essential Information</h5>
+        <p cCardText>
+            <strong>Name : </strong> {{capitalizeFirstLetter(pateint.patientEssentialInformation?.patientName?.lastName)
+            +','
+            +capitalizeFirstLetter(pateint.patientEssentialInformation?.patientName?.firstName)}}
+            <br />
+            <strong>Date Of Birth : </strong> {{pateint.patientEssentialInformation?.birthDate_str}}<br />
+            <strong>Gender : </strong> {{pateint.patientEssentialInformation?.gender}}<br />
+            <span *ngIf="pateint.patientEssentialInformation?.gender ==='Self_Describe'">
+                <strong>Gender Describe: </strong> {{pateint.patientEssentialInformation?.genderDescribe}}<br />
+            </span>
+            <strong>Marital Status : </strong> {{pateint.patientEssentialInformation?.maritalStatus}}<br />
+            <strong>Phone : </strong> {{pateint.patientEssentialInformation?.patientPhone?.phoneType}} :
+            {{pateint.patientEssentialInformation?.patientPhone?.phone}}<br />
+            <strong>Email : </strong> {{pateint.patientEssentialInformation?.email}}<br />
+            <strong>Employment Status : </strong>
+            {{pateint.patientEssentialInformation?.patientEmployment?.employmentStatus}}<br />
+            <span *ngIf="pateint.patientEssentialInformation?.patientEmployment?.employmentStatus ==='Employed'">
+                <strong>Employment Company : </strong>
+                {{pateint.patientEssentialInformation?.patientEmployment?.employmentCompany}}<br />
+            </span>
+            <strong>Emergency Relation :
+            </strong>{{pateint.patientEssentialInformation?.patientEmergencyContact?.emergencyRelation}}<br />
+            <strong>Emergency Name :
+            </strong>{{pateint.patientEssentialInformation?.patientEmergencyContact?.emergencyName}}<br />
+            <strong>Emergency Phone :
+            </strong>{{pateint.patientEssentialInformation?.patientEmergencyContact?.emergencyPhone}}<br />
+        </p>
+    </c-card-body>
+</c-card>
+<!--Address Information-->
+<c-card class="mb-3 mt-3">
+    <c-card-body>
+        <h5 cCardTitle>Address Information</h5>
+        <p cCardText>
+            <strong>First Address : </strong> {{pateint.patientAddress?.firstAddress}}<br />
+            <strong>Second Address : </strong> {{pateint.patientAddress?.secondAddress}}<br />
+            <strong>City : </strong> {{pateint.patientAddress?.city}}<br />
+            <strong>State : </strong> {{pateint.patientAddress?.state}}<br />
+            <strong>Zip-Code : </strong> {{pateint.patientAddress?.zipCode}}<br />
+        </p>
+    </c-card-body>
+</c-card>
+<!--Medical Information-->
+<c-card class="mb-3 mt-3">
+    <c-card-body>
+        <h5 cCardTitle>Medical Information</h5>
+        <p cCardText>
+            <span *ngIf="pateint.patientIncomingSource">
+                <strong>Incoming Source : </strong> {{pateint.patientIncomingSource}}<br />
+            </span>
+            <span *ngIf="pateint.referringProvider?.name && pateint.referringProvider?.npi">
+                <strong>Referring Doctor : </strong> {{pateint.referringProvider!.name}} -
+                {{pateint.referringProvider?.npi}}<br />
+            </span>
+            <strong>Appointment Booking via
+                : </strong> {{pateint.patientMedical?.appointmentBooking}}<br />
+            <strong>Primary Doctor
+                : </strong> {{pateint.patientMedical?.primaryDoctor}}<br />
+            <span>
+                <strong>Received physical therapy : </strong> {{pateint.patientMedical?.hasPatientPhysicalTherapy?
+                'Yes':'No'}} <br />
+                <span *ngIf="pateint.patientMedical?.hasPatientPhysicalTherapy">
+                    <li>Location : {{pateint.patientMedical?.patientPhysicalTherapy?.location}} </li>
+                    <li>Number Of Visits : {{pateint.patientMedical?.patientPhysicalTherapy?.numberOfVisit}}</li>
+                </span>
+            </span>
+        </p>
+    </c-card-body>
+</c-card>
+<!--Medical History Information-->
+<c-card class="mb-3 mt-3">
+    <c-card-body>
+        <h5 cCardTitle>Medical History Information</h5>
+        <p cCardText>
+            <strong>
+                Height : </strong>
+            {{pateint.patientMedical?.patientMedicalHistory?.heightFT}} FT <br />
+            <strong>
+                Weight : </strong>
+            {{pateint.patientMedical?.patientMedicalHistory?.weight}} Lbs <br />
+            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.evaluationSubmission !== null">
+                <strong>
+                    Reason for today’s evaluation : </strong>
+                {{pateint.patientMedical?.patientMedicalHistory?.evaluationSubmission}} <br />
+            </span>
+
+            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.medicationPrescription !== null">
+                <strong>
+                    List prescription or non-prescription medication : </strong>
+                {{pateint.patientMedical?.patientMedicalHistory?.medicationPrescription}} <br />
+            </span>
+            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.patientCondition">
+                <strong>
+                    Conditions : </strong>
+                <li *ngFor="let condition of pateint.patientMedical?.patientMedicalHistory?.patientCondition">
+                    {{condition.name}}
+                </li>
+                <br />
+            </span>
+            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.scanningTest">
+                <strong>Imaging tests</strong>
+                <li *ngFor="let xVaue of pateint.patientMedical?.patientMedicalHistory?.scanningTestValue">
+                    {{xVaue }}
+                </li>
+                <br />
+            </span>
+            <strong>
+                Has MetalImplants : </strong>
+            {{pateint.patientMedical?.patientMedicalHistory?.metalImplantation?'Yes':'No'}} <br />
+            <strong>
+                Has Pacemaker : </strong>
+            {{pateint.patientMedical?.patientMedicalHistory?.pacemaker?'Yes':'No'}} <br />
+            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.surgeriesList !== null">
+                <strong>
+                    Surgeries or any other conditions not listed above : </strong>
+                {{pateint.patientMedical?.patientMedicalHistory?.surgeriesList}}
+            </span>
+        </p>
+    </c-card-body>
+</c-card>
+<!--Patient Insurance Information-->
+<c-card class="mb-3 mt-3">
+    <c-card-body>
+        <h5 cCardTitle>Patient Insurance Information</h5>
+        <p cCardText>
+            <span
+                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.commercialInsurances !== null&&this.pateint.insurances?.commercialInsurances!.length > 0">
+                <strong>Patient Insurance Type : </strong> Commercial Insurance <br />
+                <span *ngFor="let patientInsurance of this.pateint.insurances?.commercialInsurances index as i">
+                    <i>Commercial Insurance {{ i+1}}</i> <br />
+                    <strong> Insurance Company: </strong> : {{patientInsurance.insuranceCompanyName}} <br />
+                    <strong> Member-Id: </strong> : {{patientInsurance.memberId}} <br />
+                    <strong> Policy-Id: </strong> : {{patientInsurance.policyId}} <br />
+                    <span *ngIf="!patientInsurance.isSecondaryInsurance"><strong> Relationship: </strong> :
+                        {{patientInsurance.relationship}} <br /></span>
+                    <strong> IS Secondary Insurance: </strong> : {{patientInsurance.isSecondaryInsurance ? 'Yes': 'No'}}
+                    <br />
+                </span>
+            </span>
+            <span
+                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.workerCompensationInsurances !== null&&this.pateint.insurances?.workerCompensationInsurances!.length > 0">
+                <span
+                    *ngFor="let patientInsurance of this.pateint.insurances?.workerCompensationInsurances; index as i">
+                    <strong>Patient Insurance Type : </strong>
+                    <span *ngIf="patientInsurance.type ==='worker'"> Worker's Compensation/No Fault</span>
+                    <span *ngIf="patientInsurance.type ==='auto_acc'"> Auto-Accident</span>
+                    <br />
+                    <strong>
+                        <span *ngIf="patientInsurance.type ==='worker'">Injury Date</span>
+                        <span *ngIf="patientInsurance.type ==='auto_acc'">Accident Date:</span>
+                    </strong>
+                    {{patientInsurance.accidentDate_str}} <br />
+                    <strong> Insurance Company: </strong>
+                    <label> {{patientInsurance.insuranceName}}</label>
+                    <strong> Claim #: </strong>
+                    <label> {{patientInsurance.claimNumber}} : </label> <br />
+                    <strong> Adjuster: </strong> <br />
+                    <label> Name : </label>
+                    {{patientInsurance.adjusterInfoName}} <br />
+                    <label> Phone : </label>
+                    {{patientInsurance.adjusterInfoPhone}} <br />
+                    <strong> Attorney: </strong> <br />
+                    <label> Name : </label>
+                    {{patientInsurance.attorneyInfoName}} <br />
+                    <label> Phone : </label>
+                    {{patientInsurance.attorneyInfoPhone}} <br />
+                    <hr>
+                </span>
+                <br />
+            </span>
+            <span
+                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.medicareInsurance !== null&&this.pateint.insurances?.medicareInsurance!.length > 0">
+                <strong>Patient Insurance Type : </strong> Medicare<br />
+                <span *ngFor="let patientInsurance of this.pateint.insurances?.medicareInsurance; index as i">
+                    <strong> Policy Number: </strong>
+                    {{patientInsurance.policyId}} <br />
+                </span>
+                <br />
+            </span>
+            <span
+                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.medicaidInsurance !== null&&this.pateint.insurances?.medicaidInsurance!.length > 0">
+                <strong>Patient Insurance Type : </strong> Medicaid<br />
+                <span *ngFor="let patientInsurance of this.pateint.insurances?.medicaidInsurance; index as i">
+                    <strong> Policy Number: </strong>
+                    {{patientInsurance.policyId}} <br />
+                </span>
+                <br />
+            </span>
+            <span *ngIf="this.pateint.insurances !==null  && this.pateint.insurances?.selfPay?.type ==='selfpay'">
+                SelfPay
+            </span>
+        </p>
+    </c-card-body>
+</c-card>
+<!--Submit-->
+<div [formGroup]=" form">
+    <div class="mt-3">
+        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2"
+            [disabled]="submitting">Back</button>
+        <button cButton matStepperNext variant="outline" size="sm" type="button" (click)="submit()"
+            [disabled]="submitting" cLoadingButton [loading]="submitting">Submit</button>
+    </div>
+</div>

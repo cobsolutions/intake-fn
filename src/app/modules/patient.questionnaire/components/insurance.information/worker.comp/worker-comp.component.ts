@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { Address } from 'src/app/models/patient/address.info.model';
-import { Patient } from 'src/app/models/patient/patient.model';
 import { WrokerComp } from 'src/app/models/questionnaire/Insurance/worker.comp';
-import { AddressInfoRequired } from 'src/app/models/validation/address.info.required';
-import { InsurnaceCompInfoRequired } from 'src/app/models/validation/insurnace.comp.info.required';
-import { LocalService } from 'src/app/modules/common';
+import { AddressInformation } from 'src/app/models/validation/new/address.information';
+import { InsuranceCompensationInformation } from 'src/app/models/validation/new/insurance.compensation.information';
+import { PatientInsuranceQuestionnaireValidator } from 'src/app/validators/patient.validator/patient.insurance.questionnaire.validator';
+import { ValidatorContainer } from 'src/app/validators/ValidatorContainer';
+import { PatientInsuranceCompensationNoFault } from '../../../models/intake/Insurance/patient.insurance.compensation.no.fault';
+import { PatientStoreService } from '../../../service/store/patient-store.service';
 
 @Component({
   selector: 'app-worker-comp',
@@ -14,28 +16,26 @@ import { LocalService } from 'src/app/modules/common';
 })
 export class WorkerCompComponent implements OnInit {
   model: WrokerComp
-  requiredFields: AddressInfoRequired;
-  @Input() insurnaceCompInfoRequired: InsurnaceCompInfoRequired;
-  constructor(private localService:LocalService) { }
+  patientInsuranceCompensationNoFault?: PatientInsuranceCompensationNoFault;
+  requiredFields: AddressInformation;
+  @Input() insurnaceCompInfoRequired?: InsuranceCompensationInformation;
+  constructor(private patientStoreService: PatientStoreService) { }
 
   ngOnInit(): void {
-    if (localStorage.getItem('patient') !== null) {
-      var pateint: Patient = JSON.parse(localStorage.getItem('patient') || '{}')
-      if (pateint.insuranceQuestionnaireInfo !== undefined && pateint.insuranceQuestionnaireInfo.insuranceWorkerCompNoFault !== undefined) {
-        this.model = pateint.insuranceQuestionnaireInfo.insuranceWorkerCompNoFault;
-      } else {
-        this.model = new WrokerComp();;
-        this.model.workerCompAddress = new Address()
+    if (this.patientStoreService.patientInsuranceCompensationNoFault === undefined) {
+      this.patientInsuranceCompensationNoFault = {
+        address: new Address(),
+        injuryType:'',
+        caseStatus:''
       }
-    } else {
-      this.model = new WrokerComp();
-      this.model.workerCompAddress = new Address()
+
+    } else {      
+      this.patientInsuranceCompensationNoFault = this.patientStoreService.patientInsuranceCompensationNoFault;
     }
     this.requiredFields = {
-      id: null,
       type: true,
       first: true,
-      second: true,
+      second: false,
       country: true,
       zipCode: true
     }
@@ -43,16 +43,25 @@ export class WorkerCompComponent implements OnInit {
 
 
   accidentDate() {
-    this.model.accidentDate = Number(moment(this.model.accidentDate_date).format("x"))
+    this.patientInsuranceCompensationNoFault!.accidentDate = Number(moment(this.patientInsuranceCompensationNoFault!.accidentDate_date).format("x"))
   }
   isRequiredField(name: string): boolean {
     var field: boolean = false;
-    Object.entries(this.insurnaceCompInfoRequired)
+    Object.entries(this.insurnaceCompInfoRequired!)
       .forEach(([key, value]) => {
         if (key === name) {
           field = value;
         }
       })
     return field;
+  }
+  public validate(): ValidatorContainer {
+    var patientValidator = new PatientInsuranceQuestionnaireValidator()
+    patientValidator.setInsurnaceCompInfoRequired(this.insurnaceCompInfoRequired!)
+    patientValidator.setComnsetationModel(this.patientInsuranceCompensationNoFault)
+    return patientValidator.validate();
+  }
+  formatDate() {
+    this.patientInsuranceCompensationNoFault!.accidentDate = Number(moment(this.patientInsuranceCompensationNoFault?.accidentDate_date).format("x"));
   }
 }

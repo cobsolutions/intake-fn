@@ -1,0 +1,23 @@
+<div *ngIf="isEmptyClinic">
+    <label class="text-danger fw-normal fst-italic">{{errorMessageClinic}}</label>
+</div>
+<div>
+    <select aria-label="Default select example" cSelect [(ngModel)]="selectedClinicUUID">
+        <option selected disabled value="undefined">Select Clinic</option>
+        <option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.uuid">
+            {{clinic.name}}
+        </option>
+    </select>
+</div>
+<div *ngIf="isEmptyMail">
+    <label class="text-danger fw-normal fst-italic">{{errorMessageMail}} </label>
+</div>
+<div *ngIf="isNotMail">
+    <label class="text-danger fw-normal fst-italic">{{errorMessageMailFormat}} </label>
+</div>
+<div class="mb-2">
+    <input cFormControl id="pemail" type="email" [(ngModel)]="patientEmail" placeholder="Patient Email" />
+</div>
+<div class="text-center">
+    <button cButton variant="outline" (click)="send()">Send</button>
+</div>

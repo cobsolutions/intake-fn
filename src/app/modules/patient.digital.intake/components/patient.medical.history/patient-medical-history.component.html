@@ -55,8 +55,7 @@
                 <c-row>
                     <c-col xs="12">
                         <input class="form-control col-xs-2 mx-2" placeholder formControlName="weight"
-                        appHeightFormatter
-                            [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('weight')?.invalid
+                            appHeightFormatter [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('weight')?.invalid
                             && this.form.get('medicalhistory')?.get('weight')?.touched}" (input)="onWeightInput()">
                     </c-col>
                     <c-col xs="12">
@@ -217,10 +216,14 @@
                 && this.form.get('medicalhistory')?.get('ptSpecialties')?.touched}"
                     placeholder="Please select physical therapy specialties">
                     <c-multi-select-option value="pelpt">Pelvic Floor Therapy</c-multi-select-option>
+                    <c-multi-select-option value="cuppt">Cupping Treatment</c-multi-select-option>
+                    <c-multi-select-option value="Lympt">Lymphedema Therapy</c-multi-select-option>
                     <c-multi-select-option value="oncpt">Oncology Therapy</c-multi-select-option>
-                    <c-multi-select-option value="pedphppt">Pediatric Physical Therapy</c-multi-select-option>
-                    <c-multi-select-option value="pedspppt">Pediatric Speech Therapy</c-multi-select-option>
-                    <c-multi-select-option value="pedoccppt">Pediatric Occupational Therapy</c-multi-select-option>
+                    <c-multi-select-option value="Pedoccpt">Pediatric Occupational Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedpt">Pediatric Physical Therapy</c-multi-select-option>
+                    <c-multi-select-option value="pedsppt">Pediatric Speech Therapy</c-multi-select-option>
+                    <c-multi-select-option value="strreh">Stroke and Neurological Rehabilitation</c-multi-select-option>
+                    <c-multi-select-option value="vesreh">Vestibular Rehabilitation</c-multi-select-option>
 
                 </c-multi-select>
                 <div *ngIf="this.form.get('medicalhistory')?.get('ptSpecialties')?.errors?.['required'] === true && 

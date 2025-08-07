@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { states } from 'src/app/modules/common/components/address/state-data-store';
 import { ValidationExploder } from '../create/validators/validation.exploder';
@@ -14,18 +14,33 @@ export class PatientAddressComponent implements OnInit {
   states: string[] = states;
   @Input() stepper: MatStepper
   isValidForm: boolean = false;
-  constructor() { }
+  addressForm: FormGroup;
+  constructor(private fb: FormBuilder) {
+    this.addressForm = this.fb.group({
+      address: [''],
+      city: [''],
+      state: [''],
+      zip: ['']
+    });
+  }
 
   ngOnInit(): void {
   }
-  next(){
+  next() {
     if (this.form.get('address')?.valid) {
       this.stepper.next();
       this.isValidForm = false;
     } else {
       this.isValidForm = true;
-      ValidationExploder.explode(this.form, 'address')      
+      ValidationExploder.explode(this.form, 'address')
     }
   }
-
+  onAddressSelected(data: { address: string; city: string; state: string; zip: string }) {
+    this.addressForm.patchValue({
+      address: data.address,
+      city: data.city,
+      state: data.state,
+      zip: data.zip
+    });
+  }
 }

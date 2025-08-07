@@ -214,7 +214,7 @@
             <c-card-body>
                 <c-multi-select multiple formControlName="ptSpecialties" [ngClass]="{'is-invalid': this.form.get('medicalhistory')?.get('ptSpecialties')?.invalid
                 && this.form.get('medicalhistory')?.get('ptSpecialties')?.touched}"
-                    placeholder="Please select physical therapy specialties">
+                    placeholder="Please select physical therapy specialties" [selectAll]='false'>
                     <c-multi-select-option value="pelpt">Pelvic Floor Therapy</c-multi-select-option>
                     <c-multi-select-option value="cuppt">Cupping Treatment</c-multi-select-option>
                     <c-multi-select-option value="Lympt">Lymphedema Therapy</c-multi-select-option>

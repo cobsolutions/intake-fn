@@ -41,5 +41,29 @@ export class AutoCompleteAddressComponent implements AfterViewInit  {
       });
     });
   }
+/*
+<form [formGroup]="addressForm">
+    <div class="form-group mb-3">
+        <label for="address">Address</label>
+        <app-auto-complete-address (addressSelected)="onAddressSelected($event)"></app-auto-complete-address>
+    </div>
 
+    <div class="form-group mb-3">
+        <label for="city">City</label>
+        <input id="city" class="form-control" formControlName="city" readonly>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="state">State</label>
+        <input id="state" class="form-control" formControlName="state" readonly>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="zip">ZIP Code</label>
+        <input id="zip" class="form-control" formControlName="zip" readonly>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+*/
 }

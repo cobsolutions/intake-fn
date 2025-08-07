@@ -6,7 +6,8 @@ import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { debounceTime, filter, finalize, map, switchMap, tap } from 'rxjs';
 import { PatientRelationship } from 'src/app/models/questionnaire/Insurance/patient.relationship';
-import { insuranceTypes } from 'src/app/modules/common/components/insurance/insurance.type';
+import { InsuranceType } from 'src/app/modules/common/components/insurance/insurance.type';
+import { insuranceTypes } from 'src/app/modules/common/components/insurance/insurance.type.list';
 import { BasicInsuranceCompany } from 'src/app/modules/patient.admin/models/basic.insurance.company';
 import { Insurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance';
 import { CommercialInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.commercial';
@@ -33,7 +34,7 @@ export class PatientInsuranceComponent implements OnInit {
   InsuranceCompanies: any;
   basicInsuranceCompany: BasicInsuranceCompany[]
   secondaryInsuranceCompanies: any;
-  types: string[] = insuranceTypes;
+  types: InsuranceType[] = insuranceTypes;
   selectedInsuranceType: string
   renderedPatientInsurances: any[] = []
   patientInsurances: Insurance = {
@@ -47,12 +48,17 @@ export class PatientInsuranceComponent implements OnInit {
   isLoadingInsuranceCompany = false;
   isLoadingSecondaryInsuranceCompany = false;
   dropdownSettings: IDropdownSettings = {};
+  errorMessage: string;
   constructor(private digitalIntakeService: DigitalIntakeService, private componentReference: ComponentReferenceComponentService) { }
   ngOnInit(): void {
     this.componentReference.setPatientInsuranceComponent(this)
     this.getInsuranceCompanies();
-    this.form.get('insurance')?.get('selfPay')?.valueChanges.subscribe(value => {
-      if (value) {
+    this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
+      if (value === undefined)
+        this.isValidForm = true;
+      else
+        this.isValidForm = false;
+      if (value === 'SelfPay') {
         this.renderedPatientInsurances = []
         this.patientInsurances = {
           commercialInsurances: [],
@@ -65,10 +71,8 @@ export class PatientInsuranceComponent implements OnInit {
         }
         this.patientInsurances.selfPay = selfPay;
         this.form.get('insurance')?.get('insurances')?.setValue(this.patientInsurances)
-        this.form.get('insurance')?.get('type')?.disable();
       } else {
         this.patientInsurances.selfPay = undefined
-        this.form.get('insurance')?.get('type')?.enable();
       }
     })
     this.form.get('insurance')?.get('type')?.valueChanges.subscribe(value => {
@@ -95,15 +99,38 @@ export class PatientInsuranceComponent implements OnInit {
     }
   }
   next() {
-    if (this.isInsurances() || this.patientInsurances.selfPay !== undefined) {
-      InsuranceValidator.clearValidator(this.form)
-      this.stepper.next();
-      this.isValidForm = false;
-      this.form.get('insurance')?.get('type')?.setValue(null);
-    } else {
+    this.validate()
+  }
+  private validate() {
+    if (this.form.get('insurance')?.get('type')?.value === 'SelfPay')
+      this.passToNextStep();
+    if (this.isInsurances() && this.renderedPatientInsurances.length > 0)
+      this.passToNextStep();
+    if (this.selectedInsuranceType === undefined) {
       this.isValidForm = true;
-      ValidationExploder.explode(this.form, 'insurance')
+      this.errorMessage = "Please select from coverage list"
+    } else {
+      this.isValidForm = false;
+      this.errorMessage = '';
+      if ((this.selectedInsuranceType !== undefined && this.selectedInsuranceType !== 'SelfPay')
+        && this.renderedPatientInsurances.length === 0) {
+        this.isValidForm = true;
+        if (this.form.get('insurance')?.invalid) {
+          ValidationExploder.explode(this.form, 'insurance')
+          this.errorMessage = "Please fill in all the required fields"
+        } else {
+          this.errorMessage = "Please add your coverage  data to coverage list"
+        }
+      }
     }
+  }
+  private passToNextStep() {
+    this.isValidForm = false;
+    this.errorMessage = '';
+    InsuranceValidator.clearValidator(this.form)
+    this.stepper.next();
+    this.isValidForm = false;
+    this.form.get('insurance')?.get('type')?.setValue(null);
   }
   private isInsurances() {
     return (this.patientInsurances.commercialInsurances.length > 0 ||

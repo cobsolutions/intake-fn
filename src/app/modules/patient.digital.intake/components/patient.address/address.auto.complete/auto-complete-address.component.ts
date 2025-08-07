@@ -1,11 +1,11 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 declare var google: any;
 @Component({
   selector: 'app-auto-complete-address',
   templateUrl: './auto-complete-address.component.html',
   styleUrls: ['./auto-complete-address.component.css']
 })
-export class AutoCompleteAddressComponent implements OnInit {
+export class AutoCompleteAddressComponent implements AfterViewInit  {
   @ViewChild('addressInput') addressInput!: ElementRef;
   @Output() addressSelected = new EventEmitter<{
     address: string;
@@ -15,7 +15,7 @@ export class AutoCompleteAddressComponent implements OnInit {
   }>();
   constructor() { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     const autocomplete = new google.maps.places.Autocomplete(this.addressInput.nativeElement, {
       types: ['address'],
       componentRestrictions: { country: 'us' }

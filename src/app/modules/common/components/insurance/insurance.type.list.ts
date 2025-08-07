@@ -23,6 +23,6 @@ export var insuranceTypes: InsuranceType[] = [
     },
     {
         name:"I’m paying out of pocket",
-        value:"Medicaid"
+        value:"SelfPay"
     }
 ]

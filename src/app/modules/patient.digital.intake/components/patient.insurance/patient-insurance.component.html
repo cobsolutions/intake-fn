@@ -1,623 +1,618 @@
 <ngx-spinner></ngx-spinner>
 <c-callout color="danger" *ngIf="isValidForm">
-    <span class="text-danger fw-bold">Please select Insurance Type or check SelfPay before navigating to next
-        step</span>
+    <span class="text-danger fw-bold">{{errorMessage}}</span>
 </c-callout>
-<div [formGroup]="form" class="mt-3">
-    <div formGroupName="insurance">
+<c-card class="mb-2">
+    <c-card-header>
+        <label for="dsds" class="form-label">
+            <label><strong>What type of coverage do you have?</strong><span class="text-danger">*</span></label>
+        </label>
+    </c-card-header>
+    <c-card-body>
         <c-row class="mb-2">
-            <c-col xs="12"><label style="width: 150px;">Insurance Type <span
-                        class="text-danger">*</span></label></c-col>
-            <c-col xs="12">
-                <select cSelect sizing="sm" style="line-height: 15px;" formControlName="type" [ngClass]="{'is-invalid': this.form.get('insurance')?.get('type')?.invalid
-                && this.form.get('insurance')?.get('type')?.touched}">
-                    <option value="null" disabled>Select Insurance Type</option>
-                    <option *ngFor="let type of types" [value]="type.value">
-                        {{type.name}}
-                    </option>
-                </select>
-            </c-col>
-            <c-col xs="12">
-                <input cFormCheckInput type="checkbox" class="mx-2" formControlName="selfPay" />
-                <label>Self Pay</label>
-            </c-col>
-        </c-row>
-        <!--Commercial Insurance-->
-
-        <c-card
-            *ngIf="selectedInsuranceType === 'Commercial Insurance' && !this.form.get('insurance')?.get('selfPay')?.value"
-            class="mb-2">
-            <c-card-body>
-                <h5 cCardTitle>Commercial Insurance</h5>
-                <!--Insurance Company-->
-                <ng-multiselect-dropdown formControlName="commercial-insurance-company" [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-insurance-company')?.invalid
-                    && this.form.get('insurance')?.get('commercial-insurance-company')?.touched}"
-                    [settings]="dropdownSettings" [data]="basicInsuranceCompany"
-                    placeholder="Please select insurance company">
-                </ng-multiselect-dropdown>
-                <div *ngIf="!this.form.get('insurance')?.get('commercial-insurance-company')?.valid && 
-						(this.form.get('insurance')?.get('commercial-insurance-company')?.dirty ||this.form.get('insurance')?.get('commercial-insurance-company')?.touched)"
-                    class="text-danger mx-1">
-                    Insurance company is required
-                </div>
-                <!--Member Id-->
-                <c-row>
-                    <c-col xl="12">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Member ID<span
-                                class="text-danger">*</span>
-                        </label>
-                    </c-col>
-                    <c-col xl="12">
-                        <input cFormControl sizing="sm" formControlName="commercial-member-id" maxlength="60"
-                            input-trimmer>
-                        <div *ngIf="!this.form.get('insurance')?.get('commercial-member-id')?.valid && 
-						(this.form.get('insurance')?.get('commercial-member-id')?.dirty ||this.form.get('insurance')?.get('commercial-member-id')?.touched)"
-                            class="text-danger mx-1">
-                            Member ID is required
-                        </div>
-                    </c-col>
-                </c-row>
-                <!--Policy Id-->
-                <c-row>
-                    <c-col xl="12">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Policy ID
-                        </label>
-                    </c-col>
-                    <c-col xl="12">
-                        <input cFormControl sizing="sm" formControlName="commercial-ploicy-id" maxlength="60"
-                            input-trimmer>
-                    </c-col>
-                    <div *ngIf="!this.form.get('insurance')?.get('commercial-ploicy-id')?.valid && 
-						(this.form.get('insurance')?.get('commercial-ploicy-id')?.dirty ||this.form.get('insurance')?.get('commercial-ploicy-id')?.touched)"
-                        class="text-danger mx-1">
-                        Policy ID is required
-                    </div>
-                </c-row>
-                <!--Policy Holder Relationship-->
-                <c-row class="mb-2">
-                    <c-col xl="12">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Policy Holder Relationship<span
-                                class="text-danger">*</span>
-                        </label>
-                    </c-col>
-                    <c-col xl="12">
-                        <select cSelect sizing="sm" style="line-height: 15px;" cFormControl
-                            formControlName="commercial-ploicyHolder-relationship">
-                            <option value="null" disabled>Select</option>
-                            <option value="Self">Self</option>
-                            <option value="Spouse">Spouse</option>
-                            <option value="Spouse">Child</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </c-col>
-                    <div *ngIf="!this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.valid && 
-						(this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.touched)"
-                        class="text-danger mx-1">
-                        Policy Holder relationship is required
-                    </div>
-                </c-row>
-                <!--Policy Holder Info-->
-                <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}" *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value 
-                    && this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value !== 'Self'">
-                    <c-card-body>
-                        <h6 cCardSubtitle class="mb-2 text-medium-emphasis">PolicyHolder</h6>
-                        <c-row>
-                            <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Full Name<span
-                                        class="text-danger">*</span></label>
-                            </c-col>
-                        </c-row>
-                        <c-col xl="12">
-                            <c-input-group>
-                                <input cFormControl placeholder="FirstName"
-                                    formControlName="commercial-ploicyHolder-relationship-first-name" input-trimmer>
-                                <input cFormControl placeholder="MiddleName"
-                                    formControlName="commercial-ploicyHolder-relationship-middle-name" input-trimmer>
-                                <input cFormControl placeholder="LastName"
-                                    formControlName="commercial-ploicyHolder-relationship-last-name" input-trimmer>
-                            </c-input-group>
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.errors?.['required']  && 
-						(this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.touched)"
-                                class="text-danger mx-1">
-                                First name is required
-                            </div>
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.errors?.['required'] && 
-						(this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.touched)"
-                                class="text-danger mx-1">
-                                Last name is required
-                            </div>
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.errors?.['noNumbers']"
-                                class="text-danger mx-1">
-                                first-name contains Numbers.</div>
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.errors?.['noNumbers']"
-                                class="text-danger mx-1">last-name
-                                cannot contains Numbers.</div>
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-middle-name')?.errors?.['noNumbers']"
-                                class="text-danger mx-1">middle-name
-                                cannot contains Numbers.</div>
-
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.errors?.['noSpecialCharacters']"
-                                class="text-danger mx-1">First name cannot contain special characters.</div>
-
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-middle-name')?.errors?.['noSpecialCharacters']"
-                                class="text-danger mx-1">Middle name cannot contain special characters.</div>
-
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.errors?.['noSpecialCharacters']"
-                                class="text-danger mx-1">Last name cannot contain special characters.</div>
+           
+            <div [formGroup]="form" class="mt-3">
+                <div formGroupName="insurance">
+                    <c-row class="mb-2">
+                        <c-col xs="12">
+                            <select cSelect sizing="sm" style="line-height: 15px;" formControlName="type" [ngClass]="{'is-invalid': this.form.get('insurance')?.get('type')?.invalid
+                            && this.form.get('insurance')?.get('type')?.touched}">
+                                <option value="null" disabled>Select Insurance Type</option>
+                                <option *ngFor="let type of types" [value]="type.value">
+                                    {{type.name}}
+                                </option>
+                            </select>
                         </c-col>
-                        <c-row>
-                            <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Phone<span
-                                        class="text-danger">*</span></label>
-                            </c-col>
-                            <c-col xs="12">
-                                <input cFormControl placeholder="Phone"
-                                    formControlName="commercial-ploicyHolder-relationship-phone" maxlength="15"
-                                    [value]="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.value | phone">
-                            </c-col>
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.errors?.['required'] && 
-						(this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.touched)"
-                                class="text-danger mx-1">
-                                phone is required
-                            </div>
-                            <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.errors?.['pattern']"
-                                class="text-danger mx-1">
-                                Invalid Policy Holder phone
-                            </div>
-                        </c-row>
-                        <c-row>
-                            <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Employer Name<span
-                                        class="text-danger">*</span></label>
-                            </c-col>
-                            <c-col xs="12">
-                                <input cFormControl placeholder="Employer Name"
-                                    formControlName="commercial-ploicyHolder-relationship-employer" input-trimmer>
-                            </c-col>
-                            <div *ngIf="!this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-employer')?.valid && 
-						(this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-employer')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-employer')?.touched)"
-                                class="text-danger mx-1">
-                                Employer is required
-                            </div>
-                        </c-row>
-                    </c-card-body>
-                </c-card>
-                <!--secondary insurance selection-->
-                <c-row>
-                    <c-col xl="12">
-                        <c-form-check [switch]="true" class="mb-3" sizing="lg">
-                            <input cFormCheckInput type="checkbox"
-                                formControlName="commercial-is-secondary-insurance" />
-                            <label cFormCheckLabel>
-                                <span [ngClass]="{ 'fw-bold':true }">Do you have secondary insurance ?</span>
-                            </label>
-                        </c-form-check>
-                    </c-col>
-                </c-row>
-                <!--Secondary Insurance Info-->
-                <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}"
-                    *ngIf="this.form.get('insurance')?.get('commercial-is-secondary-insurance')?.value">
-                    <c-card-body>
-                        <!--Secondary Insurance Company-->
-                        <c-row>
-                            <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Insurance Company<span
-                                        class="text-danger">*</span>
-                                </label>
-                            </c-col>
-                            <ng-multiselect-dropdown formControlName="commercial-secondary-insurance-insurance-company"
-                                [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.invalid
-                            && this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched}"
+                    </c-row>
+                    <!--Commercial Insurance-->
+            
+                    <c-card *ngIf="selectedInsuranceType === 'Commercial Insurance'" class="mb-2">
+                        <c-card-body>
+                            <h5 cCardTitle>Commercial Insurance</h5>
+                            <!--Insurance Company-->
+                            <ng-multiselect-dropdown formControlName="commercial-insurance-company" [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-insurance-company')?.invalid
+                                && this.form.get('insurance')?.get('commercial-insurance-company')?.touched}"
                                 [settings]="dropdownSettings" [data]="basicInsuranceCompany"
                                 placeholder="Please select insurance company">
                             </ng-multiselect-dropdown>
-                            <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.valid && 
-                                (this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched)"
+                            <div *ngIf="!this.form.get('insurance')?.get('commercial-insurance-company')?.valid && 
+                                    (this.form.get('insurance')?.get('commercial-insurance-company')?.dirty ||this.form.get('insurance')?.get('commercial-insurance-company')?.touched)"
                                 class="text-danger mx-1">
                                 Insurance company is required
                             </div>
-                        </c-row>
-                        <!--Member Id-->
-                        <c-row>
-                            <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Member ID<span
-                                        class="text-danger">*</span>
-                                </label>
-                            </c-col>
-                            <c-col xl="12">
-                                <input cFormControl sizing="sm"
-                                    formControlName="commercial-secondary-insurance-member-id" maxlength="60"
-                                    input-trimmer>
-                                <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.valid && 
-                                (this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.touched)"
+                            <!--Member Id-->
+                            <c-row>
+                                <c-col xl="12">
+                                    <label for="dsds" class="form-label" style="font-size: medium;">Member ID<span
+                                            class="text-danger">*</span>
+                                    </label>
+                                </c-col>
+                                <c-col xl="12">
+                                    <input cFormControl sizing="sm" formControlName="commercial-member-id" maxlength="60"
+                                        input-trimmer>
+                                    <div *ngIf="!this.form.get('insurance')?.get('commercial-member-id')?.valid && 
+                                    (this.form.get('insurance')?.get('commercial-member-id')?.dirty ||this.form.get('insurance')?.get('commercial-member-id')?.touched)"
+                                        class="text-danger mx-1">
+                                        Member ID is required
+                                    </div>
+                                </c-col>
+                            </c-row>
+                            <!--Policy Id-->
+                            <c-row>
+                                <c-col xl="12">
+                                    <label for="dsds" class="form-label" style="font-size: medium;">Policy ID
+                                    </label>
+                                </c-col>
+                                <c-col xl="12">
+                                    <input cFormControl sizing="sm" formControlName="commercial-ploicy-id" maxlength="60"
+                                        input-trimmer>
+                                </c-col>
+                                <div *ngIf="!this.form.get('insurance')?.get('commercial-ploicy-id')?.valid && 
+                                    (this.form.get('insurance')?.get('commercial-ploicy-id')?.dirty ||this.form.get('insurance')?.get('commercial-ploicy-id')?.touched)"
                                     class="text-danger mx-1">
-                                    Member ID is required
+                                    Policy ID is required
                                 </div>
-                            </c-col>
-                        </c-row>
-                        <!--Policy id-->
-                        <c-row>
-                            <c-col xl="12">
-                                <label for="dsds" class="form-label" style="font-size: medium;">Policy ID
-                                </label>
-                            </c-col>
-                            <c-col xl="12">
-                                <input cFormControl sizing="sm"
-                                    formControlName="commercial-secondary-insurance-ploicy-id" maxlength="60"
-                                    input-trimmer>
-                            </c-col>
-                            <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.valid && 
-                                (this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.touched)"
-                                class="text-danger mx-1">
-                                Policy ID is required
+                            </c-row>
+                            <!--Policy Holder Relationship-->
+                            <c-row class="mb-2">
+                                <c-col xl="12">
+                                    <label for="dsds" class="form-label" style="font-size: medium;">Policy Holder Relationship<span
+                                            class="text-danger">*</span>
+                                    </label>
+                                </c-col>
+                                <c-col xl="12">
+                                    <select cSelect sizing="sm" style="line-height: 15px;" cFormControl
+                                        formControlName="commercial-ploicyHolder-relationship">
+                                        <option value="null" disabled>Select</option>
+                                        <option value="Self">Self</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Spouse">Child</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </c-col>
+                                <div *ngIf="!this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.valid && 
+                                    (this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.touched)"
+                                    class="text-danger mx-1">
+                                    Policy Holder relationship is required
+                                </div>
+                            </c-row>
+                            <!--Policy Holder Info-->
+                            <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}" *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value 
+                                && this.form.get('insurance')?.get('commercial-ploicyHolder-relationship')?.value !== 'Self'">
+                                <c-card-body>
+                                    <h6 cCardSubtitle class="mb-2 text-medium-emphasis">PolicyHolder</h6>
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Full Name<span
+                                                    class="text-danger">*</span></label>
+                                        </c-col>
+                                    </c-row>
+                                    <c-col xl="12">
+                                        <c-input-group>
+                                            <input cFormControl placeholder="FirstName"
+                                                formControlName="commercial-ploicyHolder-relationship-first-name" input-trimmer>
+                                            <input cFormControl placeholder="MiddleName"
+                                                formControlName="commercial-ploicyHolder-relationship-middle-name" input-trimmer>
+                                            <input cFormControl placeholder="LastName"
+                                                formControlName="commercial-ploicyHolder-relationship-last-name" input-trimmer>
+                                        </c-input-group>
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.errors?.['required']  && 
+                                    (this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.touched)"
+                                            class="text-danger mx-1">
+                                            First name is required
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.errors?.['required'] && 
+                                    (this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.touched)"
+                                            class="text-danger mx-1">
+                                            Last name is required
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">
+                                            first-name contains Numbers.</div>
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">last-name
+                                            cannot contains Numbers.</div>
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-middle-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">middle-name
+                                            cannot contains Numbers.</div>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-first-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">First name cannot contain special characters.</div>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-middle-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">Middle name cannot contain special characters.</div>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-last-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">Last name cannot contain special characters.</div>
+                                    </c-col>
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Phone<span
+                                                    class="text-danger">*</span></label>
+                                        </c-col>
+                                        <c-col xs="12">
+                                            <input cFormControl placeholder="Phone"
+                                                formControlName="commercial-ploicyHolder-relationship-phone" maxlength="15"
+                                                [value]="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.value | phone">
+                                        </c-col>
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.errors?.['required'] && 
+                                    (this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.touched)"
+                                            class="text-danger mx-1">
+                                            phone is required
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.errors?.['pattern']"
+                                            class="text-danger mx-1">
+                                            Invalid Policy Holder phone
+                                        </div>
+                                    </c-row>
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Employer Name<span
+                                                    class="text-danger">*</span></label>
+                                        </c-col>
+                                        <c-col xs="12">
+                                            <input cFormControl placeholder="Employer Name"
+                                                formControlName="commercial-ploicyHolder-relationship-employer" input-trimmer>
+                                        </c-col>
+                                        <div *ngIf="!this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-employer')?.valid && 
+                                    (this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-employer')?.dirty ||this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-employer')?.touched)"
+                                            class="text-danger mx-1">
+                                            Employer is required
+                                        </div>
+                                    </c-row>
+                                </c-card-body>
+                            </c-card>
+                            <!--secondary insurance selection-->
+                            <c-row>
+                                <c-col xl="12">
+                                    <c-form-check [switch]="true" class="mb-3" sizing="lg">
+                                        <input cFormCheckInput type="checkbox"
+                                            formControlName="commercial-is-secondary-insurance" />
+                                        <label cFormCheckLabel>
+                                            <span [ngClass]="{ 'fw-bold':true }">Do you have secondary insurance ?</span>
+                                        </label>
+                                    </c-form-check>
+                                </c-col>
+                            </c-row>
+                            <!--Secondary Insurance Info-->
+                            <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}"
+                                *ngIf="this.form.get('insurance')?.get('commercial-is-secondary-insurance')?.value">
+                                <c-card-body>
+                                    <!--Secondary Insurance Company-->
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Insurance Company<span
+                                                    class="text-danger">*</span>
+                                            </label>
+                                        </c-col>
+                                        <ng-multiselect-dropdown formControlName="commercial-secondary-insurance-insurance-company"
+                                            [ngClass]="{'is-invalid': this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.invalid
+                                        && this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched}"
+                                            [settings]="dropdownSettings" [data]="basicInsuranceCompany"
+                                            placeholder="Please select insurance company">
+                                        </ng-multiselect-dropdown>
+                                        <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.valid && 
+                                            (this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-insurance-company')?.touched)"
+                                            class="text-danger mx-1">
+                                            Insurance company is required
+                                        </div>
+                                    </c-row>
+                                    <!--Member Id-->
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Member ID<span
+                                                    class="text-danger">*</span>
+                                            </label>
+                                        </c-col>
+                                        <c-col xl="12">
+                                            <input cFormControl sizing="sm"
+                                                formControlName="commercial-secondary-insurance-member-id" maxlength="60"
+                                                input-trimmer>
+                                            <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.valid && 
+                                            (this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-member-id')?.touched)"
+                                                class="text-danger mx-1">
+                                                Member ID is required
+                                            </div>
+                                        </c-col>
+                                    </c-row>
+                                    <!--Policy id-->
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Policy ID
+                                            </label>
+                                        </c-col>
+                                        <c-col xl="12">
+                                            <input cFormControl sizing="sm"
+                                                formControlName="commercial-secondary-insurance-ploicy-id" maxlength="60"
+                                                input-trimmer>
+                                        </c-col>
+                                        <div *ngIf="!this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.valid && 
+                                            (this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.dirty ||this.form.get('insurance')?.get('commercial-secondary-insurance-ploicy-id')?.touched)"
+                                            class="text-danger mx-1">
+                                            Policy ID is required
+                                        </div>
+                                    </c-row>
+                                </c-card-body>
+                            </c-card>
+                            <div class="text-center">
+                                <button cButton size="sm" (click)="add()">Add</button>
                             </div>
-                        </c-row>
-                    </c-card-body>
-                </c-card>
-                <div class="text-center">
-                    <button cButton size="sm" (click)="add()">Add</button>
-                </div>
-            </c-card-body>
-        </c-card>
-        <!--Worker's Compensation-->
-        <span *ngIf="!this.form.get('insurance')?.get('selfPay')?.value">
-            <c-card
-                *ngIf="selectedInsuranceType === 'Worker\'s Compensation' || selectedInsuranceType === 'Auto Accident'"
-                class="mb-2">
-                <c-card-body>
-                    <h5 cCardTitle *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Worker's Compensation</h5>
-                    <h5 cCardTitle *ngIf="selectedInsuranceType === 'Auto Accident'">Auto Accident</h5>
-                    <!--Accident Date-->
-                    <c-row class="mb-2">
-                        <c-col xl="12">
-                            <label for="dsds" class="form-label" style="font-size: medium;">
-                                <span *ngIf="selectedInsuranceType === 'Auto Accident'">Accident Date</span>
-                                <span *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Injury Date</span>
-                                <span class="text-danger">*</span>
-                            </label>
-                        </c-col>
-                        <c-col xl="12">
-                            <input type="date" cFormControl sizing="sm" formControlName="compensation-accident-date">
-                        </c-col>
-                        <div *ngIf="this.form.get('insurance')?.get('compensation-accident-date')?.errors?.['required'] && 
-                                (this.form.get('insurance')?.get('compensation-accident-date')?.dirty ||this.form.get('insurance')?.get('compensation-accident-date')?.touched)"
-                            class="text-danger mx-1">
-                            <span *ngIf="selectedInsuranceType === 'Auto Accident'">Accident Date is required</span>
-                            <span *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Injury Date is
-                                required</span>
-                        </div>
-                        <div *ngIf="this.form.get('insurance')?.get('compensation-accident-date')?.errors?.['future']"
-                            class="text-danger mx-1">accident date can't be in future.</div>
-                    </c-row>
-                    <!-- Insurance Company-->
-                    <c-row class="mb-2">
-                        <c-col xl="12">
-                            <label class="form-label" style="font-size: medium;">Insurance Company<span
-                                    class="text-danger">*</span>
-                            </label>
-                        </c-col>
-                        <c-col xl="12">
-                            <input cFormControl sizing="sm" formControlName="compensation-insurance-company"
-                                maxlength="60" input-trimmer>
-                        </c-col>
-                        <div *ngIf="!this.form.get('insurance')?.get('compensation-insurance-company')?.valid && 
-                                    (this.form.get('insurance')?.get('compensation-insurance-company')?.dirty ||this.form.get('insurance')?.get('compensation-insurance-company')?.touched)"
-                            class="text-danger mx-1">
-                            Insurance Company is required
-                        </div>
-                    </c-row>
-                    <!-- Claim Number-->
-                    <c-row class="mb-2">
-                        <c-col xl="12">
-                            <label class="form-label" style="font-size: medium;">Claim Number/ WC Case Number<span
-                                    class="text-danger">*</span>
-                            </label>
-                        </c-col>
-                        <c-col xl="12">
-                            <input cFormControl sizing="sm" formControlName="compensation-claim-number" maxlength="60"
-                                input-trimmer>
-                        </c-col>
-                        <div *ngIf="!this.form.get('insurance')?.get('compensation-claim-number')?.valid && 
-                                    (this.form.get('insurance')?.get('compensation-claim-number')?.dirty ||this.form.get('insurance')?.get('compensation-claim-number')?.touched)"
-                            class="text-danger mx-1">
-                            Claim Number/ WC Case Number is required
-                        </div>
-                    </c-row>
-                    <!--Adjuster-->
-                    <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}">
-                        <c-card-body>
-                            <h6 cCardSubtitle class="mb-2 text-medium-emphasis">Adjuster</h6>
-                            <c-row>
-                                <c-col xl="12">
-                                    <label for="dsds" class="form-label" style="font-size: medium;">Adjuster Full
-                                        Name</label><span class="text-danger">*</span>
-                                </c-col>
-                            </c-row>
-                            <c-col xl="12">
-                                <c-input-group sizing="sm">
-                                    <input cFormControl placeholder="FirstName"
-                                        formControlName="compensation-adjuster-first-name" maxlength="60" input-trimmer>
-                                    <input cFormControl placeholder="MiddleName"
-                                        formControlName="compensation-adjuster-middle-name" maxlength="60"
-                                        input-trimmer>
-                                    <input cFormControl placeholder="LastName"
-                                        formControlName="compensation-adjuster-last-name" maxlength="60" input-trimmer>
-                                </c-input-group>
-
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['noSpecialCharacters']"
-                                    class="text-danger mx-1">Adjuster first name cannot contain special characters.
-                                </div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-middle-name')?.errors?.['noSpecialCharacters']"
-                                    class="text-danger mx-1">Adjuster middle name cannot contain special characters.
-                                </div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['noSpecialCharacters']"
-                                    class="text-danger mx-1">Adjuster last name cannot contain special characters.</div>
-
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['required'] && 
-                (this.form.get('insurance')?.get('compensation-adjuster-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-first-name')?.touched)"
-                                    class="text-danger mx-1">
-                                    Adjuster first name is required
-                                </div>
-
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['required'] && 
-                (this.form.get('insurance')?.get('compensation-adjuster-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-last-name')?.touched)"
-                                    class="text-danger mx-1">
-                                    Adjuster last name is required
-                                </div>
-
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['noNumbers']"
-                                    class="text-danger mx-1">
-                                    first-name contains Numbers.</div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-middle-name')?.errors?.['noNumbers']"
-                                    class="text-danger mx-1">middle-name
-                                    cannot contains Numbers.</div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['noNumbers']"
-                                    class="text-danger mx-1">last-name
-                                    cannot contains Numbers.</div>
-
-                            </c-col>
-                            <c-row>
-                                <c-col xl="12">
-                                    <label for="dsds" class="form-label" style="font-size: medium;">Phone</label>
-                                </c-col>
-                                <c-col xs="12">
-                                    <input cFormControl placeholder="Phone"
-                                        formControlName="compensation-adjuster-phone"
-                                        [value]="this.form.get('insurance')?.get('compensation-adjuster-phone')?.value | phone"
-                                        maxlength="15" sizing="sm">
-                                </c-col>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-phone')?.errors?.['pattern']"
-                                    class="text-danger mx-1">
-                                    Invalid Phone format
-                                </div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-phone')?.errors?.['required'] && 
-                            (this.form.get('insurance')?.get('compensation-adjuster-phone')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-phone')?.touched)"
-                                    class="text-danger mx-1">
-                                    Adjuster phone is required
-                                </div>
-                            </c-row>
                         </c-card-body>
                     </c-card>
-                    <!--Attorney-->
-                    <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}">
+                    <!--Worker's Compensation-->
+                    <c-card *ngIf="selectedInsuranceType === 'Worker\'s Compensation' || selectedInsuranceType === 'Auto Accident'"
+                        class="mb-2">
                         <c-card-body>
-                            <h6 cCardSubtitle class="mb-2 text-medium-emphasis">Attorney</h6>
-                            <c-row>
+                            <h5 cCardTitle *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Worker's Compensation</h5>
+                            <h5 cCardTitle *ngIf="selectedInsuranceType === 'Auto Accident'">Auto Accident</h5>
+                            <!--Accident Date-->
+                            <c-row class="mb-2">
                                 <c-col xl="12">
-                                    <label for="dsds" class="form-label" style="font-size: medium;">Attorney Full
-                                        Name</label><span class="text-danger">*</span>
+                                    <label for="dsds" class="form-label" style="font-size: medium;">
+                                        <span *ngIf="selectedInsuranceType === 'Auto Accident'">Accident Date</span>
+                                        <span *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Injury Date</span>
+                                        <span class="text-danger">*</span>
+                                    </label>
                                 </c-col>
+                                <c-col xl="12">
+                                    <input type="date" cFormControl sizing="sm" formControlName="compensation-accident-date">
+                                </c-col>
+                                <div *ngIf="this.form.get('insurance')?.get('compensation-accident-date')?.errors?.['required'] && 
+                                            (this.form.get('insurance')?.get('compensation-accident-date')?.dirty ||this.form.get('insurance')?.get('compensation-accident-date')?.touched)"
+                                    class="text-danger mx-1">
+                                    <span *ngIf="selectedInsuranceType === 'Auto Accident'">Accident Date is required</span>
+                                    <span *ngIf="selectedInsuranceType === 'Worker\'s Compensation'">Injury Date is
+                                        required</span>
+                                </div>
+                                <div *ngIf="this.form.get('insurance')?.get('compensation-accident-date')?.errors?.['future']"
+                                    class="text-danger mx-1">accident date can't be in future.</div>
                             </c-row>
-                            <c-col xl="12">
-                                <c-input-group sizing="sm">
-                                    <input cFormControl placeholder="FirstName"
-                                        formControlName="compensation-attorney-first-name" maxlength="60"
-                                        input-trimmer />
-                                    <input cFormControl placeholder="MiddleName"
-                                        formControlName="compensation-attorney-middle-name" maxlength="60"
+                            <!-- Insurance Company-->
+                            <c-row class="mb-2">
+                                <c-col xl="12">
+                                    <label class="form-label" style="font-size: medium;">Insurance Company<span
+                                            class="text-danger">*</span>
+                                    </label>
+                                </c-col>
+                                <c-col xl="12">
+                                    <input cFormControl sizing="sm" formControlName="compensation-insurance-company" maxlength="60"
                                         input-trimmer>
-                                    <input cFormControl placeholder="LastName"
-                                        formControlName="compensation-attorney-last-name" maxlength="60" input-trimmer>
-                                </c-input-group>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['noSpecialCharacters']"
-                                    class="text-danger mx-1">Attorney first name cannot contain special characters.
-                                </div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-middle-name')?.errors?.['noSpecialCharacters']"
-                                    class="text-danger mx-1">Attorney middle name cannot contain special characters.
-                                </div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-last-name')?.errors?.['noSpecialCharacters']"
-                                    class="text-danger mx-1">Attorney last name cannot contain special characters.</div>
-
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['noNumbers']"
-                                    class="text-danger mx-1">
-                                    first-name contains Numbers.</div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-middle-name')?.errors?.['noNumbers']"
-                                    class="text-danger mx-1">middle-name
-                                    cannot contains Numbers.</div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-last-name')?.errors?.['noNumbers']"
-                                    class="text-danger mx-1">last-name
-                                    cannot contains Numbers.</div>
-
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['required'] && 
-                (this.form.get('insurance')?.get('compensation-attorney-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-first-name')?.touched)"
-                                    class="text-danger mx-1">
-                                    Attorney first name is required
-                                </div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-last-name')?.errors?.['required'] && 
-                (this.form.get('insurance')?.get('compensation-attorney-last-name')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-last-name')?.touched)"
-                                    class="text-danger mx-1">
-                                    Attorney last name is required
-                                </div>
-                            </c-col>
-                            <c-row>
-                                <c-col xl="12">
-                                    <label for="dsds" class="form-label" style="font-size: medium;">Phone</label>
                                 </c-col>
-                                <c-col xs="12">
-                                    <input cFormControl placeholder="phone"
-                                        formControlName="compensation-attorney-phone" sizing="sm"
-                                        [value]="this.form.get('insurance')?.get('compensation-attorney-phone')?.value | phone"
-                                        maxlength="15">
-                                </c-col>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-phone')?.errors?.['pattern']"
+                                <div *ngIf="!this.form.get('insurance')?.get('compensation-insurance-company')?.valid && 
+                                                (this.form.get('insurance')?.get('compensation-insurance-company')?.dirty ||this.form.get('insurance')?.get('compensation-insurance-company')?.touched)"
                                     class="text-danger mx-1">
-                                    Invalid Phone format
-                                </div>
-                                <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-phone')?.errors?.['required'] && 
-                            (this.form.get('insurance')?.get('compensation-attorney-phone')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-phone')?.touched)"
-                                    class="text-danger mx-1">
-                                    Attorney phone is required
+                                    Insurance Company is required
                                 </div>
                             </c-row>
+                            <!-- Claim Number-->
+                            <c-row class="mb-2">
+                                <c-col xl="12">
+                                    <label class="form-label" style="font-size: medium;">Claim Number/ WC Case Number<span
+                                            class="text-danger">*</span>
+                                    </label>
+                                </c-col>
+                                <c-col xl="12">
+                                    <input cFormControl sizing="sm" formControlName="compensation-claim-number" maxlength="60"
+                                        input-trimmer>
+                                </c-col>
+                                <div *ngIf="!this.form.get('insurance')?.get('compensation-claim-number')?.valid && 
+                                                (this.form.get('insurance')?.get('compensation-claim-number')?.dirty ||this.form.get('insurance')?.get('compensation-claim-number')?.touched)"
+                                    class="text-danger mx-1">
+                                    Claim Number/ WC Case Number is required
+                                </div>
+                            </c-row>
+                            <!--Adjuster-->
+                            <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}">
+                                <c-card-body>
+                                    <h6 cCardSubtitle class="mb-2 text-medium-emphasis">Adjuster</h6>
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Adjuster Full
+                                                Name</label><span class="text-danger">*</span>
+                                        </c-col>
+                                    </c-row>
+                                    <c-col xl="12">
+                                        <c-input-group sizing="sm">
+                                            <input cFormControl placeholder="FirstName"
+                                                formControlName="compensation-adjuster-first-name" maxlength="60" input-trimmer>
+                                            <input cFormControl placeholder="MiddleName"
+                                                formControlName="compensation-adjuster-middle-name" maxlength="60" input-trimmer>
+                                            <input cFormControl placeholder="LastName"
+                                                formControlName="compensation-adjuster-last-name" maxlength="60" input-trimmer>
+                                        </c-input-group>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">Adjuster first name cannot contain special characters.
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-middle-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">Adjuster middle name cannot contain special characters.
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">Adjuster last name cannot contain special characters.</div>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['required'] && 
+                            (this.form.get('insurance')?.get('compensation-adjuster-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-first-name')?.touched)"
+                                            class="text-danger mx-1">
+                                            Adjuster first name is required
+                                        </div>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['required'] && 
+                            (this.form.get('insurance')?.get('compensation-adjuster-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-last-name')?.touched)"
+                                            class="text-danger mx-1">
+                                            Adjuster last name is required
+                                        </div>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-first-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">
+                                            first-name contains Numbers.</div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-middle-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">middle-name
+                                            cannot contains Numbers.</div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-last-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">last-name
+                                            cannot contains Numbers.</div>
+            
+                                    </c-col>
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Phone</label>
+                                        </c-col>
+                                        <c-col xs="12">
+                                            <input cFormControl placeholder="Phone" formControlName="compensation-adjuster-phone"
+                                                [value]="this.form.get('insurance')?.get('compensation-adjuster-phone')?.value | phone"
+                                                maxlength="15" sizing="sm">
+                                        </c-col>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-phone')?.errors?.['pattern']"
+                                            class="text-danger mx-1">
+                                            Invalid Phone format
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-adjuster-phone')?.errors?.['required'] && 
+                                        (this.form.get('insurance')?.get('compensation-adjuster-phone')?.dirty ||this.form.get('insurance')?.get('compensation-adjuster-phone')?.touched)"
+                                            class="text-danger mx-1">
+                                            Adjuster phone is required
+                                        </div>
+                                    </c-row>
+                                </c-card-body>
+                            </c-card>
+                            <!--Attorney-->
+                            <c-card class="mb-2" [cBorder]="{top: {color: 'secondary', width: 3}}">
+                                <c-card-body>
+                                    <h6 cCardSubtitle class="mb-2 text-medium-emphasis">Attorney</h6>
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Attorney Full
+                                                Name</label><span class="text-danger">*</span>
+                                        </c-col>
+                                    </c-row>
+                                    <c-col xl="12">
+                                        <c-input-group sizing="sm">
+                                            <input cFormControl placeholder="FirstName"
+                                                formControlName="compensation-attorney-first-name" maxlength="60" input-trimmer />
+                                            <input cFormControl placeholder="MiddleName"
+                                                formControlName="compensation-attorney-middle-name" maxlength="60" input-trimmer>
+                                            <input cFormControl placeholder="LastName"
+                                                formControlName="compensation-attorney-last-name" maxlength="60" input-trimmer>
+                                        </c-input-group>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">Attorney first name cannot contain special characters.
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-middle-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">Attorney middle name cannot contain special characters.
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-last-name')?.errors?.['noSpecialCharacters']"
+                                            class="text-danger mx-1">Attorney last name cannot contain special characters.</div>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">
+                                            first-name contains Numbers.</div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-middle-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">middle-name
+                                            cannot contains Numbers.</div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-last-name')?.errors?.['noNumbers']"
+                                            class="text-danger mx-1">last-name
+                                            cannot contains Numbers.</div>
+            
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-first-name')?.errors?.['required'] && 
+                            (this.form.get('insurance')?.get('compensation-attorney-first-name')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-first-name')?.touched)"
+                                            class="text-danger mx-1">
+                                            Attorney first name is required
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-last-name')?.errors?.['required'] && 
+                            (this.form.get('insurance')?.get('compensation-attorney-last-name')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-last-name')?.touched)"
+                                            class="text-danger mx-1">
+                                            Attorney last name is required
+                                        </div>
+                                    </c-col>
+                                    <c-row>
+                                        <c-col xl="12">
+                                            <label for="dsds" class="form-label" style="font-size: medium;">Phone</label>
+                                        </c-col>
+                                        <c-col xs="12">
+                                            <input cFormControl placeholder="phone" formControlName="compensation-attorney-phone"
+                                                sizing="sm"
+                                                [value]="this.form.get('insurance')?.get('compensation-attorney-phone')?.value | phone"
+                                                maxlength="15">
+                                        </c-col>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-phone')?.errors?.['pattern']"
+                                            class="text-danger mx-1">
+                                            Invalid Phone format
+                                        </div>
+                                        <div *ngIf="this.form.get('insurance')?.get('compensation-attorney-phone')?.errors?.['required'] && 
+                                        (this.form.get('insurance')?.get('compensation-attorney-phone')?.dirty ||this.form.get('insurance')?.get('compensation-attorney-phone')?.touched)"
+                                            class="text-danger mx-1">
+                                            Attorney phone is required
+                                        </div>
+                                    </c-row>
+                                </c-card-body>
+                            </c-card>
+                            <c-row class="mb-2">
+                                <c-col xl="12">
+                                    <label for="dsds" class="form-label" style="font-size: medium;">
+                                        Case Status<span class="text-danger">*</span>
+                                    </label>
+                                </c-col>
+                                <c-col xl="12">
+                                    <select cSelect sizing="sm" name="injuryType" style="line-height: 15px;" cFormControl
+                                        formControlName="compensation-case-status">
+                                        <option value="null" disabled>Select</option>
+                                        <option value="Active">Active</option>
+                                        <option value="InActive">In-Active</option>
+                                    </select>
+                                </c-col>
+                                <div *ngIf="!this.form.get('insurance')?.get('compensation-case-status')?.valid && 
+                                                    (this.form.get('insurance')?.get('compensation-case-status')?.dirty ||this.form.get('insurance')?.get('compensation-case-status')?.touched)"
+                                    class="text-danger mx-1">
+                                    Case Status is required
+                                </div>
+                            </c-row>
+                            <div class="text-center">
+                                <button cButton size="sm" (click)="add()">Add</button>
+                            </div>
                         </c-card-body>
                     </c-card>
-                    <c-row class="mb-2">
-                        <c-col xl="12">
-                            <label for="dsds" class="form-label" style="font-size: medium;">
-                                Case Status<span class="text-danger">*</span>
-                            </label>
-                        </c-col>
-                        <c-col xl="12">
-                            <select cSelect sizing="sm" name="injuryType" style="line-height: 15px;" cFormControl
-                                formControlName="compensation-case-status">
-                                <option value="null" disabled>Select</option>
-                                <option value="Active">Active</option>
-                                <option value="InActive">In-Active</option>
-                            </select>
-                        </c-col>
-                        <div *ngIf="!this.form.get('insurance')?.get('compensation-case-status')?.valid && 
-                                        (this.form.get('insurance')?.get('compensation-case-status')?.dirty ||this.form.get('insurance')?.get('compensation-case-status')?.touched)"
-                            class="text-danger mx-1">
-                            Case Status is required
-                        </div>
-                    </c-row>
-                    <div class="text-center">
-                        <button cButton size="sm" (click)="add()">Add</button>
-                    </div>
-                </c-card-body>
-            </c-card>
-        </span>
-        <!--Medicare-->
-        <c-card *ngIf="selectedInsuranceType === 'Medicare' && !this.form.get('insurance')?.get('selfPay')?.value"
-            class="mb-2">
-            <c-card-body>
-                <h5 cCardTitle>Medicare</h5>
-                <c-row class="mb-2">
-                    <c-col xl="12">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Policy ID<span
-                                class="text-danger">*</span>
-                        </label>
-                    </c-col>
-                    <c-col xl="12">
-                        <input cFormControl sizing="sm" formControlName="medicare-policy-namuber" maxlength="60"
-                            input-trimmer>
-                    </c-col>
-                    <div *ngIf="!this.form.get('insurance')?.get('medicare-policy-namuber')?.valid && 
-                    (this.form.get('insurance')?.get('medicare-policy-namuber')?.dirty ||this.form.get('insurance')?.get('medicare-policy-namuber')?.touched)"
-                        class="text-danger mx-1">
-                        Policy ID is required
-                    </div>
-                </c-row>
-                <div class="text-center">
-                    <button cButton size="sm" (click)="add()">Add</button>
+            
+                    <!--Medicare-->
+                    <c-card *ngIf="selectedInsuranceType === 'Medicare'" class="mb-2">
+                        <c-card-body>
+                            <h5 cCardTitle>Medicare</h5>
+                            <c-row class="mb-2">
+                                <c-col xl="12">
+                                    <label for="dsds" class="form-label" style="font-size: medium;">Policy ID<span
+                                            class="text-danger">*</span>
+                                    </label>
+                                </c-col>
+                                <c-col xl="12">
+                                    <input cFormControl sizing="sm" formControlName="medicare-policy-namuber" maxlength="60"
+                                        input-trimmer>
+                                </c-col>
+                                <div *ngIf="!this.form.get('insurance')?.get('medicare-policy-namuber')?.valid && 
+                                (this.form.get('insurance')?.get('medicare-policy-namuber')?.dirty ||this.form.get('insurance')?.get('medicare-policy-namuber')?.touched)"
+                                    class="text-danger mx-1">
+                                    Policy ID is required
+                                </div>
+                            </c-row>
+                            <div class="text-center">
+                                <button cButton size="sm" (click)="add()">Add</button>
+                            </div>
+                        </c-card-body>
+                    </c-card>
+                    <!--Medicare-->
+                    <c-card *ngIf="selectedInsuranceType === 'Medicaid'" class="mb-2">
+                        <c-card-body>
+                            <h5 cCardTitle>Medicaid</h5>
+                            <c-row class="mb-2">
+                                <c-col xl="12">
+                                    <label for="dsds" class="form-label" style="font-size: medium;">Policy ID<span
+                                            class="text-danger">*</span>
+                                    </label>
+                                </c-col>
+                                <c-col xl="12">
+                                    <input cFormControl sizing="sm" formControlName="medicaid-policy-namuber" maxlength="60"
+                                        input-trimmer>
+                                </c-col>
+                                <div *ngIf="!this.form.get('insurance')?.get('medicaid-policy-namuber')?.valid && 
+                                (this.form.get('insurance')?.get('medicaid-policy-namuber')?.dirty ||this.form.get('insurance')?.get('medicaid-policy-namuber')?.touched)"
+                                    class="text-danger mx-1">
+                                    Policy ID is required
+                                </div>
+                            </c-row>
+                            <div class="text-center">
+                                <button cButton size="sm" (click)="add()">Add</button>
+                            </div>
+                        </c-card-body>
+                    </c-card>
+                    <!--Self Pay-->
+                    <c-card *ngIf="selectedInsuranceType === 'SelfPay'" class="mb-2">
+                        <c-card-body>
+                            <h5 cCardTitle>SelPay</h5>
+                            <!-- <div class="text-center">
+                                <button cButton size="sm" (click)="add()">Add</button>
+                            </div> -->
+                        </c-card-body>
+                    </c-card>
                 </div>
-            </c-card-body>
-        </c-card>
-        <!--Medicare-->
-        <c-card *ngIf="selectedInsuranceType === 'Medicaid' && !this.form.get('insurance')?.get('selfPay')?.value"
-            class="mb-2">
-            <c-card-body>
-                <h5 cCardTitle>Medicaid</h5>
-                <c-row class="mb-2">
-                    <c-col xl="12">
-                        <label for="dsds" class="form-label" style="font-size: medium;">Policy ID<span
-                                class="text-danger">*</span>
-                        </label>
-                    </c-col>
-                    <c-col xl="12">
-                        <input cFormControl sizing="sm" formControlName="medicaid-policy-namuber" maxlength="60"
-                            input-trimmer>
-                    </c-col>
-                    <div *ngIf="!this.form.get('insurance')?.get('medicaid-policy-namuber')?.valid && 
-                    (this.form.get('insurance')?.get('medicaid-policy-namuber')?.dirty ||this.form.get('insurance')?.get('medicaid-policy-namuber')?.touched)"
-                        class="text-danger mx-1">
-                        Policy ID is required
-                    </div>
-                </c-row>
-                <div class="text-center">
-                    <button cButton size="sm" (click)="add()">Add</button>
+                <!-- List patient insurances-->
+                <div *ngIf="!(selectedInsuranceType === 'SelfPay') && selectedInsuranceType !== undefined">
+                    <c-card>
+                        <c-card-body>
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Insurance Type</th>
+                                        <th scope="col">Insurance Data</th>
+                                        <th style="width: 15%;">actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let patientInsurance of renderedPatientInsurances; let i = index">
+                                        <td>
+                                            <span *ngIf="patientInsurance.type ==='worker'">Worker Compensation</span>
+                                            <span *ngIf="patientInsurance.type ==='auto_acc'">auto Accident</span>
+                                            <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>
+                                            <span *ngIf="patientInsurance.type ==='medicare'">Medicare</span>
+                                            <span *ngIf="patientInsurance.type ==='medicaid'">Medicaid</span>
+                                            <span *ngIf="patientInsurance.type ==='selfpay'">SelfPay</span>
+                                        </td>
+                                        <td>
+                                            <span *ngIf="patientInsurance.type ==='worker'">
+                                                <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
+                                            </span>
+                                            <span *ngIf="patientInsurance.type ==='auto_acc'">
+                                                <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
+                                            </span>
+                                            <span *ngIf="patientInsurance.type ==='commercial'">
+                                                <strong> Insurance Company :
+                                                </strong>{{$any(patientInsurance).name}}
+                                            </span>
+                                            <span *ngIf="patientInsurance.type ==='medicare'">
+                                                <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
+                                            </span>
+                                            <span *ngIf="patientInsurance.type ==='medicaid'">
+                                                <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
+                                            </span>
+                                            <span *ngIf="patientInsurance.type ==='selfpay'">
+                                                <strong> -------</strong>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <c-button-group aria-label="Basic example" role="group" size="sm">
+                                                <button cButton variant="outline" size="sm"
+                                                    (click)="remove(i, patientInsurance.type)">
+                                                    <svg cIcon name="cilTrash"></svg>
+                                                </button>
+                                            </c-button-group>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </c-card-body>
+                    </c-card>
                 </div>
-            </c-card-body>
-        </c-card>
-        <!--Self Pay-->
-        <c-card *ngIf="selectedInsuranceType === 'SelfPay'" class="mb-2">
-            <c-card-body>
-                <h5 cCardTitle>SelPay</h5>
-                <!-- <div class="text-center">
-                    <button cButton size="sm" (click)="add()">Add</button>
-                </div> -->
-            </c-card-body>
-        </c-card>
-    </div>
-    <!-- List patient insurances-->
-    <div *ngIf="!(selectedInsuranceType === 'SelfPay')">
-        <c-card>
-            <c-card-body>
-                <table class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <th scope="col">Insurance Type</th>
-                            <th scope="col">Insurance Data</th>
-                            <th style="width: 15%;">actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let patientInsurance of renderedPatientInsurances; let i = index">
-                            <td>
-                                <span *ngIf="patientInsurance.type ==='worker'">Worker Compensation</span>
-                                <span *ngIf="patientInsurance.type ==='auto_acc'">auto Accident</span>
-                                <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>
-                                <span *ngIf="patientInsurance.type ==='medicare'">Medicare</span>
-                                <span *ngIf="patientInsurance.type ==='medicaid'">Medicaid</span>
-                                <span *ngIf="patientInsurance.type ==='selfpay'">SelfPay</span>
-                            </td>
-                            <td>
-                                <span *ngIf="patientInsurance.type ==='worker'">
-                                    <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
-                                </span>
-                                <span *ngIf="patientInsurance.type ==='auto_acc'">
-                                    <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
-                                </span>
-                                <span *ngIf="patientInsurance.type ==='commercial'">
-                                    <strong> Insurance Company :
-                                    </strong>{{$any(patientInsurance).name}}
-                                </span>
-                                <span *ngIf="patientInsurance.type ==='medicare'">
-                                    <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
-                                </span>
-                                <span *ngIf="patientInsurance.type ==='medicaid'">
-                                    <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
-                                </span>
-                                <span *ngIf="patientInsurance.type ==='selfpay'">
-                                    <strong> -------</strong>
-                                </span>
-                            </td>
-                            <td>
-                                <c-button-group aria-label="Basic example" role="group" size="sm">
-                                    <button cButton variant="outline" size="sm"
-                                        (click)="remove(i, patientInsurance.type)">
-                                        <svg cIcon name="cilTrash"></svg>
-                                    </button>
-                                </c-button-group>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </c-card-body>
-        </c-card>
-    </div>
-    <div class="mt-3">
-        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
-        <button cButton variant="outline" size="sm" (click)="next()">Next</button>
-    </div>
-</div>
+                <div class="mt-3">
+                    <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
+                    <button cButton variant="outline" size="sm" (click)="next()">Next</button>
+                </div>
+            </div>
+        </c-row>
+    </c-card-body>
+</c-card>

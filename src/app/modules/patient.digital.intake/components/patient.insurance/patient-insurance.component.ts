@@ -6,7 +6,8 @@ import * as moment from 'moment';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { debounceTime, filter, finalize, map, switchMap, tap } from 'rxjs';
 import { PatientRelationship } from 'src/app/models/questionnaire/Insurance/patient.relationship';
-import { insuranceTypes } from 'src/app/modules/common/components/insurance/insurance.type';
+import { InsuranceType } from 'src/app/modules/common/components/insurance/insurance.type';
+import { insuranceTypes } from 'src/app/modules/common/components/insurance/insurance.type.list';
 import { BasicInsuranceCompany } from 'src/app/modules/patient.admin/models/basic.insurance.company';
 import { Insurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance';
 import { CommercialInsurance } from 'src/app/modules/patient.questionnaire/models/intake/Insurance/types/insurance.commercial';
@@ -33,7 +34,7 @@ export class PatientInsuranceComponent implements OnInit {
   InsuranceCompanies: any;
   basicInsuranceCompany: BasicInsuranceCompany[]
   secondaryInsuranceCompanies: any;
-  types: string[] = insuranceTypes;
+  types: InsuranceType[] = insuranceTypes;
   selectedInsuranceType: string
   renderedPatientInsurances: any[] = []
   patientInsurances: Insurance = {

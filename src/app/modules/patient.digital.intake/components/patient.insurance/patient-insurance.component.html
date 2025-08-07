@@ -12,8 +12,8 @@
                 <select cSelect sizing="sm" style="line-height: 15px;" formControlName="type" [ngClass]="{'is-invalid': this.form.get('insurance')?.get('type')?.invalid
                 && this.form.get('insurance')?.get('type')?.touched}">
                     <option value="null" disabled>Select Insurance Type</option>
-                    <option *ngFor="let type of types" [value]="type">
-                        {{type}}
+                    <option *ngFor="let type of types" [value]="type.value">
+                        {{type.name}}
                     </option>
                 </select>
             </c-col>

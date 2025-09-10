@@ -78,4 +78,7 @@
   <c-modal-header>
     <button (click)="togglePatientPelvicSurvey()" cButtonClose></button>
   </c-modal-header>
+  <c-modal-body>
+    <pelvic-survey *ngIf="isSurvey"></pelvic-survey>
+  </c-modal-body>
 </c-modal>

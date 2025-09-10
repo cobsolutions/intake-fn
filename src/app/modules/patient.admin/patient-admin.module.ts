@@ -82,6 +82,7 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
 import { PatientContactReportComponent } from './components/reports/patient.contact/patient-contact-report.component';
 import { FailedPatientComponent } from './components/failed.patient/failed-patient.component';
+import { PelvicSurveyComponent } from './components/survey/pelvic-survey.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,7 @@ import { FailedPatientComponent } from './components/failed.patient/failed-patie
     PatientSourcePieChartComponent, 
     RequestDeviceRegistrationComponent, 
     RequestDeviceIntakeSubmissionComponent, 
-    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent, ChnagesReportComponent, PatientContactReportComponent, FailedPatientComponent
+    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent, ChnagesReportComponent, PatientContactReportComponent, FailedPatientComponent, PelvicSurveyComponent
   ],
   imports: [
     CommonModule,

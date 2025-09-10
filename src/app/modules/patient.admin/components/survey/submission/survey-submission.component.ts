@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./survey-submission.component.css']
 })
 export class SurveySubmissionComponent implements OnInit {
-
+  submissionApproach:string | undefined =undefined
   constructor() { }
 
   ngOnInit(): void {

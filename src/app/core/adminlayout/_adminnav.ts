@@ -20,8 +20,12 @@ export const adminNavItems: INavData[] = [
         url: 'patient/failed'
       },
       {
-        name: 'Submission',
+        name: 'Intake Submission',
         url: 'patient/create'
+      },
+      {
+        name: 'Survey Submission',
+        url: 'survey/create'
       }
     ]
   },

@@ -22,28 +22,40 @@ export class PelvicSurveyComponent implements OnInit {
 
   // Define your questions here
   urinaryHealthQuestions = [
-    { key: 'urinary1', text: 'How often do you experience urinary leakage?' },
-    { key: 'urinary2', text: 'Do you feel urgency to urinate?' }
+    { key: 'urinary1', text: 'Do you leak urine when coughing, laughing, or exercising?' },
+    { key: 'urinary2', text: 'Do you leak urine before reaching the toilet (urgency)?' },
+    { key: 'urinary3', text: 'Do you feel unable to fully empty your bladder?' },
+    { key: 'urinary4', text: 'Do you wake up more than twice at night to urinate?' },
     // Add more questions
   ];
 
   bowelHealthQuestions = [
-    { key: 'bowel1', text: 'How often do you experience bowel control issues?' }
+    { key: 'bowel1', text: 'Do you often experience constipation (fewer than 3 bowel movements per week)?' },
+    { key: 'bowel2', text: 'Do you strain during bowel movements?' },
+    { key: 'bowel3', text: 'Do you feel incomplete emptying after a bowel movement?' },
+    { key: 'bowel4', text: 'Do you have leakage of stool or gas?' }
     // Add more questions
   ];
 
   pelvicCoreQuestions = [
-    { key: 'pelvic1', text: 'Do you experience pelvic pain?' }
+    { key: 'pelvic1', text: 'Do you feel heaviness/bulging in your pelvic area?' },
+    { key: 'pelvic2', text: 'Do you have pelvic or low back pain that limits daily life?' },
+    { key: 'pelvic3', text: 'Do you find it hard to activate/relax your pelvic floor muscles?' },
     // Add more questions
   ];
 
   sexualHealthQuestions = [
-    { key: 'sexual1', text: 'How would you describe your sexual health?' }
+    { key: 'sexual1', text: 'Do you experience pain during sexual activity?' },
+    { key: 'sexual2', text: 'Do you have difficulty achieving orgasm due to pelvic discomfort?' },
+    { key: 'sexual3', text: 'Do you avoid intimacy due to pelvic/urinary/bowel issues?' },
+    { key: 'sexual4', text: 'Do you feel reduced sexual satisfaction compared to before?' }
     // Add more questions
   ];
 
   qualityOfLifeQuestions = [
-    { key: 'quality1', text: 'How does your condition affect your daily life?' }
+    { key: 'quality1', text: 'Do your symptoms limit your ability to exercise or be active?' },
+    { key: 'quality2', text: 'Do your symptoms interfere with social/work activities?' },
+    { key: 'quality3', text: 'Do your symptoms affect your confidence or self-esteem?' }
     // Add more questions
   ];
 

@@ -1,3 +1,56 @@
-token {{token}}
-survey {{surveyId}}
-patientId {{patientId}}
+<div class="survey-container">
+    <!-- Sticky header + progress -->
+    <div class="survey-sticky-header">
+      <div class="survey-header">
+        <div class="header-icon"><i class="fas fa-heartbeat"></i></div>
+        <h1>Pelvic Wellness Event</h1>
+        <p class="survey-description">Your health journey matters. This assessment helps us understand your needs better.</p>
+      </div>
+  
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progress"></div>
+        </div>
+        <div class="progress-text">{{ progress }}% Complete</div>
+      </div>
+    </div>
+  
+    <form [formGroup]="surveyForm" (ngSubmit)="onSubmit()">
+      <ng-container *ngFor="let section of [
+        {title:'Urinary Health', questions: urinaryHealthQuestions, icon:'tint'},
+        {title:'Bowel Health', questions: bowelHealthQuestions, icon:'poo'},
+        {title:'Pelvic & Core Symptoms', questions: pelvicCoreQuestions, icon:'user-md'},
+        {title:'Sexual Health', questions: sexualHealthQuestions, icon:'heart'},
+        {title:'Quality of Life', questions: qualityOfLifeQuestions, icon:'smile'}
+      ]; let sIndex = index">
+  
+        <div class="survey-section">
+          <div class="section-header">
+            <i class="fas fa-{{section.icon}} section-icon"></i>
+            <h2>{{section.title}}</h2>
+          </div>
+  
+          <div class="question" *ngFor="let question of section.questions; let i = index">
+            <p class="question-text">{{ getQuestionIndex(sIndex, i) }}. {{ question.text }}</p>
+            <div class="options-container">
+              <label class="option" *ngFor="let option of options">
+                <input type="radio" [formControlName]="question.key" [value]="option.value" [name]="question.key">
+                <span class="checkmark"></span>
+                <span class="option-label">{{ option.label }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+  
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="resetForm()">
+          <i class="fas fa-redo"></i> Reset Form
+        </button>
+        <button type="submit" class="btn-primary" [disabled]="!surveyForm.valid">
+          <i class="fas fa-paper-plane"></i> Submit Survey
+        </button>
+      </div>
+    </form>
+  </div>
+  

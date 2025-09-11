@@ -23,19 +23,18 @@ export class CreatePatientQuickIntakeSurveyComponent implements OnInit {
     this.route.queryParams.subscribe((param: any) => {
       this.token = param['token'];
       this.suryveyId = param['suryveyId'];
-      // this.digitalIntakeService.assignTokenToRequesterTerminal().pipe(
-      //   switchMap(result => this.digitalIntakeService.initDigitalIntakeRecord("Device"))
-      // )
-      //   .subscribe(result => {
-      //     this.isLoading = false
-      //     this.router.navigate(['/digital-intake/create-survey'], {
-      //       queryParams: {
-      //         'token': this.token,
-      //         'surveyId': this.suryveyId,
-      //         'patientId': this.patientId
-      //       }
-      //     });
-      //   })
+      this.digitalIntakeService.assignTokenToRequesterTerminal().pipe(
+        switchMap(result => this.digitalIntakeService.initDigitalIntakeRecord("Device"))
+      )
+        .subscribe(result => {
+          this.isLoading = false
+          this.router.navigate(['/digital-intake/quick-create-intake-survey'], {
+            queryParams: {
+              'token': this.token,
+              'surveyId': this.suryveyId
+            }
+          });
+        })
     })
   }
 

@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-survey-submission',
+  selector: 'survey-submission',
   templateUrl: './survey-submission.component.html',
   styleUrls: ['./survey-submission.component.css']
 })
 export class SurveySubmissionComponent implements OnInit {
   submissionApproach:string | undefined =undefined
-  
+  @Input() patient:any
   constructor() { }
 
   ngOnInit(): void {

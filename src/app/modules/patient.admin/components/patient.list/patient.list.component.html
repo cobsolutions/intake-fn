@@ -172,6 +172,6 @@
     <button (click)="toggleSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-      {{selectedPatient | json}}
+    <survey-submission [patient]="selectedPatient"></survey-submission>
   </c-modal-body>
 </c-modal>

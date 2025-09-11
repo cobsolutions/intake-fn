@@ -10,7 +10,7 @@ import { PatientSurveyService } from '../../../services/survey/patient-survey.se
 })
 export class SurveySubmissionComponent implements OnInit {
   submissionApproach: string | undefined = undefined
-  surveyId: number | undefined = undefined
+  surveyId: number 
   surveys: Survey[];
   @Input() patient: any
   constructor(private patientSurveyService: PatientSurveyService) { }

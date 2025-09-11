@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { ClinicService } from '../../../services/clinic/clinic.service';
 import { OneTimeTokenService } from '../../../services/one.time.token/one-time-token.service';
@@ -16,9 +16,12 @@ export class RequestDeviceSurveySubmissionComponentComponent implements OnInit {
   submissionURL: string
   isGenerated: boolean = false;
   isValid: boolean = true
+  @Input()suryveyId:number;
+  @Input() patientId:number
   constructor(private clinicService: ClinicService, private oneTimeTokenService: OneTimeTokenService) { }
 
   ngOnInit(): void {
+    console.log('suryveyId ' + this.suryveyId + " patientId : " + this.patientId)
     this.getAllClinics()
   }
   private getAllClinics() {

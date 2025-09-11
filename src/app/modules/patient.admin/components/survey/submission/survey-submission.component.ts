@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class SurveySubmissionComponent implements OnInit {
   submissionApproach:string | undefined =undefined
+  surveyType:string | undefined =undefined
   @Input() patient:any
   constructor() { }
 

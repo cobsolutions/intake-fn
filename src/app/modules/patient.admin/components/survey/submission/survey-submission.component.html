@@ -1,9 +1,13 @@
-{{patient | json}}
 <div class="mb-3">
     <c-card>
         <c-card-body>
             <h5 cCardTitle>Choose Submission Approach</h5>
             <p cCardText>Please select how you would like to submit the survey.</p>
+            <div class="mb-3">
+                <select aria-label="Default select example" cSelect id="survey" [(ngModel)]="surveyType">
+                    <option selected disabled value="undefined">Select Survey</option>
+                </select>
+            </div>
             <div class="mb-3">
                 <select aria-label="Default select example" cSelect id="submission_approach"
                     [(ngModel)]="submissionApproach">
@@ -19,7 +23,7 @@
     <c-card-header>
         <h4>Generate QR-Code</h4>
     </c-card-header>
-    <c-card-body>        
+    <c-card-body>
         <request-device-survey-submission-component
             *ngIf="submissionApproach ==='device'"></request-device-survey-submission-component>
     </c-card-body>

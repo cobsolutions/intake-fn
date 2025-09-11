@@ -37,7 +37,10 @@ export class PatientListComponent implements OnInit, OnDestroy {
   patientSearchCriteria: PatientSearchCriteria = { isSchedule: undefined }
   isSchedulePatient: boolean;
   editPatientProvider: boolean;
+  isPatientSurvey: boolean = false
+  isQuickIntakeAndSurvey: boolean = false
   selectedPatientId?: number
+  selectedPatient: any
   public customRanges = {
     Today: [new Date(), new Date()],
     Yesterday: [
@@ -297,6 +300,13 @@ export class PatientListComponent implements OnInit, OnDestroy {
   toggleDetails(item: any) {
     this.details_visible[item] = !this.details_visible[item];
   }
+  openSurvey(item: any) {
+    this.selectedPatient = item;
+    this.isPatientSurvey = true;
+  }
+  toggleSurvey() {
+    this.isPatientSurvey = !this.isPatientSurvey;
+  }
   isSchedule(item: any) {
     this.patientListService.updatePatientSchedule(item.patientId, item.schedule).subscribe(result => {
       this.toastrService.success('Patient is scheduled');
@@ -352,6 +362,12 @@ export class PatientListComponent implements OnInit, OnDestroy {
   changeFacilityVisibility(event: string) {
     if (event === 'close')
       this.editPatientProvider = false;
+  }
+  openQuickIntakeAndSurvey(){
+    this.isQuickIntakeAndSurvey = true
+  }
+  toggleQuickIntakeAndSurvey(){
+    this.isQuickIntakeAndSurvey = !this.isQuickIntakeAndSurvey
   }
 }
 

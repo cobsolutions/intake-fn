@@ -15,6 +15,7 @@ import { PatientListComponent } from './components/patient.list/patient.list.com
 import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
 import { PatientContactReportComponent } from './components/reports/patient.contact/patient-contact-report.component';
 import { RecommendationReportComponent } from './components/reports/recommendation.report.component';
+import { SurveySubmissionComponent } from './components/survey/submission/survey-submission.component';
 import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
 import { UserCreationComponent } from './components/user/create/user-creation.component';
 import { UserListComponent } from './components/user/list/user-list.component';
@@ -51,6 +52,13 @@ const routes: Routes = [{
     {
       path: 'patient/create',
       component: PatientCreateComponent,
+      data: {
+        title: 'Create',
+      },
+    },
+    {
+      path: 'survey/create',
+      component: SurveySubmissionComponent,
       data: {
         title: 'Create',
       },

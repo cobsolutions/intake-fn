@@ -9,7 +9,7 @@ interface RenderedClinic {
   country?: string | null,
   ps?: string | null,
   zipcode?: string | null
-  createdAt?:number
+  createdAt?: number
 }
 @Component({
   selector: 'app-clinic.list',
@@ -21,6 +21,7 @@ export class ClinicListComponent implements OnInit {
   errorMessage: string | null = '';
   clinics: RenderedClinic[] | null = new Array();
   isCreateClinic: boolean = false;
+  isSurvey: boolean = false;
   isEditClinic: boolean = false;
   isEditClinicLocation: boolean = false;
   selectedClinicId: number;
@@ -52,7 +53,7 @@ export class ClinicListComponent implements OnInit {
       id: element.id,
       name: element.name,
       address: address,
-      createdAt:element.createdAt
+      createdAt: element.createdAt
     }
     return renderedClinic;
   }
@@ -72,8 +73,14 @@ export class ClinicListComponent implements OnInit {
   showCreateClinic() {
     this.isCreateClinic = true;
   }
+  showPatientPelvicSurvey() {
+    this.isSurvey = true;
+  }
   toggleCreateClinic() {
     this.isCreateClinic = !this.isCreateClinic;
+  }
+  togglePatientPelvicSurvey() {
+    this.isSurvey = !this.isSurvey;
   }
   changeClinicVisibility(event: any) {
     if (event === 'close-create')
@@ -82,8 +89,8 @@ export class ClinicListComponent implements OnInit {
       this.isEditClinic = false;
     this.getClinics();
   }
-  changeClinicLocationVisibility(event: any){
-      if(event ==='close')
+  changeClinicLocationVisibility(event: any) {
+    if (event === 'close')
       this.isEditClinicLocation = false
   }
 

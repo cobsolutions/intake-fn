@@ -30,6 +30,7 @@
 /intake-service/api/digital-intake/lookups/find/agreement http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/agreement 200
 /intake-service/api/digital-intake/lookups/find/agreement http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/agreement 200
 /intake-service/api/digital-intake/lookups/find/agreement http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/agreement 200
+/intake-service/api/digital-intake/lookups/find/survey/find/:id http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/survey/find/:id 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
@@ -253,5 +254,9 @@
 /intake-service/api/reports/find/contact http://161.97.126.192:8050/intake-service/api/reports/find/contact 200
 /intake-service/api/reports/generator/excel/contact  http://161.97.126.192:8050/intake-service/api/reports/generator/excel/contact 200
 /intake-service/api/digital-intake/failed-intake http://161.97.126.192:8050/intake-service/api/digital-intake/failed-intake 200
+/intake-service/api/digital-intake/create/survey http://161.97.126.192:8050/intake-service/api/digital-intake/create/survey 200
+/intake-service/api/digital-intake/create/quick/intake http://161.97.126.192:8050/intake-service/api/digital-intake/create/quick/intake 200
 /intake-service/api/patient/find/failed/clinic/:clinicId http://161.97.126.192:8050/intake-service/api/patient/find/failed/clinic/:clinicId 200
+/intake-service/api/survey/find/:id http://161.97.126.192:8050/intake-service/api/survey/find/:id 200
+/intake-service/api/survey/find/all http://161.97.126.192:8050/intake-service/api/survey/find/all 200
 /*  /index.html   200

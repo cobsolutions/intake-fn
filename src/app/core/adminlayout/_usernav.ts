@@ -11,8 +11,12 @@ export const userNavItems: INavData[] = [
         url: 'patient/list'
       },
       {
-        name: 'Submission',
+        name: 'Intake Submission',
         url: 'patient/create'
+      },
+      {
+        name: 'Survey Submission',
+        url: 'survey/create'
       }
     ]
   }

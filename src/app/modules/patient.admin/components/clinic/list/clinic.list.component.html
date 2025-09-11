@@ -8,6 +8,9 @@
       <button cButton color="primary" variant="outline" (click)="showCreateClinic()">
         Create Clinic
       </button>
+      <button cButton color="primary" variant="outline" (click)="showPatientPelvicSurvey()">
+        Show Patient Pelvic Survey
+      </button>
     </div>
   </c-col>
 </c-row>
@@ -68,5 +71,14 @@
   <c-modal-body>
     <edit-clinic-location (changeVisibility)="changeClinicLocationVisibility($event)" *ngIf="isEditClinicLocation"
       [clinicId]="selectedClinicId"></edit-clinic-location>
+  </c-modal-body>
+</c-modal>
+
+<c-modal id="survey" [visible]="isSurvey" size="xl">
+  <c-modal-header>
+    <button (click)="togglePatientPelvicSurvey()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <quick-intake *ngIf="isSurvey"></quick-intake>
   </c-modal-body>
 </c-modal>

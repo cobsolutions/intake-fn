@@ -8,6 +8,8 @@ import { DigitalIntakeDevice } from 'src/app/modules/patient.admin/models/trust.
 import { FailedIntake } from 'src/app/modules/patient.questionnaire/models/intake/failed.intake';
 import { Patient } from 'src/app/modules/patient.questionnaire/models/intake/patient';
 import { environment } from 'src/environments/environment';
+import { PatientQuickIntakeRequest } from '../../models/quick.intake/patient.quick.intake.request';
+import { PatientSurveyRequest } from '../../models/survey/patient.survey.request';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +34,21 @@ export class DigitalIntakeService {
     const createPatientURL = this.baseUrl + '/create';
     return this.http.post(createPatientURL, imageFormData, { observe: 'response', withCredentials: true, 'headers': headers })
   }
-  failedIntake(failedIntake:FailedIntake) {
+  createSurvey(model: PatientSurveyRequest) {
+    var headers: any = {
+      'token': this.token
+    }
+    const createPatientURL = this.baseUrl + '/create/survey';
+    return this.http.post(createPatientURL, model, { observe: 'response', withCredentials: true, 'headers': headers })
+  }
+  createQuickIntake(model: PatientQuickIntakeRequest) {
+    var headers: any = {
+      'token': this.token
+    }
+    const createPatientURL = this.baseUrl + '/create/quick/intake';
+    return this.http.post(createPatientURL, model, { observe: 'response', withCredentials: true, 'headers': headers })
+  }
+  failedIntake(failedIntake: FailedIntake) {
     var headers: any = {
       'token': this.token
     }
@@ -66,6 +82,10 @@ export class DigitalIntakeService {
   }
   public findProviderByFullName(last: string, first: string): Observable<any> {
     var url = this.baseUrl + '/lookups/find/provider/f-name/' + first + '/l-name/' + last;
+    return this.http.get(url, { observe: 'response', withCredentials: true, 'headers': this.headers });
+  }
+  public findsurveyById(surveyId: number): Observable<any> {
+    var url = this.baseUrl + '/lookups/survey/find/' + surveyId;
     return this.http.get(url, { observe: 'response', withCredentials: true, 'headers': this.headers });
   }
   send(customerId: string, phoneNumber: string) {
@@ -145,7 +165,7 @@ export class DigitalIntakeService {
     return this.http.get(createPatientURL, { observe: 'response', withCredentials: true, 'headers': headers })
   }
 
-  initDigitalIntakeRecord(requester:string) {
+  initDigitalIntakeRecord(requester: string) {
     var headers: any = {
       'content-type': 'application/json',
       'token': this.token

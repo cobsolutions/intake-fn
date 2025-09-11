@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { map, Observable } from 'rxjs';
@@ -24,12 +24,16 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
   errorMessageClinic: string | undefined;
   errorMessageMail: string | undefined;
   errorMessageMailFormat: string | undefined;
+  @Input() type: string;
+  @Input() surveyId:number
+  @Input() patientId:number
   constructor(private clinicService: ClinicService,
     private oneTimeTokenService: OneTimeTokenService,
     private router: Router,
     private toastrService: ToastrService) { }
   isSent: boolean = false
   ngOnInit(): void {
+    
     this.getAllClinics()
   }
   private getAllClinics() {
@@ -44,7 +48,10 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
       var request: DigitalIntakeOneTimeTokenRequest = {
         clinicId: this.selectedClinicUUID,
         expiryPeriod: 1800000,
-        requester: 'Mail_Submission'
+        requester: 'Mail_Submission',
+        type:this.type,
+        surveyId:this.surveyId,
+        patientId:this.patientId
       }
       this.oneTimeTokenService.generatePatientMailToken(request, this.patientEmail).subscribe((response: any) => {
         this.toastrService.success("Verification mail has been sent to patient")
@@ -52,14 +59,13 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
         const requestToken: any = response.body;
         this.verificationLink = this.baseURL + '/digital-intake/verfiy/mail?token=' + requestToken.token;
         this.router.navigateByUrl('admin/patient/create');
-        const url = 'admin/patient/create'
-        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this.router.navigate([`/${url}`]).then(() => { })
-        })
+        // const url = 'admin/patient/create'
+        // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        //   this.router.navigate([`/${url}`]).then(() => { })
+        // })
       })
     }
   }
-
   private validateEmail(email: string) {
     if (email) {
       const forbidden = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g.test(email);

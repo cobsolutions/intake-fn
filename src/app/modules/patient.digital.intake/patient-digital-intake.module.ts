@@ -36,6 +36,7 @@ import { AutoCompleteAddressComponent } from './components/patient.address/addre
 import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
 import { CreatePatientSurveyComponent } from './components/create.survey/create-patient-survey.component';
 import { RenderSurveyComponent } from './components/create.survey/render/render-survey.component';
+import { PatientSurveyGreetingComponent } from './components/patient.summary/greeting/patient-survey-greeting.component';
 
 const COREUI_MODULES = [
   AvatarModule,
@@ -90,6 +91,7 @@ const COREUI_MODULES = [
     PreCreatePatientSurveyComponent,
     CreatePatientSurveyComponent,
     RenderSurveyComponent,
+    PatientSurveyGreetingComponent,
   ],
   imports: [
     CommonModule,

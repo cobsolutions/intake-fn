@@ -30,12 +30,12 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
     });
   }
   saveAndStartSurvey(): void {
-    this.renderSurvey = true
     if (this.intakeForm.valid) {
-      console.log('Save & Start Survey:', this.intakeForm.value);
       var model: PatientQuickIntakeRequest = this.createRequest();
-      this.digitalIntakeService.createQuickIntake(model).subscribe(data => {
-        console.log(JSON.stringify(data.body))
+      this.digitalIntakeService.createQuickIntake(model).subscribe((data: any) => {
+        console.log(data.body)
+        this.createdPatient = data.body
+        this.renderSurvey = true
       })
     } else {
       this.intakeForm.markAllAsTouched();

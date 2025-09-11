@@ -1,1 +1,6 @@
-<render-survey [token]="token" [surveyId]="surveyId" [patientId]="patientId"></render-survey>
+<span *ngIf="patientId">
+    <render-survey [token]="token" [surveyId]="surveyId" [patientId]="patientId"></render-survey>
+</span>
+<span *ngIf="!patientId">
+    <render-survey [token]="token" [surveyId]="surveyId" [patientId]="createdPatient"></render-survey>
+</span>

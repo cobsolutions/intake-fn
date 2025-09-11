@@ -14,14 +14,14 @@ export class CreatePatientSurveyComponent implements OnInit {
   survey: any;
   headers: any = {}
   isQuick: boolean;
-  @Input() createdPatient:number;
+  @Input() createdPatient: number;
   constructor(private http: HttpClient,
     private route: ActivatedRoute) {
     this.route.queryParams.subscribe((param: any) => {
       this.token = param['token'];
       this.surveyId = param['surveyId'];
-      console.log('patientId ' + this.patientId)
-      this.patientId = param['patientId'];
+      console.log('patientId ' + this.createdPatient)
+      this.patientId = param['patientId'] === undefined ? this.createdPatient : param['patientId'];
       this.headers = {
         'content-type': 'application/json',
         'token': param['token']
@@ -30,7 +30,7 @@ export class CreatePatientSurveyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   
+
 
   }
 

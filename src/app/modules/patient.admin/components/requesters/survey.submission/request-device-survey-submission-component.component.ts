@@ -21,6 +21,7 @@ export class RequestDeviceSurveySubmissionComponentComponent implements OnInit {
   constructor(private clinicService: ClinicService, private oneTimeTokenService: OneTimeTokenService) { }
 
   ngOnInit(): void {
+    console.log('patientId ' + this.patientId)
     this.getAllClinics()
   }
   private getAllClinics() {
@@ -37,7 +38,11 @@ export class RequestDeviceSurveySubmissionComponentComponent implements OnInit {
       }
       this.oneTimeTokenService.generate(request).subscribe((response: any) => {
         const requestToken: any = response.body;
-        this.submissionURL = this.baseURL + '/digital-intake/pre-create-survey?token=' + requestToken.token + '&suryveyId=' + this.suryveyId + '&patientId=' + this.patientId;
+        if (this.patientId !== null)
+          this.submissionURL = this.baseURL + '/digital-intake/pre-create-survey?token=' + requestToken.token + '&suryveyId=' + this.suryveyId + '&patientId=' + this.patientId;
+        else
+          this.submissionURL = this.baseURL + '/digital-intake/pre-quick-create-intake-survey?token=' + requestToken.token + '&suryveyId=' + this.suryveyId;
+
         this.isGenerated = true
         console.log(this.submissionURL)
       })

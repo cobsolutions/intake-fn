@@ -9,6 +9,7 @@ import { PatientSurveyGreetingComponent } from './components/patient.summary/gre
 import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
 import { PreRegisterDeviceComponent } from './components/pre.register.device/pre-register-device.component';
 import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
+import { CreatePatientQuickIntakeSurveyComponent } from './components/pre.survey/quick.create.survey/create-patient-quick-intake-survey.component';
 import { RegisterDeviceComponent } from './components/register.device/register-device.component';
 
 const routes: Routes = [
@@ -60,6 +61,10 @@ const routes: Routes = [
       {
         path: 'survey-done',
         component: PatientSurveyGreetingComponent
+      },
+      {
+        path: 'pre-quick-create-intake-survey',
+        component: CreatePatientQuickIntakeSurveyComponent,
       },
     ]
   }

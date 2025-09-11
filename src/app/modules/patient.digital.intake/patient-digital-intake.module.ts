@@ -38,6 +38,7 @@ import { CreatePatientSurveyComponent } from './components/create.survey/create-
 import { RenderSurveyComponent } from './components/create.survey/render/render-survey.component';
 import { PatientSurveyGreetingComponent } from './components/patient.summary/greeting/patient-survey-greeting.component';
 import { CreatePatientQuickIntakeSurveyComponent } from './components/pre.survey/quick.create.survey/create-patient-quick-intake-survey.component';
+import { CreateDigitalPatientQuickIntakeSurveyComponent } from './components/patient.quick/create.quick.survey/create-digital-patient-quick-intake-survey.component';
 
 const COREUI_MODULES = [
   AvatarModule,
@@ -94,6 +95,7 @@ const COREUI_MODULES = [
     RenderSurveyComponent,
     PatientSurveyGreetingComponent,
     CreatePatientQuickIntakeSurveyComponent,
+    CreateDigitalPatientQuickIntakeSurveyComponent,
   ],
   imports: [
     CommonModule,

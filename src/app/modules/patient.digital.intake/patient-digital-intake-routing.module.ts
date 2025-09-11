@@ -66,6 +66,10 @@ const routes: Routes = [
         path: 'pre-quick-create-intake-survey',
         component: CreatePatientQuickIntakeSurveyComponent,
       },
+      {
+        path: 'quick-create-intake-survey',
+        component: CreatePatientSurveyComponent,
+      },
     ]
   }
 ];

@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
 
 @Component({
-  selector: 'app-create-patient-quick-intake-survey',
+  selector: 'create-patient-quick-intake-survey',
   templateUrl: './create-patient-quick-intake-survey.component.html',
   styleUrls: ['./create-patient-quick-intake-survey.component.css']
 })

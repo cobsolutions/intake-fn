@@ -18,8 +18,11 @@ export class PreCreatePatientSurveyComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
+    console.log('PreCreatePatientSurveyComponent')
     this.route.queryParams.subscribe((param: any) => {
       this.token = param['token'];
+      param['suryveyId'];
+      param['patientId'];
       this.digitalIntakeService.assignTokenToRequesterTerminal().pipe(
         switchMap(result => this.digitalIntakeService.initDigitalIntakeRecord("Device"))
       )

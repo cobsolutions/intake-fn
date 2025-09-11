@@ -9,19 +9,18 @@ import { OneTimeTokenService } from '../../../services/one.time.token/one-time-t
   styleUrls: ['./request-device-survey-submission-component.component.css']
 })
 export class RequestDeviceSurveySubmissionComponentComponent implements OnInit {
-  submissionApproach:string | undefined =undefined
+  submissionApproach: string | undefined = undefined
   public baseURL: string = location.origin;
   clinics$: Observable<any>
   selectedClinicUUID: string | undefined = undefined
   submissionURL: string
   isGenerated: boolean = false;
   isValid: boolean = true
-  @Input()suryveyId:number;
-  @Input() patientId:number
+  @Input() suryveyId: number;
+  @Input() patientId: number
   constructor(private clinicService: ClinicService, private oneTimeTokenService: OneTimeTokenService) { }
 
   ngOnInit(): void {
-    console.log('suryveyId ' + this.suryveyId + " patientId : " + this.patientId)
     this.getAllClinics()
   }
   private getAllClinics() {
@@ -38,7 +37,7 @@ export class RequestDeviceSurveySubmissionComponentComponent implements OnInit {
       }
       this.oneTimeTokenService.generate(request).subscribe((response: any) => {
         const requestToken: any = response.body;
-        this.submissionURL = this.baseURL + '/digital-intake/pre-create?token=' + requestToken.token;;
+        this.submissionURL = this.baseURL + '/digital-intake/pre-create-survey?token=' + requestToken.token + '&suryveyId=' + this.suryveyId + '&patientId=' + this.patientId;
         this.isGenerated = true
         console.log(this.submissionURL)
       })

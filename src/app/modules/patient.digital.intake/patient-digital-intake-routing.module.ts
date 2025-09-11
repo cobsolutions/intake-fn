@@ -6,6 +6,7 @@ import { PatientGreetingCreationComponent } from './components/greeting/patient-
 import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
 import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
 import { PreRegisterDeviceComponent } from './components/pre.register.device/pre-register-device.component';
+import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
 import { RegisterDeviceComponent } from './components/register.device/register-device.component';
 
 const routes: Routes = [
@@ -45,7 +46,11 @@ const routes: Routes = [
       {
         path: 'corrupted',
         component: CorruptedDeviceComponent
-      }
+      },
+      {
+        path: 'pre-create-survey',
+        component: PreCreatePatientSurveyComponent,
+      },
     ]
   }
 ];

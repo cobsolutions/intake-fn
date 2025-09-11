@@ -195,6 +195,6 @@
     <button (click)="toggleQuickIntakeAndSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    dddd
+    <survey-submission  *ngIf="isQuickIntakeAndSurvey"></survey-submission>
   </c-modal-body>
 </c-modal>

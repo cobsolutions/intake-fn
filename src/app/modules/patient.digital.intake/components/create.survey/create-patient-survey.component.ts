@@ -17,9 +17,6 @@ export class CreatePatientSurveyComponent implements OnInit {
       this.token = param['token'];
       this.surveyId = param['surveyId'];
       this.patientId = param['patientId'];
-      console.log('token ' + this.token)
-      console.log('surveyId ' + this.surveyId)
-      console.log('patientId ' + this.patientId)
       this.headers = {
         'content-type': 'application/json',
         'token': param['token']

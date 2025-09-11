@@ -68,6 +68,10 @@ export class DigitalIntakeService {
     var url = this.baseUrl + '/lookups/find/provider/f-name/' + first + '/l-name/' + last;
     return this.http.get(url, { observe: 'response', withCredentials: true, 'headers': this.headers });
   }
+  public findsurveyById(surveyId:number): Observable<any> {
+    var url = this.baseUrl + '/lookups/survey/find/'+surveyId;
+    return this.http.get(url, { observe: 'response', withCredentials: true, 'headers': this.headers });
+  }
   send(customerId: string, phoneNumber: string) {
     let params = new HttpParams().set('customerId', customerId).append('phoneNumber', phoneNumber);
     var url = this.baseUrl + '/send-otp/send';

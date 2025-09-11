@@ -11,8 +11,10 @@ export class CreatePatientSurveyComponent implements OnInit {
   token: string;
   surveyId: number;
   patientId: number;
+  survey: any;
   headers: any = {}
-  constructor(private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private http: HttpClient,
+    private route: ActivatedRoute) {
     this.route.queryParams.subscribe((param: any) => {
       this.token = param['token'];
       this.surveyId = param['surveyId'];
@@ -26,6 +28,7 @@ export class CreatePatientSurveyComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('CreatePatientSurveyComponent')
+   
   }
 
 }

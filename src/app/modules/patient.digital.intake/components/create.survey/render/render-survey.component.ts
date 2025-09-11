@@ -1,5 +1,7 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { map } from 'rxjs';
+import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
 
 @Component({
   selector: 'render-survey',
@@ -10,6 +12,7 @@ export class RenderSurveyComponent implements OnInit {
   @Input() token: string;
   @Input() surveyId: number
   @Input() patientId: number
+  survey: any;
   surveyForm: FormGroup;
   progress = 0;
   @HostListener('window:scroll', [])
@@ -69,11 +72,16 @@ export class RenderSurveyComponent implements OnInit {
     { value: 'always', label: 'Always' }
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private digitalIntakeService: DigitalIntakeService) {
     this.surveyForm = this.fb.group({});
   }
 
   ngOnInit() {
+    this.digitalIntakeService.findsurveyById(this.surveyId).pipe(
+      map(data => data.body)
+    ).subscribe((survey: any) => {
+      this.survey = survey;
+    })
     // Create form controls for all questions
     this.createFormControls();
 

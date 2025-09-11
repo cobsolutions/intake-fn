@@ -35,6 +35,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { AutoCompleteAddressComponent } from './components/patient.address/address.auto.complete/auto-complete-address.component';
 import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
 import { CreatePatientSurveyComponent } from './components/create.survey/create-patient-survey.component';
+import { RenderSurveyComponent } from './components/create.survey/render/render-survey.component';
 
 const COREUI_MODULES = [
   AvatarModule,
@@ -88,6 +89,7 @@ const COREUI_MODULES = [
     AutoCompleteAddressComponent,
     PreCreatePatientSurveyComponent,
     CreatePatientSurveyComponent,
+    RenderSurveyComponent,
   ],
   imports: [
     CommonModule,

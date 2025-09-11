@@ -1,1 +1,24 @@
-<p>request-device-survey-submission-component works!</p>
+<div class="mb-2">
+    <div *ngIf="!isValid">
+        <label class="text-danger fw-normal fst-italic">Select Clinic to generate Patient Survey </label>
+    </div>
+    <select aria-label="Default select example" cSelect [(ngModel)]="selectedClinicUUID">
+        <option selected disabled value="undefined">Select Clinic </option>
+        <option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.uuid">
+            {{clinic.name}}
+        </option>
+    </select>
+</div>
+<div class="text-center">
+    <button cButton (click)="generateQRCode()">Generate</button>
+</div>
+<hr />
+<div *ngIf="isGenerated">
+    <p class="text-medium-emphasis small">
+        Scan the QR code by tablet to open Patient Survey.Note QR-Code will be expired after one day
+    </p>
+    <div class="text-center">
+        <qrcode *ngIf="isGenerated" [qrdata]="submissionURL" [width]="300" [errorCorrectionLevel]="'H'">
+        </qrcode>
+    </div>
+</div>

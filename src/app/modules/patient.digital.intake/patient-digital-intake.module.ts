@@ -33,6 +33,7 @@ import { WebcamModule } from 'ngx-webcam';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AutoCompleteAddressComponent } from './components/patient.address/address.auto.complete/auto-complete-address.component';
+import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
 
 const COREUI_MODULES = [
   AvatarModule,
@@ -84,6 +85,7 @@ const COREUI_MODULES = [
     PreCreateDigitalPatientIntakeComponentComponent,
     PatientBiometricIdentificationComponent,
     AutoCompleteAddressComponent,
+    PreCreatePatientSurveyComponent,
   ],
   imports: [
     CommonModule,

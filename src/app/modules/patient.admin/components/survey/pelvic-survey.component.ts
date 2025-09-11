@@ -1,5 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PatientSurveyRequest } from 'src/app/modules/patient.digital.intake/models/survey/patient.survey.request';
+import { SurveyData } from 'src/app/modules/patient.digital.intake/models/survey/survey.data';
+import { DigitalIntakeService } from 'src/app/modules/patient.digital.intake/services/digitalIntake/digital-intake.service';
 
 
 @Component({
@@ -60,14 +63,14 @@ export class PelvicSurveyComponent implements OnInit {
   ];
 
   options = [
-    { value: 'never', label: 'Never' },
-    { value: 'rarely', label: 'Rarely' },
-    { value: 'sometimes', label: 'Sometimes' },
-    { value: 'often', label: 'Often' },
-    { value: 'always', label: 'Always' }
+    { value: 0, label: 'Never' },
+    { value: 1, label: 'Rarely' },
+    { value: 2, label: 'Sometimes' },
+    { value: 3, label: 'Often' },
+    { value: 4, label: 'Always' }
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private digitalIntakeService:DigitalIntakeService) {
     this.surveyForm = this.fb.group({});
   }
 
@@ -98,7 +101,8 @@ export class PelvicSurveyComponent implements OnInit {
 
   calculateProgress() {
     const totalQuestions = Object.keys(this.surveyForm.controls).length;
-    const answeredQuestions = Object.values(this.surveyForm.controls).filter(control => control.value).length;
+    const answeredQuestions = Object.values(this.surveyForm.controls)
+      .filter(control => control.value !== null && control.value !== undefined && control.value !== '').length;
     this.progress = Math.round((answeredQuestions / totalQuestions) * 100);
   }
 
@@ -121,7 +125,8 @@ export class PelvicSurveyComponent implements OnInit {
 
   onSubmit() {
     if (this.surveyForm.valid) {
-      console.log('Form submitted:', this.surveyForm.value);
+      
+      console.log(JSON.stringify(this.buildSurveyRequest(1,"Pelvic")));
       // Handle form submission
       alert('Thank you for completing the survey!');
     }
@@ -130,6 +135,20 @@ export class PelvicSurveyComponent implements OnInit {
   resetForm() {
     this.surveyForm.reset();
     this.progress = 0;
+  }
+  private buildSurveyRequest(patientId: number, surveyName: string): PatientSurveyRequest {
+    const formValue = this.surveyForm.value;
+  
+    const surveyData: SurveyData[] = Object.entries(formValue).map(([key, value]) => ({
+      questionName: key,
+      questionSelection: value as number
+    }));
+  
+    return {
+      patientId,
+      surveyName,
+      surveyData
+    };
   }
 }
 

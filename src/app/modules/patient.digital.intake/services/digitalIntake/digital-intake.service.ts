@@ -8,6 +8,7 @@ import { DigitalIntakeDevice } from 'src/app/modules/patient.admin/models/trust.
 import { FailedIntake } from 'src/app/modules/patient.questionnaire/models/intake/failed.intake';
 import { Patient } from 'src/app/modules/patient.questionnaire/models/intake/patient';
 import { environment } from 'src/environments/environment';
+import { PatientSurveyRequest } from '../../models/survey/patient.survey.request';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,13 @@ export class DigitalIntakeService {
     }
     const createPatientURL = this.baseUrl + '/create';
     return this.http.post(createPatientURL, imageFormData, { observe: 'response', withCredentials: true, 'headers': headers })
+  }
+  createSurvey(model:PatientSurveyRequest) {
+    var headers: any = {
+      'token': this.token
+    }
+    const createPatientURL = this.baseUrl + '//create/survey';
+    return this.http.post(createPatientURL, model, { observe: 'response', withCredentials: true, 'headers': headers })
   }
   failedIntake(failedIntake:FailedIntake) {
     var headers: any = {

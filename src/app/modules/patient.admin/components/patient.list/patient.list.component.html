@@ -50,6 +50,20 @@
     </c-card>
   </c-col>
 </c-row>
+<div class="mb-3 text-start">
+  <c-dropdown>
+    <button cButton cDropdownToggle color="secondary" variant="outline">
+      Patient Actions
+    </button>
+    <div cDropdownMenu>
+      <a (click)="openQuickIntakeAndSurvey()" cDropdownItem>Quick Intake And Survey</a>
+      <!-- <a [routerLink] cDropdownItem>Another action</a>
+      <a [routerLink] cDropdownItem>Something else here</a> -->
+      <hr cDropdownDivider>
+      <a cDropdownItem>Quick Intake</a>
+    </div>
+  </c-dropdown>
+</div>
 <ng-container *ngIf="props$ | async as props" fluid="true">
   <c-smart-table [columns]="columns" [items]="(usersData$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
     (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
@@ -173,5 +187,14 @@
   </c-modal-header>
   <c-modal-body>
     <survey-submission [patient]="selectedPatient" *ngIf="isPatientSurvey"></survey-submission>
+  </c-modal-body>
+</c-modal>
+<c-modal id="quickIntakeAndSurvey" [visible]="isQuickIntakeAndSurvey" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>Quick Digital Intake And Survey</h3>
+    <button (click)="toggleQuickIntakeAndSurvey()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    dddd
   </c-modal-body>
 </c-modal>

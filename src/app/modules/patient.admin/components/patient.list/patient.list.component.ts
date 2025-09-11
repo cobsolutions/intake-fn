@@ -38,6 +38,7 @@ export class PatientListComponent implements OnInit, OnDestroy {
   isSchedulePatient: boolean;
   editPatientProvider: boolean;
   isPatientSurvey: boolean = false
+  isQuickIntakeAndSurvey: boolean = false
   selectedPatientId?: number
   selectedPatient: any
   public customRanges = {
@@ -361,6 +362,12 @@ export class PatientListComponent implements OnInit, OnDestroy {
   changeFacilityVisibility(event: string) {
     if (event === 'close')
       this.editPatientProvider = false;
+  }
+  openQuickIntakeAndSurvey(){
+    this.isQuickIntakeAndSurvey = true
+  }
+  toggleQuickIntakeAndSurvey(){
+    this.isQuickIntakeAndSurvey = !this.isQuickIntakeAndSurvey
   }
 }
 

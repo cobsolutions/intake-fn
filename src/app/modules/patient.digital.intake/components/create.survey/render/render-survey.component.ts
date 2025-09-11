@@ -1,5 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { map } from 'rxjs';
 import { PatientSurveyRequest } from '../../../models/survey/patient.survey.request';
 import { SurveyData } from '../../../models/survey/survey.data';
@@ -74,7 +75,9 @@ export class RenderSurveyComponent implements OnInit {
     { value: 4, label: 'Always' }
   ];
 
-  constructor(private fb: FormBuilder, private digitalIntakeService: DigitalIntakeService) {
+  constructor(private fb: FormBuilder, 
+    private digitalIntakeService: DigitalIntakeService,
+    private router: Router) {
     this.surveyForm = this.fb.group({});
   }
 
@@ -137,7 +140,7 @@ export class RenderSurveyComponent implements OnInit {
       var model: PatientSurveyRequest = this.buildSurveyRequest(this.patientId, this.survey.name);
       console.log(JSON.stringify(model))
       this.digitalIntakeService.createSurvey(model).subscribe(reVal => {
-
+        this.router.navigateByUrl('/digital-intake/survey-done?token=' + this.digitalIntakeService.token);
       })
     }
   }

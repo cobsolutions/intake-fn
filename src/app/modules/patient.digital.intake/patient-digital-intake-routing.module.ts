@@ -5,6 +5,7 @@ import { CreatePatientSurveyComponent } from './components/create.survey/create-
 import { CreateDigitalPatientIntakeComponent } from './components/create/create-digital-patient-intake.component';
 import { PatientGreetingCreationComponent } from './components/greeting/patient-greeting-creation.component';
 import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
+import { PatientSurveyGreetingComponent } from './components/patient.summary/greeting/patient-survey-greeting.component';
 import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
 import { PreRegisterDeviceComponent } from './components/pre.register.device/pre-register-device.component';
 import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
@@ -55,6 +56,10 @@ const routes: Routes = [
       {
         path: 'create-survey',
         component: CreatePatientSurveyComponent,
+      },
+      {
+        path: 'survey-done',
+        component: PatientSurveyGreetingComponent
       },
     ]
   }

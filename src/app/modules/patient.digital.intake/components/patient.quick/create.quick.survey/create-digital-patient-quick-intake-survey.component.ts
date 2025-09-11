@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
+import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
 interface IntakeForm {
   firstName: FormControl<string | null>;
   middleName: FormControl<string | null>;
@@ -14,9 +16,9 @@ interface IntakeForm {
 })
 export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
   intakeForm!: FormGroup<IntakeForm>;
-  renderSurvey:boolean = false;
-  createdPatient:number ;
-  constructor(private fb: FormBuilder) { }
+  renderSurvey: boolean = false;
+  createdPatient: number;
+  constructor(private fb: FormBuilder, private digitalIntakeService: DigitalIntakeService) { }
 
   ngOnInit(): void {
     this.intakeForm = this.fb.group({
@@ -31,7 +33,10 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
     this.renderSurvey = true
     if (this.intakeForm.valid) {
       console.log('Save & Start Survey:', this.intakeForm.value);
-      // 🚀 Call backend API to create patient & start survey and set createdPatient
+      var model: PatientQuickIntakeRequest = this.createRequest();
+      this.digitalIntakeService.createQuickIntake(model).subscribe(data => {
+        console.log(JSON.stringify(data.body))
+      })
     } else {
       this.intakeForm.markAllAsTouched();
     }
@@ -42,5 +47,13 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
   get f() {
     return this.intakeForm.controls;
   }
-
+  private createRequest(): PatientQuickIntakeRequest {
+    return {
+      firstName: this.intakeForm.value.firstName!,
+      middleName: this.intakeForm.value.middleName!,
+      lastName: this.intakeForm.value.lastName!,
+      phone: (this.intakeForm.value.phone!).toString(),
+      email: this.intakeForm.value.email!,
+    }
+  }
 }

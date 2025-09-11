@@ -50,6 +50,20 @@
     </c-card>
   </c-col>
 </c-row>
+<div class="mb-3 text-start">
+  <c-dropdown>
+    <button cButton cDropdownToggle color="secondary" variant="outline">
+      Patient Actions
+    </button>
+    <div cDropdownMenu>
+      <a (click)="openQuickIntakeAndSurvey()" cDropdownItem>Quick Intake And Survey</a>
+      <!-- <a [routerLink] cDropdownItem>Another action</a>
+      <a [routerLink] cDropdownItem>Something else here</a> -->
+      <hr cDropdownDivider>
+      <a cDropdownItem>Quick Intake</a>
+    </div>
+  </c-dropdown>
+</div>
 <ng-container *ngIf="props$ | async as props" fluid="true">
   <c-smart-table [columns]="columns" [items]="(usersData$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
     (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
@@ -111,9 +125,14 @@
             {{item.createdAt | date:"MM/dd/yyyy hh:mm a"}}
           </ng-container>
           <ng-container *ngSwitchCase="'actions'" class="py-2">
-            <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm" variant="outline">
-              Records
-            </button>
+            <c-input-group class="mb-3">
+              <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm" variant="outline">
+                Records
+              </button>
+              <button (click)="openSurvey(item)" cButton color="primary" size="sm" variant="outline">
+                Survey
+              </button>
+            </c-input-group>
           </ng-container>
           <ng-container *ngSwitchCase="'name'" class="py-2">
             {{item['lastName']}},{{item['firstName']}}
@@ -121,7 +140,7 @@
           <ng-container *ngSwitchCase="'provider'" class="py-2">
             <c-form-check [switch]="true">
               <input cFormCheckInput type="checkbox" (change)="assignProvider(item['patientId'])"
-                [disabled]="item['hasProvider']" [checked]="item['hasProvider']"  [(ngModel)]="item.hasProvider"/>
+                [disabled]="item['hasProvider']" [checked]="item['hasProvider']" [(ngModel)]="item.hasProvider" />
             </c-form-check>
           </ng-container>
           <ng-container *ngSwitchCase="'schedule'" class="py-2">
@@ -159,5 +178,23 @@
   <c-modal-body>
     <edit-patient-provider *ngIf="editPatientProvider" [patientId]="selectedPatientId"
       (changeVisibility)="changeFacilityVisibility($event)"></edit-patient-provider>
+  </c-modal-body>
+</c-modal>
+<c-modal id="patientSurvey" [visible]="isPatientSurvey" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>Submit Survey</h3>
+    <button (click)="toggleSurvey()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <survey-submission [patient]="selectedPatient" *ngIf="isPatientSurvey" [type]="'S'"></survey-submission>
+  </c-modal-body>
+</c-modal>
+<c-modal id="quickIntakeAndSurvey" [visible]="isQuickIntakeAndSurvey" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>Quick Digital Intake And Survey</h3>
+    <button (click)="toggleQuickIntakeAndSurvey()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <survey-submission  *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission>
   </c-modal-body>
 </c-modal>

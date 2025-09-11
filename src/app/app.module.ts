@@ -47,6 +47,7 @@ import { PatientListService } from './modules/patient.admin/services/patient-lis
 import { PatientService } from './modules/patient.questionnaire/service/patient.service';
 import { SecurityModule } from './modules/security';
 import { AuthInterceptor } from './modules/security/service/auth.interceptor';
+import { PelvicSurveyComponent } from './modules/patient.survey/pelvic/pelvic-survey.component';
 
 
 
@@ -66,7 +67,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
 };
 @NgModule({
-  declarations: [AppComponent, ...APP_CONTAINERS, ...ADMIN_APP_CONTAINERS, ScannerlayoutComponent],
+  declarations: [AppComponent, ...APP_CONTAINERS, ...ADMIN_APP_CONTAINERS, ScannerlayoutComponent, PelvicSurveyComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

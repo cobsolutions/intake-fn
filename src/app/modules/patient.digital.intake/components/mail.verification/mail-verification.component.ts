@@ -11,7 +11,7 @@ import { DigitalIntakeService } from '../../services/digitalIntake/digital-intak
 })
 export class MailVerificationComponent implements OnInit {
   status: string
-  digitalIntakeURL:string;
+  digitalIntakeURL: string;
   public baseURL: string = location.origin;
   constructor(private route: ActivatedRoute, private fingerprintService: FingerprintService, private digitalIntakeService: DigitalIntakeService) { }
 
@@ -19,20 +19,34 @@ export class MailVerificationComponent implements OnInit {
     const _getDeviceId = this.fingerprintService.getDeviceId();
     this.route.queryParams.subscribe(param => {
       const token = param['token'];
+      const type = param['type'];
+      const surveyId = param['surveyId'];
+      const patientId = param['patientId'];
+      console.log('TTTTT ' + type)
       _getDeviceId.pipe(
         switchMap(deviceId => this.digitalIntakeService.verifyMail(token, deviceId)),
-        switchMap(result=>this.digitalIntakeService.initDigitalIntakeRecord("Mail"))
+        switchMap(result => this.digitalIntakeService.initDigitalIntakeRecord("Mail"))
       ).subscribe(rre => {
         this.status = 'V'
-        this.digitalIntakeURL =  this.baseURL +'/digital-intake/submit?token=' + token;
+        console.log('MailVerificationComponent + type ' + type)
+        if (type === 'FI')
+          this.digitalIntakeURL = this.baseURL + '/digital-intake/submit?token=' + token + "&type=" + type;
+        if (type === 'QI')
+          this.digitalIntakeURL = this.baseURL + '/digital-intake/submit-quick-create-intake-survey?token=' + token
+            + "&type=" + type
+            + "&surveyId=" + surveyId
+            + "&patientId=" + patientId;
+        if (type === 'S')
+          this.digitalIntakeURL = this.baseURL + '/digital-intake/submit-create-survey?token=' + token + "&type=" + type + "&surveyId=" + surveyId + "&patientId=" + patientId;
         console.log(this.digitalIntakeURL)
       }, error => {
         this.status = 'E'
       })
     })
   }
-  goToLink(url: string){
+  goToLink(url: string) {
+    console.log(url)
     window.open(url, "_self");
-}
+  }
 
 }

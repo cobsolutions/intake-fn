@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -13,11 +13,14 @@ export class CreatePatientSurveyComponent implements OnInit {
   patientId: number;
   survey: any;
   headers: any = {}
+  isQuick: boolean;
+  @Input() createdPatient:number;
   constructor(private http: HttpClient,
     private route: ActivatedRoute) {
     this.route.queryParams.subscribe((param: any) => {
       this.token = param['token'];
       this.surveyId = param['surveyId'];
+      console.log('patientId ' + this.patientId)
       this.patientId = param['patientId'];
       this.headers = {
         'content-type': 'application/json',
@@ -27,8 +30,8 @@ export class CreatePatientSurveyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('CreatePatientSurveyComponent')
    
+
   }
 
 }

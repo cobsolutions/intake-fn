@@ -14,7 +14,8 @@ interface IntakeForm {
 })
 export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
   intakeForm!: FormGroup<IntakeForm>;
-
+  renderSurvey:boolean = false;
+  createdPatient:number ;
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -27,9 +28,10 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
     });
   }
   saveAndStartSurvey(): void {
+    this.renderSurvey = true
     if (this.intakeForm.valid) {
       console.log('Save & Start Survey:', this.intakeForm.value);
-      // 🚀 Call backend API to create patient & start survey
+      // 🚀 Call backend API to create patient & start survey and set createdPatient
     } else {
       this.intakeForm.markAllAsTouched();
     }

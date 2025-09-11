@@ -14,7 +14,8 @@ import { DigitalIntakeService } from '../../../services/digitalIntake/digital-in
 export class RenderSurveyComponent implements OnInit {
   @Input() token: string;
   @Input() surveyId: number
-  @Input() patientId: number
+  @Input() patientId: number;
+  @Input() createdpatient: number
   survey: any;
   surveyForm: FormGroup;
   progress = 0;
@@ -75,13 +76,14 @@ export class RenderSurveyComponent implements OnInit {
     { value: 4, label: 'Always' }
   ];
 
-  constructor(private fb: FormBuilder, 
+  constructor(private fb: FormBuilder,
     private digitalIntakeService: DigitalIntakeService,
     private router: Router) {
     this.surveyForm = this.fb.group({});
   }
 
   ngOnInit() {
+
     this.digitalIntakeService.findsurveyById(this.surveyId).pipe(
       map(data => data.body)
     ).subscribe((survey: any) => {
@@ -137,7 +139,9 @@ export class RenderSurveyComponent implements OnInit {
 
   onSubmit() {
     if (this.surveyForm.valid) {
-      var model: PatientSurveyRequest = this.buildSurveyRequest(this.patientId, this.survey.name);
+      var pId = (this.createdpatient === null || this.createdpatient === undefined) ? this.patientId : this.createdpatient;
+      console.log('check', pId);
+      var model: PatientSurveyRequest = this.buildSurveyRequest(pId, this.survey.name);
       console.log(JSON.stringify(model))
       this.digitalIntakeService.createSurvey(model).subscribe(reVal => {
         this.router.navigateByUrl('/digital-intake/survey-done?token=' + this.digitalIntakeService.token);

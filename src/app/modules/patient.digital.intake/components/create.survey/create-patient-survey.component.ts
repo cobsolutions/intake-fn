@@ -20,8 +20,9 @@ export class CreatePatientSurveyComponent implements OnInit {
     this.route.queryParams.subscribe((param: any) => {
       this.token = param['token'];
       this.surveyId = param['surveyId'];
-      console.log('patientId ' + this.createdPatient)
-      this.patientId = param['patientId'] === undefined ? this.createdPatient : param['patientId'];
+      this.patientId = param['patientId'];
+      console.log('$$$$ ' + this.createdPatient)
+      this.patientId = (param['patientId'] === undefined || param['patientId'] === null) ? this.createdPatient : param['patientId'];
       this.headers = {
         'content-type': 'application/json',
         'token': param['token']

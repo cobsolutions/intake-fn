@@ -13,6 +13,7 @@ export class SurveySubmissionComponent implements OnInit {
   surveyId: number
   surveys: Survey[];
   @Input() patient: any
+  @Input() type:string
   constructor(private patientSurveyService: PatientSurveyService) { }
 
   ngOnInit(): void {

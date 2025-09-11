@@ -186,7 +186,7 @@
     <button (click)="toggleSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <survey-submission [patient]="selectedPatient" *ngIf="isPatientSurvey"></survey-submission>
+    <survey-submission [patient]="selectedPatient" *ngIf="isPatientSurvey" [type]="'S'"></survey-submission>
   </c-modal-body>
 </c-modal>
 <c-modal id="quickIntakeAndSurvey" [visible]="isQuickIntakeAndSurvey" size="xl" backdrop="static">
@@ -195,6 +195,6 @@
     <button (click)="toggleQuickIntakeAndSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <survey-submission  *ngIf="isQuickIntakeAndSurvey"></survey-submission>
+    <survey-submission  *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission>
   </c-modal-body>
 </c-modal>

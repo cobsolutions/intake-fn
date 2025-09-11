@@ -60,6 +60,10 @@ const routes: Routes = [
         component: CreatePatientSurveyComponent,
       },
       {
+        path: 'submit-create-survey',
+        component: CreatePatientSurveyComponent,
+      },
+      {
         path: 'survey-done',
         component: PatientSurveyGreetingComponent
       },
@@ -71,6 +75,10 @@ const routes: Routes = [
         path: 'quick-create-intake-survey',
         component: CreateDigitalPatientQuickIntakeSurveyComponent,
       },
+      {
+        path: 'submit-quick-create-intake-survey',
+        component: CreateDigitalPatientQuickIntakeSurveyComponent,
+      }
     ]
   }
 ];

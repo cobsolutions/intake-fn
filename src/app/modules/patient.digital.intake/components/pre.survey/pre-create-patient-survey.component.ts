@@ -12,6 +12,8 @@ import { DigitalIntakeService } from '../../services/digitalIntake/digital-intak
 export class PreCreatePatientSurveyComponent implements OnInit {
   isLoading: boolean = true
   token: string
+  suryveyId: number;
+  patientId:number;
   constructor(private route: ActivatedRoute,
     private digitalIntakeService: DigitalIntakeService,
     private cookieService: CookieService,
@@ -21,16 +23,18 @@ export class PreCreatePatientSurveyComponent implements OnInit {
     console.log('PreCreatePatientSurveyComponent')
     this.route.queryParams.subscribe((param: any) => {
       this.token = param['token'];
-      param['suryveyId'];
-      param['patientId'];
+      this.suryveyId = param['suryveyId'];
+      this.patientId = param['patientId'];
       this.digitalIntakeService.assignTokenToRequesterTerminal().pipe(
         switchMap(result => this.digitalIntakeService.initDigitalIntakeRecord("Device"))
       )
         .subscribe(result => {
           this.isLoading = false
-          this.router.navigate(['/digital-intake/create'], {
+          this.router.navigate(['/digital-intake/create-survey'], {
             queryParams: {
-              'token': this.token
+              'token': this.token,
+              'surveyId': this.suryveyId,
+              'patientId': this.patientId
             }
           });
         })

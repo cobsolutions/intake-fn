@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CorruptedDeviceComponent } from './components/corrupted.device/corrupted-device.component';
+import { CreatePatientSurveyComponent } from './components/create.survey/create-patient-survey.component';
 import { CreateDigitalPatientIntakeComponent } from './components/create/create-digital-patient-intake.component';
 import { PatientGreetingCreationComponent } from './components/greeting/patient-greeting-creation.component';
 import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
@@ -50,6 +51,10 @@ const routes: Routes = [
       {
         path: 'pre-create-survey',
         component: PreCreatePatientSurveyComponent,
+      },
+      {
+        path: 'create-survey',
+        component: CreatePatientSurveyComponent,
       },
     ]
   }

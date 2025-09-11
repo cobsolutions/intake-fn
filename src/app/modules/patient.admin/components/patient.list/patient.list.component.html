@@ -172,6 +172,6 @@
     <button (click)="toggleSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <survey-submission [patient]="selectedPatient"></survey-submission>
+    <survey-submission [patient]="selectedPatient" *ngIf="isPatientSurvey"></survey-submission>
   </c-modal-body>
 </c-modal>

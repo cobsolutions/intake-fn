@@ -4,8 +4,11 @@
             <h5 cCardTitle>Choose Submission Approach</h5>
             <p cCardText>Please select how you would like to submit the survey.</p>
             <div class="mb-3">
-                <select aria-label="Default select example" cSelect id="survey" [(ngModel)]="surveyType">
+                <select aria-label="Default select example" cSelect id="survey_type"  *ngIf="surveys">
                     <option selected disabled value="undefined">Select Survey</option>
+                    <option *ngFor="let survey of surveys" [value]="survey.id">
+                        {{survey.name}}
+                    </option>
                 </select>
             </div>
             <div class="mb-3">

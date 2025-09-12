@@ -53,7 +53,12 @@ export const adminNavItems: INavData[] = [
       {
         name: 'Trust Devices',
         url: 'trust/devices/list'
+      },
+      {
+        name: 'Surveys',
+        url: 'survey/list'
       }
+      
     ],
   },
   {

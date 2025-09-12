@@ -10,6 +10,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FailedPatientComponent } from './components/failed.patient/failed-patient.component';
 import { InsuranceCompanyCreateComponent } from './components/insurance.company/create/insurance-company-create.component';
 import { InsuranceCompanyListComponent } from './components/insurance.company/list/insurance-company-list.component';
+import { ListSurveyComponent } from './components/list.survey/list-survey.component';
 import { PatientCreateComponent } from './components/patient.create/patient-create.component';
 import { PatientListComponent } from './components/patient.list/patient.list.component';
 import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
@@ -139,6 +140,13 @@ const routes: Routes = [{
       component: ListTrustDevicesComponent,
       data: {
         title: 'insurance-company-create',
+      },
+    },
+    {
+      path: 'survey/list',
+      component: ListSurveyComponent,
+      data: {
+        title: 'surveys',
       }
     }
   ]

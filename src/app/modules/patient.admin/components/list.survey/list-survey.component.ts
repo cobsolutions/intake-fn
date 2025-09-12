@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { tap } from 'rxjs';
+import { Survey } from '../../models/create.survey/survey.model';
+import { PatientSurveyService } from '../../services/survey/patient-survey.service';
 
 @Component({
   selector: 'app-list-survey',
@@ -8,11 +12,69 @@ import { Component, OnInit } from '@angular/core';
 export class ListSurveyComponent implements OnInit {
 
   isSurvey: boolean
-  constructor() { }
+  surveys: any[] = [];
+  editingSurvey: any = null;
+  editForm!: FormGroup;
+  constructor(private patientSurveyService:PatientSurveyService
+    , private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.loadSurveys();
+  }
+  loadSurveys(): void {
+    this.patientSurveyService.getAll().subscribe((data:any) => {
+      this.surveys = data.body;
+    });
+  }
+  buildForm(survey: Survey) {
+    this.editForm = this.fb.group({
+      name: [survey.name, Validators.required],
+      sections: this.fb.array(
+        survey.sections.map((section) =>
+          this.fb.control(section.title, Validators.required)
+        )
+      ),
+    });
+  }
+  startEdit(survey: any): void {
+    this.editingSurvey = survey;
+    this.buildForm(survey);
   }
 
+  get sections(): FormArray {
+    return this.editForm.get('sections') as FormArray;
+  }
+
+  deleteSection(index: number): void {
+    this.sections.removeAt(index);
+  }
+
+  saveChanges() {
+    if (!this.editingSurvey) return;
+  
+    const formValue = this.editForm.value;
+  
+    const updatedSurvey: Survey = {
+      ...this.editingSurvey,
+      name: formValue.name,
+      sections: formValue.sections.map((title: string, idx: number) => ({
+        // preserve existing fields if they exist
+        ...this.editingSurvey!.sections[idx],
+        title: title,
+        name: this.editingSurvey!.sections[idx]?.name ?? title.toLowerCase().replace(/\s+/g, "_"),
+        questions: this.editingSurvey!.sections[idx]?.questions ?? []
+      }))
+    };
+  
+    this.patientSurveyService.update(updatedSurvey).subscribe(() => {
+      this.editingSurvey = null;
+      this.loadSurveys();
+    });
+  }
+
+  cancelEdit(): void {
+    this.editingSurvey = null;
+  }
   showPatientPelvicSurvey() {
     this.isSurvey = true;
   }
@@ -23,4 +85,6 @@ export class ListSurveyComponent implements OnInit {
     if (event === 'close')
       this.isSurvey = false
   }
+
+  
 }

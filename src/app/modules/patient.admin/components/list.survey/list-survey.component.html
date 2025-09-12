@@ -1,21 +1,75 @@
 <ngx-spinner></ngx-spinner>
 <c-row>
-    <c-col xs="12">
-        <h1>Survey</h1>
-    </c-col>
-    <c-col xs="12">
-        <div style="float: right;">
-            <button cButton color="primary" variant="outline" (click)="showPatientPelvicSurvey()" style="width: 200px;">
-                Create
-            </button>
-        </div>
-    </c-col>
+  <c-col xs="12">
+    <div style="float: right;">
+      <button cButton color="primary" variant="outline" (click)="showPatientPelvicSurvey()" style="width: 200px;">
+        Create
+      </button>
+    </div>
+  </c-col>
 </c-row>
+<div class="survey-container">
+  <h2 class="page-title">Survey Management</h2>
 
+  <!-- Survey List -->
+  <div class="survey-list">
+    <table class="survey-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Survey Title</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let survey of surveys">
+          <td>{{ survey.id }}</td>
+          <td>{{ survey.name }}</td>
+          <td>
+            <span [class.active]="survey.isActive" [class.inactive]="!survey.isActive">
+              {{ survey.isActive ? "Active" : "Inactive" }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-edit" (click)="startEdit(survey)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
+  <!-- Edit Form -->
+  <div *ngIf="editingSurvey" class="edit-form-card">
+    <h3>Edit Survey: {{ editingSurvey.name }}</h3>
+
+    <form [formGroup]="editForm" (ngSubmit)="saveChanges()">
+      <!-- Title -->
+      <div class="form-group">
+        <label for="title">Survey Title</label>
+        <input id="title" formControlName="name" />
+      </div>
+
+      <!-- Sections -->
+      <div formArrayName="sections" class="sections-container">
+        <h4>Sections</h4>
+        <div *ngFor="let section of sections.controls; let i = index" class="section-row">
+          <input [formControlName]="i" placeholder="Section title" />
+          <button type="button" class="btn-delete" (click)="deleteSection(i)">Delete</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-buttons">
+        <button type="submit" class="btn-save">Save</button>
+        <button type="button" class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
 <c-modal id="survey" [visible]="isSurvey" size="xl" backdrop="static">
-    <c-modal-body>
-        <button (click)="togglePatientPelvicSurvey()" cButtonClose style="float: right;"></button>
-        <generate-survey *ngIf="isSurvey" (changeVisibility)="changeVisibility($event)"></generate-survey>
-    </c-modal-body>
+  <c-modal-body>
+    <button (click)="togglePatientPelvicSurvey()" cButtonClose style="float: right;"></button>
+    <generate-survey *ngIf="isSurvey" (changeVisibility)="changeVisibility($event)"></generate-survey>
+  </c-modal-body>
 </c-modal>

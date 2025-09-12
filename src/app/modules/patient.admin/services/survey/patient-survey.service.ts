@@ -21,4 +21,9 @@ export class PatientSurveyService {
     const url = this.baseUrl + "/create"
     return this.httpClient.post(url, JSON.stringify(model), { 'headers': headers, observe: 'response' })
   }
+  update(model: Survey) {
+    const headers = { 'content-type': 'application/json' }
+    const url = this.baseUrl + "update/" + model.id 
+    return this.httpClient.put(url, JSON.stringify(model), { 'headers': headers, observe: 'response' })
+  }
 }

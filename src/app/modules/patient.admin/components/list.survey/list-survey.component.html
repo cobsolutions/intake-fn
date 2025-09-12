@@ -16,6 +16,6 @@
 <c-modal id="survey" [visible]="isSurvey" size="xl" backdrop="static">
     <c-modal-body>
         <button (click)="togglePatientPelvicSurvey()" cButtonClose style="float: right;"></button>
-        <generate-survey *ngIf="isSurvey"></generate-survey>
+        <generate-survey *ngIf="isSurvey" (changeVisibility)="changeVisibility($event)"></generate-survey>
     </c-modal-body>
 </c-modal>

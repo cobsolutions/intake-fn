@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list-survey.component.css']
 })
 export class ListSurveyComponent implements OnInit {
+
   isSurvey: boolean
   constructor() { }
 
@@ -17,5 +18,9 @@ export class ListSurveyComponent implements OnInit {
   }
   togglePatientPelvicSurvey() {
     this.isSurvey = !this.isSurvey;
+  }
+  changeVisibility(event: string) {
+    if (event === 'close')
+      this.isSurvey = false
   }
 }

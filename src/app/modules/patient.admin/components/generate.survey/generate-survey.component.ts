@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { STANDARD_ANSWER_OPTIONS } from '../../models/create.survey/answer-options.const';
 import { Survey, SurveyQuestion, SurveySection } from '../../models/create.survey/survey.model';
+import { PatientSurveyService } from '../../services/survey/patient-survey.service';
 
 @Component({
   selector: 'generate-survey',
@@ -10,6 +12,7 @@ import { Survey, SurveyQuestion, SurveySection } from '../../models/create.surve
   styleUrls: ['./generate-survey.component.css']
 })
 export class GenerateSurveyComponent implements OnInit {
+  @Output() changeVisibility = new EventEmitter<string>()
   isEdit = false;
 
   form: FormGroup = this.fb.group({
@@ -27,7 +30,9 @@ export class GenerateSurveyComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private patientSurveyService:PatientSurveyService,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -143,7 +148,10 @@ export class GenerateSurveyComponent implements OnInit {
         answerOptions: q.answerOptions?.length ? q.answerOptions : STANDARD_ANSWER_OPTIONS
       }))
     }));
-    console.log(JSON.stringify(payload))
+    this.patientSurveyService.create(payload).subscribe(re=>{
+      this.toastrService.success('survey is created successfully')
+      this.changeVisibility.emit('close')
+    })
   }
 
   generateSafeKey(seed: string): string {

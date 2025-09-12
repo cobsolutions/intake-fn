@@ -1,1 +1,43 @@
-<p>show-patient-survey works!</p>
+<div class="container mt-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-0" *ngIf="surveyResults">
+        <div *ngIf="surveyResults && surveyResults.length > 0; else noData">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Survey Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let survey of surveyResults; let i = index">
+                <td>{{ survey.id || (i + 1) }}</td>
+                <td>{{ survey.surveyName }}</td>
+                <td>{{ survey.surveyScoreDescription }}</td>
+                <td>
+                  <span 
+                    class="badge"
+                    [ngClass]="{
+                      'bg-success': survey.surveyScore && survey.surveyScore >= 70,
+                      'bg-warning text-dark': survey.surveyScore && survey.surveyScore >= 40 && survey.surveyScore < 70,
+                      'bg-danger': survey.surveyScore && survey.surveyScore < 40
+                    }"
+                  >
+                    {{ survey.surveyScore ?? 'N/A' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ng-template #noData>
+          <div class="p-3 text-center text-muted">
+            No survey results available.
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  

@@ -29,11 +29,16 @@ export class PatientSurveyService {
   }
   update(model: Survey) {
     const headers = { 'content-type': 'application/json' }
-    const url = this.baseUrl + "update/" + model.id 
+    const url = this.baseUrl + "update/" + model.id
     return this.httpClient.put(url, JSON.stringify(model), { 'headers': headers, observe: 'response' })
   }
   updateStatus(id: number, active: boolean): Observable<any> {
-    const url = this.baseUrl + "/" + id + '/status' 
+    const url = this.baseUrl + "/" + id + '/status'
     return this.httpClient.patch(url, { active });
+  }
+  getPatientSurveys(patientId: number) {
+    var url: string = this.baseUrl + 'patient/' + patientId;
+    console.log(url)
+    return this.httpClient.get<Survey[]>(url, { observe: 'response' })
   }
 }

@@ -136,7 +136,7 @@
                 <div cDropdownMenu>
                   <a (click)="openSurvey(item)" cDropdownItem>Submit Survey</a>
                   <hr cDropdownDivider>
-                  <a cDropdownItem>Quick Intake</a>
+                  <a cDropdownItem (click)="openPatientSurveyScore(item['patientId'])">Show Patients Scores</a>
                 </div>
               </c-dropdown>
             </c-input-group>
@@ -203,5 +203,14 @@
   </c-modal-header>
   <c-modal-body>
     <survey-submission *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission>
+  </c-modal-body>
+</c-modal>
+<c-modal id="showPatientSurveys" [visible]="showPatientSurveys" size="xl" backdrop="static">
+  <c-modal-header>
+    <h3 cModalTitle>PatientSurveys Scores</h3>
+    <button (click)="togglePatientSurveysScores()" cButtonClose></button>
+  </c-modal-header>
+  <c-modal-body>
+    <show-patient-survey [patientId]="selectedPatientId!" *ngIf="showPatientSurveys"></show-patient-survey>
   </c-modal-body>
 </c-modal>

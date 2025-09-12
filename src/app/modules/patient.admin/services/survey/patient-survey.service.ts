@@ -16,6 +16,11 @@ export class PatientSurveyService {
     console.log(url)
     return this.httpClient.get<Survey[]>(url, { observe: 'response' })
   }
+  getActive() {
+    var url: string = this.baseUrl + 'find/active'
+    console.log(url)
+    return this.httpClient.get<Survey[]>(url, { observe: 'response' })
+  }
   create(model: Survey) {
     const headers = { 'content-type': 'application/json' }
     const url = this.baseUrl + "/create"

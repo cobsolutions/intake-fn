@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list-survey.component.css']
 })
 export class ListSurveyComponent implements OnInit {
-
+  isSurvey: boolean
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  showPatientPelvicSurvey() {
+    this.isSurvey = true;
+  }
+  togglePatientPelvicSurvey() {
+    this.isSurvey = !this.isSurvey;
+  }
 }

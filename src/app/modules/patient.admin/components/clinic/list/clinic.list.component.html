@@ -79,6 +79,6 @@
     <button (click)="togglePatientPelvicSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <quick-intake *ngIf="isSurvey"></quick-intake>
+    <generate-survey *ngIf="isSurvey"></generate-survey>
   </c-modal-body>
 </c-modal>

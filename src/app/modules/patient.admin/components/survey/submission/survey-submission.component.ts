@@ -18,7 +18,7 @@ export class SurveySubmissionComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('patient ' + this.patient)
-    this.patientSurveyService.getAll().pipe(
+    this.patientSurveyService.getActive().pipe(
       map(data => data.body)
     )
       .subscribe((data: any) => {

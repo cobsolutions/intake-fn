@@ -1,0 +1,70 @@
+/* page background */
+.container {
+    max-width: 960px;
+  }
+  
+  /* subtle card elevation for content areas */
+  .card {
+    border-radius: 0.6rem;
+    border: 1px solid #e6eef8;
+  }
+  
+  /* inline add section card */
+  .card.p-3 {
+    background: #ffffff;
+  }
+  
+  /* section wrapper */
+  [formArrayName="sections"] > div[formGroupName] {
+    background: #ffffff;
+  }
+  
+  /* question card */
+  .card.card-body {
+    padding: 0.6rem 0.75rem;
+  }
+  
+  /* make Add button small and tight */
+  .btn-sm.btn-success {
+    min-width: 90px;
+  }
+  
+  /* hover for question row */
+  .card.card-body:hover {
+    background: #fbfdff;
+    border-color: #e8f0ff;
+  }
+  
+  /* preview header accent */
+  .card.shadow-sm .card-header {
+    border-bottom: 1px solid #eef5ff;
+  }
+  
+  /* modal rounding */
+  .modal-content {
+    border-radius: 0.6rem;
+  }
+/* Preview styles */
+.card.shadow-sm {
+    border-radius: 0.6rem;
+  }
+  
+  /* Section card inside preview */
+  .card-body .border.rounded {
+    border-color: #e6eef8 !important;
+    border-radius: 0.5rem;
+  }
+  
+  /* Question item hover effect */
+  .list-unstyled li:hover {
+    background: #f9fbff;
+    border-radius: 0.4rem;
+    padding: 0.25rem 0.5rem;
+    transition: background 0.2s ease;
+  }
+  
+  /* Radio button alignment */
+  .form-check-inline {
+    margin-right: 1rem;
+  }
+    

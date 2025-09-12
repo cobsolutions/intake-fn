@@ -1,0 +1,197 @@
+<div class="container py-4">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">{{ isEdit ? 'Edit Survey' : 'Create Survey' }}</h2>
+    <div>
+      <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+        {{ isEdit ? 'Save Changes' : 'Create Survey' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="form" (ngSubmit)="save()" class="mb-5">
+    <!-- Survey Name -->
+    <div class="mb-4">
+      <label class="form-label fw-semibold">Survey Name</label>
+      <input class="form-control" formControlName="name" placeholder="e.g. Pelvic Wellness Survey" />
+    </div>
+
+    <!-- Sections header + inline Add Section -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Sections</h4>
+    </div>
+
+    <div class="card mb-4 p-3">
+      <!-- Inline add section row (title + key + add button) -->
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-md-5">
+          <input #newSectionTitle class="form-control form-control-sm" placeholder="New section title (e.g. Urinary Health)" />
+        </div>
+        <div class="col-md-5">
+          <input #newSectionKey class="form-control form-control-sm" placeholder="Section key (internal, optional)" />
+        </div>
+        <div class="col-md-2 text-end">
+          <button
+            class="btn btn-sm btn-success"
+            type="button"
+            (click)="
+              addSection(
+                newSectionKey.value || generateSafeKey(newSectionTitle.value || 'section'),
+                newSectionTitle.value || 'New Section'
+              );
+              newSectionTitle.value = '';
+              newSectionKey.value = '';
+            "
+            [disabled]="!newSectionTitle.value"
+          >
+            Add Section
+          </button>
+        </div>
+      </div>
+
+      <!-- Sections list (accordion-like but kept open for easier editing) -->
+      <div formArrayName="sections">
+        <div *ngFor="let secCtrl of sections.controls; let i = index" [formGroupName]="i" class="mb-4 border rounded p-3 bg-white">
+          <!-- Section header -->
+          <div class="d-flex justify-content-between align-items-start mb-3 gap-2">
+            <div class="flex-grow-1">
+              <input formControlName="title" placeholder="Section title" class="form-control mb-2" />
+              <input formControlName="name" placeholder="Section key (internal)" class="form-control form-control-sm text-muted" />
+            </div>
+
+            <div class="d-flex flex-column gap-2 ms-2">
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeSection(i)">Remove</button>
+            </div>
+          </div>
+
+          <!-- Inline add question for this section -->
+          <div class="mb-3">
+            <div class="input-group input-group-sm">
+              <input #newQuestionText class="form-control" placeholder="New question text" />
+              <button
+                class="btn btn-success"
+                type="button"
+                (click)="
+                  addQuestion(i, { key: generateSafeKey('q'), text: newQuestionText.value });
+                  newQuestionText.value = '';
+                "
+                [disabled]="!newQuestionText.value"
+              >
+                Add Question
+              </button>
+            </div>
+            <div class="form-text mt-1">Or use the existing question rows below to edit/delete.</div>
+          </div>
+
+          <!-- Questions list -->
+          <div formArrayName="questions">
+            <div
+              *ngFor="let qCtrl of getQuestions(i).controls; let qi = index"
+              [formGroupName]="qi"
+              class="card card-body mb-2"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <input formControlName="text" placeholder="Question text" class="form-control" />
+                <div class="btn-group">
+                  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="openQuestionEditor(i, qi)" disabled>Edit</button>
+                  <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeQuestion(i, qi)">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- section footer -->
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <small class="text-muted">Tip: Add a descriptive section title to help respondents.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- Preview (below the form) -->
+ <!-- Enhanced Preview -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-light">
+    <h5 class="mb-0">Survey Preview</h5>
+  </div>
+  <div class="card-body">
+    <!-- Survey Title -->
+    <h4 class="fw-bold text-primary mb-4">
+      {{ form.get('name')?.value || 'Untitled Survey' }}
+    </h4>
+
+    <!-- Sections -->
+    <div *ngFor="let sec of form.value.sections; let i = index" class="mb-4">
+      <div class="p-3 border rounded bg-white shadow-sm">
+        <!-- Section Title -->
+        <h5 class="fw-semibold mb-3">
+          {{ sec.title || '(No title)' }}
+        </h5>
+
+        <!-- Questions -->
+        <div *ngIf="sec.questions?.length > 0; else noQuestions">
+          <ol class="list-unstyled">
+            <li *ngFor="let q of sec.questions; let qi = index" class="mb-3">
+              <div class="fw-medium mb-2">
+                {{ qi + 1 }}. {{ q.text || '(No question text)' }}
+              </div>
+
+              <!-- Radio buttons (Never → Always) -->
+              <div class="d-flex gap-3">
+                <div class="form-check form-check-inline" *ngFor="let opt of ['Never','Rarely','Sometimes','Often','Always']; let oi = index">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    [attr.name]="'sec' + i + 'q' + qi"
+                    [id]="'sec' + i + 'q' + qi + 'opt' + oi"
+                    disabled
+                  />
+                  <label class="form-check-label small" [for]="'sec' + i + 'q' + qi + 'opt' + oi">
+                    {{ opt }}
+                  </label>
+                </div>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <!-- No questions message -->
+        <ng-template #noQuestions>
+          <p class="text-muted fst-italic">No questions added yet.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Question Editor Modal (unchanged) -->
+  <div class="modal fade show d-block" *ngIf="editingQuestion" tabindex="-1" style="background: rgba(0,0,0,0.5);">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <form [formGroup]="questionEditor" (ngSubmit)="saveQuestionEdit()">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Question</h5>
+            <button type="button" class="btn-close" (click)="closeQuestionEditor()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label">Question Text</label>
+              <textarea class="form-control" formControlName="text" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Question Key</label>
+              <input class="form-control" formControlName="key" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-outline-secondary" type="button" (click)="closeQuestionEditor()">Cancel</button>
+            <button class="btn btn-primary" type="submit">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

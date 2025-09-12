@@ -2,6 +2,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { map } from 'rxjs';
+import { Survey } from 'src/app/modules/patient.admin/models/create.survey/survey.model';
 import { PatientSurveyRequest } from '../../../models/survey/patient.survey.request';
 import { SurveyData } from '../../../models/survey/survey.data';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
@@ -88,16 +89,26 @@ export class RenderSurveyComponent implements OnInit {
       map(data => data.body)
     ).subscribe((survey: any) => {
       this.survey = survey;
+      this.buildFormControls(survey);
     })
     // Create form controls for all questions
-    this.createFormControls();
+    //this.createFormControls();
 
     // Listen to form value changes to update progress
     this.surveyForm.valueChanges.subscribe(() => {
       this.calculateProgress();
     });
   }
-
+  private buildFormControls(survey: Survey) {
+    survey.sections.forEach(section => {
+      section.questions.forEach(q => {
+        this.surveyForm.addControl(
+          q.key,
+          this.fb.control('', Validators.required)
+        );
+      });
+    });
+  }
   createFormControls() {
     // Add controls for all questions
     const allQuestions = [

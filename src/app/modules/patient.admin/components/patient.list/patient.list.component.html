@@ -129,9 +129,16 @@
               <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm" variant="outline">
                 Records
               </button>
-              <button (click)="openSurvey(item)" cButton color="primary" size="sm" variant="outline">
-                Survey
-              </button>
+              <c-dropdown>
+                <button cButton cDropdownToggle color="primary" size="sm" variant="outline">
+                  Survey Actions
+                </button>
+                <div cDropdownMenu>
+                  <a (click)="openSurvey(item)" cDropdownItem>Submit Survey</a>
+                  <hr cDropdownDivider>
+                  <a cDropdownItem>Quick Intake</a>
+                </div>
+              </c-dropdown>
             </c-input-group>
           </ng-container>
           <ng-container *ngSwitchCase="'name'" class="py-2">
@@ -195,6 +202,6 @@
     <button (click)="toggleQuickIntakeAndSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <survey-submission  *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission>
+    <survey-submission *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission>
   </c-modal-body>
 </c-modal>

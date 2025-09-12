@@ -257,6 +257,6 @@
 /intake-service/api/digital-intake/create/survey http://161.97.126.192:8050/intake-service/api/digital-intake/create/survey 200
 /intake-service/api/digital-intake/create/quick/intake http://161.97.126.192:8050/intake-service/api/digital-intake/create/quick/intake 200
 /intake-service/api/patient/find/failed/clinic/:clinicId http://161.97.126.192:8050/intake-service/api/patient/find/failed/clinic/:clinicId 200
-/intake-service/api/digital-intake/lookups/survey/find/:id http://161.97.126.192:8050/intake-service/api/survey/find/:id 200
+/intake-service/api/digital-intake/lookups/survey/find/:id http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/survey/find/:id 200
 /intake-service/api/survey/find/all http://161.97.126.192:8050/intake-service/api/survey/find/all 200
 /*  /index.html   200

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
 import { Survey } from '../../models/create.survey/survey.model';
 import { PatientSurveyService } from '../../services/survey/patient-survey.service';
@@ -11,12 +12,14 @@ import { PatientSurveyService } from '../../services/survey/patient-survey.servi
 })
 export class ListSurveyComponent implements OnInit {
 
+
   isSurvey: boolean
   surveys: any[] = [];
   editingSurvey: any = null;
   editForm!: FormGroup;
   constructor(private patientSurveyService:PatientSurveyService
-    , private fb: FormBuilder) { }
+    , private fb: FormBuilder,
+    private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.loadSurveys();
@@ -24,6 +27,19 @@ export class ListSurveyComponent implements OnInit {
   loadSurveys(): void {
     this.patientSurveyService.getAll().subscribe((data:any) => {
       this.surveys = data.body;
+    });
+  }
+  toggleActiveStatus(survey: any) {    
+    const updatedStatus = !survey.isActive;
+    this.patientSurveyService.updateStatus(survey.id, updatedStatus).subscribe({
+      next: () => {
+        survey.active = updatedStatus; // update UI
+        this.toastrService.success('Status Updated');
+      },
+      error: (err:any) => {
+        console.error('Error updating status', err);
+        this.toastrService.success('Error During update status');
+      }
     });
   }
   buildForm(survey: Survey) {

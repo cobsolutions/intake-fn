@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Survey } from '../../models/create.survey/survey.model';
 
@@ -30,5 +31,9 @@ export class PatientSurveyService {
     const headers = { 'content-type': 'application/json' }
     const url = this.baseUrl + "update/" + model.id 
     return this.httpClient.put(url, JSON.stringify(model), { 'headers': headers, observe: 'response' })
+  }
+  updateStatus(id: number, active: boolean): Observable<any> {
+    const url = this.baseUrl + "/" + id + '/status' 
+    return this.httpClient.patch(url, { active });
   }
 }

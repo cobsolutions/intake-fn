@@ -26,13 +26,20 @@
         <tr *ngFor="let survey of surveys">
           <td>{{ survey.id }}</td>
           <td>{{ survey.name }}</td>
+
           <td>
-            <span [class.active]="survey.isActive" [class.inactive]="!survey.isActive">
-              {{ survey.isActive ? "Active" : "Inactive" }}
-            </span>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" [checked]="survey.isActive"
+                (change)="toggleActiveStatus(survey)" />
+              <label class="form-check-label">
+                {{ survey.isActive ? 'Active' : 'Inactive' }}
+              </label>
+            </div>
           </td>
           <td>
-            <button class="btn-edit" (click)="startEdit(survey)">Edit</button>
+            <c-input-group>
+              <button class="btn-edit" (click)="startEdit(survey)">Edit</button>
+            </c-input-group>
           </td>
         </tr>
       </tbody>

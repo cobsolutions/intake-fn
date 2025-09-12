@@ -3,7 +3,6 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="mb-0">{{ isEdit ? 'Edit Survey' : 'Create Survey' }}</h2>
     <div>
-      <button class="btn btn-outline-secondary me-2" (click)="cancel()">Back</button>
       <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
         {{ isEdit ? 'Save Changes' : 'Create Survey' }}
       </button>
@@ -62,9 +61,6 @@
             </div>
 
             <div class="d-flex flex-column gap-2 ms-2">
-              <button type="button" class="btn btn-sm btn-outline-primary" (click)="addQuestion(i)">
-                + Q (Quick)
-              </button>
               <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeSection(i)">Remove</button>
             </div>
           </div>
@@ -98,7 +94,7 @@
               <div class="d-flex align-items-center gap-2">
                 <input formControlName="text" placeholder="Question text" class="form-control" />
                 <div class="btn-group">
-                  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="openQuestionEditor(i, qi)">Edit</button>
+                  <button class="btn btn-sm btn-outline-secondary" type="button" (click)="openQuestionEditor(i, qi)" disabled>Edit</button>
                   <button class="btn btn-sm btn-outline-danger" type="button" (click)="removeQuestion(i, qi)">Delete</button>
                 </div>
               </div>
@@ -108,9 +104,6 @@
           <!-- section footer -->
           <div class="d-flex justify-content-between align-items-center mt-2">
             <small class="text-muted">Tip: Add a descriptive section title to help respondents.</small>
-            <div>
-              <button type="button" class="btn btn-link btn-sm" (click)="addSampleQuestion(i)">+ Add sample question</button>
-            </div>
           </div>
         </div>
       </div>

@@ -69,7 +69,7 @@ export class GenerateSurveyComponent implements OnInit {
     (secs || []).forEach(sec => {
       const questionsArray = this.fb.array([]);
       (sec.questions || []).forEach((q: SurveyQuestion) => {
-        var dd:any= this.fb.group({
+        var dd: any = this.fb.group({
           key: [q.key || this.generateSafeKey('q')],
           text: [q.text || '', Validators.required],
           answerOptions: [q.answerOptions || STANDARD_ANSWER_OPTIONS]
@@ -143,24 +143,12 @@ export class GenerateSurveyComponent implements OnInit {
         answerOptions: q.answerOptions?.length ? q.answerOptions : STANDARD_ANSWER_OPTIONS
       }))
     }));
-
+    console.log(JSON.stringify(payload))
   }
 
-  cancel(): void {
-    this.router.navigate(['/admin/surveys']);
-  }
   generateSafeKey(seed: string): string {
     const base = (seed || '').replace(/\s+/g, '_').toLowerCase();
     const suffix = Math.random().toString(36).substring(2, 7);
     return `${base}_${suffix}`;
-  }
-
-  // small dev helper
-  addSampleQuestion(sectionIndex: number): void {
-    this.addQuestion(sectionIndex, {
-      key: this.generateSafeKey('sample'),
-      text: 'New sample question',
-      answerOptions: STANDARD_ANSWER_OPTIONS
-    });
   }
 }

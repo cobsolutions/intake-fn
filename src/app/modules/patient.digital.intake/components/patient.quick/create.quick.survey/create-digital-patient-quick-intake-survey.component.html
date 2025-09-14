@@ -52,9 +52,9 @@
       <div class="form-group half-width">
         <label>State</label>
         <input type="text" formControlName="state" placeholder="Enter state" />
-      </div>
-      <div class="error" *ngIf="f.state.touched && f.state.invalid">
-        State is required
+        <div class="error" *ngIf="f.state.touched && f.state.invalid">
+          State is required
+        </div>
       </div>
     </div>
 
@@ -85,10 +85,10 @@
       </div>
     </div>
     <!-- New: Insurance Company -->
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label>Insurance Company</label>
       <input type="text" formControlName="insuranceCompany" placeholder="Enter insurance company" />
-    </div>
+    </div> -->
 
 
     <div class="actions">

@@ -9,7 +9,7 @@ interface IntakeForm {
   lastName: FormControl<string | null>;
   phone: FormControl<string | null>;
   email: FormControl<string | null>;
-  insuranceCompany: FormControl<string | null>;
+  // insuranceCompany: FormControl<string | null>;
   dob: FormControl<string | null>;
   address: FormControl<string | null>;
   city: FormControl<string | null>;
@@ -36,7 +36,7 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
       lastName: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.min(15), Validators.pattern(this.phoneRgx)]],
       email: ['', [Validators.required, Validators.email]],
-      insuranceCompany: ['', Validators.required],
+      // insuranceCompany: ['', Validators.required],
       dob: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
@@ -57,20 +57,20 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
     }
   }
   saveAndStartSurveyLater() {
-
+    console.log('saveAndStartSurveyLater');
   }
   get f() {
     return this.intakeForm.controls;
   }
   private createRequest(): PatientQuickIntakeRequest {
-    const dateOfBirth:number =  Number(moment(this.intakeForm.value.dob).format("x"));
+    const dateOfBirth: number = Number(moment(this.intakeForm.value.dob).format("x"));
     return {
       firstName: this.intakeForm.value.firstName!,
       middleName: this.intakeForm.value.middleName!,
       lastName: this.intakeForm.value.lastName!,
       phone: (this.intakeForm.value.phone!).toString(),
       email: this.intakeForm.value.email!,
-      insuranceCompany: this.intakeForm.value.insuranceCompany!,
+      // insuranceCompany: this.intakeForm.value.insuranceCompany!,
       address: this.intakeForm.value.address!,
       city: this.intakeForm.value.city!,
       state: this.intakeForm.value.state!,

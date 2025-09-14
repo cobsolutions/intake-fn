@@ -60,15 +60,18 @@
 
     <div class="form-group">
       <label>Zip Code</label>
-      <input type="text" formControlName="zipCode" placeholder="Enter zip code" />
+      <input type="text" formControlName="zipCode" placeholder="Enter zip code" zipcode maxlength="10" />
       <div class="error" *ngIf="f.zipCode.touched && f.zipCode.invalid">
         ZipCode is required
+      </div>
+      <div *ngIf="f.zipCode?.errors?.['pattern']" class="text-danger mx-1">
+        Invalid ZipCode format
       </div>
     </div>
 
     <div class="form-group">
       <label>Phone</label>
-      <input type="tel" formControlName="phone" placeholder="Enter phone number" />
+      <input formControlName="phone" placeholder="Enter phone number" [value]="f.phone!.value | phone" />
       <div class="error" *ngIf="f.phone.touched && f.phone.invalid">
         Valid phone number is required
       </div>

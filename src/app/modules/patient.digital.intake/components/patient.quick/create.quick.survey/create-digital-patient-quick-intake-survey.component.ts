@@ -24,6 +24,8 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
   intakeForm!: FormGroup<IntakeForm>;
   renderSurvey: boolean = false;
   createdPatient: number;
+  phoneRgx = /^\(\d{3}\) \d{3}-\d{4}$/;
+  zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
   constructor(private fb: FormBuilder, private digitalIntakeService: DigitalIntakeService) { }
 
   ngOnInit(): void {
@@ -31,14 +33,14 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
       firstName: ['', [Validators.required]],
       middleName: [''],
       lastName: ['', [Validators.required]],
-      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10,15}$/)]],
+      phone: ['', [Validators.required, Validators.min(15), Validators.pattern(this.phoneRgx)]],
       email: ['', [Validators.required, Validators.email]],
       insuranceCompany: ['', Validators.required],
       dob: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      zipCode: ['', Validators.required]
+      zipCode: ['', [Validators.required, Validators.min(10), Validators.pattern(this.zipCodeRgx)]]
     });
   }
   saveAndStartSurvey(): void {

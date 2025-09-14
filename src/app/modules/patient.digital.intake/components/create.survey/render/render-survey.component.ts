@@ -81,9 +81,7 @@ export class RenderSurveyComponent implements OnInit {
   onSubmit() {
     if (this.surveyForm.valid) {
       var pId = (this.createdpatient === null || this.createdpatient === undefined) ? this.patientId : this.createdpatient;
-      console.log('check', pId);
       var model: PatientSurveyRequest = this.buildSurveyRequest(pId, this.survey.name);
-      console.log(JSON.stringify(model))
       this.digitalIntakeService.createSurvey(model).subscribe(reVal => {
         this.router.navigateByUrl('/digital-intake/survey-done?token=' + this.digitalIntakeService.token);
       })

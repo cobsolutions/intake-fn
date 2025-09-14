@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
@@ -27,7 +28,7 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
   createdPatient: number;
   phoneRgx = /^\(\d{3}\) \d{3}-\d{4}$/;
   zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
-  constructor(private fb: FormBuilder, private digitalIntakeService: DigitalIntakeService) { }
+  constructor(private fb: FormBuilder, private digitalIntakeService: DigitalIntakeService, private router: Router) { }
 
   ngOnInit(): void {
     this.intakeForm = this.fb.group({
@@ -57,7 +58,15 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
     }
   }
   saveAndStartSurveyLater() {
-    console.log('saveAndStartSurveyLater');
+    if (this.intakeForm.valid) {
+      var model: PatientQuickIntakeRequest = this.createRequest();
+      this.digitalIntakeService.createQuickIntake(model).subscribe((data: any) => {
+        this.router.navigateByUrl('/digital-intake/survey-done?token=' + this.digitalIntakeService.token);
+      })
+    } else {
+      this.intakeForm.markAllAsTouched();
+    }
+
   }
   get f() {
     return this.intakeForm.controls;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import * as moment from 'moment';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
 interface IntakeForm {
@@ -62,12 +63,19 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
     return this.intakeForm.controls;
   }
   private createRequest(): PatientQuickIntakeRequest {
+    const dateOfBirth:number =  Number(moment(this.intakeForm.value.dob).format("x"));
     return {
       firstName: this.intakeForm.value.firstName!,
       middleName: this.intakeForm.value.middleName!,
       lastName: this.intakeForm.value.lastName!,
       phone: (this.intakeForm.value.phone!).toString(),
       email: this.intakeForm.value.email!,
+      insuranceCompany: this.intakeForm.value.insuranceCompany!,
+      address: this.intakeForm.value.address!,
+      city: this.intakeForm.value.city!,
+      state: this.intakeForm.value.state!,
+      zipCode: this.intakeForm.value.zipCode!,
+      dob: dateOfBirth
     }
   }
 }

@@ -90,6 +90,32 @@
   .btn.secondary:hover {
     background: #e5e7eb;
   }
+  .dob-input {
+    font-size: 1rem;
+    padding: 0.9rem;   /* bigger touch target */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 100%;
+    background-color: #fff;
+    min-height: 48px;  /* ensures good tap area */
+  }
+  .form-row {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .half-width {
+    flex: 1;
+  }
+  
+  /* On small screens, stack fields */
+  @media (max-width: 600px) {
+    .form-row {
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+  }
+  
   
   /* Mobile-first design */
   @media (max-width: 600px) {

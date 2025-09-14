@@ -8,6 +8,12 @@ interface IntakeForm {
   lastName: FormControl<string | null>;
   phone: FormControl<string | null>;
   email: FormControl<string | null>;
+  insuranceCompany: FormControl<string | null>;
+  dob: FormControl<string | null>;
+  address: FormControl<string | null>;
+  city: FormControl<string | null>;
+  state: FormControl<string | null>;
+  zipCode: FormControl<string | null>;
 }
 @Component({
   selector: 'app-create-digital-patient-quick-intake-survey',
@@ -26,7 +32,13 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
       middleName: [''],
       lastName: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10,15}$/)]],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      insuranceCompany: ['', Validators.required],
+      dob: ['', Validators.required],
+      address: ['', Validators.required],
+      city: ['', Validators.required],
+      state: ['', Validators.required],
+      zipCode: ['', Validators.required]
     });
   }
   saveAndStartSurvey(): void {

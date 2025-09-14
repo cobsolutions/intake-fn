@@ -61,7 +61,7 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
     if (this.intakeForm.valid) {
       var model: PatientQuickIntakeRequest = this.createRequest();
       this.digitalIntakeService.createQuickIntake(model).subscribe((data: any) => {
-        this.router.navigateByUrl('/digital-intake/survey-done?token=' + this.digitalIntakeService.token);
+        this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
       })
     } else {
       this.intakeForm.markAllAsTouched();

@@ -30,13 +30,30 @@
                 [(endDate)]="patientSearchCriteria.endDate_date" [placeholder]="['Created From ', 'Created To']"
                 [ranges]="customRanges"></c-date-range-picker>
             </c-col>
-            <c-col class="mb-2" xs="12">
+            <c-col class="mb-2" xs="4">
               <select cSelect name="pSchedulefilter" (change)="isScheduleChanged($event)"
                 [(ngModel)]="patientSearchCriteria.isSchedule">
                 <option selected disabled value="undefined">Patient Schedule</option>
                 <option value="null">All</option>
                 <option value="true">Scheduled</option>
                 <option value="false">Not Scheduled</option>
+              </select>
+            </c-col>
+            <c-col class="mb-2" xs="4">
+              <select cSelect name="pSurveyfilter" [(ngModel)]="patientSearchCriteria.surveyStatus">
+                <option selected disabled value="undefined">Patient Survey Status</option>
+                <option value=null>All</option>
+                <option value="HAS_SURVEY">Has Survey</option>
+                <option value="NO_SURVEY">No Survey</option>
+                <option value="REQUESTED_SURVEY">Request Survey</option>
+              </select>
+            </c-col>
+            <c-col class="mb-2" xs="4">
+              <select cSelect name="pQuickfilter" [(ngModel)]="patientSearchCriteria.isQuick">
+                <option selected disabled value="undefined">Intake completeness</option>
+                <option value="null">All</option>
+                <option value="true">Quick</option>
+                <option value="false">Full</option>
               </select>
             </c-col>
             <c-col xs="12" class="text-center">

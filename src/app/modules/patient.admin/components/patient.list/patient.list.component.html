@@ -156,6 +156,12 @@
                 [(ngModel)]="item.schedule" />
             </c-form-check>
           </ng-container>
+          <ng-container *ngSwitchCase="'surveyStatus'" class="py-2">
+            <c-badge color="primary" *ngIf="item.surveyStatus === 'HAS_SURVEY'"> Has Survey</c-badge>
+            <c-badge color="warning" *ngIf="item.surveyStatus === 'REQUESTED_SURVEY'">Requested Survey</c-badge>
+            <c-badge color="danger" *ngIf="(item.surveyStatus === null) || item.surveyStatus === '' ">No
+              survey</c-badge>
+          </ng-container>
         </ng-container>
       </td>
     </ng-template>

@@ -35,6 +35,7 @@ export interface IUsers {
   isSchedule: boolean
   hasProvider:boolean
   createdAt: number;
+  surveyStatus:string;
 }
 
 export interface IPatient {

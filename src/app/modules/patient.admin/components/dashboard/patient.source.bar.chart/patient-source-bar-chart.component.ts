@@ -103,7 +103,6 @@ export class PatientSourceBarChartComponent implements OnInit {
 
     this.selectedClinics = selectedclinics !== undefined ? selectedclinics : this.clinics.map(clinic => (clinic.id?.toString()));
     this.dashboardService.getPatientSourceDirectAccess(this.selectedClinics, this.selectedSources, this.selectedDate).subscribe((data: any) => {
-      console.log(JSON.stringify(data.map((item: any) => item.countWithDirectAccess)))
       this.chartData = {
         labels: data.map((item: any) => item.patientSourceName),
         datasets: [

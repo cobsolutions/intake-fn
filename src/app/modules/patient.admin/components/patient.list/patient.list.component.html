@@ -30,13 +30,30 @@
                 [(endDate)]="patientSearchCriteria.endDate_date" [placeholder]="['Created From ', 'Created To']"
                 [ranges]="customRanges"></c-date-range-picker>
             </c-col>
-            <c-col class="mb-2" xs="12">
+            <c-col class="mb-2" xs="4">
               <select cSelect name="pSchedulefilter" (change)="isScheduleChanged($event)"
                 [(ngModel)]="patientSearchCriteria.isSchedule">
                 <option selected disabled value="undefined">Patient Schedule</option>
                 <option value="null">All</option>
                 <option value="true">Scheduled</option>
                 <option value="false">Not Scheduled</option>
+              </select>
+            </c-col>
+            <c-col class="mb-2" xs="4">
+              <select cSelect name="pSurveyfilter" [(ngModel)]="patientSearchCriteria.surveyStatus">
+                <option selected disabled value="undefined">Patient Survey Status</option>
+                <option value=null>All</option>
+                <option value="HAS_SURVEY">Has Survey</option>
+                <option value="NO_SURVEY">No Survey</option>
+                <option value="REQUESTED_SURVEY">Request Survey</option>
+              </select>
+            </c-col>
+            <c-col class="mb-2" xs="4">
+              <select cSelect name="pQuickfilter" [(ngModel)]="patientSearchCriteria.isQuick">
+                <option selected disabled value="undefined">Intake completeness</option>
+                <option value="null">All</option>
+                <option value="true">Quick</option>
+                <option value="false">Full</option>
               </select>
             </c-col>
             <c-col xs="12" class="text-center">
@@ -84,7 +101,8 @@
             <tr>
               <td>Patient Intake</td>
               <td>
-                <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File">
+                <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File"
+                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
                   <svg cIcon name="cilCloudDownload"></svg>
                 </button>
               </td>
@@ -92,8 +110,8 @@
             <tr>
               <td *ngIf="!item['hasGuarantor']">Patient ID Document</td>
               <td *ngIf="item['hasGuarantor']">Guarantor Document</td>
-              <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,false)"
-                  cTooltip="Id Document">
+              <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,false)" cTooltip="Id Document"
+                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
                   <svg cIcon name="cilCloudDownload"></svg>
                 </button></td>
             </tr>
@@ -101,7 +119,8 @@
               <td>Patient Insurance Document</td>
               <td>
                 <button cButton variant="outline" (click)="exportPatientInsuranceDocument(item)"
-                  *ngIf="!item.hasGuarantor" cTooltip="Insurance Document">
+                  *ngIf="!item.hasGuarantor" cTooltip="Insurance Document"
+                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
                   <svg cIcon name="cilCloudDownload"></svg>
                 </button>
               </td>
@@ -155,6 +174,16 @@
               <input cFormCheckInput type="checkbox" (change)="isSchedule(item)" [checked]="item.schedule"
                 [(ngModel)]="item.schedule" />
             </c-form-check>
+          </ng-container>
+          <ng-container *ngSwitchCase="'isQuick'" class="py-2">
+            <c-badge color="warning" *ngIf="item.isQuick">Quick</c-badge>
+            <c-badge color="success" *ngIf="(item.isQuick===null) ||( item.isQuick ===false)">Full</c-badge>
+          </ng-container>
+          <ng-container *ngSwitchCase="'surveyStatus'" class="py-2">
+            <c-badge color="primary" *ngIf="item.surveyStatus === 'HAS_SURVEY'"> Has Survey</c-badge>
+            <c-badge color="warning" *ngIf="item.surveyStatus === 'REQUESTED_SURVEY'">Requested Survey</c-badge>
+            <c-badge color="danger" *ngIf="(item.surveyStatus === null) || item.surveyStatus === '' ">No
+              survey</c-badge>
           </ng-container>
         </ng-container>
       </td>

@@ -7,9 +7,11 @@ export interface PatientSearchCriteria {
     clinic?: String;
     startDate_date?: Date | null | undefined
     endDate_date?: Date | null | undefined
-    isSchedule?:boolean | null
-    startDate?:number
-    endDate?:number
-    timeZone?:string
-    clinicId?:number| null
+    surveyStatus?: string | null
+    isSchedule?: boolean | null
+    isQuick?: boolean | null
+    startDate?: number
+    endDate?: number
+    timeZone?: string
+    clinicId?: number | null
 }

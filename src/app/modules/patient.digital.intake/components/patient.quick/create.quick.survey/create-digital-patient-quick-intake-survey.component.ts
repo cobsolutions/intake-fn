@@ -48,6 +48,7 @@ export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
   saveAndStartSurvey(): void {
     if (this.intakeForm.valid) {
       var model: PatientQuickIntakeRequest = this.createRequest();
+      model.surveyStatus = "HAS_SURVEY"
       this.digitalIntakeService.createQuickIntake(model).subscribe((data: any) => {
         console.log(data.body)
         this.createdPatient = data.body

@@ -84,7 +84,8 @@
             <tr>
               <td>Patient Intake</td>
               <td>
-                <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File">
+                <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File"
+                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
                   <svg cIcon name="cilCloudDownload"></svg>
                 </button>
               </td>
@@ -92,8 +93,8 @@
             <tr>
               <td *ngIf="!item['hasGuarantor']">Patient ID Document</td>
               <td *ngIf="item['hasGuarantor']">Guarantor Document</td>
-              <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,false)"
-                  cTooltip="Id Document">
+              <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,false)" cTooltip="Id Document"
+                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
                   <svg cIcon name="cilCloudDownload"></svg>
                 </button></td>
             </tr>
@@ -101,7 +102,8 @@
               <td>Patient Insurance Document</td>
               <td>
                 <button cButton variant="outline" (click)="exportPatientInsuranceDocument(item)"
-                  *ngIf="!item.hasGuarantor" cTooltip="Insurance Document">
+                  *ngIf="!item.hasGuarantor" cTooltip="Insurance Document"
+                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
                   <svg cIcon name="cilCloudDownload"></svg>
                 </button>
               </td>
@@ -155,6 +157,10 @@
               <input cFormCheckInput type="checkbox" (change)="isSchedule(item)" [checked]="item.schedule"
                 [(ngModel)]="item.schedule" />
             </c-form-check>
+          </ng-container>
+          <ng-container *ngSwitchCase="'isQuick'" class="py-2">
+            <c-badge color="warning" *ngIf="item.isQuick">Quick</c-badge>
+            <c-badge color="success" *ngIf="(item.isQuick===null) ||( item.isQuick ===false)">Full</c-badge>
           </ng-container>
           <ng-container *ngSwitchCase="'surveyStatus'" class="py-2">
             <c-badge color="primary" *ngIf="item.surveyStatus === 'HAS_SURVEY'"> Has Survey</c-badge>

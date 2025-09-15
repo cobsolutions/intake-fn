@@ -33,8 +33,10 @@ export interface IUsers {
   insuranceWorkerType: string,
   hasPhysicalTherapy: boolean
   isSchedule: boolean
-  hasProvider:boolean
+  hasProvider: boolean
   createdAt: number;
+  surveyStatus: string;
+  isQuick: any
 }
 
 export interface IPatient {

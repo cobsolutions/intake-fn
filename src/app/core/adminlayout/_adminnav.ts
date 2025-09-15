@@ -58,7 +58,7 @@ export const adminNavItems: INavData[] = [
         name: 'Surveys',
         url: 'survey/list'
       }
-      
+
     ],
   },
   {
@@ -77,6 +77,10 @@ export const adminNavItems: INavData[] = [
       {
         name: 'Patient Contact',
         url: 'report/contact'
+      },
+      {
+        name: 'Patient Survey',
+        url: 'report/survey'
       },
     ]
   },

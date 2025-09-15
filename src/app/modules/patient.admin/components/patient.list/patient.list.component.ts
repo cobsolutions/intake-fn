@@ -111,6 +111,16 @@ export class PatientListComponent implements OnInit, OnDestroy {
       sorter: false,
     },
     {
+      key: 'surveyStatus',
+      label: 'Survey Status',
+      sorter: false,
+    },
+    {
+      key: 'isQuick',
+      label: 'Completeness',
+      sorter: false,
+    },
+    {
       key: 'actions',
       label: 'Actions',
       sorter: false,

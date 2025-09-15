@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import * as moment from 'moment';
 import { map } from 'rxjs';
+import { PatientSurveyCriteria } from 'src/app/models/reporting/patient.survey.criteria';
 import { PaginationListTemplate } from 'src/app/modules/common/template/pagination.list.template';
 import { Clinic } from '../../../models/clinic.model';
 import { ClinicService } from '../../../services/clinic/clinic.service';
@@ -67,5 +69,22 @@ export class PatientsurveyReportComponent extends PaginationListTemplate impleme
     }
 
     return null;
+  }
+  private formatDate(criteria: PatientSurveyCriteria): void {
+    let startDateLong = 0;
+    let endDateLong = 0;
+  
+    const startAt = this.searchForm.get('startAt')?.value;
+    const endAt = this.searchForm.get('endAt')?.value;
+  
+    if (startAt) {
+      startDateLong = moment(startAt).startOf('day').valueOf();
+    }
+  
+    if (endAt) {
+      endDateLong = moment(endAt).endOf('day').valueOf();
+    }
+    criteria.startTime=startDateLong
+    criteria.endTime = endDateLong
   }
 }

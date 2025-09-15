@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { map } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { PatientSurveyCriteria } from 'src/app/models/reporting/patient.survey.criteria';
 import { PaginationListTemplate } from 'src/app/modules/common/template/pagination.list.template';
 import { Clinic } from '../../../models/clinic.model';
 import { ClinicService } from '../../../services/clinic/clinic.service';
 import { IUsers } from '../../../services/patient-list.service';
+import { PatientSourceReportingService } from '../../../services/reporting/source/patient-source-reporting.service';
 
 @Component({
   selector: 'patientsurvey-report',
@@ -21,11 +22,37 @@ export class PatientsurveyReportComponent extends PaginationListTemplate impleme
   clinics: Clinic[]
   selectedClinic: number;
   exportData: IUsers[];
+  patientData$!: Observable<IUsers[]>;
   search() {
-    throw new Error('Method not implemented.');
+    this.searchForm.markAllAsTouched();
+    if (this.searchForm.invalid) {
+      console.warn('❌ Form is invalid');
+      return; // ⛔ Prevent logic execution
+    }
+
+    var criteria: PatientSurveyCriteria = {
+      clinicId : this.searchForm.value.selectedClinic
+    }
+    this.formatDate(criteria)
+    console.log(JSON.stringify(criteria))
+    this.patientData$ =  this.patientSourceReportingService.findPatientSurvey(this.apiParams$, criteria).pipe(
+      tap((response: any) => {
+        this.totalItems$.next(response.number_of_matching_records);
+        if (response.number_of_records) {
+          this.errorMessage$.next('');
+        }
+        this.retry$.next(false);
+        this.loadingData$.next(false);
+      }),
+      map((response: any) => {
+        this.exportData = response.records;
+        console.log(JSON.stringify(this.exportData))
+        return response.records;
+      })
+    )
   }
 
-  constructor(private clinicService: ClinicService,private fb: FormBuilder) {
+  constructor(private clinicService: ClinicService,private fb: FormBuilder,private patientSourceReportingService: PatientSourceReportingService) {
 
     super();
   }

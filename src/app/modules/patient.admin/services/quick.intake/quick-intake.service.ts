@@ -27,4 +27,12 @@ export class QuickIntakeService {
     let params = new HttpParams().set('requester', requester);
     return this.httpClient.post(url, null, { 'headers': headers, observe: 'response', params: params })
   }
+
+  create(token: string, requester: string) {
+    var headers = { 'content-type': 'application/json', 'token': token }
+    const url = this.baseUrl + '/create';
+    let params = new HttpParams().set('requester', requester);
+    return this.httpClient.post(url, null, { 'headers': headers, observe: 'response', params: params })
+
+  }
 }

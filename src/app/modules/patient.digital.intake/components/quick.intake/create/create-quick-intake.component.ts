@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
+import { switchMap, tap } from 'rxjs';
+import { QuickIntakeService } from 'src/app/modules/patient.admin/services/quick.intake/quick-intake.service';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
 interface IntakeForm {
@@ -25,6 +27,7 @@ interface IntakeForm {
 export class CreateQuickIntakeComponent implements OnInit {
   type: string;
   token: string;
+  requester: string
   intakeForm!: FormGroup<IntakeForm>;
   renderSurvey: boolean = false;
   createdPatient: number;
@@ -33,13 +36,23 @@ export class CreateQuickIntakeComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private digitalIntakeService: DigitalIntakeService,
     private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private quickIntakeService: QuickIntakeService) {
   }
 
   ngOnInit(): void {
+    this.route.queryParams.pipe(
+      tap(param => {
+        this.token = param['token'];
+        this.type = param['type'];
+        this.requester = param['requester']
+      }),
+      switchMap(token => this.quickIntakeService.create(this.token, this.requester))
+    ).subscribe(dd => {
+      console.log(JSON.stringify('dd ' + dd))
+    })
     this.route.queryParams.subscribe((param: any) => {
-      this.token = param['token'];
-      this.type = param['type'];
+
       console.log(this.type)
       this.buildForm();
     })

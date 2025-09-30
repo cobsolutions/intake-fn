@@ -151,7 +151,10 @@
                     <!-- In a real application, you would use a QR code library here -->
                     <div class="qr-code-image">
                         <div class="qr-code-text">QR Code</div>
-                        <div class="qr-code-data">{{ qrCodeData }}</div>
+                        <div class="qr-code-data">
+                            <qrcode [qrdata]="qrCodeData" [width]="300" [errorCorrectionLevel]="'H'">
+                            </qrcode>
+                        </div>
                     </div>
                 </div>
                 <p class="qr-code-instruction">

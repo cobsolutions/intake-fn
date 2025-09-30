@@ -151,7 +151,6 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       const selectedClinic = this.getSelectedClinic();
 
       const emailData = {
-        patientName: formValue.patientName,
         patientEmail: formValue.patientEmail,
         intakeType: formValue.intakeType,
         surveyType: formValue.surveyType,

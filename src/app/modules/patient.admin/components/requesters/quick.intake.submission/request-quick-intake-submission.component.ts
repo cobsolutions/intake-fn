@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { map } from 'rxjs';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
+import { Survey } from '../../../models/create.survey/survey.model';
 import { ClinicService } from '../../../services/clinic/clinic.service';
+import { PatientSurveyService } from '../../../services/survey/patient-survey.service';
 
 @Component({
   selector: 'request-quick-intake-submission',
@@ -13,7 +16,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
   intakeForm: FormGroup;
 
   clinics: any[] = [];
-
+  surveys: Survey[];
   // Clinic selection options
   clinicSelectionOptions = [
     { value: 'specific', label: 'Select Clinic' },
@@ -25,7 +28,8 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
     private kcAuthServiceService: KcAuthServiceService,
-    private clinicService: ClinicService) {
+    private clinicService: ClinicService,
+    private patientSurveyService: PatientSurveyService) {
     this.intakeForm = this.fb.group({
       intakeType: ['', Validators.required],
       surveyType: [''],
@@ -61,6 +65,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     // Initialize clinic selection
     this.handleClinicSelectionTypeChange(this.intakeForm.get('clinicSelectionType')?.value);
     this.getClinics();
+    this.getSurveys()
   }
   private getClinics() {
     var userId = this.kcAuthServiceService.getLoggedUser()?.sub;
@@ -71,6 +76,14 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
         });
       }
     })
+  }
+  private getSurveys(){
+    this.patientSurveyService.getActive().pipe(
+      map(data => data.body)
+    )
+      .subscribe((data: any) => {
+        this.surveys = data
+      })
   }
   selectIntakeType(type: string) {
     this.intakeForm.patchValue({ intakeType: type });

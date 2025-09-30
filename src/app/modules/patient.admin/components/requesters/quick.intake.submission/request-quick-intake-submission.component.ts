@@ -90,7 +90,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
 
   selectClinic(clinic: any) {
     if (this.isClinicSelectionTypeSelected('specific')) {
-      this.intakeForm.patchValue({ selectedClinic: clinic.id });
+      this.intakeForm.patchValue({ selectedClinic: clinic.uuid });
     }
   }
 
@@ -125,11 +125,11 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
 
   getSelectedClinic(): any | null {
     const selectedId = this.intakeForm.get('selectedClinic')?.value;
-    return this.clinics.find(clinic => clinic.id === selectedId) || null;
+    return this.clinics.find(clinic => clinic.uuid === selectedId) || null;
   }
 
   isClinicSelected(clinic: any): boolean {
-    return this.intakeForm.get('selectedClinic')?.value === clinic.id;
+    return this.intakeForm.get('selectedClinic')?.value === clinic.uuid;
   }
 
   sendEmail() {

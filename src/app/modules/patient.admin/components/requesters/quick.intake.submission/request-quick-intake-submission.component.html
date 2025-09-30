@@ -70,6 +70,7 @@
                 <div class="selected-clinic-card">
                     <span class="selected-label">Selected Clinic:</span>
                     <span class="selected-clinic-info">
+                       
                         <strong>{{ getSelectedClinic()?.name }}</strong>
                         <span class="selected-clinic-address">{{ formatAddress(getSelectedClinic()?.clinicAddress)}}</span>
                     </span>
@@ -165,3 +166,10 @@
         <button type="button" class="btn cancel" (click)="cancel()">Cancel</button>
     </div>
 </form>
+ <!-- Debug: Show form values (remove in production) -->
+ <div class="debug-info" style="margin-top: 2rem; padding: 1rem; background: #f5f5f5; border-radius: 0.5rem;">
+    <h4>Form Debug Info:</h4>
+    <pre>Form Value: {{ intakeForm.value | json }}</pre>
+    <pre>Form Valid: {{ intakeForm.valid }}</pre>
+    <pre>Selected Clinic: {{ getSelectedClinic()?.name || 'None' }}</pre>
+</div>

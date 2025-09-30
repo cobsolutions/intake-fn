@@ -3,7 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
 import { Survey } from '../../../models/create.survey/survey.model';
+import { QuickIntakeRequest } from '../../../models/quick.intake/quickIntake.request';
 import { ClinicService } from '../../../services/clinic/clinic.service';
+import { QuickIntakeService } from '../../../services/quick.intake/quick-intake.service';
 import { PatientSurveyService } from '../../../services/survey/patient-survey.service';
 
 @Component({
@@ -29,7 +31,8 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
   constructor(private fb: FormBuilder,
     private kcAuthServiceService: KcAuthServiceService,
     private clinicService: ClinicService,
-    private patientSurveyService: PatientSurveyService) {
+    private patientSurveyService: PatientSurveyService,
+    private quickIntakeService: QuickIntakeService) {
     this.intakeForm = this.fb.group({
       intakeType: ['', Validators.required],
       surveyType: [''],
@@ -77,7 +80,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       }
     })
   }
-  private getSurveys(){
+  private getSurveys() {
     this.patientSurveyService.getActive().pipe(
       map(data => data.body)
     )
@@ -129,11 +132,30 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
 
     if (sendMethod === 'email') {
       patientEmailControl?.setValidators([Validators.required, Validators.email]);
+      this.constructURL('mail')
     } else {
       patientEmailControl?.clearValidators();
       patientEmailControl?.setValue('');
+      this.constructURL('device')
     }
     patientEmailControl?.updateValueAndValidity();
+  }
+
+  private constructURL(type: string) {
+    var quickIntakeRequest: QuickIntakeRequest = {}
+    switch (type) {
+      case 'mail':
+        quickIntakeRequest.requester = 'Mail_Submission'
+        quickIntakeRequest.requestMetaData = {};
+        break;
+      case 'device':
+        quickIntakeRequest.requester = 'Device_Submission'
+        quickIntakeRequest.requestMetaData = {};
+        break
+    }
+    this.quickIntakeService.generateOTT(quickIntakeRequest).subscribe(ott => {
+      console.log(JSON.stringify(ott))
+    })
   }
 
   getSelectedClinic(): any | null {

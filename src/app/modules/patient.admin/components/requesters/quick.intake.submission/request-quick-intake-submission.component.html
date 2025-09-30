@@ -48,7 +48,7 @@
     <div class="section">
         <h3 class="section-title">Select Clinic</h3>
         <!-- Single Clinic Selection -->
-        <div class="clinics-list-section" *ngIf="isClinicSelectionTypeSelected('specific')">
+        <div class="clinics-list-section" *ngIf="clinics.length > 0 && isClinicSelectionTypeSelected('specific')">
             <h4 class="clinics-subtitle">Select One Clinic</h4>
             <p class="clinic-selection-hint">Please choose one clinic from the list below</p>
 
@@ -59,7 +59,7 @@
                         (change)="selectClinic(clinic)" />
                     <span class="clinic-content">
                         <span class="clinic-name">{{ clinic.name }}</span>
-                        <span class="clinic-address">{{ clinic.address }}</span>
+                        <span class="clinic-address">{{ formatAddress(clinic.clinicAddress) }}</span>
                     </span>
                     <span class="radio-indicator"></span>
                 </label>
@@ -71,7 +71,7 @@
                     <span class="selected-label">Selected Clinic:</span>
                     <span class="selected-clinic-info">
                         <strong>{{ getSelectedClinic()?.name }}</strong>
-                        <span class="selected-clinic-address">{{ getSelectedClinic()?.address }}</span>
+                        <span class="selected-clinic-address">{{ formatAddress(getSelectedClinic()?.clinicAddress)}}</span>
                     </span>
                 </div>
             </div>

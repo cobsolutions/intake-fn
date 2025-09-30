@@ -27,7 +27,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
   ];
   // Fixed QR Code data (you can replace this with actual QR code generation)
   qrCodeData = 'https://your-clinic-portal.com/tablet-intake/12345';
-  prepareURL:string
+  prepareURL: string
   constructor(private fb: FormBuilder,
     private kcAuthServiceService: KcAuthServiceService,
     private clinicService: ClinicService,
@@ -151,11 +151,12 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       case 'device':
         quickIntakeRequest.requester = 'Device_Submission'
         quickIntakeRequest.requestMetaData = {};
+        quickIntakeRequest.requestMetaData!["clinic-id"]= this.intakeForm.get('selectedClinic')?.value;
         break
     }
     this.quickIntakeService.generateOTT(quickIntakeRequest).subscribe(response => {
-      var responseBody:any = response.body
-      this.prepareURL = this.baseURL + '/digital-intake/quick/pre-create?token=' + responseBody.token;
+      var responseBody: any = response.body
+      this.prepareURL = this.baseURL + '/digital-intake/quick/pre-create?token=' + responseBody.token + '&type=' + type;
       console.log(this.prepareURL)
     })
   }

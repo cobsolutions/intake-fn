@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CreateQuickIntakeComponent } from '../patient.admin/components/quick.intake/create/create-quick-intake.component';
 import { PreCreateQuickIntakeComponent } from '../patient.admin/components/quick.intake/pre.create/pre-create-quick-intake.component';
 import { CorruptedDeviceComponent } from './components/corrupted.device/corrupted-device.component';
 import { CreatePatientSurveyComponent } from './components/create.survey/create-patient-survey.component';
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'quick/pre-create',
         component: PreCreateQuickIntakeComponent,
+      },
+      {
+        path: 'quick/create',
+        component: CreateQuickIntakeComponent,
       },
       {
         path: 'pre-create',

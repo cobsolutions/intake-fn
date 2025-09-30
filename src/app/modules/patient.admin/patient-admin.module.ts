@@ -90,6 +90,7 @@ import { GenerateSurveyComponent } from './components/generate.survey/generate-s
 import { ListSurveyComponent } from './components/list.survey/list-survey.component';
 import { ShowPatientSurveyComponent } from './components/show.survey/show-patient-survey.component';
 import { PatientsurveyReportComponent } from './components/reports/patient.survey/patientsurvey-report.component';
+import { RequestQuickIntakeSubmissionComponent } from './components/requesters/quick.intake.submission/request-quick-intake-submission.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,7 @@ import { PatientsurveyReportComponent } from './components/reports/patient.surve
     PatientSourcePieChartComponent, 
     RequestDeviceRegistrationComponent, 
     RequestDeviceIntakeSubmissionComponent, 
-    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent, ChnagesReportComponent, PatientContactReportComponent, FailedPatientComponent, PelvicSurveyComponent, SurveySubmissionComponent, RequestDeviceSurveySubmissionComponentComponent, QuickIntakeComponent, GenerateSurveyComponent, ListSurveyComponent, ShowPatientSurveyComponent, PatientsurveyReportComponent
+    RequestMailIntakeSubmissionComponent, BioComponent, CapComponent, EditPatientProviderComponent, ChnagesReportComponent, PatientContactReportComponent, FailedPatientComponent, PelvicSurveyComponent, SurveySubmissionComponent, RequestDeviceSurveySubmissionComponentComponent, QuickIntakeComponent, GenerateSurveyComponent, ListSurveyComponent, ShowPatientSurveyComponent, PatientsurveyReportComponent, RequestQuickIntakeSubmissionComponent
   ],
   imports: [
     CommonModule,

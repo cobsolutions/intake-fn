@@ -1,0 +1,167 @@
+<!-- quick-intake.component.html -->
+
+<h2 class="title">Request Quick Intake Submission</h2>
+
+<form [formGroup]="intakeForm">
+    <!-- Intake Type Selection -->
+    <div class="section">
+        <h3 class="section-title">Choose Intake Type</h3>
+        <div class="option-group">
+            <label class="option-card" [class.selected]="isIntakeTypeSelected('quick')"
+                [class.error]="isFieldInvalid('intakeType')" (click)="selectIntakeType('quick')">
+                <input type="radio" formControlName="intakeType" value="quick" />
+                <span class="option-content">
+                    <span class="option-title">Quick Intake</span>
+                    <span class="option-desc">Standard intake process only</span>
+                </span>
+            </label>
+
+            <label class="option-card" [class.selected]="isIntakeTypeSelected('quick-survey')"
+                [class.error]="isFieldInvalid('intakeType')" (click)="selectIntakeType('quick-survey')">
+                <input type="radio" formControlName="intakeType" value="quick-survey" />
+                <span class="option-content">
+                    <span class="option-title">Quick Intake + Survey</span>
+                    <span class="option-desc">Include patient survey with intake</span>
+                </span>
+            </label>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('intakeType') && isFieldRequired('intakeType')">
+            Intake type is required
+        </div>
+    </div>
+
+    <!-- Survey Type -->
+    <div class="section" *ngIf="isIntakeTypeSelected('quick-survey')">
+        <h3 class="section-title">Select Survey Type</h3>
+        <select class="custom-select" formControlName="surveyType" [class.error]="isFieldInvalid('surveyType')">
+            <option value="">-- Select a Survey --</option>
+            <option value="general">General Health Survey</option>
+            <option value="pain">Pain Assessment</option>
+            <option value="mental">Mental Health Screening</option>
+        </select>
+        <div class="error-message" *ngIf="isFieldInvalid('surveyType') && isFieldRequired('surveyType')">
+            Survey type is required when selecting Quick Intake + Survey
+        </div>
+    </div>
+
+    <!-- Clinic Selection -->
+    <div class="section">
+        <h3 class="section-title">Select Clinic</h3>
+        <!-- Single Clinic Selection -->
+        <div class="clinics-list-section" *ngIf="isClinicSelectionTypeSelected('specific')">
+            <h4 class="clinics-subtitle">Select One Clinic</h4>
+            <p class="clinic-selection-hint">Please choose one clinic from the list below</p>
+
+            <div class="clinics-list">
+                <label *ngFor="let clinic of clinics" class="clinic-card" [class.selected]="isClinicSelected(clinic)"
+                    (click)="selectClinic(clinic)">
+                    <input type="radio" name="selectedClinic" [checked]="isClinicSelected(clinic)"
+                        (change)="selectClinic(clinic)" />
+                    <span class="clinic-content">
+                        <span class="clinic-name">{{ clinic.name }}</span>
+                        <span class="clinic-address">{{ clinic.address }}</span>
+                    </span>
+                    <span class="radio-indicator"></span>
+                </label>
+            </div>
+
+            <!-- Selected Clinic Display -->
+            <div class="selected-clinic-display" *ngIf="hasSelectedClinic()">
+                <div class="selected-clinic-card">
+                    <span class="selected-label">Selected Clinic:</span>
+                    <span class="selected-clinic-info">
+                        <strong>{{ getSelectedClinic()?.name }}</strong>
+                        <span class="selected-clinic-address">{{ getSelectedClinic()?.address }}</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="error-message" *ngIf="isFieldInvalid('selectedClinic') && isClinicSelectionRequired()">
+                Please select one clinic
+            </div>
+        </div>
+
+        <!-- Selection Summary -->
+        <div class="selection-summary" *ngIf="!isClinicSelectionTypeSelected('specific')">
+            <p class="summary-text">
+                <span *ngIf="isClinicSelectionTypeSelected('all')">
+                    ✅ All clinics will receive this intake request
+                </span>
+                <span *ngIf="isClinicSelectionTypeSelected('none')">
+                    ⚠️ No clinics selected. This request will not be sent to any clinics.
+                </span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Sending Method -->
+    <div class="section">
+        <h3 class="section-title">How would you like to send?</h3>
+        <div class="option-group">
+            <label class="option-card small" [class.selected]="isSendMethodSelected('email')"
+                [class.error]="isFieldInvalid('sendMethod')" (click)="selectSendMethod('email')">
+                <input type="radio" formControlName="sendMethod" value="email" />
+                <span class="option-content">
+                    <span class="option-title">Email</span>
+                </span>
+            </label>
+            <label class="option-card small" [class.selected]="isSendMethodSelected('tablet')"
+                [class.error]="isFieldInvalid('sendMethod')" (click)="selectSendMethod('tablet')">
+                <input type="radio" formControlName="sendMethod" value="tablet" />
+                <span class="option-content">
+                    <span class="option-title">Location Tablet</span>
+                </span>
+            </label>
+        </div>
+        <div class="error-message" *ngIf="isFieldInvalid('sendMethod') && isFieldRequired('sendMethod')">
+            Send method is required
+        </div>
+    </div>
+
+    <!-- Email Input Section -->
+    <div class="section" *ngIf="isSendMethodSelected('email')">
+        <h3 class="section-title">Send via Email</h3>
+        <div class="email-form">
+            <div class="form-group">
+                <label for="patientEmail" class="form-label">Patient Email *</label>
+                <input type="email" id="patientEmail" class="form-input" formControlName="patientEmail"
+                    placeholder="Enter patient email address" [class.error]="isEmailInvalid()">
+                <div class="error-message" *ngIf="isEmailInvalid() && isFieldRequired('patientEmail')">
+                    Valid email is required
+                </div>
+                <div class="error-message"
+                    *ngIf="isEmailInvalid() && intakeForm.get('patientEmail')?.errors?.['email']">
+                    Please enter a valid email address
+                </div>
+            </div>
+
+            <div class="email-actions">
+                <button type="button" class="btn primary" (click)="sendEmail()">Send Email</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Section -->
+    <div class="section" *ngIf="isSendMethodSelected('tablet')">
+        <h3 class="section-title">Location Tablet QR Code</h3>
+        <div class="qr-code-section">
+            <div class="qr-code-container">
+                <div class="qr-code-placeholder">
+                    <!-- In a real application, you would use a QR code library here -->
+                    <div class="qr-code-image">
+                        <div class="qr-code-text">QR Code</div>
+                        <div class="qr-code-data">{{ qrCodeData }}</div>
+                    </div>
+                </div>
+                <p class="qr-code-instruction">
+                    Scan this QR code with the clinic tablet to initiate the intake process.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions - Only Cancel Button -->
+    <div class="actions">
+        <button type="button" class="btn cancel" (click)="cancel()">Cancel</button>
+    </div>
+</form>

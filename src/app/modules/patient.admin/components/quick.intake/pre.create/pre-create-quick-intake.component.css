@@ -1,0 +1,55 @@
+.waiting-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    background: #f9fbfd;
+  }
+  
+  .waiting-card {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 320px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Loader animation */
+  .loader {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #4a90e2;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    animation: spin 1.2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Success state */
+  .success {
+    border: 1px solid #4caf50;
+  }
+  
+  .checkmark {
+    font-size: 2rem;
+    color: #4caf50;
+    margin-bottom: 1rem;
+  }
+  
+  .waiting-card h2 {
+    margin: 0.5rem 0;
+    color: #333;
+  }
+  
+  .waiting-card p {
+    color: #666;
+    font-size: 0.95rem;
+  }
+  

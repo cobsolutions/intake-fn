@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
@@ -18,11 +18,11 @@ interface IntakeForm {
   zipCode: FormControl<string | null>;
 }
 @Component({
-  selector: 'app-create-digital-patient-quick-intake-survey',
-  templateUrl: './create-digital-patient-quick-intake-survey.component.html',
-  styleUrls: ['./create-digital-patient-quick-intake-survey.component.css']
+  selector: 'app-create-quick-intake',
+  templateUrl: './create-quick-intake.component.html',
+  styleUrls: ['./create-quick-intake.component.css']
 })
-export class CreateDigitalPatientQuickIntakeSurveyComponent implements OnInit {
+export class CreateQuickIntakeComponent implements OnInit {
   intakeForm!: FormGroup<IntakeForm>;
   renderSurvey: boolean = false;
   createdPatient: number;

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { concatMap, Observable, tap } from 'rxjs';
-import { QuickIntakeService } from '../../../services/quick.intake/quick-intake.service';
-import { FingerprintService } from '../../../services/trust.device/fingerprint.service';
+import { QuickIntakeService } from 'src/app/modules/patient.admin/services/quick.intake/quick-intake.service';
+import { FingerprintService } from 'src/app/modules/patient.admin/services/trust.device/fingerprint.service';
+
 
 @Component({
   selector: 'pre-create-quick-intake',

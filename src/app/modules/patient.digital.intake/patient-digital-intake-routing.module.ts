@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CreateQuickIntakeComponent } from '../patient.admin/components/quick.intake/create/create-quick-intake.component';
-import { PreCreateQuickIntakeComponent } from '../patient.admin/components/quick.intake/pre.create/pre-create-quick-intake.component';
 import { CorruptedDeviceComponent } from './components/corrupted.device/corrupted-device.component';
 import { CreatePatientSurveyComponent } from './components/create.survey/create-patient-survey.component';
 import { CreateDigitalPatientIntakeComponent } from './components/create/create-digital-patient-intake.component';
 import { PatientGreetingCreationComponent } from './components/greeting/patient-greeting-creation.component';
 import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
-import { CreateDigitalPatientQuickIntakeSurveyComponent } from './components/patient.quick/create.quick.survey/create-digital-patient-quick-intake-survey.component';
 import { PatientSurveyGreetingComponent } from './components/patient.summary/greeting/patient-survey-greeting.component';
 import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
 import { PreRegisterDeviceComponent } from './components/pre.register.device/pre-register-device.component';
 import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
 import { CreatePatientQuickIntakeSurveyComponent } from './components/pre.survey/quick.create.survey/create-patient-quick-intake-survey.component';
+import { CreateQuickIntakeComponent } from './components/quick.intake/create/create-quick-intake.component';
+import { PreCreateQuickIntakeComponent } from './components/quick.intake/pre-create/pre-create-quick-intake.component';
 import { RegisterDeviceComponent } from './components/register.device/register-device.component';
 
 const routes: Routes = [
@@ -80,14 +79,6 @@ const routes: Routes = [
       {
         path: 'pre-quick-create-intake-survey',
         component: CreatePatientQuickIntakeSurveyComponent,
-      },
-      {
-        path: 'quick-create-intake-survey',
-        component: CreateDigitalPatientQuickIntakeSurveyComponent,
-      },
-      {
-        path: 'submit-quick-create-intake-survey',
-        component: CreateDigitalPatientQuickIntakeSurveyComponent,
       }
     ]
   }

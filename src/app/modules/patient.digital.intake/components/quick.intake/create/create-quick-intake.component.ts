@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
@@ -23,14 +23,30 @@ interface IntakeForm {
   styleUrls: ['./create-quick-intake.component.css']
 })
 export class CreateQuickIntakeComponent implements OnInit {
+  type: string;
+  token: string;
   intakeForm!: FormGroup<IntakeForm>;
   renderSurvey: boolean = false;
   createdPatient: number;
   phoneRgx = /^\(\d{3}\) \d{3}-\d{4}$/;
   zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
-  constructor(private fb: FormBuilder, private digitalIntakeService: DigitalIntakeService, private router: Router) { }
+  constructor(private fb: FormBuilder,
+    private digitalIntakeService: DigitalIntakeService,
+    private router: Router,
+    private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((param: any) => {
+      this.token = param['token'];
+      this.type = param['type'];
+      console.log(this.type)
+      this.buildForm();
+    })
+
+  }
+
+  private buildForm() {
     this.intakeForm = this.fb.group({
       firstName: ['', [Validators.required]],
       middleName: [''],

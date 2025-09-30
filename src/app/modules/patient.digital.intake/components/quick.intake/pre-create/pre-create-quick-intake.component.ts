@@ -44,9 +44,10 @@ export class PreCreateQuickIntakeComponent implements OnInit {
   private createNavigate(token: string) {
     this.router.navigate(['/digital-intake/quick/create'], {
       queryParams: {
-        'token': token
+        'token': token,
+        'type':'QS'
       }
-    });
+    });    
   }
   private _callService(token: string, requester: string, device?: string): Observable<any> {
     return this.quickIntakeService.preCreate(token, requester, device);

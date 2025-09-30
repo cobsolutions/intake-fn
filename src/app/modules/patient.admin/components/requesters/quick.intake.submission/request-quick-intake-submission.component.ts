@@ -14,7 +14,7 @@ import { PatientSurveyService } from '../../../services/survey/patient-survey.se
   styleUrls: ['./request-quick-intake-submission.component.css']
 })
 export class RequestQuickIntakeSubmissionComponent implements OnInit {
-
+  public baseURL: string = location.origin;
   intakeForm: FormGroup;
 
   clinics: any[] = [];
@@ -27,7 +27,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
   ];
   // Fixed QR Code data (you can replace this with actual QR code generation)
   qrCodeData = 'https://your-clinic-portal.com/tablet-intake/12345';
-
+  prepareURL:string
   constructor(private fb: FormBuilder,
     private kcAuthServiceService: KcAuthServiceService,
     private clinicService: ClinicService,
@@ -153,8 +153,10 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
         quickIntakeRequest.requestMetaData = {};
         break
     }
-    this.quickIntakeService.generateOTT(quickIntakeRequest).subscribe(ott => {
-      console.log(JSON.stringify(ott))
+    this.quickIntakeService.generateOTT(quickIntakeRequest).subscribe(response => {
+      var responseBody:any = response.body
+      this.prepareURL = this.baseURL + '/digital-intake/quick/pre-create?token=' + responseBody.token;
+      console.log(this.prepareURL)
     })
   }
 

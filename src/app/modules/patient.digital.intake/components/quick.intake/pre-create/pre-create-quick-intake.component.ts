@@ -12,7 +12,8 @@ import { FingerprintService } from 'src/app/modules/patient.admin/services/trust
 })
 export class PreCreateQuickIntakeComponent implements OnInit {
   state: 'waiting' | 'done' = 'waiting';
-
+  surveryType: string;
+  surveryId: number;
   constructor(private router: Router,
     private route: ActivatedRoute,
     private quickIntakeService: QuickIntakeService,
@@ -26,7 +27,8 @@ export class PreCreateQuickIntakeComponent implements OnInit {
     this.route.queryParams.subscribe((param: any) => {
       var token: string = param['token'];
       var type: string = param['type'];
-      var requester: string = '';
+      this.getSurveyData(param['survey'])
+
       switch (type) {
         case 'mail':
           this._callServiceWithId(token, 'Mail_Submission').subscribe(dd => {
@@ -41,11 +43,26 @@ export class PreCreateQuickIntakeComponent implements OnInit {
       }
     })
   }
+  private getSurveyData(surveyParam: string) {
+    const surveyData: string[] = surveyParam.split("_");
+    console.log(surveyData)
+    if (surveyData.length > 0) {
+      if (surveyData[0] === 'quick')
+        this.surveryType = 'QI'
+      if (surveyData[0] === 'quick-survey') {
+        this.surveryType = 'QS'
+        this.surveryId = Number(surveyData[1])
+      }
+    }
+
+
+  }
   private createNavigate(token: string, requester: string) {
     this.router.navigate(['/digital-intake/quick/create'], {
       queryParams: {
         'token': token,
-        'type': 'QI',
+        'type': this.surveryType,
+        'surID': this.surveryId,
         'requester': requester
       }
     });

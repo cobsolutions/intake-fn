@@ -25,8 +25,6 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     { value: 'all', label: 'All Clinics' },
     { value: 'none', label: 'None' }
   ];
-  // Fixed QR Code data (you can replace this with actual QR code generation)
-  qrCodeData = 'https://your-clinic-portal.com/tablet-intake/12345';
   prepareURL: string
   constructor(private fb: FormBuilder,
     private kcAuthServiceService: KcAuthServiceService,
@@ -147,21 +145,34 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       case 'mail':
         quickIntakeRequest.requester = 'Mail_Submission'
         quickIntakeRequest.requestMetaData = {};
-        quickIntakeRequest.requestMetaData!["clinic-id"]= this.intakeForm.get('selectedClinic')?.value;
+        quickIntakeRequest.requestMetaData!["clinic-id"] = this.intakeForm.get('selectedClinic')?.value;
         break;
       case 'device':
         quickIntakeRequest.requester = 'Device_Submission'
         quickIntakeRequest.requestMetaData = {};
-        quickIntakeRequest.requestMetaData!["clinic-id"]= this.intakeForm.get('selectedClinic')?.value;
+        quickIntakeRequest.requestMetaData!["clinic-id"] = this.intakeForm.get('selectedClinic')?.value;
         break
     }
     this.quickIntakeService.generateOTT(quickIntakeRequest).subscribe(response => {
+
       var responseBody: any = response.body
-      this.prepareURL = this.baseURL + '/digital-intake/quick/pre-create?token=' + responseBody.token + '&type=' + type;
+      this.prepareURL = this.baseURL + '/digital-intake/quick/pre-create?token=' + responseBody.token
+        + '&type=' + type
+        + '&survey=' + this.hasSurvey();
       console.log(this.prepareURL)
     })
   }
 
+  private hasSurvey(): string {
+    console.log(this.intakeForm.get('surveyType')?.value.length)
+    var hasSurvey: string
+    if ((this.intakeForm.get('surveyType')?.value !== undefined
+      || this.intakeForm.get('surveyType')?.value !== null) && (this.intakeForm.get('surveyType')?.value.length === 0))
+      hasSurvey = this.intakeForm.get('intakeType')?.value
+    else
+      hasSurvey = this.intakeForm.get('intakeType')?.value + '_' + this.intakeForm.get('surveyType')?.value
+    return hasSurvey;
+  }
   getSelectedClinic(): any | null {
     const selectedId = this.intakeForm.get('selectedClinic')?.value;
     return this.clinics.find(clinic => clinic.uuid === selectedId) || null;
@@ -276,50 +287,50 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     if (!intakeType) {
       return false; // must choose intake type first
     }
-  
+
     if (intakeType === 'quick-survey' && !surveyType) {
       return false; // must choose survey type if survey selected
     }
-  
+
     if (!location) {
       return false; // must choose clinic location
     }
-    
+
     return true; // all good
   }
   getSendMethodErrorMessage(): string | null {
     const intakeType = this.intakeForm.get('intakeType')?.value;
     const surveyType = this.intakeForm.get('surveyType')?.value;
     const location = this.intakeForm.get('selectedClinic')?.value;
-  
+
     const missing: string[] = [];
-  
+
     if (!intakeType) {
       missing.push("Intake Type");
     }
-  
+
     if (intakeType === "quick-survey" && !surveyType) {
       missing.push("Survey");
     }
-  
+
     if (!location) {
       missing.push("Clinic");
     }
-  
+
     if (missing.length === 0) {
       return null; // no error
     }
-  
+
     if (missing.length === 1) {
       return `Please select ${missing[0]} before choosing a sending method.`;
     }
-  
+
     if (missing.length === 2) {
       return `Please select ${missing[0]} and ${missing[1]} before choosing a sending method.`;
     }
-  
+
     // 3 missing
     return `Please select ${missing[0]}, ${missing[1]}, and ${missing[2]} before choosing a sending method.`;
   }
-  
+
 }

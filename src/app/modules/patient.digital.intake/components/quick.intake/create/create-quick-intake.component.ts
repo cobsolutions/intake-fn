@@ -33,6 +33,7 @@ export class CreateQuickIntakeComponent implements OnInit {
   type: string;
   token: string;
   requester: string
+  surID:number;
   otpSent = false;
   otpVerified = false;
   otpWrong = false;
@@ -58,7 +59,9 @@ export class CreateQuickIntakeComponent implements OnInit {
       tap(param => {
         this.token = param['token'];
         this.type = param['type'];
-        this.requester = param['requester']
+        this.surID = param['surID'];
+        this.requester = param['requester'];
+        console.log('this.type ' + this.type)
       }),
       switchMap(token => this.quickIntakeService.create(this.token, this.requester))
     ).subscribe(dd => { })
@@ -119,8 +122,7 @@ export class CreateQuickIntakeComponent implements OnInit {
       var model: PatientQuickIntakeRequest = this.createRequest();
       model.surveyStatus = "HAS_SURVEY"
       this.digitalIntakeService.createQuickIntake(model).subscribe((data: any) => {
-        console.log(data.body)
-        this.createdPatient = data.body
+          this.createdPatient = data.body
         this.renderSurvey = true
       })
     } else {

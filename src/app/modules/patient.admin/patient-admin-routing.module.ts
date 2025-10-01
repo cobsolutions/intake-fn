@@ -149,6 +149,13 @@ const routes: Routes = [{
       data: {
         title: 'surveys',
       }
+    },
+    {
+      path: 'survey/campain',
+      component: ListSurveyComponent,
+      data: {
+        title: 'Screen Campains',
+      }
     }
   ]
 },

@@ -19,8 +19,15 @@
     <div class="otp-container" *ngIf="otpSent">
       <label class="otp-label">Enter OTP</label>
       <div class="otp-inputs">
-        <input *ngFor="let digit of otpControls; let i = index" type="text" maxlength="1" class="otp-box"
-          [(ngModel)]="otpValues[i]" (input)="onOtpInput($event, i)" (keydown.backspace)="onOtpBackspace($event, i)" />
+        <input
+          *ngFor="let ctrl of otpControls; let i = index"
+          type="text"
+          maxlength="1"
+          class="otp-box"
+          [formControl]="ctrl"
+          (input)="onOtpInput($event, i)"
+          (keydown.backspace)="onOtpBackspace($event, i)"
+        />
       </div>
       <div class="error" *ngIf="otpError">
         Please enter all 6 digits

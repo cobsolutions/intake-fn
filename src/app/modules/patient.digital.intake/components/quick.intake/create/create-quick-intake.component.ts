@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { switchMap, tap } from 'rxjs';
@@ -21,7 +21,7 @@ interface IntakeForm {
 }
 interface PhoneForm {
   phone: FormControl<string | null>;
-  otp: FormControl<string | null>;
+  otp: FormArray;
 }
 @Component({
   selector: 'app-create-quick-intake',
@@ -41,7 +41,6 @@ export class CreateQuickIntakeComponent implements OnInit {
   phoneRgx = /^\(\d{3}\) \d{3}-\d{4}$/;
   zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
   // OTP controls
-  otpControls = Array(6).fill(0);
   otpValues: string[] = ['', '', '', '', '', ''];
   otpError = false;
   constructor(private fb: FormBuilder,
@@ -66,6 +65,10 @@ export class CreateQuickIntakeComponent implements OnInit {
       this.buildForm();
     })
 
+    
+  }
+  get otpControls(): FormControl[] {
+    return (this.phoneForm.get('otp') as FormArray).controls as FormControl[];
   }
   formatPhone(event: any) {
     let input = event.target.value.replace(/\D/g, ''); // strip non-digits
@@ -88,7 +91,9 @@ export class CreateQuickIntakeComponent implements OnInit {
   private buildPhoneForm() {
     this.phoneForm = this.fb.group({
       phone: ['', [Validators.required]],
-      otp: ['']
+      otp: this.fb.array(
+        Array.from({ length: 6 }, () => this.fb.control('', [Validators.required, Validators.pattern('[0-9]')]))
+      )
     });
   }
   private buildForm() {

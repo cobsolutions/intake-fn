@@ -67,6 +67,24 @@ export class CreateQuickIntakeComponent implements OnInit {
     })
 
   }
+  formatPhone(event: any) {
+    let input = event.target.value.replace(/\D/g, ''); // strip non-digits
+    if (input.length > 10) {
+      input = input.substring(0, 10);
+    }
+
+    let formatted = input;
+    if (input.length > 6) {
+      formatted = `(${input.substring(0, 3)}) ${input.substring(3, 6)}-${input.substring(6)}`;
+    } else if (input.length > 3) {
+      formatted = `(${input.substring(0, 3)}) ${input.substring(3)}`;
+    } else if (input.length > 0) {
+      formatted = `(${input}`;
+    }
+
+    event.target.value = formatted;
+    this.phoneForm.patchValue({ phone: formatted }, { emitEvent: false });
+  }
   private buildPhoneForm() {
     this.phoneForm = this.fb.group({
       phone: ['', [Validators.required]],

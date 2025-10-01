@@ -7,9 +7,10 @@
     <!-- Phone Input -->
     <div class="form-group">
       <label>Phone</label>
-      <input type="text" formControlName="phone" placeholder="Enter phone number" />
-      <div class="error" *ngIf="this.pf.phone.touched && pf.phone.invalid">
-        Valid phone number is required
+      <input type="tel" formControlName="phone" placeholder="(123) 456-7890" maxlength="14"
+        (input)="formatPhone($event)" />
+      <div class="error" *ngIf="pf['phone'].touched && pf['phone'].invalid">
+        Valid US phone number is required
       </div>
     </div>
 
@@ -36,6 +37,7 @@
     </div>
   </form>
 </div>
+<!-- Step 2: Quick Intake -->
 <div class="intake-container" *ngIf="otpVerified && !renderSurvey">
   <h1 class="title">Patient Digital Intake</h1>
   <p class="subtitle">Create a patient record quickly and start the journey</p>

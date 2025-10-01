@@ -178,3 +178,42 @@
       min-width: 180px;
     }
   }
+  .otp-container {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .otp-label {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .otp-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+  
+  .otp-box {
+    width: 2.5rem;
+    height: 2.8rem;
+    font-size: 1.4rem;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.2s;
+  }
+  
+  .otp-box:focus {
+    border-color: #4f46e5;
+    outline: none;
+    box-shadow: 0 0 4px rgba(79, 70, 229, 0.4);
+  }
+  
+  .error {
+    font-size: 0.85rem;
+    color: #e63946;
+    margin-top: 0.4rem;
+  }
+  

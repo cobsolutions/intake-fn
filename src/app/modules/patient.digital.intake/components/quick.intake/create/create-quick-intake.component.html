@@ -1,4 +1,42 @@
-<div class="intake-container" *ngIf="!renderSurvey">
+<!-- Step 1: Phone + OTP Verification -->
+<div class="intake-container" *ngIf="!otpVerified && !renderSurvey">
+  <h1 class="title">Patient Verification</h1>
+  <p class="subtitle">Enter your phone number to receive an OTP</p>
+
+  <form [formGroup]="phoneForm" class="intake-form">
+    <!-- Phone Input -->
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="text" formControlName="phone" placeholder="Enter phone number" />
+      <div class="error" *ngIf="this.pf.phone.touched && pf.phone.invalid">
+        Valid phone number is required
+      </div>
+    </div>
+
+    <!-- OTP Input (only show after request) -->
+    <!-- OTP Input Fields -->
+    <div class="otp-container" *ngIf="otpSent">
+      <label class="otp-label">Enter OTP</label>
+      <div class="otp-inputs">
+        <input *ngFor="let digit of otpControls; let i = index" type="text" maxlength="1" class="otp-box"
+          [(ngModel)]="otpValues[i]" (input)="onOtpInput($event, i)" (keydown.backspace)="onOtpBackspace($event, i)" />
+      </div>
+      <div class="error" *ngIf="otpError">
+        Please enter all 6 digits
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn primary" (click)="sendOtp()" *ngIf="!otpSent">
+        Send OTP
+      </button>
+      <button type="button" class="btn primary" (click)="verifyOtp()" *ngIf="otpSent">
+        Verify OTP
+      </button>
+    </div>
+  </form>
+</div>
+<div class="intake-container" *ngIf="otpVerified && !renderSurvey">
   <h1 class="title">Patient Digital Intake</h1>
   <p class="subtitle">Create a patient record quickly and start the journey</p>
 

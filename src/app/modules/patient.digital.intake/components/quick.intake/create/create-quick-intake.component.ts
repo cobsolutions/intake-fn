@@ -19,6 +19,10 @@ interface IntakeForm {
   state: FormControl<string | null>;
   zipCode: FormControl<string | null>;
 }
+interface PhoneForm {
+  phone: FormControl<string | null>;
+  otp: FormControl<string | null>;
+}
 @Component({
   selector: 'app-create-quick-intake',
   templateUrl: './create-quick-intake.component.html',
@@ -28,11 +32,18 @@ export class CreateQuickIntakeComponent implements OnInit {
   type: string;
   token: string;
   requester: string
+  otpSent = false;
+  otpVerified = false;
   intakeForm!: FormGroup<IntakeForm>;
+  phoneForm: FormGroup<PhoneForm>;
   renderSurvey: boolean = false;
   createdPatient: number;
   phoneRgx = /^\(\d{3}\) \d{3}-\d{4}$/;
   zipCodeRgx = new RegExp("^\\d{5}(?:[-\s]\\d{4})?$");
+  // OTP controls
+  otpControls = Array(6).fill(0);
+  otpValues: string[] = ['', '', '', '', '', ''];
+  otpError = false;
   constructor(private fb: FormBuilder,
     private digitalIntakeService: DigitalIntakeService,
     private router: Router,
@@ -48,17 +59,20 @@ export class CreateQuickIntakeComponent implements OnInit {
         this.requester = param['requester']
       }),
       switchMap(token => this.quickIntakeService.create(this.token, this.requester))
-    ).subscribe(dd => {
-      console.log(JSON.stringify('dd ' + dd))
-    })
+    ).subscribe(dd => { })
     this.route.queryParams.subscribe((param: any) => {
 
-      console.log(this.type)
+      this.buildPhoneForm();
       this.buildForm();
     })
 
   }
-
+  private buildPhoneForm() {
+    this.phoneForm = this.fb.group({
+      phone: ['', [Validators.required]],
+      otp: ['']
+    });
+  }
   private buildForm() {
     this.intakeForm = this.fb.group({
       firstName: ['', [Validators.required]],
@@ -102,6 +116,9 @@ export class CreateQuickIntakeComponent implements OnInit {
   get f() {
     return this.intakeForm.controls;
   }
+  get pf() {
+    return this.phoneForm.controls;
+  }
   private createRequest(): PatientQuickIntakeRequest {
     const dateOfBirth: number = Number(moment(this.intakeForm.value.dob).format("x"));
     return {
@@ -117,5 +134,41 @@ export class CreateQuickIntakeComponent implements OnInit {
       zipCode: this.intakeForm.value.zipCode!,
       dob: dateOfBirth
     }
+  }
+  sendOtp() {
+    if (this.pf['phone'].invalid) return;
+
+    // 🔹 Call backend to send OTP
+    console.log('Sending OTP to', this.pf['phone'].value);
+    this.otpSent = true;
+  }
+  onOtpInput(event: any, index: number) {
+    const input = event.target;
+    const value = input.value.replace(/[^0-9]/g, ''); // only digits
+    this.otpValues[index] = value;
+
+    if (value && index < this.otpControls.length - 1) {
+      const next = input.nextElementSibling;
+      if (next) next.focus();
+    }
+  }
+
+  onOtpBackspace(event: any, index: number) {
+    if (!this.otpValues[index] && index > 0) {
+      const prev = (event.target as HTMLInputElement).previousElementSibling as HTMLInputElement;
+      if (prev) prev.focus();
+    }
+  }
+  verifyOtp() {
+    if (this.pf['otp'].invalid) return;
+
+    // 🔹 Call backend to verify OTP
+    console.log('Verifying OTP', this.pf['otp'].value);
+
+    // For now, mock success
+    this.otpVerified = true;
+
+    // Autofill verified phone into intake form
+    this.intakeForm.patchValue({ phone: this.pf['phone'].value });
   }
 }

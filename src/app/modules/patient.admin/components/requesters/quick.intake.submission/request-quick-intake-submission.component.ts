@@ -268,4 +268,57 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
 
     return [line1, line2, country].filter(Boolean).join('\n');
   }
+  canSelectSendMethod(): boolean {
+    const intakeType = this.intakeForm.get('intakeType')?.value;
+    const surveyType = this.intakeForm.get('surveyType')?.value;
+    const location = this.intakeForm.get('selectedClinic')?.value;
+    if (!intakeType) {
+      return false; // must choose intake type first
+    }
+  
+    if (intakeType === 'quick-survey' && !surveyType) {
+      return false; // must choose survey type if survey selected
+    }
+  
+    if (!location) {
+      return false; // must choose clinic location
+    }
+    
+    return true; // all good
+  }
+  getSendMethodErrorMessage(): string | null {
+    const intakeType = this.intakeForm.get('intakeType')?.value;
+    const surveyType = this.intakeForm.get('surveyType')?.value;
+    const location = this.intakeForm.get('selectedClinic')?.value;
+  
+    const missing: string[] = [];
+  
+    if (!intakeType) {
+      missing.push("Intake Type");
+    }
+  
+    if (intakeType === "quick-survey" && !surveyType) {
+      missing.push("Survey");
+    }
+  
+    if (!location) {
+      missing.push("Clinic");
+    }
+  
+    if (missing.length === 0) {
+      return null; // no error
+    }
+  
+    if (missing.length === 1) {
+      return `Please select ${missing[0]} before choosing a sending method.`;
+    }
+  
+    if (missing.length === 2) {
+      return `Please select ${missing[0]} and ${missing[1]} before choosing a sending method.`;
+    }
+  
+    // 3 missing
+    return `Please select ${missing[0]}, ${missing[1]}, and ${missing[2]} before choosing a sending method.`;
+  }
+  
 }

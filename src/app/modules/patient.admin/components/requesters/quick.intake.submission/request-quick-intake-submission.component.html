@@ -100,15 +100,15 @@
         <h3 class="section-title">How would you like to send?</h3>
         <div class="option-group">
             <label class="option-card small" [class.selected]="isSendMethodSelected('email')"
-                [class.error]="isFieldInvalid('sendMethod')" (click)="selectSendMethod('email')">
-                <input type="radio" formControlName="sendMethod" value="email" />
+                [class.disabled]="!canSelectSendMethod()" (click)="canSelectSendMethod() && selectSendMethod('email')">
+                <input type="radio" formControlName="sendMethod" value="email" [disabled]="!canSelectSendMethod()" />
                 <span class="option-content">
                     <span class="option-title">Email</span>
                 </span>
             </label>
-            <label class="option-card small" [class.selected]="isSendMethodSelected('tablet')"
-                [class.error]="isFieldInvalid('sendMethod')" (click)="selectSendMethod('tablet')">
-                <input type="radio" formControlName="sendMethod" value="tablet" />
+            <label class="option-card small" [class.selected]="isSendMethodSelected('device')"
+                [class.disabled]="!canSelectSendMethod()" (click)="canSelectSendMethod() && selectSendMethod('device')">
+                <input type="radio" formControlName="sendMethod" value="device" [disabled]="!canSelectSendMethod()" />
                 <span class="option-content">
                     <span class="option-title">Location Tablet</span>
                 </span>
@@ -116,6 +116,16 @@
         </div>
         <div class="error-message" *ngIf="isFieldInvalid('sendMethod') && isFieldRequired('sendMethod')">
             Send method is required
+        </div>
+        <!-- Error message when send methods are disabled -->
+        <div class="error-box" *ngIf="!canSelectSendMethod()">
+            <div class="error-icon">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+            </div>
+            <div class="error-text">
+                <strong>Action required:</strong><br />
+                {{ getSendMethodErrorMessage() }}
+            </div>
         </div>
     </div>
 

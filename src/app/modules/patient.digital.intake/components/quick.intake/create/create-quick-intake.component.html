@@ -19,15 +19,8 @@
     <div class="otp-container" *ngIf="otpSent">
       <label class="otp-label">Enter OTP</label>
       <div class="otp-inputs">
-        <input
-          *ngFor="let ctrl of otpControls; let i = index"
-          type="text"
-          maxlength="1"
-          class="otp-box"
-          [formControl]="ctrl"
-          (input)="onOtpInput($event, i)"
-          (keydown.backspace)="onOtpBackspace($event, i)"
-        />
+        <input *ngFor="let ctrl of otpControls; let i = index" type="text" maxlength="1" class="otp-box"
+          [formControl]="ctrl" (input)="onOtpInput($event, i)" (keydown.backspace)="onOtpBackspace($event, i)" />
       </div>
       <div class="error" *ngIf="otpError">
         Please enter all 6 digits
@@ -149,5 +142,5 @@
     </div>
   </form>
 </div>
-{{type}} -- {{surID}}
-<create-patient-survey *ngIf="renderSurvey" [createdPatient]="createdPatient"></create-patient-survey>
+<create-patient-survey *ngIf="renderSurvey" [createdPatient]="createdPatient" [token]="token"
+  [model]="patientQuickIntakeRequest" [surveyId]="surID"></create-patient-survey>

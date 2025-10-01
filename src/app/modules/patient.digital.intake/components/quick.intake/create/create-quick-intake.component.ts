@@ -33,7 +33,7 @@ export class CreateQuickIntakeComponent implements OnInit {
   type: string;
   token: string;
   requester: string
-  surID:number;
+  surID: number;
   otpSent = false;
   otpVerified = false;
   otpWrong = false;
@@ -46,7 +46,8 @@ export class CreateQuickIntakeComponent implements OnInit {
   // OTP controls
   otpValues: string[] = ['', '', '', '', '', ''];
   otpError = false;
-  patientUUID:string
+  patientUUID: string
+  patientQuickIntakeRequest: PatientQuickIntakeRequest
   constructor(private fb: FormBuilder,
     private digitalIntakeService: DigitalIntakeService,
     private router: Router,
@@ -61,7 +62,6 @@ export class CreateQuickIntakeComponent implements OnInit {
         this.type = param['type'];
         this.surID = param['surID'];
         this.requester = param['requester'];
-        console.log('this.type ' + this.type)
       }),
       switchMap(token => this.quickIntakeService.create(this.token, this.requester))
     ).subscribe(dd => { })
@@ -119,12 +119,8 @@ export class CreateQuickIntakeComponent implements OnInit {
   }
   saveAndStartSurvey(): void {
     if (this.intakeForm.valid) {
-      var model: PatientQuickIntakeRequest = this.createRequest();
-      model.surveyStatus = "HAS_SURVEY"
-      this.digitalIntakeService.createQuickIntake(model).subscribe((data: any) => {
-          this.createdPatient = data.body
-        this.renderSurvey = true
-      })
+      this.patientQuickIntakeRequest = this.createRequest();
+      this.renderSurvey = true
     } else {
       this.intakeForm.markAllAsTouched();
     }

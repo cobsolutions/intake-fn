@@ -147,6 +147,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       case 'mail':
         quickIntakeRequest.requester = 'Mail_Submission'
         quickIntakeRequest.requestMetaData = {};
+        quickIntakeRequest.requestMetaData!["clinic-id"]= this.intakeForm.get('selectedClinic')?.value;
         break;
       case 'device':
         quickIntakeRequest.requester = 'Device_Submission'

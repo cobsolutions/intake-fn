@@ -1,0 +1,375 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
+
+.upload-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  color: #2f4f4f;
+  background: #f8fbfe;
+  min-height: 100vh;
+}
+
+/* Enhanced Header Section */
+.header {
+  background: linear-gradient(135deg, #0066cc 0%, #004c99 100%);
+  padding: 25px 30px;
+  border-radius: 16px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 24px rgba(0, 102, 204, 0.2);
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(30px, -30px);
+  }
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+  z-index: 2;
+}
+
+.header-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.header-text h1 {
+  margin: 0 0 8px 0;
+  color: #fff;
+  font-size: 2.1em;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.header-text p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.1em;
+  font-weight: 400;
+}
+
+/* Enhanced Upload Section */
+.upload-card {
+  background: #ffffff;
+  border: 2px dashed #c2e0ff;
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-align: center;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  
+  &:hover, &.drag-over {
+    background: #f0f8ff;
+    border-color: #0066cc;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 102, 204, 0.15);
+  }
+}
+
+.upload-icon {
+  color: #0066cc;
+  margin-bottom: 20px;
+}
+
+.upload-card h3 {
+  margin: 0 0 12px 0;
+  color: #004c99;
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.upload-description {
+  margin: 0 0 25px 0;
+  color: #666;
+  font-size: 1.05em;
+}
+
+.upload-label {
+  cursor: pointer;
+  display: inline-block;
+}
+
+.upload-btn {
+  background: linear-gradient(135deg, #0066cc 0%, #004c99 100%);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  font-size: 1.05em;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 102, 204, 0.4);
+  }
+}
+
+.file-info {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.file-type, .file-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.95em;
+}
+
+.info-icon {
+  font-size: 1.2em;
+}
+
+/* Uploaded Batches Section */
+.batch-list {
+  margin-top: 40px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  color: #004c99;
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.batch-count {
+  background: #e6f2ff;
+  color: #0066cc;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 500;
+}
+
+.batch-table-container {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.batch-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.batch-table th {
+  background: #f0f8ff;
+  color: #004c99;
+  padding: 18px 16px;
+  text-align: left;
+  font-size: 0.95em;
+  font-weight: 600;
+  border-bottom: 1px solid #e1eef9;
+}
+
+.batch-table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #f0f6fc;
+  font-size: 0.95em;
+}
+
+.batch-table tr:last-child td {
+  border-bottom: none;
+}
+
+.batch-table tr:hover {
+  background: #f9fdff;
+}
+
+.file-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-icon {
+  font-size: 1.4em;
+}
+
+.name-text {
+  font-weight: 500;
+  color: #2f4f4f;
+}
+
+.file-size, .upload-date {
+  color: #666;
+}
+
+/* Status Badges */
+.status-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.status {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.status.processing {
+  background: #fff8e6;
+  color: #b38c00;
+  border: 1px solid #ffd966;
+}
+
+.status.completed {
+  background: #e6f4ea;
+  color: #0a6e2a;
+  border: 1px solid #81c995;
+}
+
+.status.failed {
+  background: #fce8e6;
+  color: #c5221f;
+  border: 1px solid #f28b82;
+}
+
+.status-icon {
+  font-weight: bold;
+}
+
+/* Progress Bar */
+.progress-bar {
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd966, #ffb700);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn.retry {
+  background: #e6f4ea;
+  color: #0a6e2a;
+  
+  &:hover {
+    background: #ceead6;
+  }
+}
+
+.action-btn.remove {
+  background: #fce8e6;
+  color: #c5221f;
+  
+  &:hover {
+    background: #f9d9d7;
+  }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+}
+
+.empty-icon {
+  font-size: 4em;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  margin: 0 0 12px 0;
+  font-weight: 500;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 1.05em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .upload-container {
+    padding: 15px;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .file-info {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .batch-table-container {
+    overflow-x: auto;
+  }
+  
+  .batch-table {
+    min-width: 700px;
+  }
+  
+  .list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}

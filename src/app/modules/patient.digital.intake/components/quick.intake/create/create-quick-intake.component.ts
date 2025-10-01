@@ -6,6 +6,7 @@ import { switchMap, tap } from 'rxjs';
 import { QuickIntakeService } from 'src/app/modules/patient.admin/services/quick.intake/quick-intake.service';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
+import { v4 as uuidv4 } from 'uuid';
 interface IntakeForm {
   firstName: FormControl<string | null>;
   middleName: FormControl<string | null>;
@@ -34,6 +35,7 @@ export class CreateQuickIntakeComponent implements OnInit {
   requester: string
   otpSent = false;
   otpVerified = false;
+  otpWrong = false;
   intakeForm!: FormGroup<IntakeForm>;
   phoneForm: FormGroup<PhoneForm>;
   renderSurvey: boolean = false;
@@ -43,6 +45,7 @@ export class CreateQuickIntakeComponent implements OnInit {
   // OTP controls
   otpValues: string[] = ['', '', '', '', '', ''];
   otpError = false;
+  patientUUID:string
   constructor(private fb: FormBuilder,
     private digitalIntakeService: DigitalIntakeService,
     private router: Router,
@@ -65,7 +68,7 @@ export class CreateQuickIntakeComponent implements OnInit {
       this.buildForm();
     })
 
-    
+
   }
   get otpControls(): FormControl[] {
     return (this.phoneForm.get('otp') as FormArray).controls as FormControl[];
@@ -162,8 +165,13 @@ export class CreateQuickIntakeComponent implements OnInit {
     if (this.pf['phone'].invalid) return;
 
     // 🔹 Call backend to send OTP
-    console.log('Sending OTP to', this.pf['phone'].value);
-    this.otpSent = true;
+    var phone: string = this.pf['phone'].value === null ? '' : this.pf['phone'].value;
+    this.patientUUID = uuidv4();
+    this.digitalIntakeService.send(this.patientUUID, phone)
+      .subscribe(reuslt => {
+        this.otpSent = true;
+        //this.message = 'OTP has been sent to your phone number.';
+      })
   }
   onOtpInput(event: any, index: number) {
     const input = event.target;
@@ -185,9 +193,13 @@ export class CreateQuickIntakeComponent implements OnInit {
   verifyOtp() {
     if (this.pf['otp'].invalid) return;
 
-    // 🔹 Call backend to verify OTP
-    console.log('Verifying OTP', this.pf['otp'].value);
-
+    // Call backend to verify OTP
+    this.digitalIntakeService.validate(this.patientUUID, this.pf['otp'].value.join('').toString()).subscribe(result => {
+      this.otpVerified = true;
+    }, error => {
+      this.otpVerified = false;
+      this.otpWrong = true;
+    })
     // For now, mock success
     this.otpVerified = true;
 
@@ -195,3 +207,4 @@ export class CreateQuickIntakeComponent implements OnInit {
     this.intakeForm.patchValue({ phone: this.pf['phone'].value });
   }
 }
+

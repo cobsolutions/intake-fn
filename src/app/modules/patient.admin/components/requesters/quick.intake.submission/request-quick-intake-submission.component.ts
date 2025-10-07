@@ -158,7 +158,8 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
 
     var request: DigitalIntakeOneTimeTokenRequest = {
       clinicId: this.intakeForm.get('selectedClinic')?.value,
-      requester: requester
+      requester: requester,
+      type: 'Quick'
     }
     this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
       console.log(response.body)

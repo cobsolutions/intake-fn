@@ -3,8 +3,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { map } from 'rxjs';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
 import { Survey } from '../../../models/create.survey/survey.model';
+import { DigitalIntakeOneTimeTokenRequest } from '../../../models/one.time.token/digital.intake.one.time.token.request';
 import { QuickIntakeRequest } from '../../../models/quick.intake/quickIntake.request';
 import { ClinicService } from '../../../services/clinic/clinic.service';
+import { OneTimeTokenService } from '../../../services/one.time.token/one-time-token.service';
 import { QuickIntakeService } from '../../../services/quick.intake/quick-intake.service';
 import { PatientSurveyService } from '../../../services/survey/patient-survey.service';
 
@@ -30,7 +32,8 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     private kcAuthServiceService: KcAuthServiceService,
     private clinicService: ClinicService,
     private patientSurveyService: PatientSurveyService,
-    private quickIntakeService: QuickIntakeService) {
+    private quickIntakeService: QuickIntakeService,
+    private oneTimeTokenService: OneTimeTokenService) {
     this.intakeForm = this.fb.group({
       intakeType: ['', Validators.required],
       surveyType: [''],
@@ -141,21 +144,26 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
 
   private constructURL(type: string) {
     var quickIntakeRequest: QuickIntakeRequest = {}
+    var requester: string = "";
     switch (type) {
       case 'mail':
-        quickIntakeRequest.requester = 'Mail_Submission'
+        requester = 'Mail_Submission'
         break;
       case 'device':
-        quickIntakeRequest.requester = 'Device_Submission'
+        requester = 'Device_Submission'
         break
     }
-    quickIntakeRequest.clinicId = this.intakeForm.get('selectedClinic')?.value;
     quickIntakeRequest.submitType = this.getSubmitType()[0]
     quickIntakeRequest.surveyId = Number(this.getSubmitType()[1])
-    this.quickIntakeService.generateOTT(quickIntakeRequest).subscribe(response => {
 
-      var responseBody: any = response.body
-      this.prepareURL = this.baseURL + '/digital-intake/quick/pre-create?token=' + responseBody.token
+    var request: DigitalIntakeOneTimeTokenRequest = {
+      clinicId: this.intakeForm.get('selectedClinic')?.value,
+      requester: requester
+    }
+    this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
+      console.log(response.body)
+      const ottResponse: any = response.body;
+      this.prepareURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
       console.log(this.prepareURL)
     })
   }

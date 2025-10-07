@@ -53,10 +53,6 @@ const routes: Routes = [
         component: CreateDigitalPatientIntakeComponent,
       },
       {
-        path: 'submit',
-        component: CreateDigitalPatientIntakeComponent,
-      },
-      {
         path: 'intake-finish',
         component: PatientGreetingCreationComponent
       },

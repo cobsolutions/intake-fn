@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, switchMap } from 'rxjs';
+import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.mail/patient.mail.request';
 import { FingerprintService } from 'src/app/modules/patient.admin/services/trust.device/fingerprint.service';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
@@ -10,37 +11,27 @@ import { DigitalIntakeService } from '../../services/digitalIntake/digital-intak
   styleUrls: ['./mail-verification.component.css']
 })
 export class MailVerificationComponent implements OnInit {
-  status: string
-  digitalIntakeURL: string;
-  public baseURL: string = location.origin;
-  constructor(private route: ActivatedRoute, private fingerprintService: FingerprintService, private digitalIntakeService: DigitalIntakeService) { }
+  isLoading: boolean = true
+  constructor(private route: ActivatedRoute,
+    private digitalIntakeService: DigitalIntakeService,
+    private router: Router) { }
 
   ngOnInit(): void {
-    const _getDeviceId = this.fingerprintService.getDeviceId();
     this.route.queryParams.subscribe(param => {
-      const token = param['token'];
-      const type = param['type'];
-      const surveyId = param['surveyId'];
-      const patientId = param['patientId'];
-      console.log('TTTTT ' + type)
-      _getDeviceId.pipe(
-        switchMap(deviceId => this.digitalIntakeService.verifyMail(token, deviceId)),
-        switchMap(result => this.digitalIntakeService.initDigitalIntakeRecord("Mail"))
-      ).subscribe(rre => {
-        this.status = 'V'
-        console.log('MailVerificationComponent + type ' + type)
-        if (type === 'FI')
-          this.digitalIntakeURL = this.baseURL + '/digital-intake/submit?token=' + token + "&type=" + type;
-        if (type === 'QI')
-          this.digitalIntakeURL = this.baseURL + '/digital-intake/submit-quick-create-intake-survey?token=' + token
-            + "&type=" + type
-            + "&surveyId=" + surveyId
-            + "&patientId=" + patientId;
-        if (type === 'S')
-          this.digitalIntakeURL = this.baseURL + '/digital-intake/submit-create-survey?token=' + token + "&type=" + type + "&surveyId=" + surveyId + "&patientId=" + patientId;
-        console.log(this.digitalIntakeURL)
-      }, error => {
-        this.status = 'E'
+
+      const tokenId = param['token-id'];
+      const patientMail = param['m'];
+      const patientMailRequest: PatientMailRequest = {
+        patientMail: patientMail,
+        tokenId: tokenId
+      }
+      this.digitalIntakeService.verfiyMail(patientMailRequest).subscribe(dd => {
+        this.isLoading = false
+        this.router.navigate(['/digital-intake/patient-mail-create-request'], {
+          queryParams: {
+            'token-id': tokenId
+          }
+        });
       })
     })
   }

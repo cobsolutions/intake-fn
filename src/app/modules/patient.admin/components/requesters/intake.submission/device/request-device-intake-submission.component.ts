@@ -33,9 +33,10 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
         clinicId: this.selectedClinicUUID,
         requester: 'Device_Submission'
       }
-      this.oneTimeTokenService.generate(request).subscribe((response: any) => {
-        const requestToken: any = response.body;
-        this.submissionURL = this.baseURL + '/digital-intake/pre-create?token=' + requestToken.token;;
+      this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
+        console.log(response.body)
+        const ottResponse: any = response.body;
+        this.submissionURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
         this.isGenerated = true
         console.log(this.submissionURL)
       })

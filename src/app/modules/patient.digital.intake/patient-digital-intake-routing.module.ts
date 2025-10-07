@@ -29,31 +29,35 @@ const routes: Routes = [
         component: CreateQuickIntakeComponent,
       },
       {
-        path: 'pre-create',
-        component: PreCreateDigitalPatientIntakeComponentComponent,
-      },
-      {
-        path: 'create',
-        component: CreateDigitalPatientIntakeComponent,
-      },
-      {
-        path: 'pre-register',
+        path: 'register-request',
         component: PreRegisterDeviceComponent,
       },
       {
-        path: 'register',
+        path: 'register-finish',
         component: RegisterDeviceComponent,
+      },
+      {
+        path: 'device-submission-request',
+        component: PreCreateDigitalPatientIntakeComponentComponent,
+      },
+      {
+        path: 'device-create-request',
+        component: CreateDigitalPatientIntakeComponent,
+      },
+      {
+        path: 'patient-mail-verification-request',
+        component: MailVerificationComponent
+      },
+      {
+        path: 'patient-mail-create-request',
+        component: CreateDigitalPatientIntakeComponent,
       },
       {
         path: 'submit',
         component: CreateDigitalPatientIntakeComponent,
       },
       {
-        path: 'verfiy/mail',
-        component: MailVerificationComponent
-      },
-      {
-        path: 'done',
+        path: 'intake-finish',
         component: PatientGreetingCreationComponent
       },
       {

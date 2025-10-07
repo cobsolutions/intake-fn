@@ -48,6 +48,8 @@ import { PatientService } from './modules/patient.questionnaire/service/patient.
 import { SecurityModule } from './modules/security';
 import { AuthInterceptor } from './modules/security/service/auth.interceptor';
 import { PelvicSurveyComponent } from './modules/patient.survey/pelvic/pelvic-survey.component';
+import { DigitalIntakeInterceptor } from './modules/security/service/digital.intake.interceptor/digital-intake.interceptor';
+import { DigitalIntakeErrorInterceptor } from './modules/security/service/digital.intake.error.interceptor/digital-intake-error.interceptor';
 
 
 
@@ -119,6 +121,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
     },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: DigitalIntakeInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: DigitalIntakeErrorInterceptor, multi: true },
     {
       provide: POSITION_OPTIONS,
       useValue: {enableHighAccuracy: true, timeout: 3000, maximumAge: 1000},

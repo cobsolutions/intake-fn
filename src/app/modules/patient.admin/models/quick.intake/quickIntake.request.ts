@@ -1,6 +1,8 @@
-export interface QuickIntakeRequest{
-    requester?:string,
-    deviceId?:string,
-    action?:string,
-    requestMetaData?:Record<string, any>
+export interface QuickIntakeRequest {
+    requester?: string,
+    clinicId?: string,
+    clinicName?: string,
+    submitType?: string,
+    surveyId?: number,
+    surveyName?: string    
 }

@@ -144,34 +144,40 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     switch (type) {
       case 'mail':
         quickIntakeRequest.requester = 'Mail_Submission'
-        quickIntakeRequest.requestMetaData = {};
-        quickIntakeRequest.requestMetaData!["clinic-id"] = this.intakeForm.get('selectedClinic')?.value;
         break;
       case 'device':
         quickIntakeRequest.requester = 'Device_Submission'
-        quickIntakeRequest.requestMetaData = {};
-        quickIntakeRequest.requestMetaData!["clinic-id"] = this.intakeForm.get('selectedClinic')?.value;
         break
     }
+    quickIntakeRequest.clinicId = this.intakeForm.get('selectedClinic')?.value;
+    quickIntakeRequest.submitType = this.getSubmitType()[0]
+    quickIntakeRequest.surveyId = Number(this.getSubmitType()[1])
     this.quickIntakeService.generateOTT(quickIntakeRequest).subscribe(response => {
 
       var responseBody: any = response.body
       this.prepareURL = this.baseURL + '/digital-intake/quick/pre-create?token=' + responseBody.token
-        + '&type=' + type
-        + '&survey=' + this.hasSurvey();
       console.log(this.prepareURL)
     })
   }
 
-  private hasSurvey(): string {
-    console.log(this.intakeForm.get('surveyType')?.value.length)
+  private getSubmitType(): string[] {
+    var values: string[] = []
     var hasSurvey: string
+    //Submit Type
+    // [0] QuickIntake Or QuickIntake+Survey 
+    // [1] Survey ID
     if ((this.intakeForm.get('surveyType')?.value !== undefined
-      || this.intakeForm.get('surveyType')?.value !== null) && (this.intakeForm.get('surveyType')?.value.length === 0))
+      || this.intakeForm.get('surveyType')?.value !== null) && (this.intakeForm.get('surveyType')?.value.length === 0)) {
       hasSurvey = this.intakeForm.get('intakeType')?.value
-    else
-      hasSurvey = this.intakeForm.get('intakeType')?.value + '_' + this.intakeForm.get('surveyType')?.value
-    return hasSurvey;
+
+      values[0] = this.intakeForm.get('intakeType')?.value;
+    }
+    else {
+      values[0] = this.intakeForm.get('intakeType')?.value;
+      values[1] = this.intakeForm.get('surveyType')?.value;
+    }
+
+    return values;
   }
   getSelectedClinic(): any | null {
     const selectedId = this.intakeForm.get('selectedClinic')?.value;

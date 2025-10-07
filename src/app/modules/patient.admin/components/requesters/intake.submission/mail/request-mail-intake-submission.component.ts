@@ -1,9 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { map, Observable } from 'rxjs';
+import { map, Observable, switchMap, tap } from 'rxjs';
 import { DigitalIntakeOneTimeTokenRequest } from 'src/app/modules/patient.admin/models/one.time.token/digital.intake.one.time.token.request';
+import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.mail/patient.mail.request';
 import { ClinicService } from 'src/app/modules/patient.admin/services/clinic/clinic.service';
+import { PatientIntakeMailService } from 'src/app/modules/patient.admin/services/mail/patient-intake-mail.service';
 import { OneTimeTokenService } from 'src/app/modules/patient.admin/services/one.time.token/one-time-token.service';
 
 @Component({
@@ -25,15 +27,16 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
   errorMessageMail: string | undefined;
   errorMessageMailFormat: string | undefined;
   @Input() type: string;
-  @Input() surveyId:number
-  @Input() patientId:number
+  @Input() surveyId: number
+  @Input() patientId: number
   constructor(private clinicService: ClinicService,
     private oneTimeTokenService: OneTimeTokenService,
     private router: Router,
-    private toastrService: ToastrService) { }
+    private toastrService: ToastrService,
+    private patientIntakeMailService: PatientIntakeMailService) { }
   isSent: boolean = false
   ngOnInit(): void {
-    
+
     this.getAllClinics()
   }
   private getAllClinics() {
@@ -47,22 +50,25 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
     if (this.validate()) {
       var request: DigitalIntakeOneTimeTokenRequest = {
         clinicId: this.selectedClinicUUID,
-        expiryPeriod: 1800000,
         requester: 'Mail_Submission',
-        type:this.type,
-        surveyId:this.surveyId,
-        patientId:this.patientId
+        mail: this.patientEmail
+        // type:this.type,
+        // surveyId:this.surveyId,
+        // patientId:this.patientId
       }
-      this.oneTimeTokenService.generatePatientMailToken(request, this.patientEmail).subscribe((response: any) => {
+      this.oneTimeTokenService.generateNew(request).pipe(
+        switchMap((ootTokenResponse: any) => {
+          const ottResponse: any = ootTokenResponse.body;
+          var mailrequest: PatientMailRequest = {
+            tokenId: ottResponse.tokenId,
+            patientMail: this.patientEmail
+          }
+          return this.patientIntakeMailService.send(mailrequest)
+        })
+      ).subscribe(dd => {
         this.toastrService.success("Verification mail has been sent to patient")
         this.isSent = true;
-        const requestToken: any = response.body;
-        this.verificationLink = this.baseURL + '/digital-intake/verfiy/mail?token=' + requestToken.token;
         this.router.navigateByUrl('admin/patient/create');
-        // const url = 'admin/patient/create'
-        // this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-        //   this.router.navigate([`/${url}`]).then(() => { })
-        // })
       })
     }
   }

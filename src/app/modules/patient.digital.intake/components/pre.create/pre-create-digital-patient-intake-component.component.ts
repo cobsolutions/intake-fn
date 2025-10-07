@@ -18,20 +18,35 @@ export class PreCreateDigitalPatientIntakeComponentComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((param: any) => {
-      this.token = param['token'];
-      this.digitalIntakeService.assignTokenToRequesterTerminal().pipe(
-        switchMap(result=>this.digitalIntakeService.initDigitalIntakeRecord("Device"))
-      )
-      .subscribe(result => {
+    this.route.queryParams.subscribe(params => {
+      const tokenId: string = params['token-id'];
+      console.log(tokenId)
+      this.digitalIntakeService.initiate().subscribe(dd => {
         this.isLoading = false
-        this.router.navigate(['/digital-intake/create'], {
+        this.router.navigate(['/digital-intake/device-create-request'], {
           queryParams: {
-            'token': this.token
+            'token-id': tokenId
           }
         });
       })
     })
+    // this.route.queryParams.subscribe((param: any) => {
+    //   this.token = param['token'];
+    //   this.digitalIntakeService.assignTokenToRequesterTerminal().subscribe(dd=>{
+    //     console.log('dddd')
+    //   })
+    //   this.digitalIntakeService.assignTokenToRequesterTerminal().pipe(
+    //     switchMap(result=>this.digitalIntakeService.initDigitalIntakeRecord("Device"))
+    //   )
+    //   .subscribe(result => {
+    //     this.isLoading = false
+    //     this.router.navigate(['/digital-intake/create'], {
+    //       queryParams: {
+    //         'token': this.token
+    //       }
+    //     });
+    //   })
+    // })
   }
 
 }

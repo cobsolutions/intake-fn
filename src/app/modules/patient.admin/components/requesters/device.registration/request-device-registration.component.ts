@@ -41,16 +41,16 @@ export class RequestDeviceRegistrationComponent implements OnInit {
     if (this.deviceName.trim() !== '') {
       var request: DigitalIntakeOneTimeTokenRequest = {
         clinicId: this.selectedClinicUUID,
-        requester:'Registration'
+        requester: 'Registration'
       }
-      this.oneTimeTokenService.generate(request)
+      this.oneTimeTokenService.generateNew(request)
         .subscribe((response: any) => {
-          const requestToken: any = response.body;
-          this.createPatientURL = this.baseURL + '/digital-intake/pre-register?name=' + this.deviceName + '&token=' + requestToken.token;
+          const ottResponse: any = response.body;
+          this.createPatientURL = this.baseURL + '/digital-intake/register-request?name=' + this.deviceName + '&token-id=' + ottResponse.tokenId;
           console.log(this.createPatientURL)
           this.currentStep = 2;
           this.inCorrectName = false
-          this.startCountdown(requestToken.expiresAt);
+          this.startCountdown(ottResponse.expiresAt);
           console.log(this.createPatientURL);
         })
     } else {

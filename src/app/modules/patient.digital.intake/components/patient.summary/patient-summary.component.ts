@@ -58,7 +58,7 @@ export class PatientSummaryComponent implements OnInit {
       .subscribe(resuldd => {
         this.submitting = false;
         this.isError = false;
-        this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
+        this.router.navigateByUrl('/digital-intake/intake-finish');
       }, error => {
         // console.log(JSON.stringify(this.pateint))
         // console.log(JSON.stringify(error))

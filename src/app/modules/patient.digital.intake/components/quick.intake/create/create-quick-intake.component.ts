@@ -56,17 +56,8 @@ export class CreateQuickIntakeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.pipe(
-      tap(param => {
-        this.token = param['token'];
-        this.type = param['type'];
-        this.surID = param['surID'];
-        this.requester = param['requester'];
-      }),
-      switchMap(token => this.quickIntakeService.create(this.token, this.requester))
-    ).subscribe(dd => { })
     this.route.queryParams.subscribe((param: any) => {
-
+      this.token = param['token-id'];
       this.buildPhoneForm();
       this.buildForm();
     })

@@ -21,11 +21,7 @@ const routes: Routes = [
     },
     children: [
       {
-        path: 'quick/pre-create',
-        component: PreCreateQuickIntakeComponent,
-      },
-      {
-        path: 'quick/create',
+        path: 'quick/device-submission-request',
         component: CreateQuickIntakeComponent,
       },
       {

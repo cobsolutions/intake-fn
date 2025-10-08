@@ -31,7 +31,8 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
       this.isValid = true
       var request: DigitalIntakeOneTimeTokenRequest = {
         clinicId: this.selectedClinicUUID,
-        requester: 'Device_Submission'
+        requester: 'Device_Submission',
+        type: 'Full'
       }
       this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
         console.log(response.body)

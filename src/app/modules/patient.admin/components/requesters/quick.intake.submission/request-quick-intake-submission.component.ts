@@ -162,7 +162,6 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       type: 'Quick'
     }
     this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
-      console.log(response.body)
       const ottResponse: any = response.body;
       this.prepareURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
       console.log(this.prepareURL)

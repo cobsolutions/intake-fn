@@ -20,33 +20,28 @@ export class PreCreateDigitalPatientIntakeComponentComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       const tokenId: string = params['token-id'];
-      console.log(tokenId)
-      this.digitalIntakeService.initiate().subscribe(dd => {
+      this.digitalIntakeService.initiate().subscribe((response: any) => {
+        const submissionType: string = response.result
+        switch (submissionType) {
+          case 'FUll':
+            this.router.navigate(['/digital-intake/device-create-request'], {
+              queryParams: {
+                'token-id': tokenId
+              }
+            });
+            break;
+          case 'Quick':
+            this.router.navigate(['/digital-intake/quick/device-submission-request'], {
+              queryParams: {
+                'token-id': tokenId
+              }
+            });
+            break;
+        }
         this.isLoading = false
-        this.router.navigate(['/digital-intake/device-create-request'], {
-          queryParams: {
-            'token-id': tokenId
-          }
-        });
+
       })
     })
-    // this.route.queryParams.subscribe((param: any) => {
-    //   this.token = param['token'];
-    //   this.digitalIntakeService.assignTokenToRequesterTerminal().subscribe(dd=>{
-    //     console.log('dddd')
-    //   })
-    //   this.digitalIntakeService.assignTokenToRequesterTerminal().pipe(
-    //     switchMap(result=>this.digitalIntakeService.initDigitalIntakeRecord("Device"))
-    //   )
-    //   .subscribe(result => {
-    //     this.isLoading = false
-    //     this.router.navigate(['/digital-intake/create'], {
-    //       queryParams: {
-    //         'token': this.token
-    //       }
-    //     });
-    //   })
-    // })
   }
 
 }

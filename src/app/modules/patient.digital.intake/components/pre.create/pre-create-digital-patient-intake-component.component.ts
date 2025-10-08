@@ -32,7 +32,8 @@ export class PreCreateDigitalPatientIntakeComponentComponent implements OnInit {
             });
             break;
           case 'Quick':
-            this.router.navigate(['/digital-intake/quick/device-submission-request'], {
+          case 'QuickSurvey':
+            this.router.navigate(['/digital-intake/quick/device-create-request'], {
               queryParams: {
                 'token-id': tokenId
               }

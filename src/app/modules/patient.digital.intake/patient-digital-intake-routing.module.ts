@@ -34,7 +34,7 @@ const routes: Routes = [
         component: PreCreateDigitalPatientIntakeComponentComponent,
       },
       {
-        path: 'quick/device-submission-request',
+        path: 'quick/device-create-request',
         component: CreateQuickIntakeComponent,
       },
       {

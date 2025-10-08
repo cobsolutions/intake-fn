@@ -66,7 +66,9 @@ export class CreateQuickIntakeComponent implements OnInit {
         return this.digitalIntakeService.findSubmissionType()
       })
     ).subscribe(response => {
-      this.type = response.body.result;
+
+      this.type = response.body.type;
+      this.surID = response.body.survey;
     })
 
 

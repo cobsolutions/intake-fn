@@ -1,7 +1,7 @@
 import { SurveyData } from "./survey.data";
 
 export interface PatientSurveyRequest {
-    patientId: number,
+    patientId?: number,
     surveyName: string,
     surveyData: SurveyData[]
 }

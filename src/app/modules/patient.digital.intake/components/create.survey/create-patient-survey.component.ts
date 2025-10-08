@@ -41,7 +41,7 @@ export class CreatePatientSurveyComponent implements OnInit {
   }
   constructor(private fb: FormBuilder,
     private digitalIntakeService: DigitalIntakeService,
-    private router: Router) {this.surveyForm = this.fb.group({}); }
+    private router: Router) { this.surveyForm = this.fb.group({}); }
 
   ngOnInit() {
 
@@ -78,12 +78,9 @@ export class CreatePatientSurveyComponent implements OnInit {
   onSubmit() {
     if (this.surveyForm.valid) {
       this.model.surveyStatus = "HAS_SURVEY"
+      this.model.patientSurveyRequest = this.buildSurveyRequest(this.survey.name)
       this.digitalIntakeService.createQuickIntake(this.model).subscribe((data: any) => {
-        var pId = this.createdPatient = data.body
-        var patientSurveyRequest: PatientSurveyRequest = this.buildSurveyRequest(pId, this.survey.name);
-        this.digitalIntakeService.createSurvey(patientSurveyRequest).subscribe(reVal => {
-          this.router.navigateByUrl('/digital-intake/survey-done?token=' + this.digitalIntakeService.token);
-        })
+        this.router.navigateByUrl('/digital-intake/intake-finish');
       })
     }
   }
@@ -92,7 +89,7 @@ export class CreatePatientSurveyComponent implements OnInit {
     this.surveyForm.reset();
     this.progress = 0;
   }
-  private buildSurveyRequest(patientId: number, surveyName: string): PatientSurveyRequest {
+  private buildSurveyRequest( surveyName: string): PatientSurveyRequest {
     const formValue = this.surveyForm.value;
 
     const surveyData: SurveyData[] = Object.entries(formValue).map(([key, value]) => ({
@@ -101,7 +98,6 @@ export class CreatePatientSurveyComponent implements OnInit {
     }));
 
     return {
-      patientId,
       surveyName,
       surveyData
     };

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { map } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { map, switchMap } from 'rxjs';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
 import { Survey } from '../../../models/create.survey/survey.model';
 import { DigitalIntakeOneTimeTokenRequest } from '../../../models/one.time.token/digital.intake.one.time.token.request';
-import { QuickIntakeRequest } from '../../../models/quick.intake/quickIntake.request';
+import { PatientMailRequest } from '../../../models/patient.mail/patient.mail.request';
 import { ClinicService } from '../../../services/clinic/clinic.service';
+import { PatientIntakeMailService } from '../../../services/mail/patient-intake-mail.service';
 import { OneTimeTokenService } from '../../../services/one.time.token/one-time-token.service';
-import { QuickIntakeService } from '../../../services/quick.intake/quick-intake.service';
 import { PatientSurveyService } from '../../../services/survey/patient-survey.service';
 
 @Component({
@@ -28,12 +29,14 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     { value: 'none', label: 'None' }
   ];
   prepareURL: string
+  isGenerated: boolean = false;
   constructor(private fb: FormBuilder,
     private kcAuthServiceService: KcAuthServiceService,
     private clinicService: ClinicService,
     private patientSurveyService: PatientSurveyService,
-    private quickIntakeService: QuickIntakeService,
-    private oneTimeTokenService: OneTimeTokenService) {
+    private patientIntakeMailService: PatientIntakeMailService,
+    private oneTimeTokenService: OneTimeTokenService,
+    private toastrService: ToastrService) {
     this.intakeForm = this.fb.group({
       intakeType: ['', Validators.required],
       surveyType: [''],
@@ -129,39 +132,16 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
   }
 
   private handleSendMethodChange(sendMethod: string) {
+    this.isGenerated = false;
     const patientEmailControl = this.intakeForm.get('patientEmail');
 
     if (sendMethod === 'email') {
       patientEmailControl?.setValidators([Validators.required, Validators.email]);
-      this.constructURL('mail')
     } else {
       patientEmailControl?.clearValidators();
       patientEmailControl?.setValue('');
-      this.constructURL('device')
     }
     patientEmailControl?.updateValueAndValidity();
-  }
-
-  private constructURL(type: string) {
-    var quickIntakeRequest: QuickIntakeRequest = {}
-    var requester: string = "";
-    switch (type) {
-      case 'mail':
-        requester = 'Mail_Submission'
-        break;
-      case 'device':
-        requester = 'Device_Submission'
-        break
-    }
-    quickIntakeRequest.submitType = this.getSubmitType()[0]
-    quickIntakeRequest.surveyId = Number(this.getSubmitType()[1])
-    console.log(this.getSubmitType()[0])
-    var request: DigitalIntakeOneTimeTokenRequest = this.buildDigitalIntakeOneTimeTokenRequest(requester)
-    this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
-      const ottResponse: any = response.body;
-      this.prepareURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
-      console.log(this.prepareURL)
-    })
   }
 
   private buildDigitalIntakeOneTimeTokenRequest(requester: string): DigitalIntakeOneTimeTokenRequest {
@@ -208,23 +188,33 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
   isClinicSelected(clinic: any): boolean {
     return this.intakeForm.get('selectedClinic')?.value === clinic.uuid;
   }
-
+  generateQRCode() {
+    this.isGenerated = true;
+    var request: DigitalIntakeOneTimeTokenRequest = this.buildDigitalIntakeOneTimeTokenRequest('Device_Submission')
+    this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
+      const ottResponse: any = response.body;
+      this.prepareURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
+      console.log(this.prepareURL)
+    })
+  }
   sendEmail() {
     if (this.intakeForm.valid && this.isSendMethodSelected('email')) {
       const formValue = this.intakeForm.value;
-      const selectedClinic = this.getSelectedClinic();
-
-      const emailData = {
-        patientEmail: formValue.patientEmail,
-        intakeType: formValue.intakeType,
-        surveyType: formValue.surveyType,
-        clinic: selectedClinic,
-        isAllClinics: formValue.clinicSelectionType === 'all',
-        isNoClinics: formValue.clinicSelectionType === 'none'
-      };
-
-      console.log('Sending email with data:', emailData);
-      alert(`Email sent to ${formValue.patientName} at ${formValue.patientEmail}`);
+      var request: DigitalIntakeOneTimeTokenRequest = this.buildDigitalIntakeOneTimeTokenRequest('Mail_Submission')
+      request.mail = formValue.patientEmail;
+      this.oneTimeTokenService.generateNew(request).pipe(
+        switchMap((ootTokenResponse: any) => {
+          const ottResponse: any = ootTokenResponse.body;
+          var mailrequest: PatientMailRequest = {
+            tokenId: ottResponse.tokenId,
+            patientMail: formValue.patientEmail,
+            type: 'Quick'
+          }
+          return this.patientIntakeMailService.send(mailrequest)
+        })
+      ).subscribe(dd => {
+        this.toastrService.success("Verification mail has been sent to patient")
+      })
 
       // Reset email-specific fields after sending
       this.intakeForm.patchValue({

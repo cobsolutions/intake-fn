@@ -159,7 +159,7 @@
             <div class="qr-code-container">
                 <div class="qr-code-placeholder">
                     <!-- In a real application, you would use a QR code library here -->
-                    <div class="qr-code-image">
+                    <div class="qr-code-image" *ngIf="isGenerated">
                         <div class="qr-code-text">QR Code</div>
                         <div class="qr-code-data">
                             <qrcode [qrdata]="prepareURL" [width]="300" [errorCorrectionLevel]="'H'">
@@ -170,8 +170,12 @@
                 <p class="qr-code-instruction">
                     Scan this QR code with the clinic tablet to initiate the intake process.
                 </p>
+                <div>
+                    <button type="button" class="btn primary" (click)="generateQRCode()"> Create QRCode</button>
+                </div>
             </div>
         </div>
+
     </div>
 
     <!-- Actions - Only Cancel Button -->

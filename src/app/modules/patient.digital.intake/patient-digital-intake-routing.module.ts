@@ -38,6 +38,10 @@ const routes: Routes = [
         component: CreateQuickIntakeComponent,
       },
       {
+        path: 'quick/patient-mail-create-request',
+        component: CreateQuickIntakeComponent,
+      },
+      {
         path: 'device-create-request',
         component: CreateDigitalPatientIntakeComponent,
       },

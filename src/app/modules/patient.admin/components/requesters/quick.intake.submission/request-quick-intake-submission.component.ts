@@ -155,12 +155,8 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     }
     quickIntakeRequest.submitType = this.getSubmitType()[0]
     quickIntakeRequest.surveyId = Number(this.getSubmitType()[1])
-
-    var request: DigitalIntakeOneTimeTokenRequest = {
-      clinicId: this.intakeForm.get('selectedClinic')?.value,
-      requester: requester,
-      type: 'Quick'
-    }
+    console.log(this.getSubmitType()[0])
+    var request: DigitalIntakeOneTimeTokenRequest = this.buildDigitalIntakeOneTimeTokenRequest(requester)
     this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
       const ottResponse: any = response.body;
       this.prepareURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
@@ -168,6 +164,23 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     })
   }
 
+  private buildDigitalIntakeOneTimeTokenRequest(requester: string): DigitalIntakeOneTimeTokenRequest {
+    var request: DigitalIntakeOneTimeTokenRequest = {}
+    if (this.getSubmitType()[0] === 'quick-survey')
+      request = {
+        clinicId: this.intakeForm.get('selectedClinic')?.value,
+        requester: requester,
+        type: 'QuickSurvey',
+        surveyId: Number(this.getSubmitType()[1])
+      }
+    if (this.getSubmitType()[0] === 'quick')
+      request = {
+        clinicId: this.intakeForm.get('selectedClinic')?.value,
+        requester: requester,
+        type: 'Quick'
+      }
+    return request;
+  }
   private getSubmitType(): string[] {
     var values: string[] = []
     var hasSurvey: string

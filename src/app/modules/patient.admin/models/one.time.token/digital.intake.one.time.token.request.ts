@@ -1,7 +1,7 @@
 export interface DigitalIntakeOneTimeTokenRequest{
     clinicId?:string
     expiryPeriod?:number;
-    requester:string;
+    requester?:string;
     mail?:string,
     type?:string
     surveyId?:number,

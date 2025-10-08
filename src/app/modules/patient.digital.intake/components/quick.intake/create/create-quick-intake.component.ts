@@ -193,8 +193,9 @@ export class CreateQuickIntakeComponent implements OnInit {
     if (this.pf['otp'].invalid) return;
 
     // Call backend to verify OTP
-    this.digitalIntakeService.validate(this.patientUUID, this.pf['otp'].value.join('').toString()).subscribe(result => {
-      this.otpVerified = true;
+    this.digitalIntakeService.validate(this.patientUUID, this.pf['otp'].value.join('').toString()).subscribe((response: any) => {
+      this.otpVerified = response.result;
+      this.otpWrong = !response.result;
     }, error => {
       this.otpVerified = false;
       this.otpWrong = true;

@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class DigitalIntakeOTTService {
   private tokenId: string | null = null;
   private requester: string | null = null;
+  private submissionType: string | null = null;
   constructor() { }
   setToken(token: string) {
     this.tokenId = token;
@@ -17,7 +18,6 @@ export class DigitalIntakeOTTService {
   evictToken() {
     this.tokenId = null;
   }
-
   setRequester(requester: string|null) {
     this.requester = requester;
   }

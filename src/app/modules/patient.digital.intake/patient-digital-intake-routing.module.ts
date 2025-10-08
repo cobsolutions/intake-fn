@@ -20,10 +20,7 @@ const routes: Routes = [
     data: {
     },
     children: [
-      {
-        path: 'quick/device-submission-request',
-        component: CreateQuickIntakeComponent,
-      },
+      
       {
         path: 'register-request',
         component: PreRegisterDeviceComponent,
@@ -35,6 +32,10 @@ const routes: Routes = [
       {
         path: 'device-submission-request',
         component: PreCreateDigitalPatientIntakeComponentComponent,
+      },
+      {
+        path: 'quick/device-submission-request',
+        component: CreateQuickIntakeComponent,
       },
       {
         path: 'device-create-request',

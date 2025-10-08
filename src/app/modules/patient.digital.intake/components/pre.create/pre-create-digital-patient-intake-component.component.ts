@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { switchMap } from 'rxjs';
+import { DigitalIntakeOTTService } from 'src/app/modules/security/service/digital.intake.ott.service/digital-intake-ott.service';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class PreCreateDigitalPatientIntakeComponentComponent implements OnInit {
   token: string
   constructor(private route: ActivatedRoute,
     private digitalIntakeService: DigitalIntakeService,
-    private cookieService: CookieService,
+    private digitalIntakeOTTService: DigitalIntakeOTTService,
     private router: Router) { }
 
   ngOnInit(): void {

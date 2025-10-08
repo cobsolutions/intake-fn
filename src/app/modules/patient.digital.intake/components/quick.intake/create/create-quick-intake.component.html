@@ -127,7 +127,7 @@
         Valid email is required
       </div>
     </div>
-    <div class="actions" *ngIf="type==='QS'">
+    <div class="actions" *ngIf="type==='QuickSurvey'">
       <button type="button" class="btn primary" (click)="saveAndStartSurvey()">
         Save & Start Survey
       </button>
@@ -135,7 +135,8 @@
         Save & Start Survey Later
       </button>
     </div>
-    <div class="actions" *ngIf="type==='QI'">
+    {{type}}
+    <div class="actions" *ngIf="type==='Quick'">
       <button type="button" class="btn primary" (click)="save()">
         Save
       </button>

@@ -34,13 +34,7 @@ export class DigitalIntakeService {
     const createPatientURL = this.baseUrl + '/create/survey';
     return this.http.post(createPatientURL, model, { observe: 'response', withCredentials: true, 'headers': headers })
   }
-  createQuickIntake(model: PatientQuickIntakeRequest) {
-    var headers: any = {
-      'token': this.token
-    }
-    const createPatientURL = this.baseUrl + '/create/quick/intake';
-    return this.http.post(createPatientURL, model, { observe: 'response', withCredentials: true, 'headers': headers })
-  }
+
   failedIntake(failedIntake: FailedIntake) {
     var headers: any = {
       'token': this.token
@@ -196,5 +190,14 @@ export class DigitalIntakeService {
       'content-type': 'application/json'
     }
     return this.http.post(url, JSON.stringify(patientMailRequest), { observe: 'response', withCredentials: true, headers: headers })
+  }
+
+  createQuickIntake(model: PatientQuickIntakeRequest) {
+    const createPatientURL = this.baseUrl + '/create/quick';
+    return this.http.post(createPatientURL, model, { observe: 'response', withCredentials: true })
+  }
+  public findSubmissionType(): Observable<any> {
+    var url = this.baseUrl + '/find/submission-type'
+    return this.http.get(url, { observe: 'response', withCredentials: true });
   }
 }

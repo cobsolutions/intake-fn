@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { switchMap, tap } from 'rxjs';
-import { QuickIntakeService } from 'src/app/modules/patient.admin/services/quick.intake/quick-intake.service';
+import { concatMap, switchMap, tap } from 'rxjs';
+import { DigitalIntakeOTTService } from 'src/app/modules/security/service/digital.intake.ott.service/digital-intake-ott.service';
+import { v4 as uuidv4 } from 'uuid';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
-import { v4 as uuidv4 } from 'uuid';
 interface IntakeForm {
   firstName: FormControl<string | null>;
   middleName: FormControl<string | null>;
@@ -52,14 +52,21 @@ export class CreateQuickIntakeComponent implements OnInit {
     private digitalIntakeService: DigitalIntakeService,
     private router: Router,
     private route: ActivatedRoute,
-    private quickIntakeService: QuickIntakeService) {
+    private digitalIntakeOTTService: DigitalIntakeOTTService) {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((param: any) => {
-      this.token = param['token-id'];
-      this.buildPhoneForm();
-      this.buildForm();
+    this.route.queryParams.pipe(
+      tap(param => {
+        this.token = param['token-id'];
+        this.buildPhoneForm();
+        this.buildForm();
+      }),
+      concatMap(() => {
+        return this.digitalIntakeService.findSubmissionType()
+      })
+    ).subscribe(response => {
+      this.type = response.body.result;
     })
 
 
@@ -121,7 +128,7 @@ export class CreateQuickIntakeComponent implements OnInit {
       var model: PatientQuickIntakeRequest = this.createRequest();
       model.surveyStatus = "REQUESTED_SURVEY"
       this.digitalIntakeService.createQuickIntake(model).subscribe((data: any) => {
-        this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
+        this.router.navigateByUrl('/digital-intake/intake-finish');
       })
     } else {
       this.intakeForm.markAllAsTouched();
@@ -132,7 +139,7 @@ export class CreateQuickIntakeComponent implements OnInit {
       var model: PatientQuickIntakeRequest = this.createRequest();
       model.surveyStatus = "NO_SURVEY"
       this.digitalIntakeService.createQuickIntake(model).subscribe((data: any) => {
-        this.router.navigateByUrl('/digital-intake/done?token=' + this.digitalIntakeService.token);
+        this.router.navigateByUrl('/digital-intake/intake-finish');
       })
     } else {
       this.intakeForm.markAllAsTouched();

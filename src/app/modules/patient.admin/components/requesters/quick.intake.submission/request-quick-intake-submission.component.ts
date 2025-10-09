@@ -44,6 +44,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       clinicSelectionType: ['specific', Validators.required],
       selectedClinic: [null], // Single clinic ID
       patientEmail: [''],
+      patientSMS: [''],
     });
   }
 
@@ -134,12 +135,20 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
   private handleSendMethodChange(sendMethod: string) {
     this.isGenerated = false;
     const patientEmailControl = this.intakeForm.get('patientEmail');
-
+    const patientSMSControl = this.intakeForm.get('patientSMS');
+    console.log(sendMethod)
     if (sendMethod === 'email') {
       patientEmailControl?.setValidators([Validators.required, Validators.email]);
     } else {
       patientEmailControl?.clearValidators();
       patientEmailControl?.setValue('');
+    }
+    if (sendMethod === 'sms') {
+      patientSMSControl?.setValidators([Validators.required, Validators.pattern(/^\(\d{3}\) \d{3}-\d{4}$/)
+      ]);
+    } else {
+      patientSMSControl?.clearValidators();
+      patientSMSControl?.setValue('');
     }
     patientEmailControl?.updateValueAndValidity();
   }
@@ -266,6 +275,10 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
 
   isEmailInvalid(): boolean {
     const field = this.intakeForm.get('patientEmail');
+    return !!(field && field.invalid && field.touched);
+  }
+  isSMSInvalid(): boolean {
+    const field = this.intakeForm.get('patientSMS');
     return !!(field && field.invalid && field.touched);
   }
 

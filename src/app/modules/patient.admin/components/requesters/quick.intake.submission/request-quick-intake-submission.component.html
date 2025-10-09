@@ -99,6 +99,13 @@
     <div class="section">
         <h3 class="section-title">How would you like to send?</h3>
         <div class="option-group">
+            <label class="option-card small" [class.selected]="isSendMethodSelected('sms')"
+                [class.disabled]="!canSelectSendMethod()" (click)="canSelectSendMethod() && selectSendMethod('sms')">
+                <input type="radio" formControlName="sendMethod" value="email" [disabled]="!canSelectSendMethod()" />
+                <span class="option-content">
+                    <span class="option-title">SMS</span>
+                </span>
+            </label>
             <label class="option-card small" [class.selected]="isSendMethodSelected('email')"
                 [class.disabled]="!canSelectSendMethod()" (click)="canSelectSendMethod() && selectSendMethod('email')">
                 <input type="radio" formControlName="sendMethod" value="email" [disabled]="!canSelectSendMethod()" />
@@ -128,7 +135,29 @@
             </div>
         </div>
     </div>
+    <!-- SMS Input Section -->
+    <div class="section" *ngIf="isSendMethodSelected('sms')">
+        <h3 class="section-title">Send via SMS</h3>
+        <div class="email-form">
+            <div class="form-group">
+                <label for="patientEmail" class="form-label">Patient SMS *</label>
+                <input type="email" id="patientSMS" class="form-input" formControlName="patientSMS"
+                    [value]="this.intakeForm.get('patientSMS')?.value | phone" maxlength="14"
+                    placeholder="Enter patient phone" [class.error]="isSMSInvalid()">
+                <div class="error-message" *ngIf="isSMSInvalid() && isFieldRequired('patientSMS')">
+                    Valid phone is required
+                </div>
+                <div class="error-message"
+                    *ngIf="isSMSInvalid() && intakeForm.get('patientSMS')?.errors?.['pattern']">
+                    Please enter a valid phone
+                </div>
+            </div>
 
+            <div class="email-actions">
+                <button type="button" class="btn primary" (click)="sendEmail()">Send Email</button>
+            </div>
+        </div>
+    </div>
     <!-- Email Input Section -->
     <div class="section" *ngIf="isSendMethodSelected('email')">
         <h3 class="section-title">Send via Email</h3>

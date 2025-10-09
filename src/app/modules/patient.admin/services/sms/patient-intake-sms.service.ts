@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { PatientMailRequest } from '../../models/patient.channel/mail/patient.mail.request';
+import { PatientSMSRequest } from '../../models/patient.channel/sms/patient.sms.request';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PatientIntakeMailService {
-  private baseUrl = environment.baseURL + 'patient/mail';
+export class PatientIntakeSMSService {
+  private baseUrl = environment.baseURL + 'patient/sms';
   constructor(private httpClient: HttpClient) { }
-  send(request: PatientMailRequest) {
+  send(request: PatientSMSRequest) {
     const url = this.baseUrl + '/send';
     const headers = { 'content-type': 'application/json' }
     return this.httpClient.put(url, JSON.stringify(request), { headers: headers })

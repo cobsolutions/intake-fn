@@ -3,7 +3,8 @@ export interface DigitalIntakeOneTimeTokenRequest{
     expiryPeriod?:number;
     requester?:string;
     mail?:string,
-    type?:string
+    phone?:string,
+    type?:string,
     surveyId?:number,
     patientId?:number
 }

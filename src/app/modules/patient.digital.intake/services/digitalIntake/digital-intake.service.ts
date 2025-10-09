@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AgreementHolder } from 'src/app/models/patient/agreements/agreements.holder';
 import { InsuranceCompany } from 'src/app/modules/patient.admin/models/insurance.company.model';
-import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.mail/patient.mail.request';
+import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.channel/mail/patient.mail.request';
 import { DigitalIntakeDevice } from 'src/app/modules/patient.admin/models/trust.device/digital.intake.device';
 import { FailedIntake } from 'src/app/modules/patient.questionnaire/models/intake/failed.intake';
 import { environment } from 'src/environments/environment';

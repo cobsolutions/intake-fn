@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, switchMap } from 'rxjs';
-import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.mail/patient.mail.request';
-import { FingerprintService } from 'src/app/modules/patient.admin/services/trust.device/fingerprint.service';
+import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.channel/mail/patient.mail.request';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
 @Component({

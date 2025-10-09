@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { map, Observable, switchMap, tap } from 'rxjs';
 import { DigitalIntakeOneTimeTokenRequest } from 'src/app/modules/patient.admin/models/one.time.token/digital.intake.one.time.token.request';
-import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.mail/patient.mail.request';
+import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.channel/mail/patient.mail.request';
 import { ClinicService } from 'src/app/modules/patient.admin/services/clinic/clinic.service';
 import { PatientIntakeMailService } from 'src/app/modules/patient.admin/services/mail/patient-intake-mail.service';
 import { OneTimeTokenService } from 'src/app/modules/patient.admin/services/one.time.token/one-time-token.service';

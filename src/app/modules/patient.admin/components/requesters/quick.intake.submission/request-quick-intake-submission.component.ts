@@ -5,10 +5,12 @@ import { map, switchMap } from 'rxjs';
 import { KcAuthServiceService } from 'src/app/modules/security/service/kc/kc-auth-service.service';
 import { Survey } from '../../../models/create.survey/survey.model';
 import { DigitalIntakeOneTimeTokenRequest } from '../../../models/one.time.token/digital.intake.one.time.token.request';
-import { PatientMailRequest } from '../../../models/patient.mail/patient.mail.request';
+import { PatientMailRequest } from '../../../models/patient.channel/mail/patient.mail.request';
+import { PatientSMSRequest } from '../../../models/patient.channel/sms/patient.sms.request';
 import { ClinicService } from '../../../services/clinic/clinic.service';
 import { PatientIntakeMailService } from '../../../services/mail/patient-intake-mail.service';
 import { OneTimeTokenService } from '../../../services/one.time.token/one-time-token.service';
+import { PatientIntakeSMSService } from '../../../services/sms/patient-intake-sms.service';
 import { PatientSurveyService } from '../../../services/survey/patient-survey.service';
 
 @Component({
@@ -35,6 +37,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
     private clinicService: ClinicService,
     private patientSurveyService: PatientSurveyService,
     private patientIntakeMailService: PatientIntakeMailService,
+    private patientIntakeSMSService: PatientIntakeSMSService,
     private oneTimeTokenService: OneTimeTokenService,
     private toastrService: ToastrService) {
     this.intakeForm = this.fb.group({
@@ -205,6 +208,28 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       this.prepareURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
       console.log(this.prepareURL)
     })
+  }
+  sendSMS() {
+    if (this.intakeForm.valid && this.isSendMethodSelected('sms')) {
+      const formValue = this.intakeForm.value;
+      var request: DigitalIntakeOneTimeTokenRequest = this.buildDigitalIntakeOneTimeTokenRequest('SMS_Submission')
+      request.phone = formValue.patientSMS;
+      this.oneTimeTokenService.generateNew(request).pipe(
+        switchMap((ootTokenResponse: any) => {
+          const ottResponse: any = ootTokenResponse.body;
+          var phoneRequest: PatientSMSRequest = {
+            tokenId: ottResponse.tokenId,
+            phone: formValue.patientSMS,
+            type: 'Quick'
+          }
+          console.log(JSON.stringify(phoneRequest))
+          return this.patientIntakeSMSService.send(phoneRequest)
+        })
+      ).subscribe(dd => {
+        this.toastrService.success("Verification sms has been sent to patient")
+      })
+
+    }
   }
   sendEmail() {
     if (this.intakeForm.valid && this.isSendMethodSelected('email')) {

@@ -93,7 +93,7 @@
           <td class="total-emails">{{ batch.totalEmails }}</td>
           <td class="emails-sent">{{ batch.emailsSent }}</td>
           <td class="emails-failed">{{ batch.emailsFailed }}</td>
-          <td class="upload-date">{{ batch.date | date:'MMM d, y, h:mm a' }}</td>
+          <td class="upload-date">{{ batch.date | date:'MM/dd/yyyy' }}</td>
           <td>
             <div class="status-container">
               <span class="status" [ngClass]="batch.status.toLowerCase()">

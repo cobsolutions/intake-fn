@@ -26,7 +26,7 @@ export class ScreenCampainComponent implements OnInit {
   uploadMessage = '';
   uploadStatus: 'success' | 'error' | null = null;
   private refreshSubscription!: Subscription;
-  constructor(private emailBatchService: EmailBatchService) {}
+  constructor(private emailBatchService: EmailBatchService) { }
   ngOnInit(): void {
     this.loadBatches();
     this.startAutoRefresh();
@@ -81,7 +81,7 @@ export class ScreenCampainComponent implements OnInit {
   onDrop(event: DragEvent): void {
     event.preventDefault();
     this.isDragOver = false;
-    
+
     if (event.dataTransfer?.files.length) {
       const file = event.dataTransfer.files[0];
       if (this.isValidFileType(file)) {
@@ -96,7 +96,7 @@ export class ScreenCampainComponent implements OnInit {
     // Validate file type
     const validTypes = ['.xlsx', '.xls'];
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
-    
+
     if (!validTypes.includes(fileExtension)) {
       alert('Please select a valid Excel file (.xlsx or .xls)');
       return;
@@ -145,6 +145,7 @@ export class ScreenCampainComponent implements OnInit {
   getStatusIcon(status: string): string {
     switch (status.toLowerCase()) {
       case 'completed': return '✓';
+      case 'partially_completed': return '✓';
       case 'processing': return '⟳';
       case 'failed': return '✗';
       default: return '?';
@@ -173,10 +174,10 @@ export class ScreenCampainComponent implements OnInit {
       next: (response: UploadResponse) => {
         this.isLoading = false;
         this.showMessage(response.message, response.status === 'FAILED' ? 'error' : 'success');
-        
+
         if (response.status !== 'FAILED') {
           // Reload batches to include the new one
-          this.loadBatches();
+          this.startAutoRefresh();
         }
       },
       error: (error) => {
@@ -194,7 +195,7 @@ export class ScreenCampainComponent implements OnInit {
   private showMessage(message: string, status: 'success' | 'error'): void {
     this.uploadMessage = message;
     this.uploadStatus = status;
-    
+
     // Clear message after 5 seconds
     setTimeout(() => {
       this.uploadMessage = '';
@@ -202,17 +203,18 @@ export class ScreenCampainComponent implements OnInit {
     }, 5000);
   }
   private convertToUploadedBatch(batch: BatchStatusResponse): UploadedBatch {
-    const progress = batch.status === 'COMPLETED' ? 100 : 
-                    batch.status === 'PROCESSING' ? Math.round((batch.emailsSent / batch.totalEmails) * 100) : 0;
-  
+    console.log('batch.emailsSent ' + batch.recordsProcessed + '  batch.totalEmails ' + batch.totalRecords)
+    const progress = batch.status === 'COMPLETED' ? 100 :
+      batch.status === 'PROCESSING' ? Math.round((batch.recordsProcessed / batch.totalRecords) * 100) : 0;
+
     return {
       id: batch.id,
       name: batch.batchName,
       date: new Date(batch.uploadedAt),
       status: batch.status,
-      totalEmails: batch.totalEmails,
-      emailsSent: batch.emailsSent,
-      emailsFailed: batch.emailsFailed,
+      totalEmails: batch.totalRecords,
+      emailsSent: batch.recordsProcessed,
+      emailsFailed: batch.recordsFailed,
       progress: progress,
       errorMessage: batch.errorMessage,
       fileSize: batch.fileSize,

@@ -7,7 +7,7 @@
       </svg>
     </div>
     <div class="header-text">
-      <h1>Email Campaign Manager</h1>
+      <h1>Campaign Manager</h1>
       <p>Upload Excel files with patient emails to send campaigns</p>
     </div>
   </div>
@@ -73,6 +73,7 @@
     <table class="batch-table">
       <thead>
         <tr>
+          <th>Batch #</th>
           <th>Batch Name</th>
           <th>Total Emails</th>
           <th>Sent</th>
@@ -84,6 +85,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let batch of uploadedBatches; let i = index">
+          <td >{{ batch.id }}</td>
           <td class="file-name">
             <div class="file-icon">📧</div>
             <div class="name-text">{{ batch.name }}</div>
@@ -98,7 +100,7 @@
                 <span class="status-icon">{{ getStatusIcon(batch.status) }}</span>
                 {{ batch.status }}
               </span>
-              <div class="progress-container" *ngIf="batch.status === 'PROCESSING'">
+              <div class="progress-container" *ngIf="batch.status === 'PROCESSING'">                
                 <div class="progress-bar">
                   <div class="progress-fill" [style.width.%]="batch.progress" [style.background]="getProgressColor(batch)"></div>
                 </div>
@@ -128,6 +130,6 @@
 <!-- Empty State -->
 <div class="empty-state" *ngIf="uploadedBatches.length === 0 && !isLoading">
   <div class="empty-icon">📁</div>
-  <h3>No email batches yet</h3>
+  <h3>No batches yet</h3>
   <p>Upload an Excel file to start sending email campaigns</p>
 </div>

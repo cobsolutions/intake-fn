@@ -16,9 +16,9 @@ export interface BatchStatusResponse {
   id: number;
   batchName: string;
   status: string;
-  totalEmails: number;
-  emailsSent: number;
-  emailsFailed: number;
+  totalRecords: number;
+  recordsProcessed: number;
+  recordsFailed: number;
   uploadedAt: string;
   completedAt: string;
   errorMessage: string;

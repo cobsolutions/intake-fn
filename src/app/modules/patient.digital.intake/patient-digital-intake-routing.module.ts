@@ -13,6 +13,7 @@ import { CreatePatientQuickIntakeSurveyComponent } from './components/pre.survey
 import { CreateQuickIntakeComponent } from './components/quick.intake/create/create-quick-intake.component';
 import { PreCreateQuickIntakeComponent } from './components/quick.intake/pre-create/pre-create-quick-intake.component';
 import { RegisterDeviceComponent } from './components/register.device/register-device.component';
+import { SmsVerificationComponent } from './components/sms.verification/sms-verification.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,14 @@ const routes: Routes = [
       {
         path: 'patient-mail-create-request',
         component: CreateDigitalPatientIntakeComponent,
+      },
+      {
+        path: 'quick/patient-sms-verification-request',
+        component: SmsVerificationComponent
+      },
+      {
+        path: 'quick/patient-sms-create-request',
+        component: CreateQuickIntakeComponent,
       },
       {
         path: 'intake-finish',

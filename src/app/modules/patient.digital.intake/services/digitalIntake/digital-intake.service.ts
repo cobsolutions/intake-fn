@@ -182,6 +182,13 @@ export class DigitalIntakeService {
     }
     return this.http.post(url, JSON.stringify(patientMailRequest), { observe: 'response', withCredentials: true, headers: headers })
   }
+  verfiySMS(patientMailRequest: PatientMailRequest) {
+    const url = this.baseUrl + '/sms/verify';
+    var headers: any = {
+      'content-type': 'application/json'
+    }
+    return this.http.post(url, JSON.stringify(patientMailRequest), { observe: 'response', withCredentials: true, headers: headers })
+  }
 
   createQuickIntake(model: PatientQuickIntakeRequest) {
     const createPatientURL = this.baseUrl + '/create/quick';

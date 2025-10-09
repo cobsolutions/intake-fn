@@ -45,9 +45,13 @@ export class DigitalIntakeGuard implements CanActivate {
       case 'patient-mail-verification':
         return 'Mail_Submission';
 
+      case 'patient-sms-create':
+      case 'patient-sms-verification':
+        return 'SMS_Submission';
+
       case 'register':
         return 'Registration';
-        
+
       default:
         return null;
     }

@@ -31,12 +31,18 @@
     </div>
 
     <div class="actions">
-      <button type="button" class="btn primary" (click)="sendOtp()" *ngIf="!otpSent">
-        Send OTP
-      </button>
-      <button type="button" class="btn primary" (click)="verifyOtp()" *ngIf="otpSent">
-        Verify OTP
-      </button>
+      <span *ngIf="!otpSent">
+        <button type="button" class="btn primary" [loading]="isSending" (click)="sendOtp()" cLoadingButton
+          disabledOnLoading>
+          Send OTP
+        </button>
+      </span>
+      <span *ngIf="otpSent">
+        <button type="button" class="btn primary" [loading]="isSending" cLoadingButton disabledOnLoading
+          (click)="verifyOtp()">
+          Verify OTP
+        </button>
+      </span>
     </div>
   </form>
 </div>

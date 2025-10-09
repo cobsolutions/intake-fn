@@ -40,6 +40,7 @@ import { PatientSurveyGreetingComponent } from './components/patient.summary/gre
 import { CreatePatientQuickIntakeSurveyComponent } from './components/pre.survey/quick.create.survey/create-patient-quick-intake-survey.component';
 import { PreCreateQuickIntakeComponent } from './components/quick.intake/pre-create/pre-create-quick-intake.component';
 import { CreateQuickIntakeComponent } from './components/quick.intake/create/create-quick-intake.component';
+import { SmsVerificationComponent } from './components/sms.verification/sms-verification.component';
 
 const COREUI_MODULES = [
   AvatarModule,
@@ -98,6 +99,7 @@ const COREUI_MODULES = [
     CreatePatientQuickIntakeSurveyComponent,
     PreCreateQuickIntakeComponent,
     CreateQuickIntakeComponent,
+    SmsVerificationComponent,
   ],
   imports: [
     CommonModule,

@@ -34,7 +34,8 @@ export class CreateQuickIntakeComponent implements OnInit {
   token: string;
   requester: string
   surID: number;
-  otpSent = false;
+  otpSent: boolean = false;
+  isSending: boolean = false
   otpVerified = false;
   otpWrong = false;
   intakeForm!: FormGroup<IntakeForm>;
@@ -172,11 +173,12 @@ export class CreateQuickIntakeComponent implements OnInit {
   sendOtp() {
     if (this.pf['phone'].invalid) return;
 
-    // 🔹 Call backend to send OTP
+    this.isSending = true
     var phone: string = this.pf['phone'].value === null ? '' : this.pf['phone'].value;
     this.patientUUID = uuidv4();
     this.digitalIntakeService.send(this.patientUUID, phone)
       .subscribe(reuslt => {
+        this.isSending = false
         this.otpSent = true;
         //this.message = 'OTP has been sent to your phone number.';
       })
@@ -200,18 +202,16 @@ export class CreateQuickIntakeComponent implements OnInit {
   }
   verifyOtp() {
     if (this.pf['otp'].invalid) return;
-
+    this.isSending = true
     // Call backend to verify OTP
     this.digitalIntakeService.validate(this.patientUUID, this.pf['otp'].value.join('').toString()).subscribe((response: any) => {
+      this.isSending = false
       this.otpVerified = response.result;
       this.otpWrong = !response.result;
     }, error => {
       this.otpVerified = false;
       this.otpWrong = true;
     })
-    // For now, mock success
-    this.otpVerified = true;
-
     // Autofill verified phone into intake form
     this.intakeForm.patchValue({ phone: this.pf['phone'].value });
   }

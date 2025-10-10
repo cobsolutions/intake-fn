@@ -51,10 +51,8 @@ export class RequestMailIntakeSubmissionComponent implements OnInit {
       var request: DigitalIntakeOneTimeTokenRequest = {
         clinicId: this.selectedClinicUUID,
         requester: 'Mail_Submission',
-        mail: this.patientEmail
-        // type:this.type,
-        // surveyId:this.surveyId,
-        // patientId:this.patientId
+        mail: this.patientEmail,
+        type:'Full'
       }
       this.oneTimeTokenService.generateNew(request).pipe(
         switchMap((ootTokenResponse: any) => {

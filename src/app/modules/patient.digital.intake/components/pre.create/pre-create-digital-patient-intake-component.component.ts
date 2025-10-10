@@ -24,7 +24,7 @@ export class PreCreateDigitalPatientIntakeComponentComponent implements OnInit {
       this.digitalIntakeService.initiate().subscribe((response: any) => {
         const submissionType: string = response.result
         switch (submissionType) {
-          case 'FUll':
+          case 'Full':
             this.router.navigate(['/digital-intake/device-create-request'], {
               queryParams: {
                 'token-id': tokenId

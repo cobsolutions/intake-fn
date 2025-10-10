@@ -25,9 +25,9 @@ export class MailVerificationComponent implements OnInit {
       }
       this.digitalIntakeService.verfiyMail(patientMailRequest).subscribe((response: any) => {
         this.isLoading = false
-        const submissionType: string = response.body.result        
+        const submissionType: string = response.body.result
         switch (submissionType) {
-          case 'FUll':
+          case 'Full':
             this.router.navigate(['/digital-intake/patient-mail-create-request'], {
               queryParams: {
                 'token-id': tokenId

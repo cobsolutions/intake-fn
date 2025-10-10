@@ -24,6 +24,7 @@ import { PatientSourceValidator } from './validators/patient.source/patient.sour
   styleUrls: ['./create-digital-patient-intake.component.css']
 })
 export class CreateDigitalPatientIntakeComponent implements OnInit {
+
   stepperOrientation: 'horizontal' | 'vertical' = 'horizontal';
   patientForm: FormGroup
   render: boolean = false;
@@ -58,7 +59,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       }),
       'identity': new FormGroup({
         'pPhoneNumber': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),
-        'validOTP':new FormControl(null,[Validators.required])
+        'validOTP': new FormControl(null, [Validators.required])
       }),
       'bio': new FormGroup({
         'capturedImage': new FormControl(null, [Validators.required]),
@@ -249,5 +250,8 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   }
   onStepChange(event: StepperSelectionEvent): void {
     this.activeStepIndex = event.selectedIndex;
+  }
+  getPatient(patient: any) {
+    console.log(JSON.stringify(patient))
   }
 }

@@ -10,7 +10,7 @@
                     </mat-step>
                     <mat-step [stepControl]="patientForm.get('identity')!" formGroupName="identity" completed="true">
                         <ng-template matStepLabel>Identity Verification</ng-template>
-                        <patient-identity-verification [form]="patientForm" [stepper]="patientStepper">
+                        <patient-identity-verification [form]="patientForm" [stepper]="patientStepper" (existingPatient)="getPatient($event)">
                         </patient-identity-verification>
                     </mat-step>
                     <mat-step [stepControl]="patientForm.get('bio')!" formGroupName="bio" completed="true">

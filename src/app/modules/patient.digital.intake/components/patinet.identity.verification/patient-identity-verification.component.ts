@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { OptServiceService } from '../../services/opt/opt-service.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,6 +19,7 @@ export class PatientIdentityVerificationComponent implements OnInit {
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
   patientUUID: string
   @Input() stepper: MatStepper
+  @Output() existingPatient = new EventEmitter<any>()
   resendDisabled = true;
   countdown = 20;
   interval: any;
@@ -43,8 +44,8 @@ export class PatientIdentityVerificationComponent implements OnInit {
         this.otpSent = true;
         this.message = 'OTP has been sent to your phone number.';
         this.digitalIntakeService.findPatientByPhone(this.form.get('identity')?.get('pPhoneNumber')?.value).subscribe(result => {
-          if(result.body ===null){
-            console.log('no pre-saved patient record')
+          if(result.body !==null){
+            this.existingPatient.emit(result.body)
           }
         })
       })

@@ -270,6 +270,8 @@
 /intake-service/api/survey/patient/:id http://161.97.126.192:8050/intake-service/api/survey/patient/:id 200
 
 
+/intake-service/api/patient/one-time-token/generate/ott http://161.97.126.192:8050/intake-service/api/one-time-token/generate/ott 200
+
 /intake-service/api/patient/mail/send http://161.97.126.192:8050/intake-service/api/patient/mail/send 200
 
 /intake-service/api/patient/sms/send http://161.97.126.192:8050/intake-service/api/patient/sms/send 200

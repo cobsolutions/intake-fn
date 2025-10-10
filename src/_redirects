@@ -290,6 +290,8 @@
 
 /intake-service/api/digital-intake/digital-intake/find/phone http://161.97.126.192:8050/intake-service/api/digital-intake/digital-intake/find/phone 200
 
+/intake-service/api/digital-intake/digital-intake/find/submission-info http://161.97.126.192:8050/intake-service/api/digital-intake/digital-intake/find/submission-info 200
+
 /intake-service/api/digital-intake/register/new/device http://161.97.126.192:8050/intake-service/api/digital-intake/register/new/device 200
 
 /intake-service/api/digital-intake/initiate http://161.97.126.192:8050/intake-service/api/digital-intake/initiate 200

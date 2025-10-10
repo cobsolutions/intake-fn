@@ -35,6 +35,7 @@ export class ScreenCampainComponent implements OnInit {
     if (this.refreshSubscription) {
       this.refreshSubscription.unsubscribe();
     }
+    this.refreshSubscription.unsubscribe();
   }
   loadBatches(): void {
     this.emailBatchService.getAllBatches().subscribe({
@@ -203,7 +204,6 @@ export class ScreenCampainComponent implements OnInit {
     }, 5000);
   }
   private convertToUploadedBatch(batch: BatchStatusResponse): UploadedBatch {
-    console.log('batch.emailsSent ' + batch.recordsProcessed + '  batch.totalEmails ' + batch.totalRecords)
     const progress = batch.status === 'COMPLETED' ? 100 :
       batch.status === 'PROCESSING' ? Math.round((batch.recordsProcessed / batch.totalRecords) * 100) : 0;
 

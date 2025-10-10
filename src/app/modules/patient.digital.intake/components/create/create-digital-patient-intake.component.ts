@@ -251,7 +251,4 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   onStepChange(event: StepperSelectionEvent): void {
     this.activeStepIndex = event.selectedIndex;
   }
-  getPatient(patient: any) {
-    console.log(JSON.stringify(patient))
-  }
 }

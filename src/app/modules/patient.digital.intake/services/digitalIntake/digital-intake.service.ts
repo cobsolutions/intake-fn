@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AgreementHolder } from 'src/app/models/patient/agreements/agreements.holder';
 import { InsuranceCompany } from 'src/app/modules/patient.admin/models/insurance.company.model';
 import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.channel/mail/patient.mail.request';
@@ -15,6 +15,7 @@ import { PatientSurveyRequest } from '../../models/survey/patient.survey.request
   providedIn: 'root'
 })
 export class DigitalIntakeService {
+  public loadedPatient$: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
   private baseUrl = environment.baseURL + 'digital-intake'
   headers: any = {}
   token: string;

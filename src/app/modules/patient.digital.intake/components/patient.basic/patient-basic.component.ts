@@ -2,8 +2,9 @@ import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import * as moment from 'moment';
-import { tap } from 'rxjs';
+import { filter, tap } from 'rxjs';
 import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
+import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 import { CompressDocumentService } from '../../services/doument/compress-document.service';
 import { ValidationExploder } from '../create/validators/validation.exploder';
 
@@ -18,6 +19,7 @@ export class PatientBasicComponent implements OnInit {
   @Input() stepper: MatStepper
   isValidForm: boolean = false;
   isGuarantor: boolean = false
+  loadedPatient: any
   months = [
     { name: 'January', value: 1 }, { name: 'February', value: 2 }, { name: 'March', value: 3 },
     { name: 'April', value: 4 }, { name: 'May', value: 5 }, { name: 'June', value: 6 },
@@ -29,10 +31,40 @@ export class PatientBasicComponent implements OnInit {
   years: number[] = [];
   constructor(private componentReference: ComponentReferenceComponentService
     , private compressDocumentService: CompressDocumentService
+    , private digitalIntakeService: DigitalIntakeService
   ) { }
 
   ngOnInit(): void {
-    
+    this.digitalIntakeService.loadedPatient$.pipe(
+      filter(data => data !== null)
+    )
+      .subscribe(patient => {
+        const essential: any = patient.patientEssentialInformation
+        if (essential !== null) {
+          //Name
+          this.form.get('basic')?.get('firstname')?.setValue(essential.patientName.firstName)
+          this.form.get('basic')?.get('middleName')?.setValue(essential.patientName.middleName)
+          this.form.get('basic')?.get('lastName')?.setValue(essential.patientName.lastName)
+
+          //Date
+          const date = new Date(essential.dateOfBirth);
+          const month = date.getMonth() + 1;
+          const day = date.getDate();
+          const year = date.getFullYear();
+
+          this.form.get('basic')?.get('dobMonth')?.setValue(month)
+          this.form.get('basic')?.get('dobDay')?.setValue(day)
+          this.form.get('basic')?.get('dobYear')?.setValue(year)
+
+          //Phone
+          this.form.get('basic')?.get('phone')?.setValue(essential.patientPhone?.phone)
+
+          //Email
+          this.form.get('basic')?.get('email')?.setValue(essential.email)
+
+        }
+
+      })
     this.componentReference.setPatientBasicComponent(this)
     this.form.get('basic')?.get('dob')?.valueChanges.subscribe(value => {
       const today = moment(value).isSame(moment(), 'day');
@@ -103,7 +135,7 @@ export class PatientBasicComponent implements OnInit {
     const month = this.form.get('basic')?.get('dobMonth')!.value;
     const day = this.form.get('basic')?.get('dobDay')!.value;
     const year = this.form.get('basic')?.get('dobYear')!.value;
-  
+
     if (month && day && year) {
       const dobDate = new Date(+year, +month - 1, +day);
       if (!isNaN(dobDate.getTime())) {

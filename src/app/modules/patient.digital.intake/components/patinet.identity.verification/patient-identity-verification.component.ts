@@ -19,7 +19,6 @@ export class PatientIdentityVerificationComponent implements OnInit {
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef>;
   patientUUID: string
   @Input() stepper: MatStepper
-  @Output() existingPatient = new EventEmitter<any>()
   resendDisabled = true;
   countdown = 20;
   interval: any;
@@ -45,7 +44,7 @@ export class PatientIdentityVerificationComponent implements OnInit {
         this.message = 'OTP has been sent to your phone number.';
         this.digitalIntakeService.findPatientByPhone(this.form.get('identity')?.get('pPhoneNumber')?.value).subscribe(result => {
           if(result.body !==null){
-            this.existingPatient.emit(result.body)
+            this.digitalIntakeService.loadedPatient$.next(result.body)
           }
         })
       })

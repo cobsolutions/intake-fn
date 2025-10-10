@@ -14,4 +14,5 @@ export interface PatientQuickIntakeRequest {
     dob?: number
     surveyStatus?: string
     patientSurveyRequest?:PatientSurveyRequest
+    patientSource?:string
 }

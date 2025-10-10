@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import { concatMap, switchMap, tap } from 'rxjs';
+import entityValues from 'src/app/modules/patient.admin/components/reports/_entity.values';
 import { DigitalIntakeOTTService } from 'src/app/modules/security/service/digital.intake.ott.service/digital-intake-ott.service';
 import { v4 as uuidv4 } from 'uuid';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
@@ -19,6 +20,7 @@ interface IntakeForm {
   city: FormControl<string | null>;
   state: FormControl<string | null>;
   zipCode: FormControl<string | null>;
+  patientSource: FormControl<string | null>;
 }
 interface PhoneForm {
   phone: FormControl<string | null>;
@@ -49,6 +51,9 @@ export class CreateQuickIntakeComponent implements OnInit {
   otpError = false;
   patientUUID: string
   patientQuickIntakeRequest: PatientQuickIntakeRequest
+  entityValues = entityValues.filter(
+    entity => entity.entityValue !== 'referringDoctor'
+  );
   constructor(private fb: FormBuilder,
     private digitalIntakeService: DigitalIntakeService,
     private router: Router,
@@ -115,7 +120,8 @@ export class CreateQuickIntakeComponent implements OnInit {
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
-      zipCode: ['', [Validators.required, Validators.min(10), Validators.pattern(this.zipCodeRgx)]]
+      zipCode: ['', [Validators.required, Validators.min(10), Validators.pattern(this.zipCodeRgx)]],
+      patientSource: ['googlead', Validators.required]
     });
   }
   saveAndStartSurvey(): void {
@@ -167,7 +173,8 @@ export class CreateQuickIntakeComponent implements OnInit {
       city: this.intakeForm.value.city!,
       state: this.intakeForm.value.state!,
       zipCode: this.intakeForm.value.zipCode!,
-      dob: dateOfBirth
+      dob: dateOfBirth,
+      patientSource: this.intakeForm.value.patientSource!
     }
   }
   sendOtp() {

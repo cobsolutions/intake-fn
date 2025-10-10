@@ -133,6 +133,14 @@
         Valid email is required
       </div>
     </div>
+    <div class="form-group">
+      <label>How did you hear about us?</label>
+      <select cSelect sizing="sm" formControlName="patientSource">
+        <option *ngFor="let entity of entityValues" [value]="entity.entityValue" [selected]="entity.selected">
+          {{entity.entityName}}</option>
+      </select>
+    </div>
+
     <div class="actions" *ngIf="type==='QuickSurvey'">
       <button type="button" class="btn primary" (click)="saveAndStartSurvey()">
         Save & Start Survey
@@ -141,7 +149,6 @@
         Save & Start Survey Later
       </button>
     </div>
-    {{type}}
     <div class="actions" *ngIf="type==='Quick'">
       <button type="button" class="btn primary" (click)="save()">
         Save

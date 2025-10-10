@@ -17,6 +17,7 @@ import { ChnagesReportComponent } from './components/reports/patient.change.repo
 import { PatientContactReportComponent } from './components/reports/patient.contact/patient-contact-report.component';
 import { PatientsurveyReportComponent } from './components/reports/patient.survey/patientsurvey-report.component';
 import { RecommendationReportComponent } from './components/reports/recommendation.report.component';
+import { ScreenCampainComponent } from './components/screen.campain/screen-campain.component';
 import { SurveySubmissionComponent } from './components/survey/submission/survey-submission.component';
 import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
 import { UserCreationComponent } from './components/user/create/user-creation.component';
@@ -148,6 +149,13 @@ const routes: Routes = [{
       component: ListSurveyComponent,
       data: {
         title: 'surveys',
+      }
+    },
+    {
+      path: 'survey/campain',
+      component: ScreenCampainComponent,
+      data: {
+        title: 'Screen Campains',
       }
     }
   ]

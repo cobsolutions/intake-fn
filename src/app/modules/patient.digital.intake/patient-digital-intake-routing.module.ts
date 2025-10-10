@@ -5,13 +5,15 @@ import { CreatePatientSurveyComponent } from './components/create.survey/create-
 import { CreateDigitalPatientIntakeComponent } from './components/create/create-digital-patient-intake.component';
 import { PatientGreetingCreationComponent } from './components/greeting/patient-greeting-creation.component';
 import { MailVerificationComponent } from './components/mail.verification/mail-verification.component';
-import { CreateDigitalPatientQuickIntakeSurveyComponent } from './components/patient.quick/create.quick.survey/create-digital-patient-quick-intake-survey.component';
 import { PatientSurveyGreetingComponent } from './components/patient.summary/greeting/patient-survey-greeting.component';
 import { PreCreateDigitalPatientIntakeComponentComponent } from './components/pre.create/pre-create-digital-patient-intake-component.component';
 import { PreRegisterDeviceComponent } from './components/pre.register.device/pre-register-device.component';
 import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
 import { CreatePatientQuickIntakeSurveyComponent } from './components/pre.survey/quick.create.survey/create-patient-quick-intake-survey.component';
+import { CreateQuickIntakeComponent } from './components/quick.intake/create/create-quick-intake.component';
+import { PreCreateQuickIntakeComponent } from './components/quick.intake/pre-create/pre-create-quick-intake.component';
 import { RegisterDeviceComponent } from './components/register.device/register-device.component';
+import { SmsVerificationComponent } from './components/sms.verification/sms-verification.component';
 
 const routes: Routes = [
   {
@@ -19,32 +21,49 @@ const routes: Routes = [
     data: {
     },
     children: [
+      
       {
-        path: 'pre-create',
-        component: PreCreateDigitalPatientIntakeComponentComponent,
-      },
-      {
-        path: 'create',
-        component: CreateDigitalPatientIntakeComponent,
-      },
-      {
-        path: 'pre-register',
+        path: 'register-request',
         component: PreRegisterDeviceComponent,
       },
       {
-        path: 'register',
+        path: 'register-finish',
         component: RegisterDeviceComponent,
       },
       {
-        path: 'submit',
+        path: 'device-submission-request',
+        component: PreCreateDigitalPatientIntakeComponentComponent,
+      },
+      {
+        path: 'quick/device-create-request',
+        component: CreateQuickIntakeComponent,
+      },
+      {
+        path: 'quick/patient-mail-create-request',
+        component: CreateQuickIntakeComponent,
+      },
+      {
+        path: 'device-create-request',
         component: CreateDigitalPatientIntakeComponent,
       },
       {
-        path: 'verfiy/mail',
+        path: 'patient-mail-verification-request',
         component: MailVerificationComponent
       },
       {
-        path: 'done',
+        path: 'patient-mail-create-request',
+        component: CreateDigitalPatientIntakeComponent,
+      },
+      {
+        path: 'patient-sms-verification-request',
+        component: SmsVerificationComponent
+      },
+      {
+        path: 'quick/patient-sms-create-request',
+        component: CreateQuickIntakeComponent,
+      },
+      {
+        path: 'intake-finish',
         component: PatientGreetingCreationComponent
       },
       {
@@ -70,14 +89,6 @@ const routes: Routes = [
       {
         path: 'pre-quick-create-intake-survey',
         component: CreatePatientQuickIntakeSurveyComponent,
-      },
-      {
-        path: 'quick-create-intake-survey',
-        component: CreateDigitalPatientQuickIntakeSurveyComponent,
-      },
-      {
-        path: 'submit-quick-create-intake-survey',
-        component: CreateDigitalPatientQuickIntakeSurveyComponent,
       }
     ]
   }

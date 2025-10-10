@@ -268,4 +268,51 @@
 /intake-service/api/survey/find/all http://161.97.126.192:8050/intake-service/api/survey/find/all 200
 /intake-service/api/survey/:id/status http://161.97.126.192:8050/intake-service/api/survey/:id/status 200
 /intake-service/api/survey/patient/:id http://161.97.126.192:8050/intake-service/api/survey/patient/:id 200
+
+
+/intake-service/api/patient/mail/send http://161.97.126.192:8050/intake-service/api/patient/mail/send 200
+
+/intake-service/api/patient/sms/send http://161.97.126.192:8050/intake-service/api/patient/sms/send 200
+
+/intake-service/api/email-batches http://161.97.126.192:8050/intake-service/api/email-batches 200
+
+/intake-service/api/email-batches/upload http://161.97.126.192:8050/intake-service/api/email-batches/upload 200
+
+/intake-service/api/email-batches/:id http://161.97.126.192:8050/intake-service/api/email-batches/:id 200
+
+/intake-service/api/digital-intake/create http://161.97.126.192:8050/intake-service/api/digital-intake/create 200
+
+/intake-service/api/digital-intake/create/quick http://161.97.126.192:8050/intake-service/api/digital-intake/create/quick 200
+
+/intake-service/api/digital-intake/find/phone http://161.97.126.192:8050/intake-service/api/digital-intake/find/phone 200
+
+/intake-service/api/digital-intake/digital-intake/find/phone http://161.97.126.192:8050/intake-service/api/digital-intake/digital-intake/find/phone 200
+
+/intake-service/api/digital-intake/register/new/device http://161.97.126.192:8050/intake-service/api/digital-intake/register/new/device 200
+
+/intake-service/api/digital-intake/initiate http://161.97.126.192:8050/intake-service/api/digital-intake/initiate 200
+
+/intake-service/api/digital-intake/lookups/agreements http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/agreements 200
+
+/intake-service/api/digital-intake/lookups/insurances http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/insurances 200
+
+/intake-service/api/digital-intake/provider/npi/:npi http://161.97.126.192:8050/intake-service/api/digital-intake/provider/npi/:npi 200
+
+/intake-service/api/digital-intake/provider/f-name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/provider/f-name/:name 200
+
+
+/intake-service/api/digital-intake/provider/l-name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/provider/l-name/:name 200
+
+/intake-service/api/digital-intake/provider/f-name/:firstName/l-name/:lastName http://161.97.126.192:8050/intake-service/api/digital-intake/provider/f-name/:firstName/l-name/:lastName 200
+
+/intake-service/api/digital-intake/otp/send http://161.97.126.192:8050/intake-service/api/digital-intake/otp/send 200
+
+/intake-service/api/digital-intake/otp/validate http://161.97.126.192:8050/intake-service/api/digital-intake/otp/validate 200
+
+/intake-service/api/digital-intake/mail/verify http://161.97.126.192:8050/intake-service/api/digital-intake/mail/verify 200
+
+/intake-service/api/digital-intake/sms/verify http://161.97.126.192:8050/intake-service/api/digital-intake/sms/verify 200
+
+/intake-service/api/digital-intake/create/quick/intake http://161.97.126.192:8050/intake-service/api/digital-intake/create/quick/intake 200
+
 /*  /index.html   200

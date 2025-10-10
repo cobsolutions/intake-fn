@@ -1,0 +1,14 @@
+<div class="waiting-container">
+    <div class="waiting-card" *ngIf="state === 'waiting'">
+      <div class="loader"></div>
+      <h2>Please wait</h2>
+      <p>We are processing your request. This may take a few moments.</p>
+    </div>
+  
+    <div class="waiting-card success" *ngIf="state === 'done'">
+      <div class="checkmark">✔</div>
+      <h2>Request Completed</h2>
+      <p>Your request has been successfully handled. Thank you for your patience.</p>
+    </div>
+  </div>
+  

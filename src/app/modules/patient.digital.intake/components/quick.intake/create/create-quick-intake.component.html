@@ -1,5 +1,54 @@
-<div class="intake-container" *ngIf="!renderSurvey">
-  <h1 class="title">Quick Intake</h1>
+<!-- Step 1: Phone + OTP Verification -->
+<div class="intake-container" *ngIf="!otpVerified && !renderSurvey">
+  <h1 class="title">Patient Verification</h1>
+  <p class="subtitle">Enter your phone number to receive an OTP</p>
+
+  <form [formGroup]="phoneForm" class="intake-form">
+    <!-- Phone Input -->
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel" formControlName="phone" placeholder="(123) 456-7890" maxlength="14"
+        (input)="formatPhone($event)" />
+      <div class="error" *ngIf="pf['phone'].touched && pf['phone'].invalid">
+        Valid US phone number is required
+      </div>
+    </div>
+
+    <!-- OTP Input (only show after request) -->
+    <!-- OTP Input Fields -->
+    <div class="otp-container" *ngIf="otpSent">
+      <label class="otp-label">Enter OTP</label>
+      <div class="otp-inputs">
+        <input *ngFor="let ctrl of otpControls; let i = index" type="text" maxlength="1" class="otp-box"
+          [formControl]="ctrl" (input)="onOtpInput($event, i)" (keydown.backspace)="onOtpBackspace($event, i)" />
+      </div>
+      <div class="error" *ngIf="otpError">
+        Please enter all 6 digits
+      </div>
+      <div class="error" *ngIf="otpWrong">
+        The OTP you entered is incorrect
+      </div>
+    </div>
+
+    <div class="actions">
+      <span *ngIf="!otpSent">
+        <button type="button" class="btn primary" [loading]="isSending" (click)="sendOtp()" cLoadingButton
+          disabledOnLoading>
+          Send OTP
+        </button>
+      </span>
+      <span *ngIf="otpSent">
+        <button type="button" class="btn primary" [loading]="isSending" cLoadingButton disabledOnLoading
+          (click)="verifyOtp()">
+          Verify OTP
+        </button>
+      </span>
+    </div>
+  </form>
+</div>
+<!-- Step 2: Quick Intake -->
+<div class="intake-container" *ngIf="otpVerified && !renderSurvey">
+  <h1 class="title">Patient Digital Intake</h1>
   <p class="subtitle">Create a patient record quickly and start the journey</p>
 
   <form [formGroup]="intakeForm" class="intake-form">
@@ -84,14 +133,15 @@
         Valid email is required
       </div>
     </div>
-    <!-- New: Insurance Company -->
-    <!-- <div class="form-group">
-      <label>Insurance Company</label>
-      <input type="text" formControlName="insuranceCompany" placeholder="Enter insurance company" />
-    </div> -->
+    <div class="form-group">
+      <label>How did you hear about us?</label>
+      <select cSelect sizing="sm" formControlName="patientSource">
+        <option *ngFor="let entity of entityValues" [value]="entity.entityValue" [selected]="entity.selected">
+          {{entity.entityName}}</option>
+      </select>
+    </div>
 
-
-    <div class="actions">
+    <div class="actions" *ngIf="type==='QuickSurvey'">
       <button type="button" class="btn primary" (click)="saveAndStartSurvey()">
         Save & Start Survey
       </button>
@@ -99,6 +149,12 @@
         Save & Start Survey Later
       </button>
     </div>
+    <div class="actions" *ngIf="type==='Quick'">
+      <button type="button" class="btn primary" (click)="save()">
+        Save
+      </button>
+    </div>
   </form>
 </div>
-<create-patient-survey *ngIf="renderSurvey" [createdPatient]="createdPatient"></create-patient-survey>
+<create-patient-survey *ngIf="renderSurvey" [createdPatient]="createdPatient" [token]="token"
+  [model]="patientQuickIntakeRequest" [surveyId]="surID"></create-patient-survey>

@@ -182,7 +182,7 @@
           <ng-container *ngSwitchCase="'surveyStatus'" class="py-2">
             <c-badge color="primary" *ngIf="item.surveyStatus === 'HAS_SURVEY'"> Has Survey</c-badge>
             <c-badge color="warning" *ngIf="item.surveyStatus === 'REQUESTED_SURVEY'">Requested Survey</c-badge>
-            <c-badge color="danger" *ngIf="(item.surveyStatus === null) || item.surveyStatus === '' ">No
+            <c-badge color="danger" *ngIf="((item.surveyStatus === null) || item.surveyStatus === '' ) ||(item.surveyStatus === 'NO_SURVEY')">No
               survey</c-badge>
           </ng-container>
         </ng-container>
@@ -227,11 +227,11 @@
 </c-modal>
 <c-modal id="quickIntakeAndSurvey" [visible]="isQuickIntakeAndSurvey" size="xl" backdrop="static">
   <c-modal-header>
-    <h3 cModalTitle>Quick Digital Intake And Survey</h3>
     <button (click)="toggleQuickIntakeAndSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <survey-submission *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission>
+    <request-quick-intake-submission *ngIf="isQuickIntakeAndSurvey"> </request-quick-intake-submission>
+    <!-- <survey-submission *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission> -->
   </c-modal-body>
 </c-modal>
 <c-modal id="showPatientSurveys" [visible]="showPatientSurveys" size="xl" backdrop="static">

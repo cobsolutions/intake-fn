@@ -49,13 +49,23 @@ export const adminNavItems: INavData[] = [
       {
         name: 'Trust Devices',
         url: 'trust/devices/list'
-      },
+      }
+    ],
+  },
+  {
+    name: 'Survey',
+    url: '',
+    iconComponent: { name: 'cil-shareBoxed' },
+    children: [
       {
         name: 'Surveys',
         url: 'survey/list'
+      },
+      {
+        name: 'Screen Campain',
+        url: 'survey/campain'
       }
-
-    ],
+    ]
   },
   {
     name: 'Reports',

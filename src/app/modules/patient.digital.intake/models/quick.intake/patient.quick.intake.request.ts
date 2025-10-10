@@ -1,3 +1,5 @@
+import { PatientSurveyRequest } from "../survey/patient.survey.request";
+
 export interface PatientQuickIntakeRequest {
     firstName?: string
     middleName?: string
@@ -11,4 +13,6 @@ export interface PatientQuickIntakeRequest {
     zipCode?: string,
     dob?: number
     surveyStatus?: string
+    patientSurveyRequest?:PatientSurveyRequest
+    patientSource?:string
 }

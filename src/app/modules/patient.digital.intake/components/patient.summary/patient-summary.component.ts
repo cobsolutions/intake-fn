@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
+import { filter } from 'rxjs';
 import { PatientEssentialInformation } from 'src/app/modules/patient.questionnaire/models/intake/essential/patient.essential.information';
 import { FailedIntake } from 'src/app/modules/patient.questionnaire/models/intake/failed.intake';
 import { PatientMedical } from "src/app/modules/patient.questionnaire/models/intake/medical/patient.medical";
@@ -29,12 +30,18 @@ export class PatientSummaryComponent implements OnInit {
   submitting: boolean = false;
   isError: boolean = false;
   errorMessage: string;
+  loadedPatientId: number;
   constructor(private componentReference: ComponentReferenceComponentService
     , private digitalIntakeService: DigitalIntakeService
     , private router: Router
     , private toastrService: ToastrService) { }
 
   ngOnInit(): void {
+    this.digitalIntakeService.loadedPatient$.pipe(
+      filter(data => data !== null)
+    ).subscribe(patient => {
+      this.loadedPatientId = patient.id;
+    })
     this.fillPateintEssentialInformation();
     this.fillPatientAddress();
     this.fillPatientSource();
@@ -53,6 +60,8 @@ export class PatientSummaryComponent implements OnInit {
       imageFormData.append('files', patientDocument, patientDocument.name);
     })
     this.pateint.clinicIdUUID = this.clinicId;
+    if (this.loadedPatientId !== undefined)
+      this.pateint.id = this.loadedPatientId;
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
     this.digitalIntakeService.create(imageFormData)
       .subscribe(resuldd => {

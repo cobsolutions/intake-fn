@@ -42,8 +42,13 @@ export class PatientIdentityVerificationComponent implements OnInit {
       .subscribe(reuslt => {
         this.otpSent = true;
         this.message = 'OTP has been sent to your phone number.';
+        this.digitalIntakeService.findPatientByPhone(this.form.get('identity')?.get('pPhoneNumber')?.value).subscribe(result => {
+          if(result.body ===null){
+            console.log('no pre-saved patient record')
+          }
+        })
       })
-      this.resetCountdown();
+    this.resetCountdown();
   }
   onResendClick(): void {
     if (this.resendDisabled) return;

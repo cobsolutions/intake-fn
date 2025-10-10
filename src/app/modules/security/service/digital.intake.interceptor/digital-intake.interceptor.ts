@@ -19,7 +19,6 @@ export class DigitalIntakeInterceptor implements HttpInterceptor {
     const requester = this.digitalIntakeOTTService.getRequester();
     const isProtected = request.url.includes('/intake-service/api/digital-intake');
     if (tokenId && isProtected) {
-      console.log('DigitalIntakeInterceptor ' + tokenId)
       const cloned = request.clone({
         setHeaders: {
           'X-OTT-Token': tokenId,

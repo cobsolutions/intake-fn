@@ -41,7 +41,7 @@ export class DigitalIntakeService {
     return this.http.get<InsuranceCompany[]>(`${findInsuranceCompanyURL}` + name, { observe: 'response', withCredentials: true, 'headers': this.headers })
   }
 
-  
+
   public registerDevice(digitalIntakeDevice: DigitalIntakeDevice, token: string) {
     const headers = {
       'token': token,
@@ -200,15 +200,16 @@ export class DigitalIntakeService {
   }
   createSurvey(model: PatientSurveyRequest) {
     const createPatientURL = this.baseUrl + '/create/survey';
-    return this.http.post(createPatientURL, model, { observe: 'response', withCredentials: true})
+    return this.http.post(createPatientURL, model, { observe: 'response', withCredentials: true })
   }
   public findsurveyById(surveyId: number): Observable<any> {
     var url = this.baseUrl + '/lookups/survey/find/' + surveyId;
-    return this.http.get(url, { observe: 'response', withCredentials: true});
+    return this.http.get(url, { observe: 'response', withCredentials: true });
   }
 
-  public findPatientByPhone(phone:string){
+  public findPatientByPhone(phone: string) {
+    let params = new HttpParams().set('phone', phone);
     var url = this.baseUrl + '/find/phone'
-    return this.http.get(url, { observe: 'response', withCredentials: true});
+    return this.http.get(url, { observe: 'response', params: params, withCredentials: true });
   }
 }

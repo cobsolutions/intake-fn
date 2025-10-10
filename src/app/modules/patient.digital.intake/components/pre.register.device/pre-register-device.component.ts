@@ -24,7 +24,7 @@ export class PreRegisterDeviceComponent implements OnInit {
   token: string
   ngOnInit(): void {
     this.route.queryParams.subscribe((param: any) => {
-      this.token = param['token'];
+      this.token = param['token-id'];
       const deviceName = param['name'];
       this._callGetFinderPrint().pipe(
         tap(terminalFingerPrint => {
@@ -39,12 +39,9 @@ export class PreRegisterDeviceComponent implements OnInit {
             geolocation: location,
           }
         }),
-        switchMap(result => this.digitalIntakeService.pickRegistrationToken(this.token, this.digitalIntakeDevice.deviceId))
-      ).subscribe(result => {
-        this.isLoading = false
-        this.cookieService.set('device-id', this.digitalIntakeDevice.deviceId)
-        this.router.navigate(['/digital-intake/register'], { queryParams: { 'token': this.token 
-        , 'digitalIntakeDevice' : JSON.stringify(this.digitalIntakeDevice) } });
+        switchMap(result => this.digitalIntakeService.registerDeviceA(this.digitalIntakeDevice))
+      ).subscribe(result => {        
+        this.router.navigate(['/digital-intake/register-finish']);
       })
     })
   }

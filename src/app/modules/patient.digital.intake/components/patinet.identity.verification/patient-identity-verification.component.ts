@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { OptServiceService } from '../../services/opt/opt-service.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -42,8 +42,13 @@ export class PatientIdentityVerificationComponent implements OnInit {
       .subscribe(reuslt => {
         this.otpSent = true;
         this.message = 'OTP has been sent to your phone number.';
+        this.digitalIntakeService.findPatientByPhone(this.form.get('identity')?.get('pPhoneNumber')?.value).subscribe(result => {
+          if(result.body !==null){
+            this.digitalIntakeService.loadedPatient$.next(result.body)
+          }
+        })
       })
-      this.resetCountdown();
+    this.resetCountdown();
   }
   onResendClick(): void {
     if (this.resendDisabled) return;

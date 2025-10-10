@@ -17,6 +17,11 @@ export class OneTimeTokenService {
     const headers = { 'content-type': 'application/json' }
     return this.http.post(`${generateURL}`, JSON.stringify(request), { 'headers': headers, observe: 'response' })
   }
+  public generateNew(request: DigitalIntakeOneTimeTokenRequest) {
+    const generateURL = this.baseURL + '/generate/ott'
+    const headers = { 'content-type': 'application/json' }
+    return this.http.post(`${generateURL}`, JSON.stringify(request), { 'headers': headers, observe: 'response' })
+  }
   public generatePatientMailToken(request: DigitalIntakeOneTimeTokenRequest, patientMail: string | undefined) {
     const generateURL = this.baseURL + '/generate/jwt/mail/' + patientMail
     const headers = { 'content-type': 'application/json' }

@@ -31,11 +31,13 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
       this.isValid = true
       var request: DigitalIntakeOneTimeTokenRequest = {
         clinicId: this.selectedClinicUUID,
-        requester: 'Device_Submission'
+        requester: 'Device_Submission',
+        type: 'Full'
       }
-      this.oneTimeTokenService.generate(request).subscribe((response: any) => {
-        const requestToken: any = response.body;
-        this.submissionURL = this.baseURL + '/digital-intake/pre-create?token=' + requestToken.token;;
+      this.oneTimeTokenService.generateNew(request).subscribe((response: any) => {
+        console.log(response.body)
+        const ottResponse: any = response.body;
+        this.submissionURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
         this.isGenerated = true
         console.log(this.submissionURL)
       })

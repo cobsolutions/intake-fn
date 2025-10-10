@@ -1,0 +1,135 @@
+<!-- Enhanced Header -->
+<div class="header">
+  <div class="header-content">
+    <div class="header-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Campaign Manager</h1>
+      <p>Upload Excel files with patient emails to send campaigns</p>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Message -->
+<div class="message" [class.success]="uploadStatus === 'success'" [class.error]="uploadStatus === 'error'" *ngIf="uploadMessage">
+  {{ uploadMessage }}
+</div>
+
+<!-- Upload Card -->
+<div class="upload-card" 
+     [class.drag-over]="isDragOver"
+     [class.loading]="isLoading"
+     (dragover)="onDragOver($event)"
+     (dragleave)="onDragLeave($event)"
+     (drop)="onDrop($event)">
+  
+  <div class="upload-icon" *ngIf="!isLoading">
+    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+  
+  <h3 *ngIf="!isLoading">Upload Patient Email List</h3>
+  <h3 *ngIf="isLoading">Uploading File...</h3>
+  
+  <p class="upload-description" *ngIf="!isLoading">
+    Drag & drop your Excel file here or click to browse
+  </p>
+  
+  <label class="upload-label" *ngIf="!isLoading">
+    <input type="file" accept=".xlsx,.xls" hidden (change)="onFileSelected($event)" />
+    <span class="upload-btn">Select Excel File</span>
+  </label>
+  
+  <div class="file-info" *ngIf="!isLoading">
+    <div class="file-type">
+      <span class="info-icon">📊</span>
+      <span>Excel files (.xlsx, .xls)</span>
+    </div>
+    <div class="file-requirement">
+      <span class="info-icon">📧</span>
+      <span>File should contain patient emails in any column</span>
+    </div>
+  </div>
+</div>
+
+<!-- Uploaded Batches -->
+<div class="batch-list" *ngIf="uploadedBatches.length > 0">
+  <div class="list-header">
+    <h3 class="subtitle">Email Campaign Batches</h3>
+    <div class="batch-count">{{ uploadedBatches.length }} batch(es)</div>
+  </div>
+
+  <div class="batch-table-container">
+    <table class="batch-table">
+      <thead>
+        <tr>
+          <th>Batch #</th>
+          <th>Batch Name</th>
+          <th>Total Emails</th>
+          <th>Sent</th>
+          <th>Failed</th>
+          <th>Uploaded On</th>
+          <th>Status & Progress</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let batch of uploadedBatches; let i = index">
+          <td >{{ batch.id }}</td>
+          <td class="file-name">
+            <div class="file-icon">📧</div>
+            <div class="name-text">{{ batch.name }}</div>
+          </td>
+          <td class="total-emails">{{ batch.totalEmails }}</td>
+          <td class="emails-sent">{{ batch.emailsSent }}</td>
+          <td class="emails-failed">{{ batch.emailsFailed }}</td>
+          <td class="upload-date">{{ batch.date | date:'MM/dd/yyyy' }}</td>
+          <td>
+            <div class="status-container">
+              <span class="status" [ngClass]="batch.status.toLowerCase()">
+                <span class="status-icon">{{ getStatusIcon(batch.status) }}</span>
+                {{ batch.status }}
+              </span>
+              <div class="progress-container" *ngIf="batch.status === 'PROCESSING'">                
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="batch.progress" [style.background]="getProgressColor(batch)"></div>
+                </div>
+                <span class="progress-text">{{ batch.progress }}%</span>
+              </div>
+              <div class="error-message" *ngIf="batch.errorMessage">
+                {{ batch.errorMessage }}
+              </div>
+            </div>
+          </td>
+          <td class="actions">
+            <button class="action-btn retry" 
+                    *ngIf="batch.status === 'FAILED'" 
+                    (click)="retryUpload(batch)">
+              Retry
+            </button>
+            <button class="action-btn remove" (click)="removeBatch(i)">
+              Remove
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Empty State -->
+<div class="empty-state" *ngIf="uploadedBatches.length === 0 && !isLoading">
+  <div class="empty-icon">📁</div>
+  <h3>No batches yet</h3>
+  <p>Upload an Excel file to start sending email campaigns</p>
+</div>

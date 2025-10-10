@@ -206,4 +206,9 @@ export class DigitalIntakeService {
     var url = this.baseUrl + '/lookups/survey/find/' + surveyId;
     return this.http.get(url, { observe: 'response', withCredentials: true});
   }
+
+  public findPatientByPhone(phone:string){
+    var url = this.baseUrl + '/find/phone'
+    return this.http.get(url, { observe: 'response', withCredentials: true});
+  }
 }

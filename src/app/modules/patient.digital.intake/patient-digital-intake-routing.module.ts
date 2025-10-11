@@ -55,7 +55,7 @@ const routes: Routes = [
         component: CreateDigitalPatientIntakeComponent,
       },
       {
-        path: 'patient-sms-verification-request',
+        path: 'sms-request',
         component: SmsVerificationComponent
       },
       {

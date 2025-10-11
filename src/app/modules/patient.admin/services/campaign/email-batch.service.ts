@@ -29,7 +29,7 @@ export interface BatchStatusResponse {
   providedIn: 'root'
 })
 export class EmailBatchService {
-  private apiUrl = environment.baseURL + 'email-batches'
+  private apiUrl = environment.baseURL + 'campaign-batches'
   constructor(private http: HttpClient) { }
   uploadExcelFile(file: File): Observable<UploadResponse> {
     const formData = new FormData();

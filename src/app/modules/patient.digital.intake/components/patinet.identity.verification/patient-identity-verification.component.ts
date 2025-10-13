@@ -43,7 +43,7 @@ export class PatientIdentityVerificationComponent implements OnInit {
         this.otpSent = true;
         this.message = 'OTP has been sent to your phone number.';
         this.digitalIntakeService.findPatientByPhone(this.form.get('identity')?.get('pPhoneNumber')?.value).subscribe(result => {
-          if(result.body !==null){
+          if (result.body !== null) {
             this.digitalIntakeService.loadedPatient$.next(result.body)
           }
         })
@@ -77,10 +77,17 @@ export class PatientIdentityVerificationComponent implements OnInit {
 
   verifyOtp() {
     const otpNumber = this.otpArray.join('').toString();
-    this.digitalIntakeService.validate(this.patientUUID, otpNumber).subscribe(result => {
-      this.isValidOPT = true;
-      this.form.get('identity')?.get('validOTP')?.setValue(true)
-      this.message = 'OTP Verified Successfully.';
+    this.digitalIntakeService.validate(this.patientUUID, otpNumber).subscribe((response: any) => {
+      if (response.result === true) {
+        this.isValidOPT = true;
+        this.form.get('identity')?.get('validOTP')?.setValue(true)
+        this.message = 'OTP Verified Successfully.';
+      }
+      if (response.result === false) {
+        this.isValidOPT = false;
+        this.form.get('identity')?.get('validOTP')?.setValue(null)
+        this.message = 'Wrong OTP check and send it again'
+      }
     }, error => {
       this.isValidOPT = false;
       this.form.get('identity')?.get('validOTP')?.setValue(null)

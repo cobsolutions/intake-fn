@@ -276,11 +276,11 @@
 
 /intake-service/api/patient/sms/send http://161.97.126.192:8050/intake-service/api/patient/sms/send 200
 
-/intake-service/api/email-batches http://161.97.126.192:8050/intake-service/api/email-batches 200
+/intake-service/api/campaign-batches http://161.97.126.192:8050/intake-service/api/campaign-batches 200
 
-/intake-service/api/email-batches/upload http://161.97.126.192:8050/intake-service/api/email-batches/upload 200
+/intake-service/api/campaign-batches/upload http://161.97.126.192:8050/intake-service/api/campaign-batches/upload 200
 
-/intake-service/api/email-batches/:id http://161.97.126.192:8050/intake-service/api/email-batches/:id 200
+/intake-service/api/campaign-batches/:id http://161.97.126.192:8050/intake-service/api/campaign-batches/:id 200
 
 /intake-service/api/digital-intake/create http://161.97.126.192:8050/intake-service/api/digital-intake/create 200
 

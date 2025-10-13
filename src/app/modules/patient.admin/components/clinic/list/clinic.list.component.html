@@ -1,46 +1,82 @@
+
 <ngx-spinner></ngx-spinner>
-<c-row>
-  <c-col xs="12">
-    <h1>Clinics</h1>
-  </c-col>
-  <c-col xs="12">
-    <div style="float: right;">
-      <button cButton color="primary" variant="outline" (click)="showCreateClinic()">
-        Create Clinic
-      </button>
+<div class="header">
+  <div class="header-content">
+    <div class="header-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
     </div>
-  </c-col>
-</c-row>
+    <div class="header-text">
+      <h1>Locations Manager</h1>
+      <p>Create and update locations</p>
+    </div>
+  </div>
+</div>
+<div class="search-panel">
+  <div class="search-title">
+    <h2>Search Locations</h2>
+    <p>Quickly find a location by name or address</p>
+  </div>
+
+  <div class="search-bar">
+    <div class="search-input-wrapper">
+      <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8" />
+        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <input
+        type="text"
+        placeholder="Search by clinic name or address..."
+        [(ngModel)]="searchQuery"
+        class="search-input"
+      />
+    </div>
+
+    <button class="search-btn" (click)="onSearchClick()">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M3 12h18M9 6l-6 6 6 6" />
+      </svg>
+      Search
+    </button>
+  </div>
+</div>
+
+
 <c-alert color="danger" *ngIf="errorMessage !== ''">{{ errorMessage }}</c-alert>
-<table cTable>
-  <thead cTableColor="light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Clinic Name</th>
-      <th scope="col">Address</th>
-      <th scope="col">Created At</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let clinic of clinics; index as i;">
-      <td>{{clinic.id}}</td>
-      <td>{{clinic.name}}</td>
-      <td>{{clinic.address}}</td>
-      <td>{{clinic.createdAt | date:"MM/dd/yyyy hh:mm a"}}</td>
-      <td>
-        <div class="btn-group" role="group">
-          <button cButton variant="outline" (click)="showEditClinic(clinic.id)" size="sm">
-            <svg cIcon name="cilPen"></svg>
+<div class="batch-table-container">
+  <table class="batch-table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Clinic Name</th>
+        <th scope="col">Address</th>
+        <th scope="col">Created At</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let clinic of clinics; index as i;">
+        <td>{{clinic.id}}</td>
+        <td class="total-emails">{{clinic.name}}</td>
+        <td class="total-emails">{{clinic.address}}</td>
+        <td class="total-emails">{{clinic.createdAt | date:"MM/dd/yyyy hh:mm a"}}</td>
+        <td>
+          <button class="action-btn retry" (click)="showEditClinic(clinic.id)">
+            Change
           </button>
-          <!-- <button cButton variant="outline" (click)="showLocation(clinic.id)" size="sm">
-            <svg cIcon name="cilLocationPin"></svg>
-          </button> -->
-        </div>
-      </td>
-    </tr>
-  </tbody>
-</table>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+
 <c-modal id="createClinic" [visible]="isCreateClinic" size="xl" backdrop="static">
   <c-modal-header>
     <h3 cModalTitle>Clinic Creation</h3>
@@ -68,14 +104,5 @@
   <c-modal-body>
     <edit-clinic-location (changeVisibility)="changeClinicLocationVisibility($event)" *ngIf="isEditClinicLocation"
       [clinicId]="selectedClinicId"></edit-clinic-location>
-  </c-modal-body>
-</c-modal>
-
-<c-modal id="survey" [visible]="isSurvey" size="xl">
-  <c-modal-header>
-    <button (click)="togglePatientPelvicSurvey()" cButtonClose></button>
-  </c-modal-header>
-  <c-modal-body>
-    <generate-survey *ngIf="isSurvey"></generate-survey>
   </c-modal-body>
 </c-modal>

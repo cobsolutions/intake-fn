@@ -319,4 +319,6 @@
 
 /intake-service/api/digital-intake/create/quick/intake http://161.97.126.192:8050/intake-service/api/digital-intake/create/quick/intake 200
 
+/intake-service/api/clinic/upload http://161.97.126.192:8050/intake-service/api/clinic/upload 200
+
 /*  /index.html   200

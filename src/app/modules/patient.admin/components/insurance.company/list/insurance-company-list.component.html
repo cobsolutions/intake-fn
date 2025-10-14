@@ -1,49 +1,84 @@
 <ngx-spinner></ngx-spinner>
-<c-row>
-    <c-col xs="12">
-        <h1>Insurance Company List</h1>
-    </c-col>
-    <c-col xs="12">
-        <div style="float: right;">
-            <button cButton color="primary" variant="outline" (click)="showCreateInsuranceCompany()">
-                Create Insurance Company
-            </button>
-        </div>
-    </c-col>
-</c-row>
-<hr />
-<table cTable *ngIf="InsuranceCompanies">
-    <thead cTableColor="light">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">insurance Company</th>
-            <th scope="col">Clinic</th>
-            <th scope="col">Created At</th>
-            <th scope="col">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let insuranceCompany of InsuranceCompanies; index as i;">
-            <td>{{insuranceCompany.id}}</td>
-            <td>{{insuranceCompany.name}}</td>
-            <!-- <td>{{insuranceCompany.clinic.name}}</td> -->
-            <td>
-                <ul>
-                    <li *ngFor="let clinic of insuranceCompany.clinics">{{clinic.name}}</li>
-                </ul>
-            </td>
-            <td>{{insuranceCompany.createdAt | date:"MM/dd/yyyy  hh:mm a"}}</td>
-            <td>
-                <div class="btn-group" role="group">
-                    <button cButton variant="outline" (click)="showEditInsuranceCompany(insuranceCompany.id)" size="sm">
-                        <svg cIcon name="cilPen"></svg>
-                    </button>
-                </div>
-            </td>
-        </tr>
 
-    </tbody>
-</table>
+<!-- Header -->
+<div class="header">
+    <div class="header-content">
+        <div class="header-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </div>
+        <div class="header-text">
+            <h1>Insurance Company Manager</h1>
+        </div>
+    </div>
+</div>
+
+<!-- Search Panel -->
+<div class="search-panel">
+    <div class="search-title">
+        <h2>Search Insurance Companies</h2>
+        <p>Quickly find a company by name</p>
+    </div>
+
+    <div class="search-bar">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input type="text" placeholder="Search by name..." [(ngModel)]="searchQuery" class="search-input" />
+        </div>
+
+        <button class="search-btn" (click)="onSearchClick()">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" viewBox="0 0 24 24">
+                <path d="M3 12h18M9 6l-6 6 6 6" />
+            </svg>
+            Search
+        </button>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="batch-table-container">
+    <table cTable *ngIf="InsuranceCompanies" class="batch-table">
+        <thead cTableColor="light">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let insuranceCompany of InsuranceCompanies; index as i;">
+                <td>{{ insuranceCompany.id }}</td>
+                <td>{{ insuranceCompany.name }}</td>
+                <td>{{ insuranceCompany.createdAt | date: "MM/dd/yyyy hh:mm a" }}</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <button cButton variant="outline" (click)="showEditInsuranceCompany(insuranceCompany.id)"
+                            size="sm" class="action-btn">
+                            Change
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Floating Create Button -->
+<button class="floating-create-btn" (click)="showCreateInsuranceCompany()">
+    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16">
+        <path
+            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+    </svg>
+</button>
+
 <c-modal id="createinsuranceComany" [visible]="isCreateInsuranceCompany" size="xl" backdrop="static">
     <c-modal-header>
         <h3 cModalTitle>Insurance Company Creation</h3>

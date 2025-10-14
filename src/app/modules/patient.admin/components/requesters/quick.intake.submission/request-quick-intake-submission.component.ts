@@ -19,11 +19,21 @@ import { PatientSurveyService } from '../../../services/survey/patient-survey.se
   styleUrls: ['./request-quick-intake-submission.component.css']
 })
 export class RequestQuickIntakeSubmissionComponent implements OnInit {
+  filteredClinics(): any[] {
+    const term = this.clinicSearchTerm?.toLowerCase().trim() || '';
+    if (!term) return this.clinics;
+
+    return this.clinics.filter(clinic =>
+      clinic.name.toLowerCase().includes(term) ||
+      this.formatAddress(clinic.clinicAddress).toLowerCase().includes(term)
+    );
+  }
   @Output() changeVisibility = new EventEmitter<string>()
   public baseURL: string = location.origin;
   intakeForm: FormGroup;
 
   clinics: any[] = [];
+  original: any[] = [];
   surveys: Survey[];
   // Clinic selection options
   clinicSelectionOptions = [
@@ -33,6 +43,8 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
   ];
   prepareURL: string
   isGenerated: boolean = false;
+  dhd: String
+  clinicSearchTerm: any;
   constructor(private fb: FormBuilder,
     private kcAuthServiceService: KcAuthServiceService,
     private clinicService: ClinicService,
@@ -49,11 +61,17 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       selectedClinic: [null], // Single clinic ID
       patientEmail: [''],
       patientSMS: [''],
+      clinicSearch: ['']
     });
   }
 
   ngOnInit() {
     // Watch for intake type changes to conditionally require survey type
+    this.intakeForm.get('clinicSearch')?.valueChanges.subscribe(value => {
+      this.clinics = this.original.filter(clinic =>
+        clinic.name.toLowerCase().includes(value)
+      );
+    })
     this.intakeForm.get('intakeType')?.valueChanges.subscribe(value => {
       const surveyTypeControl = this.intakeForm.get('surveyType');
       if (value === 'quick-survey') {
@@ -85,6 +103,7 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
       if (response.body?.length !== 0) {
         response.body?.forEach((element: any) => {
           this.clinics.push(element);
+          this.original.push(element)
         });
       }
     })

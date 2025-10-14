@@ -46,33 +46,46 @@
     <!-- Clinic Selection -->
     <div class="section">
         <h3 class="section-title">Select Clinic</h3>
-        <!-- Single Clinic Selection -->
-        <div class="clinics-list-section" *ngIf="clinics.length > 0 && isClinicSelectionTypeSelected('specific')">
-            <h4 class="clinics-subtitle">Select One Clinic</h4>
-            <p class="clinic-selection-hint">Please choose one clinic from the list below</p>
 
-            <div class="clinics-list">
+        <!-- Single Clinic Selection -->
+        <div class="clinics-list-section">
+            <!-- 🔍 Search Input -->
+            <div class="form-group search-group">
+                <label for="clinicSearch" class="form-label">Search Clinics</label>
+                <input id="clinicSearch" type="text" class="form-input search-input" placeholder="Type clinic name"
+                    formControlName="clinicSearch" />
+            </div>
+
+            <!-- Filtered Clinics -->
+            <div class="clinics-list" *ngIf="clinics.length > 0; else noData">
                 <label *ngFor="let clinic of clinics" class="clinic-card" [class.selected]="isClinicSelected(clinic)"
                     (click)="selectClinic(clinic)">
                     <input type="radio" name="selectedClinic" [checked]="isClinicSelected(clinic)"
                         (change)="selectClinic(clinic)" />
                     <span class="clinic-content">
                         <span class="clinic-name">{{ clinic.name }}</span>
-                        <span class="clinic-address">{{ formatAddress(clinic.clinicAddress) }}</span>
+                        <span class="clinic-address">
+                            {{ formatAddress(clinic.clinicAddress) }}
+                        </span>
                     </span>
                     <span class="radio-indicator"></span>
                 </label>
             </div>
-
+            <ng-template #noData>
+                <div class="empty-message">
+                    <h4>No location found</h4>
+                    <p>Search again..!!</p>
+                </div>
+            </ng-template>
             <!-- Selected Clinic Display -->
             <div class="selected-clinic-display" *ngIf="hasSelectedClinic()">
                 <div class="selected-clinic-card">
                     <span class="selected-label">Selected Clinic:</span>
                     <span class="selected-clinic-info">
-
                         <strong>{{ getSelectedClinic()?.name }}</strong>
-                        <span class="selected-clinic-address">{{
-                            formatAddress(getSelectedClinic()?.clinicAddress)}}</span>
+                        <span class="selected-clinic-address">
+                            {{ formatAddress(getSelectedClinic()?.clinicAddress) }}
+                        </span>
                     </span>
                 </div>
             </div>
@@ -94,6 +107,8 @@
             </p>
         </div>
     </div>
+
+
 
     <!-- Sending Method -->
     <div class="section">
@@ -147,8 +162,7 @@
                 <div class="error-message" *ngIf="isSMSInvalid() && isFieldRequired('patientSMS')">
                     Valid phone is required
                 </div>
-                <div class="error-message"
-                    *ngIf="isSMSInvalid() && intakeForm.get('patientSMS')?.errors?.['pattern']">
+                <div class="error-message" *ngIf="isSMSInvalid() && intakeForm.get('patientSMS')?.errors?.['pattern']">
                     Please enter a valid phone
                 </div>
             </div>

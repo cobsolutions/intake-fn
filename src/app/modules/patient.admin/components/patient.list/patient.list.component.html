@@ -69,15 +69,13 @@
 </c-row>
 <div class="mb-3 text-start">
   <c-dropdown>
-    <button cButton cDropdownToggle color="secondary" variant="outline">
+    <button cButton cDropdownToggle color="primary" variant="outline">
       Patient Actions
     </button>
     <div cDropdownMenu>
       <a (click)="openQuickIntakeAndSurvey()" cDropdownItem>Quick Intake And Survey</a>
       <!-- <a [routerLink] cDropdownItem>Another action</a>
       <a [routerLink] cDropdownItem>Something else here</a> -->
-      <hr cDropdownDivider>
-      <a cDropdownItem>Quick Intake</a>
     </div>
   </c-dropdown>
 </div>
@@ -153,8 +151,6 @@
                   Survey Actions
                 </button>
                 <div cDropdownMenu>
-                  <a (click)="openSurvey(item)" cDropdownItem>Submit Survey</a>
-                  <hr cDropdownDivider>
                   <a cDropdownItem (click)="openPatientSurveyScore(item['patientId'])">Show Patients Scores</a>
                 </div>
               </c-dropdown>
@@ -182,7 +178,8 @@
           <ng-container *ngSwitchCase="'surveyStatus'" class="py-2">
             <c-badge color="primary" *ngIf="item.surveyStatus === 'HAS_SURVEY'"> Has Survey</c-badge>
             <c-badge color="warning" *ngIf="item.surveyStatus === 'REQUESTED_SURVEY'">Requested Survey</c-badge>
-            <c-badge color="danger" *ngIf="((item.surveyStatus === null) || item.surveyStatus === '' ) ||(item.surveyStatus === 'NO_SURVEY')">No
+            <c-badge color="danger"
+              *ngIf="((item.surveyStatus === null) || item.surveyStatus === '' ) ||(item.surveyStatus === 'NO_SURVEY')">No
               survey</c-badge>
           </ng-container>
         </ng-container>
@@ -230,7 +227,8 @@
     <button (click)="toggleQuickIntakeAndSurvey()" cButtonClose></button>
   </c-modal-header>
   <c-modal-body>
-    <request-quick-intake-submission *ngIf="isQuickIntakeAndSurvey" (changeVisibility)="changeVisibility($event)"> </request-quick-intake-submission>
+    <request-quick-intake-submission *ngIf="isQuickIntakeAndSurvey" (changeVisibility)="changeVisibility($event)">
+    </request-quick-intake-submission>
     <!-- <survey-submission *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission> -->
   </c-modal-body>
 </c-modal>

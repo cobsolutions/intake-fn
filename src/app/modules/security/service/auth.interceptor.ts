@@ -19,7 +19,7 @@ export class AuthInterceptor implements HttpInterceptor {
     private router: Router) { }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.spinner.show();
-    if(request.url.includes('/digital-intake')){
+    if (request.url.includes('/digital-intake')) {
       this.spinner.hide();
       return next.handle(request);
     }
@@ -38,14 +38,14 @@ export class AuthInterceptor implements HttpInterceptor {
         catchError(error => {
           console.log(error)
           if (error.status === 401) {
-           this.kcAuthServiceService.logout();
+            this.kcAuthServiceService.logout();
           }
           if (error.error.errorCode === 'UNAUTHORIZED') {
             this.kcAuthServiceService.logout();
           }
           else {
             this.scrollUp()
-            this.toastrService.error('Error during');
+            this.toastrService.error(error?.error?.message);
             throw error;
           }
           return [];

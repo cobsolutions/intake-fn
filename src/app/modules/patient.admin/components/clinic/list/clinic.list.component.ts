@@ -130,10 +130,5 @@ export class ClinicListComponent implements OnInit {
 
   onSearchClick(): void {
     this.onSearchChange();
-    console.log(JSON.stringify(JSON.stringify(this.clinics)))
-
-  }
-  getClinicInfo(message:string){
-      console.log('message from child ' + message)
   }
 }

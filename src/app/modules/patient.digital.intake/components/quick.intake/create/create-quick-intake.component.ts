@@ -2,12 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
-import { concatMap, switchMap, tap } from 'rxjs';
+import { concatMap, tap } from 'rxjs';
 import entityValues from 'src/app/modules/patient.admin/components/reports/_entity.values';
 import { DigitalIntakeOTTService } from 'src/app/modules/security/service/digital.intake.ott.service/digital-intake-ott.service';
 import { v4 as uuidv4 } from 'uuid';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
+import { futureDateValidator } from '../../create/validators/custom.validation/future.date.validator';
+import { maxDateValidator } from '../../create/validators/custom.validation/max.date.validator';
+import { todayDOBValidator } from '../../create/validators/custom.validation/today.dob.validator';
 interface IntakeForm {
   firstName: FormControl<string | null>;
   middleName: FormControl<string | null>;
@@ -51,9 +54,10 @@ export class CreateQuickIntakeComponent implements OnInit {
   otpError = false;
   patientUUID: string
   patientQuickIntakeRequest: PatientQuickIntakeRequest
-  entityValues = entityValues.filter(
-    entity => entity.entityValue !== 'referringDoctor'
-  );
+  // entityValues = entityValues.filter(
+  //   entity => entity.entityValue !== 'referringDoctor'
+  // );
+  entityValues = entityValues;
   constructor(private fb: FormBuilder,
     private digitalIntakeService: DigitalIntakeService,
     private router: Router,
@@ -115,13 +119,12 @@ export class CreateQuickIntakeComponent implements OnInit {
       lastName: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.min(15), Validators.pattern(this.phoneRgx)]],
       email: ['', [Validators.required, Validators.email]],
-      // insuranceCompany: ['', Validators.required],
-      dob: ['', Validators.required],
+      dob: ['', [Validators.required, futureDateValidator(), maxDateValidator(), todayDOBValidator()]],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
       zipCode: ['', [Validators.required, Validators.min(10), Validators.pattern(this.zipCodeRgx)]],
-      patientSource: ['googlead', Validators.required]
+      patientSource: ['', Validators.required]
     });
   }
   saveAndStartSurvey(): void {
@@ -154,6 +157,7 @@ export class CreateQuickIntakeComponent implements OnInit {
       this.intakeForm.markAllAsTouched();
     }
   }
+
   get f() {
     return this.intakeForm.controls;
   }

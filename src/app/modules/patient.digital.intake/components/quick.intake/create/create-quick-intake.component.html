@@ -46,7 +46,7 @@
     </div>
   </form>
 </div>
-<!-- Step 2: Quick Intake -->
+<!-- Step 2: Quick Intake  -->
 <div class="intake-container" *ngIf="otpVerified && !renderSurvey">
   <h1 class="title">Patient Digital Intake</h1>
   <p class="subtitle">Create a patient record quickly and start the journey</p>
@@ -75,10 +75,16 @@
     <!-- New: Date of Birth -->
     <div class="form-group">
       <label>Date of Birth</label>
-      <input type="date" formControlName="dob" />
+      <input type="date" formControlName="dob" min="1900-01-01" max="2100-12-31" />
       <div class="error" *ngIf="f.dob.touched && f.dob.invalid">
         Date of birth is required
       </div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['today']" class="text-danger mx-1">Date of birth
+        can't be today.</div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['future']" class="text-danger mx-1">Date of birth
+        can't be in future.</div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['max']" class="text-danger mx-1">Age Cannot be
+        greater than 100 years</div>
     </div>
     <!-- Address Section -->
     <div class="form-group">
@@ -136,9 +142,13 @@
     <div class="form-group">
       <label>How did you hear about us?</label>
       <select cSelect sizing="sm" formControlName="patientSource">
+        <option value="" disabled>Select from below </option>
         <option *ngFor="let entity of entityValues" [value]="entity.entityValue" [selected]="entity.selected">
           {{entity.entityName}}</option>
       </select>
+      <div class="error" *ngIf="f.patientSource.touched && f.patientSource">
+        Please tell us how you heard about us
+      </div>
     </div>
 
     <div class="actions" *ngIf="type==='QuickSurvey'">

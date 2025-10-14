@@ -38,7 +38,7 @@
     <div class="spinner"></div>
   </div>
   
-  <h3 *ngIf="!isLoading">Upload Patient Email List</h3>
+  <h3 *ngIf="!isLoading">Upload Patient List</h3>
   <h3 *ngIf="isLoading">Uploading File...</h3>
   
   <p class="upload-description" *ngIf="!isLoading">
@@ -57,7 +57,7 @@
     </div>
     <div class="file-requirement">
       <span class="info-icon">📧</span>
-      <span>File should contain patient emails in any column</span>
+      <span>File should contain patient data in any column</span>
     </div>
   </div>
 </div>
@@ -75,7 +75,7 @@
         <tr>
           <th>Batch #</th>
           <th>Batch Name</th>
-          <th>Total Emails</th>
+          <th>Total</th>
           <th>Sent</th>
           <th>Failed</th>
           <th>Uploaded On</th>

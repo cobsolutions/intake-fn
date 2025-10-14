@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { map, switchMap } from 'rxjs';
@@ -19,6 +19,7 @@ import { PatientSurveyService } from '../../../services/survey/patient-survey.se
   styleUrls: ['./request-quick-intake-submission.component.css']
 })
 export class RequestQuickIntakeSubmissionComponent implements OnInit {
+  @Output() changeVisibility = new EventEmitter<string>()
   public baseURL: string = location.origin;
   intakeForm: FormGroup;
 
@@ -222,11 +223,11 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
             phone: formValue.patientSMS,
             type: 'Quick'
           }
-          console.log(JSON.stringify(phoneRequest))
           return this.patientIntakeSMSService.send(phoneRequest)
         })
       ).subscribe(dd => {
-        this.toastrService.success("Verification sms has been sent to patient")
+        this.toastrService.success("SMS has been sent to patient")
+        this.changeVisibility.emit('close');
       })
 
     }
@@ -247,14 +248,9 @@ export class RequestQuickIntakeSubmissionComponent implements OnInit {
           return this.patientIntakeMailService.send(mailrequest)
         })
       ).subscribe(dd => {
-        this.toastrService.success("Verification mail has been sent to patient")
+        this.toastrService.success("Mail has been sent to patient")
+        this.changeVisibility.emit('close');
       })
-
-      // Reset email-specific fields after sending
-      this.intakeForm.patchValue({
-        patientName: '',
-        patientEmail: ''
-      });
     } else {
       this.markFormGroupTouched();
     }

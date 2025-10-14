@@ -25,6 +25,7 @@ export interface IParams {
 })
 export class PatientListComponent implements OnInit, OnDestroy {
 
+
   noShow: BehaviorSubject<boolean | null>;
   constructor(private patientListService: PatientListService
     , private reportingService: PatientReportingService
@@ -389,6 +390,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
     this.showPatientSurveys = !this.showPatientSurveys
   }
 
-
+  changeVisibility(event: string) {
+    if (event === 'close')
+      this.isQuickIntakeAndSurvey = false
+  }
 }
 

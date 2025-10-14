@@ -75,10 +75,16 @@
     <!-- New: Date of Birth -->
     <div class="form-group">
       <label>Date of Birth</label>
-      <input type="date" formControlName="dob" />
+      <input type="date" formControlName="dob" min="1900-01-01" max="2100-12-31" />
       <div class="error" *ngIf="f.dob.touched && f.dob.invalid">
         Date of birth is required
       </div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['today']" class="text-danger mx-1">Date of birth
+        can't be today.</div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['future']" class="text-danger mx-1">Date of birth
+        can't be in future.</div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['max']" class="text-danger mx-1">Age Cannot be
+        greater than 100 years</div>
     </div>
     <!-- Address Section -->
     <div class="form-group">

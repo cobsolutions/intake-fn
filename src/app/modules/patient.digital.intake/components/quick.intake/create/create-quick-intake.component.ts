@@ -8,6 +8,9 @@ import { DigitalIntakeOTTService } from 'src/app/modules/security/service/digita
 import { v4 as uuidv4 } from 'uuid';
 import { PatientQuickIntakeRequest } from '../../../models/quick.intake/patient.quick.intake.request';
 import { DigitalIntakeService } from '../../../services/digitalIntake/digital-intake.service';
+import { futureDateValidator } from '../../create/validators/custom.validation/future.date.validator';
+import { maxDateValidator } from '../../create/validators/custom.validation/max.date.validator';
+import { todayDOBValidator } from '../../create/validators/custom.validation/today.dob.validator';
 interface IntakeForm {
   firstName: FormControl<string | null>;
   middleName: FormControl<string | null>;
@@ -115,8 +118,7 @@ export class CreateQuickIntakeComponent implements OnInit {
       lastName: ['', [Validators.required]],
       phone: ['', [Validators.required, Validators.min(15), Validators.pattern(this.phoneRgx)]],
       email: ['', [Validators.required, Validators.email]],
-      // insuranceCompany: ['', Validators.required],
-      dob: ['', Validators.required],
+      dob: ['', [Validators.required,futureDateValidator(),maxDateValidator(),todayDOBValidator()]],
       address: ['', Validators.required],
       city: ['', Validators.required],
       state: ['', Validators.required],
@@ -144,6 +146,7 @@ export class CreateQuickIntakeComponent implements OnInit {
     }
   }
   save() {
+    this.logFormErrors();
     if (this.intakeForm.valid) {
       var model: PatientQuickIntakeRequest = this.createRequest();
       model.surveyStatus = "NO_SURVEY"
@@ -154,6 +157,7 @@ export class CreateQuickIntakeComponent implements OnInit {
       this.intakeForm.markAllAsTouched();
     }
   }
+  
   get f() {
     return this.intakeForm.controls;
   }
@@ -221,6 +225,20 @@ export class CreateQuickIntakeComponent implements OnInit {
     })
     // Autofill verified phone into intake form
     this.intakeForm.patchValue({ phone: this.pf['phone'].value });
+  }
+  logFormErrors(form = this.intakeForm) {
+    Object.keys(form.controls).forEach(key => {
+      const control = form.get(key);
+  
+      if (control && control.invalid) {
+        console.warn(`❌ [${key}] is invalid`, control.errors);
+      }
+  
+      // If nested form groups exist
+      if (control instanceof FormGroup) {
+        this.logFormErrors(control);
+      }
+    });
   }
 }
 

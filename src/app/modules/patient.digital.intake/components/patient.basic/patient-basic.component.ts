@@ -56,7 +56,8 @@ export class PatientBasicComponent implements OnInit {
           this.form.get('basic')?.get('dobDay')?.setValue(day)
           this.form.get('basic')?.get('dobYear')?.setValue(year)
 
-          //Phone
+          //Phone with defualt value of phone type -- CellPhone
+          this.form.get('basic')?.get('phoneType')?.setValue('CellPhone')
           this.form.get('basic')?.get('phone')?.setValue(essential.patientPhone?.phone)
 
           //Email

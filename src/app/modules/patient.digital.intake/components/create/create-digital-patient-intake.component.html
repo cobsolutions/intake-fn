@@ -18,14 +18,15 @@
                         <patient-biometric-identification [form]="patientForm" [isActive]="activeStepIndex"
                             [stepper]="patientStepper"></patient-biometric-identification>
                     </mat-step>
-                    <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="true">
-                        <ng-template matStepLabel>Essential</ng-template>
-                        <!-- <ng-template matStepLabel><svg cIcon name="cilUser" size="xxl"></svg></ng-template> -->
-                        <patient-basic [form]="patientForm" [stepper]="patientStepper"></patient-basic>
-                    </mat-step>
-                    <mat-step completed="true" [stepControl]="patientForm.get('address')!" formGroupName="address">
+<!--                     <mat-step completed="true" [stepControl]="patientForm.get('address')!" formGroupName="address">
                         <ng-template matStepLabel>Address</ng-template>
                         <patient-address [form]="patientForm" [stepper]="patientStepper"></patient-address>
+                    </mat-step> -->
+                    <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="true">
+                        <ng-template matStepLabel>Patient Information</ng-template>
+                        
+                        <!-- <ng-template matStepLabel><svg cIcon name="cilUser" size="xxl"></svg></ng-template> -->
+                        <patient-basic [form]="patientForm" [stepper]="patientStepper"></patient-basic>
                     </mat-step>
                     <mat-step completed="true" [stepControl]="patientForm.get('medical')!" formGroupName="medical">
                         <ng-template matStepLabel>Medical</ng-template>

@@ -7,6 +7,7 @@ import { ComponentReferenceComponentService } from '../../services/component.ref
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 import { CompressDocumentService } from '../../services/doument/compress-document.service';
 import { ValidationExploder } from '../create/validators/validation.exploder';
+import { states } from 'src/app/modules/common/components/address/state-data-store';
 
 @Component({
   selector: 'patient-basic',
@@ -20,6 +21,7 @@ export class PatientBasicComponent implements OnInit {
   isValidForm: boolean = false;
   isGuarantor: boolean = false
   loadedPatient: any
+  states: string[] = states;
   months = [
     { name: 'January', value: 1 }, { name: 'February', value: 2 }, { name: 'March', value: 3 },
     { name: 'April', value: 4 }, { name: 'May', value: 5 }, { name: 'June', value: 6 },
@@ -46,6 +48,13 @@ export class PatientBasicComponent implements OnInit {
           this.form.get('basic')?.get('middleName')?.setValue(essential.patientName.middleName)
           this.form.get('basic')?.get('lastName')?.setValue(essential.patientName.lastName)
 
+          this.form.get('basic')?.get('firstname')?.setValue(essential.patientAddress.firstAddress)
+          this.form.get('basic')?.get('middleName')?.setValue(essential.patientAddress.secondAddress)
+          this.form.get('basic')?.get('lastName')?.setValue(essential.patientAddress.city)
+          this.form.get('basic')?.get('state')?.setValue(essential.patientAddress.state)
+          this.form.get('basic')?.get('zipCode')?.setValue(essential.patientAddress.zipCode)
+
+
           //Date
           const date = new Date(essential.dateOfBirth);
           const month = date.getMonth() + 1;
@@ -63,6 +72,9 @@ export class PatientBasicComponent implements OnInit {
           //Email
           this.form.get('basic')?.get('email')?.setValue(essential.email)
 
+
+          this.form.get('basic')?.get('primaryDoctor')?.setValue(essential.patientPrimaryCare.primaryDoctor)
+          this.form.get('basic')?.get('primaryDoctorPhone')?.setValue(essential.patientPrimaryCare.primaryDoctorPhone)
         }
 
       })

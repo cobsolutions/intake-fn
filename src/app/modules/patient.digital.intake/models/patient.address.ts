@@ -1,4 +1,4 @@
-export interface PatientAddress {
+export interface PatientBasicAddress {
     addressType?: string
     firstAddress?: string
     secondAddress?: string

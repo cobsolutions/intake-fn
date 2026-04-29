@@ -68,6 +68,15 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
         'middleName': new FormControl(null, [noSpecialCharactersValidator(), noNumbersValidator()]),
         'lastName': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
+        
+
+           'firstAddress': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
+        'secondAddress': new FormControl(null, [noSpecialCharactersValidator()]),
+        'city': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
+        'state': new FormControl(null, [Validators.required]),
+        'zipCode': new FormControl(null, [Validators.required, Validators.min(10), Validators.pattern(zipCodeRgx)]),
+
+
         'dobMonth': new FormControl(''),
         'dobDay': new FormControl(''),
         'dobYear': new FormControl(''),
@@ -90,13 +99,13 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'emergencyName': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'emergencyPhone': new FormControl(null, [Validators.required, Validators.min(15), Validators.pattern(phoneRgx)]),
       }),
-      'address': new FormGroup({
+/*       'address': new FormGroup({
         'firstAddress': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'secondAddress': new FormControl(null, [noSpecialCharactersValidator()]),
         'city': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
         'state': new FormControl(null, [Validators.required]),
         'zipCode': new FormControl(null, [Validators.required, Validators.min(10), Validators.pattern(zipCodeRgx)]),
-      }),
+      }), */
       'medical': new FormGroup({
         'providerSearch': new FormControl(false),
         'referringSearchType': new FormControl("npi"),

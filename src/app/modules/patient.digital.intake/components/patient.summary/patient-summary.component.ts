@@ -13,7 +13,10 @@ import { Patient } from 'src/app/modules/patient.questionnaire/models/intake/pat
 import { PatientGrantor } from 'src/app/modules/patient.questionnaire/models/intake/patient.grantor';
 import { ReferringProvider } from 'src/app/modules/patient.questionnaire/models/intake/referring.provider/referring.provider';
 import { PatientSignature } from 'src/app/modules/patient.questionnaire/models/patient/signature.model';
-import { PatientAddress } from '../../models/patient.address';
+/* import { PatientAddress } from '../../models/patient.address';
+ */
+import { PatientBasicAddress } from 'src/app/modules/patient.digital.intake/models/patient.address';
+
 import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
@@ -49,7 +52,7 @@ export class PatientSummaryComponent implements OnInit {
     this.fillPatientMedicalHistoryInformation();
     this.fillPatientInsurance();
     this.fillPatientAgreement();
-    this.getSignture()
+    this.getSignture();
     this.getPhoto();
     this.clinicId = localStorage.getItem('clinicId') || '';
   }
@@ -64,7 +67,7 @@ export class PatientSummaryComponent implements OnInit {
       this.pateint.id = this.loadedPatientId;
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
     this.digitalIntakeService.create(imageFormData)
-      .subscribe(resuldd => {
+      .subscribe(resuldd => {  
         this.submitting = false;
         this.isError = false;
         this.router.navigateByUrl('/digital-intake/intake-finish');
@@ -112,9 +115,9 @@ export class PatientSummaryComponent implements OnInit {
           emergencyPhone: selected.emergencyPhone,
           emergencyRelation: selected.emergencyContact
         },
-        address: {
+         address: {
 
-        }
+        } 
       };
       var patientAge = moment().diff(selected.dob, 'y')
       var isGuarantor: boolean = patientAge < 18 ? true : false;
@@ -133,8 +136,8 @@ export class PatientSummaryComponent implements OnInit {
     })
   }
   private fillPatientAddress() {
-    var address: PatientAddress = {}
-    this.form.get('address')?.valueChanges.forEach(selected => {
+    var address: PatientBasicAddress = {}
+    this.form.get('basic')?.valueChanges.forEach(selected => {
       address = {
         firstAddress: selected.firstAddress,
         secondAddress: selected.secondAddress,
@@ -142,7 +145,7 @@ export class PatientSummaryComponent implements OnInit {
         state: selected.state,
         zipCode: selected.zipCode
       };
-      this.pateint.patientAddress = address
+      this.pateint.patientEssentialInformation!.patientAddress = address
     })
   }
   private fillPatientSource() {

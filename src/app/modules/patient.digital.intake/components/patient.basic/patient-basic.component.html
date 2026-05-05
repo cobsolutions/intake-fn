@@ -169,8 +169,8 @@
                     <option value="null" disabled>Select Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
+                    <option value="Self_Describe">To Self Describe</option>
                     <option value="Not_Prefer">Prefer Not To Say</option>
-                    <option value="Other">Other</option>
                 </select>
             </c-col>
             <div *ngIf="!this.form.get('basic')?.get('gender')?.valid && 
@@ -272,6 +272,7 @@
                 && this.form.get('basic')?.get('employment')?.touched}">
                     <option value="null" disabled>Select Employment Status</option>
                     <option value="Employed">Employed</option>
+                    <option value="Student">Student</option>
                     <option value="Retired">Retired</option>
                     <option value="Other">Other</option>
                 </select>

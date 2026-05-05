@@ -86,12 +86,19 @@ export class PatientAgreementComponent implements OnInit, AfterViewInit {
   private isPelvic(list: string[]): boolean {
     return list?.includes('pelpt') ?? false;
   }
+  private isCupping(list: string[]): boolean {
+    return list?.includes('cuppt') ?? false;
+  }
+
   private updateAgreementRequirement(ptVal: string[]): void {
     const pelvicSelected = this.isPelvic(ptVal);
-  
+    const cuppingSelected = this.isCupping(ptVal);
     this.agreements?.forEach(agreement => {
-      if (agreement.id === 12) {
+      if (agreement.id === 17) {
         agreement.required = pelvicSelected;
+      }
+      if (agreement.id === 16) {
+        agreement.required = cuppingSelected;
       }
     });
   

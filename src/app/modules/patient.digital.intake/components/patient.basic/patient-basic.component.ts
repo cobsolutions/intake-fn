@@ -72,9 +72,6 @@ export class PatientBasicComponent implements OnInit {
           //Email
           this.form.get('basic')?.get('email')?.setValue(essential.email)
 
-
-          this.form.get('basic')?.get('primaryDoctor')?.setValue(essential.patientPrimaryCare.primaryDoctor)
-          this.form.get('basic')?.get('primaryDoctorPhone')?.setValue(essential.patientPrimaryCare.primaryDoctorPhone)
         }
 
       })

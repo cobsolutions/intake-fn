@@ -4,12 +4,13 @@
 <!--Essential Information-->
 <c-card class="mb-3 mt-3">
     <c-card-body>
-        <h5 cCardTitle>Essential Information</h5>
+        <h5 cCardTitle>Patient Information</h5>
         <p cCardText>
             <strong>Name : </strong> {{capitalizeFirstLetter(pateint.patientEssentialInformation?.patientName?.lastName)
             +','
             +capitalizeFirstLetter(pateint.patientEssentialInformation?.patientName?.firstName)}}
             <br />
+            
             <strong>Date Of Birth : </strong> {{pateint.patientEssentialInformation?.birthDate_str}}<br />
             <strong>Gender : </strong> {{pateint.patientEssentialInformation?.gender}}<br />
             <span *ngIf="pateint.patientEssentialInformation?.gender ==='Self_Describe'">
@@ -39,15 +40,20 @@
     <c-card-body>
         <h5 cCardTitle>Address Information</h5>
         <p cCardText>
-            <strong>First Address : </strong> {{pateint.patientAddress?.firstAddress}}<br />
-            <strong>Second Address : </strong> {{pateint.patientAddress?.secondAddress}}<br />
-            <strong>City : </strong> {{pateint.patientAddress?.city}}<br />
-            <strong>State : </strong> {{pateint.patientAddress?.state}}<br />
-            <strong>Zip-Code : </strong> {{pateint.patientAddress?.zipCode}}<br />
+            <strong>First Address : </strong>
+            {{pateint.patientEssentialInformation?.patientAddress?.firstAddress}}<br />
+            <strong>Second Address : </strong>
+            {{pateint.patientEssentialInformation?.patientAddress?.secondAddress}}<br />
+            <strong>City : </strong> {{pateint.patientEssentialInformation?.patientAddress?.city}}<br />
+            <strong>State : </strong> {{pateint.patientEssentialInformation?.patientAddress?.state}}<br />
+            <strong>Zip-Code : </strong> {{pateint.patientEssentialInformation?.patientAddress?.zipCode}}<br />
         </p>
     </c-card-body>
 </c-card>
+
+
 <!--Medical Information-->
+
 <c-card class="mb-3 mt-3">
     <c-card-body>
         <h5 cCardTitle>Medical Information</h5>

@@ -35,15 +35,16 @@ export class SummaryComponent implements OnInit {
     <b style="font-family:Lucida">Emergency Name</b> : <i >${this.pateint.patientEssentialInformation?.patientEmergencyContact?.emergencyName} </i> <br/>
     <b style="font-family:Lucida">Emergency Phone</b> : <i > ${this.pateint.patientEssentialInformation?.patientEmergencyContact?.emergencyPhone} </i> <br/>
     <b style="font-family:Lucida">Employment Status</b> : <i >${this.pateint.patientEssentialInformation?.patientEmployment?.employmentStatus} </i> <br/>`
+    
     return paragraph;
   }
 
   getPatientAddress() {
     const paragraph = `<br/><u><h4 style="font-family:Lucida">Patient Address Information</h4></u>
-    <b style="font-family:Lucida">Address Type</b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.type} </i></br>
-    <b style="font-family:Lucida">First Address </b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.first} </i></br>
-    <b style="font-family:Lucida">Second Address </b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.second} </i></br>
-    <b style="font-family:Lucida">Country</b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.country} </i></br>
+    <b style="font-family:Lucida">Address Type</b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.addressType} </i></br>
+    <b style="font-family:Lucida">First Address </b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.firstAddress} </i></br>
+    <b style="font-family:Lucida">Second Address </b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.secondAddress} </i></br>
+    <b style="font-family:Lucida">Country</b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.state} </i></br>
     <b style="font-family:Lucida">Zip-Code</b> : <i style="font-family:Lucida"> ${this.pateint.patientEssentialInformation!.patientAddress?.zipCode} </i></br>`
     return paragraph;
   }

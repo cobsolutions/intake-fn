@@ -42,11 +42,11 @@ export class PatientIdentityVerificationComponent implements OnInit {
       .subscribe(reuslt => {
         this.otpSent = true;
         this.message = 'OTP has been sent to your phone number.';
-        this.digitalIntakeService.findPatientByPhone(this.form.get('identity')?.get('pPhoneNumber')?.value).subscribe(result => {
-          if (result.body !== null) {
-            this.digitalIntakeService.loadedPatient$.next(result.body)
-          }
-        })
+        // this.digitalIntakeService.findPatientByPhone(this.form.get('identity')?.get('pPhoneNumber')?.value).subscribe(result => {
+        //   if (result.body !== null) {
+        //     this.digitalIntakeService.loadedPatient$.next(result.body)
+        //   }
+        // })
       })
     this.resetCountdown();
   }

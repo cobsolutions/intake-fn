@@ -39,8 +39,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
   isSchedulePatient: boolean;
   editPatientProvider: boolean;
   isPatientSurvey: boolean = false
-  isQuickIntakeAndSurvey: boolean = false
-  showPatientSurveys: boolean = false
   selectedPatientId?: number
   selectedPatient: any
   public customRanges = {
@@ -109,16 +107,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
     {
       key: 'provider',
       label: 'Assign to Provider',
-      sorter: false,
-    },
-    {
-      key: 'surveyStatus',
-      label: 'Survey Status',
-      sorter: false,
-    },
-    {
-      key: 'isQuick',
-      label: 'Completeness',
       sorter: false,
     },
     {
@@ -374,25 +362,6 @@ export class PatientListComponent implements OnInit, OnDestroy {
   changeFacilityVisibility(event: string) {
     if (event === 'close')
       this.editPatientProvider = false;
-  }
-  openQuickIntakeAndSurvey() {
-    this.isQuickIntakeAndSurvey = true
-
-  }
-  openPatientSurveyScore(patientId: number) {
-    this.showPatientSurveys = true
-    this.selectedPatientId = patientId;
-  }
-  toggleQuickIntakeAndSurvey() {
-    this.isQuickIntakeAndSurvey = !this.isQuickIntakeAndSurvey
-  }
-  togglePatientSurveysScores() {
-    this.showPatientSurveys = !this.showPatientSurveys
-  }
-
-  changeVisibility(event: string) {
-    if (event === 'close')
-      this.isQuickIntakeAndSurvey = false
   }
 }
 

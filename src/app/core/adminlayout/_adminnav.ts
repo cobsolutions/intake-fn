@@ -52,6 +52,7 @@ export const adminNavItems: INavData[] = [
       }
     ],
   },
+  /*
   {
     name: 'Survey',
     url: '',
@@ -67,6 +68,7 @@ export const adminNavItems: INavData[] = [
       }
     ]
   },
+  */
   {
     name: 'Reports',
     url: '',

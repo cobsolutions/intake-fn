@@ -39,23 +39,6 @@
                 <option value="false">Not Scheduled</option>
               </select>
             </c-col>
-            <c-col class="mb-2" xs="4">
-              <select cSelect name="pSurveyfilter" [(ngModel)]="patientSearchCriteria.surveyStatus">
-                <option selected disabled value="undefined">Patient Survey Status</option>
-                <option value=null>All</option>
-                <option value="HAS_SURVEY">Has Survey</option>
-                <option value="NO_SURVEY">No Survey</option>
-                <option value="REQUESTED_SURVEY">Request Survey</option>
-              </select>
-            </c-col>
-            <c-col class="mb-2" xs="4">
-              <select cSelect name="pQuickfilter" [(ngModel)]="patientSearchCriteria.isQuick">
-                <option selected disabled value="undefined">Intake completeness</option>
-                <option value="null">All</option>
-                <option value="true">Quick</option>
-                <option value="false">Full</option>
-              </select>
-            </c-col>
             <c-col xs="12" class="text-center">
               <button cButton class="me-1" color="primary" style="width: 15%;" (click)="search()">
                 Search
@@ -67,18 +50,6 @@
     </c-card>
   </c-col>
 </c-row>
-<div class="mb-3 text-start">
-  <c-dropdown>
-    <button cButton cDropdownToggle color="primary" variant="outline">
-      Patient Actions
-    </button>
-    <div cDropdownMenu>
-      <a (click)="openQuickIntakeAndSurvey()" cDropdownItem>Quick Intake And Survey</a>
-      <!-- <a [routerLink] cDropdownItem>Another action</a>
-      <a [routerLink] cDropdownItem>Something else here</a> -->
-    </div>
-  </c-dropdown>
-</div>
 <ng-container *ngIf="props$ | async as props" fluid="true">
   <c-smart-table [columns]="columns" [items]="(usersData$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
     (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
@@ -146,14 +117,6 @@
               <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm" variant="outline">
                 Records
               </button>
-              <c-dropdown>
-                <button cButton cDropdownToggle color="primary" size="sm" variant="outline">
-                  Survey Actions
-                </button>
-                <div cDropdownMenu>
-                  <a cDropdownItem (click)="openPatientSurveyScore(item['patientId'])">Show Patients Scores</a>
-                </div>
-              </c-dropdown>
             </c-input-group>
           </ng-container>
           <ng-container *ngSwitchCase="'name'" class="py-2">
@@ -170,17 +133,6 @@
               <input cFormCheckInput type="checkbox" (change)="isSchedule(item)" [checked]="item.schedule"
                 [(ngModel)]="item.schedule" />
             </c-form-check>
-          </ng-container>
-          <ng-container *ngSwitchCase="'isQuick'" class="py-2">
-            <c-badge color="warning" *ngIf="item.isQuick">Quick</c-badge>
-            <c-badge color="success" *ngIf="(item.isQuick===null) ||( item.isQuick ===false)">Full</c-badge>
-          </ng-container>
-          <ng-container *ngSwitchCase="'surveyStatus'" class="py-2">
-            <c-badge color="primary" *ngIf="item.surveyStatus === 'HAS_SURVEY'"> Has Survey</c-badge>
-            <c-badge color="warning" *ngIf="item.surveyStatus === 'REQUESTED_SURVEY'">Requested Survey</c-badge>
-            <c-badge color="danger"
-              *ngIf="((item.surveyStatus === null) || item.surveyStatus === '' ) ||(item.surveyStatus === 'NO_SURVEY')">No
-              survey</c-badge>
           </ng-container>
         </ng-container>
       </td>
@@ -220,24 +172,5 @@
   </c-modal-header>
   <c-modal-body>
     <survey-submission [patient]="selectedPatient" *ngIf="isPatientSurvey" [type]="'S'"></survey-submission>
-  </c-modal-body>
-</c-modal>
-<c-modal id="quickIntakeAndSurvey" [visible]="isQuickIntakeAndSurvey" size="xl" backdrop="static">
-  <c-modal-header>
-    <button (click)="toggleQuickIntakeAndSurvey()" cButtonClose></button>
-  </c-modal-header>
-  <c-modal-body>
-    <request-quick-intake-submission *ngIf="isQuickIntakeAndSurvey" (changeVisibility)="changeVisibility($event)">
-    </request-quick-intake-submission>
-    <!-- <survey-submission *ngIf="isQuickIntakeAndSurvey" [type]="'QI'"></survey-submission> -->
-  </c-modal-body>
-</c-modal>
-<c-modal id="showPatientSurveys" [visible]="showPatientSurveys" size="xl" backdrop="static">
-  <c-modal-header>
-    <h3 cModalTitle>PatientSurveys Scores</h3>
-    <button (click)="togglePatientSurveysScores()" cButtonClose></button>
-  </c-modal-header>
-  <c-modal-body>
-    <show-patient-survey [patientId]="selectedPatientId!" *ngIf="showPatientSurveys"></show-patient-survey>
   </c-modal-body>
 </c-modal>

@@ -1,40 +1,86 @@
 <ngx-spinner></ngx-spinner>
-<c-row>
-    <c-col xs="12">
-        <h3>Digital Intake Submission</h3>
-    </c-col>
-</c-row>
-<hr />
 
-<div class="mb-3">
-    <c-card>
-        <c-card-body>
-            <h5 cCardTitle>Choose Submission Approach</h5>
-            <p cCardText>Please select how you would like to submit the digital patient intake.</p>
-            <div class="mb-3">
-                <select aria-label="Default select example" cSelect id="submission_approach"
-                    [(ngModel)]="submissionApproach">
-                    <option selected disabled value="undefined">Select Submission Approach</option>
-                    <option value="device">Scan QR-Code By Device</option>
-                    <option value="mail">Send Patient Mail</option>
-                </select>
+<div class="pc">
+
+    <header class="pc__header">
+        <span class="pc__icon" aria-hidden="true">
+            <svg cIcon name="cilNoteAdd"></svg>
+        </span>
+        <div class="pc__header-text">
+            <span class="pc__eyebrow">Patient Intake</span>
+            <h2 class="pc__title">Start a new digital intake</h2>
+            <p class="pc__subtitle">Pick how the patient will receive their secure intake form.</p>
+        </div>
+    </header>
+
+    <!-- Approach picker -->
+    <section class="pc-section" *ngIf="!submissionApproach">
+        <div class="pc__choice-grid">
+            <button type="button"
+                    class="pc-choice"
+                    (click)="submissionApproach = 'device'">
+                <span class="pc-choice__icon pc-choice__icon--blue" aria-hidden="true">
+                    <svg cIcon name="cilTablet"></svg>
+                </span>
+                <span class="pc-choice__title">In-clinic tablet</span>
+                <span class="pc-choice__hint">
+                    Generate a QR code the patient scans on a clinic tablet or phone.
+                </span>
+                <span class="pc-choice__cta">
+                    Generate QR code
+                    <svg cIcon name="cilArrowRight" aria-hidden="true"></svg>
+                </span>
+            </button>
+
+            <button type="button"
+                    class="pc-choice"
+                    (click)="submissionApproach = 'mail'">
+                <span class="pc-choice__icon pc-choice__icon--green" aria-hidden="true">
+                    <svg cIcon name="cilEnvelopeClosed"></svg>
+                </span>
+                <span class="pc-choice__title">Email link</span>
+                <span class="pc-choice__hint">
+                    Send a secure intake link to the patient's email so they can fill it out at home.
+                </span>
+                <span class="pc-choice__cta">
+                    Send email
+                    <svg cIcon name="cilArrowRight" aria-hidden="true"></svg>
+                </span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Active approach -->
+    <section class="pc-section pc-section--active" *ngIf="submissionApproach">
+        <header class="pc-active__head">
+            <span class="pc-active__icon" aria-hidden="true">
+                <svg *ngIf="submissionApproach === 'device'" cIcon name="cilTablet"></svg>
+                <svg *ngIf="submissionApproach === 'mail'" cIcon name="cilEnvelopeClosed"></svg>
+            </span>
+            <div class="pc-active__title-wrap">
+                <h3 class="pc-active__title">
+                    <ng-container *ngIf="submissionApproach === 'device'">In-clinic tablet — QR code</ng-container>
+                    <ng-container *ngIf="submissionApproach === 'mail'">Email the patient a secure link</ng-container>
+                </h3>
+                <p class="pc-active__hint">
+                    <ng-container *ngIf="submissionApproach === 'device'">
+                        Pick the clinic, then have the patient scan the code with their device camera.
+                    </ng-container>
+                    <ng-container *ngIf="submissionApproach === 'mail'">
+                        Enter the patient's email address — we'll send the intake link with a one-time access code.
+                    </ng-container>
+                </p>
             </div>
-        </c-card-body>
-    </c-card>
+            <button type="button" class="pc-active__change" (click)="submissionApproach = undefined">
+                <svg cIcon name="cilArrowCircleLeft" aria-hidden="true"></svg>
+                Change approach
+            </button>
+        </header>
+
+        <div class="pc-active__body">
+            <request-device-intake-submission *ngIf="submissionApproach === 'device'"></request-device-intake-submission>
+            <request-mail-intake-submission *ngIf="submissionApproach === 'mail'" [type]="'FI'"></request-mail-intake-submission>
+        </div>
+    </section>
+
 </div>
-<c-card *ngIf="submissionApproach ==='device'">
-    <c-card-header>
-        <h4>Generate QR-Code</h4>
-    </c-card-header>
-    <c-card-body>
-        <request-device-intake-submission *ngIf="submissionApproach ==='device'"></request-device-intake-submission>
-    </c-card-body>
-</c-card>
-<c-card *ngIf="submissionApproach ==='mail'">
-    <c-card-header>
-        <h4>Send Mail</h4>
-    </c-card-header>
-    <c-card-body>
-        <request-mail-intake-submission *ngIf="submissionApproach ==='mail'" [type]="'FI'"></request-mail-intake-submission>
-    </c-card-body>
-</c-card>

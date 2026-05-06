@@ -1,77 +1,212 @@
-/* Container for full-screen centered layout */
-.danger-container {
+/* ==========================================================================
+   Corrupted Device — friendly "can't continue here" screen
+   ========================================================================== */
+
+:host {
+    --dd-ink-1: #0c1b2a;
+    --dd-ink-2: #2c3e54;
+    --dd-ink-3: #5a6a7e;
+    --dd-bg: #f4f7fb;
+    --dd-surface: #ffffff;
+    --dd-border: #d8e0ea;
+    --dd-brand: #0f4c81;
+    --dd-brand-strong: #0a3a64;
+    --dd-brand-soft: #e6eff8;
+    --dd-warning: #c46a00;
+    --dd-warning-soft: #fbf0df;
+    --dd-success: #1f8a4c;
+
+    --dd-radius-lg: 22px;
+    --dd-radius-md: 12px;
+    --dd-tap: 48px;
+
+    display: block;
+    min-height: 100vh;
+    background: var(--dd-bg);
+    font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--dd-ink-1);
+    line-height: 1.6;
+}
+
+.dev-deny {
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #7a0b0b;
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  /* Message box with strong red theme */
-  .danger-box {
-    background-color: #ffcccc;
-    border: 2px solid #e60000;
-    border-radius: 10px;
-    padding: 40px;
-    max-width: 670px;
+    padding: clamp(20px, 4vw, 40px);
+}
+
+.dev-deny__card {
+    position: relative;
+    background: var(--dd-surface);
+    border: 1px solid var(--dd-border);
+    border-radius: var(--dd-radius-lg);
+    padding: clamp(28px, 4vw, 44px);
+    max-width: 540px;
+    width: 100%;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
-    animation: shake 0.5s ease-in-out;
-  }
-  
-  /* Icon styling */
-  .icon {
-    font-size: 3em;
-    color: #e60000;
-    margin-bottom: 20px;
-  }
-  
-  /* Heading styling */
-  .danger-box h1 {
-    font-size: 1.8em;
-    color: #cc0000;
-    margin: 0 0 10px;
-  }
-  
-  /* Text styling */
-  .danger-box p {
-    margin: 10px 0;
-    font-size: 1em;
-    line-height: 1.5;
-    color: #7a0b0b;
-  }
-  
-  /* Button styling with strong color contrast */
-  .danger-box button {
-    background-color: #cc0000;
-    border: none;
+    box-shadow: 0 24px 60px rgba(12, 27, 42, .12);
+    animation: dd-fade .35s ease;
+    overflow: hidden;
+}
+
+@keyframes dd-fade {
+    from { transform: translateY(8px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+.dev-deny__halo {
+    position: absolute;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196, 106, 0, .14), transparent 60%);
+    pointer-events: none;
+}
+
+.dev-deny__icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--dd-warning), #a55600);
     color: #fff;
-    padding: 10px 20px;
-    font-size: 1em;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .danger-box button:hover {
-    background-color: #990000;
-  }
-  
-  /* Shake animation */
-  @keyframes shake {
-    0%, 100% {
-      transform: translateX(0);
+    margin: 0 auto 20px;
+    box-shadow: 0 14px 32px rgba(196, 106, 0, .35);
+    animation: dd-pop .55s ease;
+}
+
+@keyframes dd-pop {
+    0%   { transform: scale(.6); opacity: 0; }
+    70%  { transform: scale(1.08); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.dev-deny__icon svg {
+    width: 40px;
+    height: 40px;
+}
+
+.dev-deny__title {
+    margin: 0 0 12px;
+    font-size: clamp(1.375rem, 3vw, 1.75rem);
+    font-weight: 800;
+    color: var(--dd-ink-1);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.dev-deny__lead {
+    margin: 0 0 18px;
+    font-size: 1.0625rem;
+    color: var(--dd-ink-2);
+    line-height: 1.55;
+}
+
+.dev-deny__detail {
+    display: block;
+    margin: 0 0 24px;
+    padding: 12px 16px;
+    background: var(--dd-warning-soft);
+    border: 1px solid rgba(196, 106, 0, .25);
+    border-radius: var(--dd-radius-md);
+    color: var(--dd-ink-2);
+    font-size: .9375rem;
+    text-align: left;
+    line-height: 1.45;
+}
+
+.dev-deny__detail-label {
+    display: block;
+    font-size: .6875rem;
+    color: var(--dd-warning);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 4px;
+}
+
+.dev-deny__tips {
+    list-style: none;
+    margin: 0 0 24px;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.dev-deny__tips li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: linear-gradient(180deg, #fbfcfe, #f4f7fb);
+    border: 1px solid var(--dd-border);
+    border-radius: var(--dd-radius-md);
+    color: var(--dd-ink-2);
+    font-size: .9375rem;
+    line-height: 1.4;
+}
+
+.dev-deny__tip-icon {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--dd-brand-soft);
+    color: var(--dd-brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dev-deny__tip-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.dev-deny__support {
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(31, 138, 76, .1);
+    color: var(--dd-success);
+    font-weight: 600;
+    font-size: .875rem;
+    border: 1px solid rgba(31, 138, 76, .25);
+}
+
+.dev-deny__support svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* ==========================================================================
+   Mobile (≤ 480px)
+   ========================================================================== */
+@media (max-width: 480px) {
+    .dev-deny { padding: 16px; }
+    .dev-deny__card { padding: 24px 20px; }
+    .dev-deny__icon { width: 72px; height: 72px; }
+    .dev-deny__icon svg { width: 32px; height: 32px; }
+    .dev-deny__title { font-size: 1.25rem; }
+    .dev-deny__lead { font-size: 1rem; }
+    .dev-deny__halo { top: -90px; width: 240px; height: 240px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        transition-duration: .001ms !important;
     }
-    25% {
-      transform: translateX(-10px);
-    }
-    50% {
-      transform: translateX(10px);
-    }
-    75% {
-      transform: translateX(-10px);
-    }
-  }
-  
+}

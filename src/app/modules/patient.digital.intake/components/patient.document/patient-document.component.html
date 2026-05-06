@@ -1,106 +1,204 @@
-<c-callout color="danger" *ngIf="isValidForm">
-    <span class="text-danger fw-bold">Please fill in all the required fields before navigating to next step</span>
-</c-callout>
-<div [formGroup]="form" class="mt-3">
+<div class="docs" [formGroup]="form">
+
+    <header class="docs__header">
+        <h2 class="docs__title">Upload your documents</h2>
+        <p class="docs__subtitle">
+            Take a clear photo or pick one from your device. We accept JPG, PNG, or GIF — up to 50&nbsp;MB each.
+        </p>
+    </header>
+
+    <c-callout color="danger" *ngIf="isValidForm" class="docs__callout">
+        <strong>We still need your ID photos.</strong> Please add the front and back below.
+    </c-callout>
+
+    <c-callout color="warning" *ngIf="isMaxSize" class="docs__callout">
+        <strong>That file is larger than 50&nbsp;MB.</strong> Please choose a smaller image.
+    </c-callout>
+
     <div formArrayName="document">
-        <!--Patient  Document-->
-        <span>
-            <!--Patient id front-->
-            <c-row class="mb-2">
-                <c-col xl="12">
-                    <div *ngFor="let docGroup of document.controls; let i = index" [formGroupName]="i">
-                        <label for="dsds" class="form-label" style="font-size: medium;"
-                            *ngIf="docGroup.get('id-front')">Id Front <span class="text-danger">*</span></label>
-                        <input cFormControl type="file" formControlName="id-front" placeholder="ID Front"
-                            accept="image/*" type="file" *ngIf="docGroup.get('id-front')" capture="environment"
-                            class="mb-1" (change)="onImageUpload($event ,'patientIdfront' ,'id-front')">
-                        <label for="dsds" class="form-label" style="font-size: medium;"
-                            *ngIf="docGroup.get('id-back')">Id Back <span class="text-danger">*</span></label>
-                        <input cFormControl type="file" formControlName="id-back" *ngIf="docGroup.get('id-back')"
-                            placeholder="ID Back" accept="image/*" type="file" capture="environment" class="mb-1"
-                            (change)="onImageUpload($event ,'patientIdback' ,'id-back')">
-                    </div>
-                    <div *ngIf="this.form.get('document')?.get('0')!.get('id-front')?.errors?.['required'] && 
-                        (this.form.get('document')?.get('0')!.get('id-front')?.dirty ||this.form.get('document')!.get('0')?.get('id-front')?.touched) "
-                        class="text-danger mx-1">
-                        <span *ngIf="!isGuarantor">
-                            Patient ID Front is required
-                        </span>
-                        <span *ngIf="isGuarantor">
-                            Guarantor Patient ID Front is required
-                        </span>
-                    </div>
-                    <div *ngIf="this.form.get('document')?.get('0')!.get('id-back')?.errors?.['required'] && 
-                        (this.form.get('document')?.get('0')!.get('id-back')?.dirty ||this.form.get('document')!.get('0')?.get('id-back')?.touched) "
-                        class="text-danger mx-1">
-                        <span *ngIf="!isGuarantor">
-                            Patient ID Back is required
-                        </span>
-                        <span *ngIf="isGuarantor">
-                            Guarantor Patient ID Front is required
-                        </span>
-                    </div>
-                </c-col>
-            </c-row>
-        </span>
-        <span>
-            <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th scope="col">Insurance Type</th>
-                        <th scope="col">Insurance Data</th>
-                        <th style="width: 40%;">Uplodad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let patientInsurance of patientInsurances; let i = index">
-                        <td>
-                            <span *ngIf="patientInsurance.type ==='worker'">Worker Compensation</span>
-                            <span *ngIf="patientInsurance.type ==='auto_acc'">auto Accident</span>
-                            <span *ngIf="patientInsurance.type ==='commercial'">Commercial Insurance</span>
-                            <span *ngIf="patientInsurance.type ==='medicare'">Medicare</span>
-                            <span *ngIf="patientInsurance.type ==='medicaid'">Medicaid</span>
-                        </td>
-                        <td>
-                            <span *ngIf="patientInsurance.type ==='worker'">
-                                <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
+
+        <section class="docs__section docs__section--required">
+            <header class="docs__section-head">
+                <span class="docs__section-num">1</span>
+                <div class="docs__section-text">
+                    <h3 class="docs__section-title">
+                        <ng-container *ngIf="!isGuarantor">Photo ID</ng-container>
+                        <ng-container *ngIf="isGuarantor">Guarantor's Photo ID</ng-container>
+                    </h3>
+                    <p class="docs__section-hint">Driver's license, state ID, or passport — both sides.</p>
+                </div>
+                <span class="docs__section-pill is-required">Required</span>
+            </header>
+
+            <div *ngFor="let docGroup of document.controls; let i = index" [formGroupName]="i" class="docs__tiles"
+                 [class.docs__tiles--single]="!docGroup.get('id-front') && !docGroup.get('id-back')">
+
+                <ng-container *ngIf="docGroup.get('id-front')">
+                    <label class="upload-tile"
+                           [class.is-filled]="hasFile('id-front')"
+                           [class.is-invalid]="form.get('document')?.get('0')?.get('id-front')?.errors?.['required'] && (form.get('document')?.get('0')?.get('id-front')?.dirty || form.get('document')?.get('0')?.get('id-front')?.touched)">
+                        <input type="file" formControlName="id-front" accept="image/*" capture="environment"
+                               class="upload-tile__input"
+                               (change)="onImageUpload($event, 'patientIdfront', 'id-front')" />
+
+                        <ng-container *ngIf="!hasFile('id-front')">
+                            <span class="upload-tile__icon" aria-hidden="true">
+                                <svg cIcon name="cilCloudUpload"></svg>
                             </span>
-                            <span *ngIf="patientInsurance.type ==='auto_acc'">
-                                <strong> Insurance Company : </strong>{{$any(patientInsurance).insuranceName}}
-                            </span>
-                            <span *ngIf="patientInsurance.type ==='commercial'">
-                                <strong> Insurance Company : </strong>{{$any(patientInsurance).name}}
-                            </span>
-                            <span *ngIf="patientInsurance.type ==='medicare'">
-                                <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
-                            </span>
-                            <span *ngIf="patientInsurance.type ==='medicaid'">
-                                <strong> Policy Number : </strong>{{$any(patientInsurance).policyId}}
-                            </span>
-                        </td>
-                        <td>
-                            <c-row>
-                                <div class="col-md-auto">
-                                    <label class="form-label" style="font-size: medium;">Front</label>
-                                    <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1" placeholder="Front"
-                                        [formControlName]="patientInsurance._frontcontrollName"
-                                        (change)="onImageUpload($event ,patientInsurance._frontcontrollName,patientInsurance._frontcontrollName)" />
+                            <span class="upload-tile__title">Front of ID</span>
+                            <span class="upload-tile__hint">Tap to take photo or upload</span>
+                            <span class="upload-tile__pill">Required</span>
+                        </ng-container>
+
+                        <ng-container *ngIf="hasFile('id-front')">
+                            <img class="upload-tile__thumb" [src]="thumbnails['id-front']" alt="ID front preview" />
+                            <div class="upload-tile__filled-foot">
+                                <span class="upload-tile__filename">{{ fileNames['id-front'] }}</span>
+                                <div class="upload-tile__actions">
+                                    <span class="upload-tile__replace">Replace</span>
+                                    <button type="button" class="upload-tile__remove"
+                                            (click)="$event.preventDefault(); removeUploadedDocument('id-front', 'idDoc')">
+                                        <svg cIcon name="cilTrash" aria-hidden="true"></svg>
+                                        Remove
+                                    </button>
                                 </div>
-                                <div class="col-md-auto">
-                                    <label class="form-label" style="font-size: medium;">Back</label>
-                                    <input cFormControl accept="image/*" type="file" capture="environment" class="mb-1" placeholder="Back"
-                                        [formControlName]="patientInsurance._backcontrollName"
-                                        (change)="onImageUpload($event ,patientInsurance._backcontrollName,patientInsurance._backcontrollName)" />
+                            </div>
+                            <span class="upload-tile__check" aria-hidden="true">
+                                <svg cIcon name="cilCheck"></svg>
+                            </span>
+                        </ng-container>
+                    </label>
+                </ng-container>
+
+                <ng-container *ngIf="docGroup.get('id-back')">
+                    <label class="upload-tile"
+                           [class.is-filled]="hasFile('id-back')"
+                           [class.is-invalid]="form.get('document')?.get('0')?.get('id-back')?.errors?.['required'] && (form.get('document')?.get('0')?.get('id-back')?.dirty || form.get('document')?.get('0')?.get('id-back')?.touched)">
+                        <input type="file" formControlName="id-back" accept="image/*" capture="environment"
+                               class="upload-tile__input"
+                               (change)="onImageUpload($event, 'patientIdback', 'id-back')" />
+
+                        <ng-container *ngIf="!hasFile('id-back')">
+                            <span class="upload-tile__icon" aria-hidden="true">
+                                <svg cIcon name="cilCloudUpload"></svg>
+                            </span>
+                            <span class="upload-tile__title">Back of ID</span>
+                            <span class="upload-tile__hint">Tap to take photo or upload</span>
+                            <span class="upload-tile__pill">Required</span>
+                        </ng-container>
+
+                        <ng-container *ngIf="hasFile('id-back')">
+                            <img class="upload-tile__thumb" [src]="thumbnails['id-back']" alt="ID back preview" />
+                            <div class="upload-tile__filled-foot">
+                                <span class="upload-tile__filename">{{ fileNames['id-back'] }}</span>
+                                <div class="upload-tile__actions">
+                                    <span class="upload-tile__replace">Replace</span>
+                                    <button type="button" class="upload-tile__remove"
+                                            (click)="$event.preventDefault(); removeUploadedDocument('id-back', 'idDoc')">
+                                        <svg cIcon name="cilTrash" aria-hidden="true"></svg>
+                                        Remove
+                                    </button>
                                 </div>
-                            </c-row>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </span>
+                            </div>
+                            <span class="upload-tile__check" aria-hidden="true">
+                                <svg cIcon name="cilCheck"></svg>
+                            </span>
+                        </ng-container>
+                    </label>
+                </ng-container>
+            </div>
+        </section>
+
+        <section class="docs__section" *ngIf="patientInsurances.length > 0">
+            <header class="docs__section-head">
+                <span class="docs__section-num">2</span>
+                <div class="docs__section-text">
+                    <h3 class="docs__section-title">Insurance cards</h3>
+                    <p class="docs__section-hint">Front and back of each insurance card you provided.</p>
+                </div>
+                <span class="docs__section-pill is-optional">Optional</span>
+            </header>
+
+            <div class="ins-block" *ngFor="let patientInsurance of patientInsurances; let i = index">
+                <div class="ins-block__head">
+                    <span class="ins-block__type">{{ insuranceTypeLabel(patientInsurance.type) }}</span>
+                    <span class="ins-block__meta" *ngIf="insuranceMeta(patientInsurance) as meta">{{ meta }}</span>
+                </div>
+
+                <div class="docs__tiles">
+                    <label class="upload-tile" [class.is-filled]="hasFile(patientInsurance._frontcontrollName)">
+                        <input type="file" accept="image/*" capture="environment"
+                               class="upload-tile__input"
+                               [formControlName]="patientInsurance._frontcontrollName"
+                               (change)="onImageUpload($event, patientInsurance._frontcontrollName, patientInsurance._frontcontrollName)" />
+
+                        <ng-container *ngIf="!hasFile(patientInsurance._frontcontrollName)">
+                            <span class="upload-tile__icon" aria-hidden="true">
+                                <svg cIcon name="cilCloudUpload"></svg>
+                            </span>
+                            <span class="upload-tile__title">Card Front</span>
+                            <span class="upload-tile__hint">Tap to take photo or upload</span>
+                        </ng-container>
+
+                        <ng-container *ngIf="hasFile(patientInsurance._frontcontrollName)">
+                            <img class="upload-tile__thumb" [src]="thumbnails[patientInsurance._frontcontrollName]" alt="Card front preview" />
+                            <div class="upload-tile__filled-foot">
+                                <span class="upload-tile__filename">{{ fileNames[patientInsurance._frontcontrollName] }}</span>
+                                <div class="upload-tile__actions">
+                                    <span class="upload-tile__replace">Replace</span>
+                                    <button type="button" class="upload-tile__remove"
+                                            (click)="$event.preventDefault(); removeUploadedDocument(patientInsurance._frontcontrollName, 'insurance')">
+                                        <svg cIcon name="cilTrash" aria-hidden="true"></svg>
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="upload-tile__check" aria-hidden="true">
+                                <svg cIcon name="cilCheck"></svg>
+                            </span>
+                        </ng-container>
+                    </label>
+
+                    <label class="upload-tile" [class.is-filled]="hasFile(patientInsurance._backcontrollName)">
+                        <input type="file" accept="image/*" capture="environment"
+                               class="upload-tile__input"
+                               [formControlName]="patientInsurance._backcontrollName"
+                               (change)="onImageUpload($event, patientInsurance._backcontrollName, patientInsurance._backcontrollName)" />
+
+                        <ng-container *ngIf="!hasFile(patientInsurance._backcontrollName)">
+                            <span class="upload-tile__icon" aria-hidden="true">
+                                <svg cIcon name="cilCloudUpload"></svg>
+                            </span>
+                            <span class="upload-tile__title">Card Back</span>
+                            <span class="upload-tile__hint">Tap to take photo or upload</span>
+                        </ng-container>
+
+                        <ng-container *ngIf="hasFile(patientInsurance._backcontrollName)">
+                            <img class="upload-tile__thumb" [src]="thumbnails[patientInsurance._backcontrollName]" alt="Card back preview" />
+                            <div class="upload-tile__filled-foot">
+                                <span class="upload-tile__filename">{{ fileNames[patientInsurance._backcontrollName] }}</span>
+                                <div class="upload-tile__actions">
+                                    <span class="upload-tile__replace">Replace</span>
+                                    <button type="button" class="upload-tile__remove"
+                                            (click)="$event.preventDefault(); removeUploadedDocument(patientInsurance._backcontrollName, 'insurance')">
+                                        <svg cIcon name="cilTrash" aria-hidden="true"></svg>
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <span class="upload-tile__check" aria-hidden="true">
+                                <svg cIcon name="cilCheck"></svg>
+                            </span>
+                        </ng-container>
+                    </label>
+                </div>
+            </div>
+        </section>
+
     </div>
-    <div class="mt-3">
-        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
-        <button cButton variant="outline" size="sm" (click)="next()">Next</button>
-    </div>
+
+    <nav class="docs__nav">
+        <button cButton matStepperPrevious size="lg" variant="outline" class="docs__back">Back</button>
+        <button cButton size="lg" (click)="next()" class="docs__next">Continue</button>
+    </nav>
 </div>

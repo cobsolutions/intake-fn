@@ -1,9 +1,79 @@
 <ngx-spinner></ngx-spinner>
-<c-container fluid="true">
-    <c-card>
-        <c-card-body>
+
+<div class="intake-shell" [attr.data-section]="currentStep.section">
+
+    <header class="intake-topbar" role="banner">
+        <div class="intake-topbar__inner">
+            <div class="intake-topbar__brand">
+                <span class="intake-brand-mark" aria-hidden="true">
+                    <svg cIcon name="cilMedicalCross"></svg>
+                </span>
+                <div class="intake-brand-text">
+                    <span class="intake-brand-eyebrow">Welcome</span>
+                    <span class="intake-brand-title">Patient Digital Intake</span>
+                </div>
+            </div>
+
+            <div class="intake-topbar__meta">
+                <span class="intake-secure-pill" title="Your information is encrypted and HIPAA-protected">
+                    <svg cIcon name="cilLockLocked" aria-hidden="true"></svg>
+                    <span>Secure &amp; Private</span>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <section class="intake-progress" aria-label="Intake progress">
+        <div class="intake-progress__panel">
+            <div class="intake-progress__counter" aria-hidden="true">
+                <span class="intake-progress__step-num">{{ activeStepIndex + 1 }}</span>
+                <span class="intake-progress__step-of">of {{ steps.length }}</span>
+            </div>
+
+            <div class="intake-progress__current">
+                <span class="intake-progress__chapter">{{ currentSection.label }}</span>
+                <h1 class="intake-progress__title">{{ currentStep.title }}</h1>
+                <p class="intake-progress__hint">{{ currentStep.hint }}</p>
+            </div>
+
+            <div class="intake-progress__ring-wrap" aria-hidden="true">
+                <svg class="intake-progress__ring" viewBox="0 0 36 36">
+                    <path class="intake-progress__ring-bg"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path class="intake-progress__ring-fill"
+                        [attr.stroke-dasharray]="progressPercent + ', 100'"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <span class="intake-progress__percent-text">{{ progressPercent }}%</span>
+            </div>
+
+            <div class="intake-progress__bar-mobile" aria-hidden="true">
+                <span class="intake-progress__bar-fill" [style.width.%]="progressPercent"></span>
+            </div>
+        </div>
+
+        <ol class="intake-rail" role="list">
+            <li *ngFor="let s of steps; let i = index"
+                class="intake-rail__step"
+                [class.is-done]="isStepDone(i)"
+                [class.is-active]="isStepActive(i)"
+                [attr.data-section]="s.section"
+                [attr.aria-current]="isStepActive(i) ? 'step' : null"
+                [attr.title]="s.title">
+                <span class="intake-rail__dot">
+                    <svg *ngIf="isStepDone(i)" cIcon name="cilCheck" aria-hidden="true"></svg>
+                    <svg *ngIf="!isStepDone(i)" cIcon [name]="s.icon" aria-hidden="true"></svg>
+                </span>
+                <span class="intake-rail__label">{{ s.label }}</span>
+            </li>
+        </ol>
+    </section>
+
+    <main class="intake-main" role="main">
+        <div class="intake-card">
             <form [formGroup]="patientForm">
-                <mat-stepper linear="true" #stepper [orientation]="stepperOrientation" (selectionChange)="onStepChange($event)">
+                <mat-stepper class="intake-stepper" linear="true" #stepper orientation="horizontal"
+                    (selectionChange)="onStepChange($event)">
                     <mat-step [stepControl]="patientForm.get('consent')!" formGroupName="consent" completed="false">
                         <ng-template matStepLabel>Consent</ng-template>
                         <patient-consent [form]="patientForm" [stepper]="patientStepper"></patient-consent>
@@ -18,14 +88,8 @@
                         <patient-biometric-identification [form]="patientForm" [isActive]="activeStepIndex"
                             [stepper]="patientStepper"></patient-biometric-identification>
                     </mat-step>
-<!--                     <mat-step completed="true" [stepControl]="patientForm.get('address')!" formGroupName="address">
-                        <ng-template matStepLabel>Address</ng-template>
-                        <patient-address [form]="patientForm" [stepper]="patientStepper"></patient-address>
-                    </mat-step> -->
                     <mat-step [stepControl]="patientForm.get('basic')!" formGroupName="basic" completed="true">
                         <ng-template matStepLabel>Patient Information</ng-template>
-                        
-                        <!-- <ng-template matStepLabel><svg cIcon name="cilUser" size="xxl"></svg></ng-template> -->
                         <patient-basic [form]="patientForm" [stepper]="patientStepper"></patient-basic>
                     </mat-step>
                     <mat-step completed="true" [stepControl]="patientForm.get('medical')!" formGroupName="medical">
@@ -56,11 +120,22 @@
                     </mat-step>
                     <mat-step completed="true">
                         <ng-template matStepLabel>Summary</ng-template>
-                        <patient-summary [form]="patientForm"></patient-summary>
+                        <patient-summary [form]="patientForm" [stepper]="patientStepper"></patient-summary>
                     </mat-step>
                 </mat-stepper>
             </form>
-        </c-card-body>
-    </c-card>
-</c-container>
-<!--dummy comment-->
+        </div>
+    </main>
+
+    <footer class="intake-help" role="contentinfo">
+        <div class="intake-help__inner">
+            <span class="intake-help__icon" aria-hidden="true">
+                <svg cIcon name="cilSpeech"></svg>
+            </span>
+            <p class="intake-help__text">
+                Need a hand? You can pause any time — your answers are saved.
+                Ask a family member or our front-desk team if anything is unclear.
+            </p>
+        </div>
+    </footer>
+</div>

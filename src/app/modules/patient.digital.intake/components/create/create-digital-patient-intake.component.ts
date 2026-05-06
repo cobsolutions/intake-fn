@@ -18,6 +18,22 @@ import { XRayValidator } from './validators/medical.history/add.xray.validator';
 import { ConditionsValidator } from './validators/medical.history/conditions.validator';
 import { PatientSourceValidator } from './validators/patient.source/patient.source.validator';
 
+type IntakeSectionKey = 'welcome' | 'about' | 'health' | 'coverage' | 'confirm';
+
+interface IntakeSection {
+  key: IntakeSectionKey;
+  label: string;
+}
+
+interface IntakeStepMeta {
+  key: string;
+  label: string;
+  title: string;
+  hint: string;
+  icon: string;
+  section: IntakeSectionKey;
+}
+
 @Component({
   selector: 'app-create-digital-patient-intake',
   templateUrl: './create-digital-patient-intake.component.html',
@@ -29,7 +45,31 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   patientForm: FormGroup
   render: boolean = false;
   @ViewChild(MatStepper, { static: true }) public patientStepper: MatStepper;
-  activeStepIndex: number;
+  activeStepIndex: number = 0;
+  isCompactViewport: boolean = false;
+
+  readonly sections: Record<IntakeSectionKey, IntakeSection> = {
+    welcome:  { key: 'welcome',  label: 'Welcome' },
+    about:    { key: 'about',    label: 'About You' },
+    health:   { key: 'health',   label: 'Your Health' },
+    coverage: { key: 'coverage', label: 'Coverage' },
+    confirm:  { key: 'confirm',  label: 'Confirm & Sign' }
+  };
+
+  readonly steps: IntakeStepMeta[] = [
+    { key: 'consent',        label: 'Consent',     title: 'Welcome — please review your consent',          hint: 'Take your time. Tap Accept when you are ready to begin.',                  icon: 'cilShieldAlt',   section: 'welcome'  },
+    { key: 'identity',       label: 'Verify',      title: 'Verify your phone number',                       hint: 'We will text you a 6-digit code to make sure it is really you.',          icon: 'cilLockLocked',  section: 'welcome'  },
+    { key: 'bio',            label: 'Photo',       title: 'Add a photo of yourself',                        hint: 'Helps our staff greet you correctly when you arrive.',                    icon: 'cilUser',        section: 'welcome'  },
+    { key: 'basic',          label: 'Your Info',   title: 'Tell us about yourself',                         hint: 'Name, date of birth, address and how to reach you.',                      icon: 'cilAddressBook', section: 'about'    },
+    { key: 'medical',        label: 'Medical',     title: 'Your reason for visit',                          hint: 'Who referred you and how you would like us to reach you.',                icon: 'cilMedicalCross',section: 'health'   },
+    { key: 'medicalhistory', label: 'History',     title: 'Your medical history',                           hint: 'Conditions, medications and past treatments. Skip what does not apply.',  icon: 'cilHistory',     section: 'health'   },
+    { key: 'insurance',      label: 'Insurance',   title: 'Your insurance coverage',                        hint: 'You can use your camera in a moment to scan your card.',                  icon: 'cilCreditCard',  section: 'coverage' },
+    { key: 'agreement',      label: 'Agreements',  title: 'Office agreements',                              hint: 'A few short forms required by our practice.',                             icon: 'cilTask',        section: 'confirm'  },
+    { key: 'signature',      label: 'Signature',   title: 'Add your signature',                             hint: 'Sign with your finger, mouse, or have it typed for you.',                 icon: 'cilPencil',      section: 'confirm'  },
+    { key: 'document',       label: 'Documents',   title: 'Upload supporting documents',                    hint: 'Photos of insurance card, ID, or referral notes — optional.',             icon: 'cilFile',        section: 'confirm'  },
+    { key: 'summary',        label: 'All Done',    title: 'Review and submit',                              hint: 'Final check before you send everything to our team.',                     icon: 'cilCheck',       section: 'confirm'  }
+  ];
+
   constructor(private breakpointObserver: BreakpointObserver,
     private digitalIntakeService: DigitalIntakeService) { }
 
@@ -39,8 +79,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
       Breakpoints.Handset,
       Breakpoints.Tablet,
     ]).subscribe(result => {
-      result.matches ? this.stepperOrientation = 'vertical' : this.stepperOrientation = 'horizontal'
-
+      this.isCompactViewport = result.matches;
     });
     // this.digitalIntakeService.pickupSubmissionToken().subscribe(result=>{
     //   this.render = true
@@ -49,6 +88,28 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
     // });
     this.createPatientForm();
   }
+
+  get currentStep(): IntakeStepMeta {
+    return this.steps[this.activeStepIndex] ?? this.steps[0];
+  }
+
+  get currentSection(): IntakeSection {
+    return this.sections[this.currentStep.section];
+  }
+
+  get progressPercent(): number {
+    if (this.steps.length <= 1) return 100;
+    return Math.round((this.activeStepIndex / (this.steps.length - 1)) * 100);
+  }
+
+  isStepDone(index: number): boolean {
+    return index < this.activeStepIndex;
+  }
+
+  isStepActive(index: number): boolean {
+    return index === this.activeStepIndex;
+  }
+
   private createPatientForm() {
     //const phoneRgx = new RegExp("^[\+]?[0-9]{0,3}\W?[(]?[0-9]{3}[)]?[-\s\.]?[(]?[0-9]{3}[)][-\s\.]?[0-9]{4,6}$");
     const phoneRgx = /^\(\d{3}\) \d{3}-\d{4}$/;
@@ -68,7 +129,7 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
         'firstname': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
         'middleName': new FormControl(null, [noSpecialCharactersValidator(), noNumbersValidator()]),
         'lastName': new FormControl(null, [Validators.required, noSpecialCharactersValidator(), noNumbersValidator()]),
-        
+
 
            'firstAddress': new FormControl(null, [Validators.required, noSpecialCharactersValidator()]),
         'secondAddress': new FormControl(null, [noSpecialCharactersValidator()]),
@@ -259,5 +320,8 @@ export class CreateDigitalPatientIntakeComponent implements OnInit {
   }
   onStepChange(event: StepperSelectionEvent): void {
     this.activeStepIndex = event.selectedIndex;
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 }

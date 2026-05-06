@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
@@ -13,12 +14,21 @@ import { Patient } from 'src/app/modules/patient.questionnaire/models/intake/pat
 import { PatientGrantor } from 'src/app/modules/patient.questionnaire/models/intake/patient.grantor';
 import { ReferringProvider } from 'src/app/modules/patient.questionnaire/models/intake/referring.provider/referring.provider';
 import { PatientSignature } from 'src/app/modules/patient.questionnaire/models/patient/signature.model';
-/* import { PatientAddress } from '../../models/patient.address';
- */
 import { PatientBasicAddress } from 'src/app/modules/patient.digital.intake/models/patient.address';
 
 import { ComponentReferenceComponentService } from '../../services/component.reference/component-reference-component.service';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
+
+interface SectionStepIndex {
+  photo:        number;
+  basic:        number;
+  medical:      number;
+  history:      number;
+  insurance:    number;
+  agreement:    number;
+  signature:    number;
+  documents:    number;
+}
 
 @Component({
   selector: 'patient-summary',
@@ -27,24 +37,41 @@ import { DigitalIntakeService } from '../../services/digitalIntake/digital-intak
 })
 export class PatientSummaryComponent implements OnInit {
   @Input() form: FormGroup;
-  pateint: Patient = {}
+  @Input() stepper?: MatStepper;
+
+  pateint: Patient = {};
   patientSignature: PatientSignature = new PatientSignature();
   clinicId: string;
   submitting: boolean = false;
   isError: boolean = false;
   errorMessage: string;
   loadedPatientId: number;
-  constructor(private componentReference: ComponentReferenceComponentService
-    , private digitalIntakeService: DigitalIntakeService
-    , private router: Router
-    , private toastrService: ToastrService) { }
+  confirmAccuracy: boolean = false;
+
+  readonly stepIndex: SectionStepIndex = {
+    photo:     2,
+    basic:     3,
+    medical:   4,
+    history:   5,
+    insurance: 6,
+    agreement: 7,
+    signature: 8,
+    documents: 9
+  };
+
+  constructor(
+    private componentReference: ComponentReferenceComponentService,
+    private digitalIntakeService: DigitalIntakeService,
+    private router: Router,
+    private toastrService: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.digitalIntakeService.loadedPatient$.pipe(
       filter(data => data !== null)
     ).subscribe(patient => {
       this.loadedPatientId = patient.id;
-    })
+    });
     this.fillPateintEssentialInformation();
     this.fillPatientAddress();
     this.fillPatientSource();
@@ -56,39 +83,162 @@ export class PatientSummaryComponent implements OnInit {
     this.getPhoto();
     this.clinicId = localStorage.getItem('clinicId') || '';
   }
+
+  editStep(index: number): void {
+    if (this.stepper) {
+      this.stepper.selectedIndex = index;
+    }
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   submit() {
-    this.submitting = true
-    var imageFormData = new FormData();
+    this.submitting = true;
+    const imageFormData = new FormData();
     this.componentReference.getPatientDocumentComponent()!.getFormDate().forEach((patientDocument: any) => {
       imageFormData.append('files', patientDocument, patientDocument.name);
-    })
+    });
     this.pateint.clinicIdUUID = this.clinicId;
     if (this.loadedPatientId !== undefined)
       this.pateint.id = this.loadedPatientId;
     imageFormData.append('patient', new Blob([JSON.stringify(this.pateint)], { type: 'application/json' }));
     this.digitalIntakeService.create(imageFormData)
-      .subscribe(resuldd => {  
+      .subscribe(_ => {
         this.submitting = false;
         this.isError = false;
         this.router.navigateByUrl('/digital-intake/intake-finish');
       }, error => {
-        // console.log(JSON.stringify(this.pateint))
-        // console.log(JSON.stringify(error))
-        this.errorMessage = error.error.message
+        this.errorMessage = error.error?.message ?? 'Submission failed. Please try again.';
         this.submitting = false;
         this.isError = true;
         this.scrollUp();
-        var failedIntake: FailedIntake = {
+        const failedIntake: FailedIntake = {
           patient: this.pateint,
           errorMessage: this.errorMessage
-        }
-        this.digitalIntakeService.failedIntake(failedIntake).subscribe(r => {
-          console.log('Failed api called.')
-        })
-      })
+        };
+        this.digitalIntakeService.failedIntake(failedIntake).subscribe(() => {});
+      });
   }
+
+  /* -------- Display helpers (used by template) -------- */
+
+  get fullName(): string {
+    const n = this.pateint.patientEssentialInformation?.patientName;
+    if (!n) return '';
+    return [
+      this.capitalizeFirstLetter(n.firstName),
+      this.capitalizeFirstLetter(n.middleName),
+      this.capitalizeFirstLetter(n.lastName)
+    ].filter(Boolean).join(' ');
+  }
+
+  get age(): string | null {
+    const dob = this.form.get('basic')?.get('dob')?.value;
+    if (!dob) return null;
+    const yrs = moment().diff(dob, 'y');
+    return yrs >= 0 ? `${yrs} years old` : null;
+  }
+
+  get phoneDisplay(): string {
+    const p = this.pateint.patientEssentialInformation?.patientPhone;
+    if (!p?.phone) return '';
+    return p.phoneType ? `${p.phone} (${p.phoneType})` : p.phone;
+  }
+
+  get emergencyDisplay(): string {
+    const e = this.pateint.patientEssentialInformation?.patientEmergencyContact;
+    if (!e?.emergencyName) return '';
+    const parts = [e.emergencyName, e.emergencyRelation, e.emergencyPhone].filter(Boolean);
+    return parts.join(' • ');
+  }
+
+  get fullAddress(): string {
+    const a = this.pateint.patientEssentialInformation?.patientAddress;
+    if (!a) return '';
+    const line1 = [a.firstAddress, a.secondAddress].filter(Boolean).join(', ');
+    const line2 = [a.city, a.state, a.zipCode].filter(Boolean).join(', ');
+    return [line1, line2].filter(Boolean).join(' — ');
+  }
+
+  get heightDisplay(): string {
+    const h = this.pateint.patientMedical?.patientMedicalHistory;
+    return h?.heightFT ? `${h.heightFT}` : '';
+  }
+
+  get weightDisplay(): string {
+    const h = this.pateint.patientMedical?.patientMedicalHistory;
+    return h?.weight ? `${h.weight} lbs` : '';
+  }
+
+  get conditionsList(): string[] {
+    const c = this.pateint.patientMedical?.patientMedicalHistory?.patientCondition as any[];
+    return Array.isArray(c) ? c.map((x: any) => x?.name).filter(Boolean) : [];
+  }
+
+  get scanningTests(): string[] {
+    const x = this.pateint.patientMedical?.patientMedicalHistory?.scanningTestValue as any[];
+    return Array.isArray(x) ? x : [];
+  }
+
+  get capturedPhoto(): string | null {
+    return this.form.get('bio')?.get('capturedImage')?.value ?? null;
+  }
+
+  get signatureDataUrl(): string | null {
+    return this.pateint.signature
+      || this.form.get('signature')?.get('generatesign')?.value
+      || this.form.get('signature')?.get('drawsign')?.value
+      || null;
+  }
+
+  get acceptedAgreementCount(): number {
+    const ag = this.form.get('agreement')?.value || {};
+    return Object.values(ag).filter(v => v === true).length;
+  }
+
+  get totalAgreementCount(): number {
+    const ag = this.form.get('agreement')?.value || {};
+    return Object.keys(ag).length;
+  }
+
+  get uploadedDocumentCount(): number {
+    return this.componentReference.getPatientDocumentComponent()?.uploadedDocumentsCount() ?? 0;
+  }
+
+  get uploadedDocumentNames(): string[] {
+    return this.componentReference.getPatientDocumentComponent()?.uploadedDocumentNames() ?? [];
+  }
+
+  get hasGuarantor(): boolean {
+    return !!this.pateint.patientGrantor;
+  }
+
+  get genderDisplay(): string {
+    const g = this.pateint.patientEssentialInformation?.gender;
+    if (!g) return '';
+    if (g === 'Self_Describe') {
+      return this.pateint.patientEssentialInformation?.genderDescribe || 'Self-described';
+    }
+    return g;
+  }
+
+  hasAnyInsurance(): boolean {
+    const ins = this.pateint.insurances as any;
+    if (!ins) return false;
+    return (
+      (ins.commercialInsurances?.length > 0) ||
+      (ins.workerCompensationInsurances?.length > 0) ||
+      (ins.medicareInsurance?.length > 0) ||
+      (ins.medicaidInsurance?.length > 0) ||
+      ins.selfPay?.type === 'selfpay'
+    );
+  }
+
+  /* -------- Original fill methods (preserved) -------- */
+
   private fillPateintEssentialInformation() {
-    var patientEssentialInformation: PatientEssentialInformation = {}
+    let patientEssentialInformation: PatientEssentialInformation = {};
     this.form.get('basic')?.valueChanges.forEach(selected => {
       patientEssentialInformation = {
         patientName: {
@@ -115,14 +265,12 @@ export class PatientSummaryComponent implements OnInit {
           emergencyPhone: selected.emergencyPhone,
           emergencyRelation: selected.emergencyContact
         },
-         address: {
-
-        } 
+        address: {}
       };
-      var patientAge = moment().diff(selected.dob, 'y')
-      var isGuarantor: boolean = patientAge < 18 ? true : false;
+      const patientAge = moment().diff(selected.dob, 'y');
+      const isGuarantor = patientAge < 18;
       if (isGuarantor) {
-        var patientGrantor: PatientGrantor = {
+        const patientGrantor: PatientGrantor = {
           firstName: selected.guarantorFirstName,
           middleName: selected.guarantorMiddleName,
           lastName: selected.guarantorLastName,
@@ -132,11 +280,11 @@ export class PatientSummaryComponent implements OnInit {
       } else {
         this.pateint.patientGrantor = undefined;
       }
-      this.pateint.patientEssentialInformation = patientEssentialInformation
-    })
+      this.pateint.patientEssentialInformation = patientEssentialInformation;
+    });
   }
   private fillPatientAddress() {
-    var address: PatientBasicAddress = {}
+    let address: PatientBasicAddress = {};
     this.form.get('basic')?.valueChanges.forEach(selected => {
       address = {
         firstAddress: selected.firstAddress,
@@ -145,89 +293,86 @@ export class PatientSummaryComponent implements OnInit {
         state: selected.state,
         zipCode: selected.zipCode
       };
-      this.pateint.patientEssentialInformation!.patientAddress = address
-    })
+      this.pateint.patientEssentialInformation!.patientAddress = address;
+    });
   }
   private fillPatientSource() {
     this.form.get('medical')?.get('referringEntity')?.valueChanges.subscribe(value => {
       this.pateint.patientIncomingSource = value;
-    })
-    var referringProvider: ReferringProvider = {}
+    });
+    const referringProvider: ReferringProvider = {};
     this.form.get('medical')?.get('providerName')?.valueChanges.subscribe(value => {
       referringProvider.name = value;
       this.pateint.referringProvider = referringProvider;
-    })
+    });
     this.form.get('medical')?.get('providerNPI')?.valueChanges.subscribe(value => {
       referringProvider.npi = value;
       this.pateint.referringProvider = referringProvider;
-    })
+    });
   }
 
   private fillPatientMedicalInformation() {
-    var patientMedical: PatientMedical = {}
-    var patientPhysicalTherapy: PatientPhysicalTherapy = {}
+    const patientMedical: PatientMedical = {};
+    const patientPhysicalTherapy: PatientPhysicalTherapy = {};
     this.form.get('medical')?.valueChanges.forEach(selected => {
       patientMedical.appointmentBooking = selected.appointmentBooking;
       patientMedical.communicationType = selected.communicationType;
-      patientMedical.communicationTime = selected.communicationTime
-      patientMedical.primaryDoctor = selected.isPrimaryDoctor
-      // patientMedical.familyResultSubmission = selected.isFamilyDoctorRequest
+      patientMedical.communicationTime = selected.communicationTime;
+      patientMedical.primaryDoctor = selected.isPrimaryDoctor;
       this.pateint.patientMedical = patientMedical;
-    })
+    });
     this.form.get('medical')?.get('isReceivedPhysicalTherapy')?.valueChanges.subscribe(value => {
       if (value === 'yes') {
-        this.form.get('medical')?.get('PhysicalTherapyLocation')?.valueChanges.subscribe(value => {
-          patientPhysicalTherapy.location = value
-        })
-        this.form.get('medical')?.get('PhysicalTherapyNumber')?.valueChanges.subscribe(value => {
-          patientPhysicalTherapy.numberOfVisit = value
-        })
+        this.form.get('medical')?.get('PhysicalTherapyLocation')?.valueChanges.subscribe(v => {
+          patientPhysicalTherapy.location = v;
+        });
+        this.form.get('medical')?.get('PhysicalTherapyNumber')?.valueChanges.subscribe(v => {
+          patientPhysicalTherapy.numberOfVisit = v;
+        });
         this.pateint.patientMedical!.hasPatientPhysicalTherapy = true;
         this.pateint.patientMedical!.patientPhysicalTherapy = patientPhysicalTherapy;
       } else {
         this.pateint.patientMedical!.hasPatientPhysicalTherapy = false;
-        this.pateint.patientMedical!.patientPhysicalTherapy = undefined
+        this.pateint.patientMedical!.patientPhysicalTherapy = undefined;
       }
-
-    })
+    });
   }
   private fillPatientMedicalHistoryInformation() {
-    var patientMedicalHistory: PatientMedicalHistory = {};
+    const patientMedicalHistory: PatientMedicalHistory = {};
     this.form.get('medicalhistory')?.valueChanges.forEach(select => {
-      patientMedicalHistory.height = select.height
-      patientMedicalHistory.heightUnit = select.heightUnit ? 'Inch' : 'cm'
-      var height: string[] = this.calculateHeight(select.heightUnit, select.height)
-      patientMedicalHistory.height = height[1]
-      patientMedicalHistory.heightFT = height[0]
-      patientMedicalHistory.weight = select.weight
-      patientMedicalHistory.weightUnit = select.weightUnit ? 'kg' : 'pound'
-      var weight: string[] = this.calculateWeight(select.weightUnit, select.weight)
-      patientMedicalHistory.weight = weight[0]
-      patientMedicalHistory.weightPN = weight[1]
+      patientMedicalHistory.height = select.height;
+      patientMedicalHistory.heightUnit = select.heightUnit ? 'Inch' : 'cm';
+      const height: string[] = this.calculateHeight(select.heightUnit, select.height);
+      patientMedicalHistory.height = height[1];
+      patientMedicalHistory.heightFT = height[0];
+      patientMedicalHistory.weight = select.weight;
+      patientMedicalHistory.weightUnit = select.weightUnit ? 'kg' : 'pound';
+      const weight: string[] = this.calculateWeight(select.weightUnit, select.weight);
+      patientMedicalHistory.weight = weight[0];
+      patientMedicalHistory.weightPN = weight[1];
       patientMedicalHistory.evaluationSubmission = select.evaluationReason;
-      patientMedicalHistory.patientCondition = select.patientConditionsSelections
-      patientMedicalHistory.medicationPrescription = select.prescriptionMedications
-      patientMedicalHistory.medicationPrescriptionText = select.PhysicalTherapyLocationText
-      patientMedicalHistory.scanningTest = select.isXRay === 'yes' ? true : false
-      patientMedicalHistory.scanningTestValue = select.isXRayValue
-      patientMedicalHistory.ptSpecialties = select.ptSpecialties
-      patientMedicalHistory.pacemaker = select.isPacemaker === 'yes' ? true : false
-      patientMedicalHistory.metalImplantation = select.isMetalImplants === 'yes' ? true : false
-      patientMedicalHistory.surgeriesList = select.surgeriesListText
+      patientMedicalHistory.patientCondition = select.patientConditionsSelections;
+      patientMedicalHistory.medicationPrescription = select.prescriptionMedications;
+      patientMedicalHistory.medicationPrescriptionText = select.PhysicalTherapyLocationText;
+      patientMedicalHistory.scanningTest = select.isXRay === 'yes' ? true : false;
+      patientMedicalHistory.scanningTestValue = select.isXRayValue;
+      patientMedicalHistory.ptSpecialties = select.ptSpecialties;
+      patientMedicalHistory.pacemaker = select.isPacemaker === 'yes' ? true : false;
+      patientMedicalHistory.metalImplantation = select.isMetalImplants === 'yes' ? true : false;
+      patientMedicalHistory.surgeriesList = select.surgeriesListText;
       if (this.pateint.patientMedical !== undefined)
-        this.pateint.patientMedical.patientMedicalHistory = patientMedicalHistory
-    })
+        this.pateint.patientMedical.patientMedicalHistory = patientMedicalHistory;
+    });
   }
   private fillPatientInsurance() {
     this.form.get('insurance')?.valueChanges.forEach(select => {
       if (select.insurances !== null) {
-        this.pateint.insurances = select.insurances
+        this.pateint.insurances = select.insurances;
       }
-    })
+    });
   }
   private fillPatientAgreement() {
-    // var patientAgreement: PatientAgreement = {}
-    var map: Map<string, boolean> = new Map<string, boolean>();
+    const map: Map<string, boolean> = new Map<string, boolean>();
     this.form.get('agreement')?.valueChanges.forEach(value => {
       for (const key in value) {
         if (value.hasOwnProperty(key)) {
@@ -235,70 +380,50 @@ export class PatientSummaryComponent implements OnInit {
         }
       }
       const filteredMap = new Map(
-        [...map].filter(([key, value]) => value !== null)
+        [...map].filter(([_, v]) => v !== null)
       );
       this.pateint.patientAgreements = Object.fromEntries(filteredMap);
-    })
+    });
   }
   private getSignture() {
+    // Only adopt a value when it's truthy. Each channel emits null when the
+    // user switches between typed and drawn signatures; without this guard a
+    // stale clear on the inactive channel can wipe the live signature.
     this.form.get('signature')?.get('generatesign')?.valueChanges.subscribe((valu: any) => {
-      this.patientSignature.signature = valu;
-      this.pateint.signature = valu;
-    })
+      if (valu) {
+        this.patientSignature.signature = valu;
+        this.pateint.signature = valu;
+      }
+    });
     this.form.get('signature')?.get('drawsign')?.valueChanges.subscribe(valu => {
-      console.log(valu)
-      this.pateint.signature = valu;
-      this.patientSignature.signature = valu;
-    })
+      if (valu) {
+        this.pateint.signature = valu;
+        this.patientSignature.signature = valu;
+      }
+    });
   }
 
   private getPhoto() {
     this.form.get('bio')?.get('capturedImage')?.valueChanges.subscribe((valu: any) => {
       this.pateint.photo = valu;
-    })
+    });
   }
   private calculateHeight(unit: boolean, value: string): string[] {
-    var heightUnit: string = unit ? 'Inch' : 'cm'
-    var height: string[] = []
+    const height: string[] = [];
     if (value !== null)
       height[0] = this.normalizeHeight(value);
-    // switch (heightUnit) {
-    //   case 'cm':
-    //     height[0] = value;
-    //     height[1] = Number((Number(value) * 30.48).toFixed(1)).toString();
-    //     break;
-    //   case 'Inch':
-    //     height[0] = Math.round(Number(value) / 30.48).toString();
-    //     height[1] = value;
-    //     break;
-    // }
     return height;
   }
   private calculateWeight(unit: boolean, value: string): string[] {
-    var weightUnit: string = unit ? 'kg' : 'pound'
-    var weight: string[] = []
+    const weight: string[] = [];
     weight[0] = value;
-    // switch (weightUnit) {
-    //   case 'kg':
-    //     weight[0] = value;
-    //     weight[1] = Number((Number(value) * 2.20462).toFixed(1)).toString();
-    //     break;
-    //   case 'pound':
-    //     weight[0] = Math.round(Number(value) / 2.20462).toString()
-    //     weight[1] = value
-    //     break;
-    // }
     return weight;
   }
   private normalizeHeight(input: string): string {
-    // Extract digits only
-    const digitsOnly = input.replace(/\D/g, '').slice(0, 4); // Max 4 digits
-
+    const digitsOnly = input.replace(/\D/g, '').slice(0, 4);
     if (digitsOnly.length === 0) return '';
-
     let feet = '';
     let inches = '';
-
     if (digitsOnly.length <= 2) {
       feet = digitsOnly.charAt(0);
       inches = digitsOnly.slice(1);
@@ -306,12 +431,11 @@ export class PatientSummaryComponent implements OnInit {
       feet = digitsOnly.slice(0, digitsOnly.length - 2);
       inches = digitsOnly.slice(-2);
     }
-
     return `${parseInt(feet)}'${parseInt(inches)}"`;
   }
   private scrollUp() {
     (function smoothscroll() {
-      var currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
+      const currentScroll = document.documentElement.scrollTop || document.body.scrollTop;
       if (currentScroll > 0) {
         window.scrollTo(0, 0);
       }

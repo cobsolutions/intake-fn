@@ -1,90 +1,612 @@
-.otp-container {
-  max-width: 400px;
-  margin: auto;
-  padding: 20px;
-  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  font-family: Arial, sans-serif;
+/* ==========================================================================
+   Identity Verification — phone + OTP, senior-friendly
+   ========================================================================== */
+
+:host {
+    --iv-ink-1: #0c1b2a;
+    --iv-ink-2: #2c3e54;
+    --iv-ink-3: #5a6a7e;
+    --iv-bg: #f4f7fb;
+    --iv-surface: #ffffff;
+    --iv-border: #d8e0ea;
+    --iv-border-strong: #b8c4d4;
+    --iv-brand: #0f4c81;
+    --iv-brand-strong: #0a3a64;
+    --iv-brand-soft: #e6eff8;
+    --iv-success: #1f8a4c;
+    --iv-success-soft: #e6f4ec;
+    --iv-danger: #c0392b;
+    --iv-danger-soft: #fbe8e6;
+
+    --iv-radius-lg: 16px;
+    --iv-radius-md: 12px;
+    --iv-radius-sm: 8px;
+    --iv-tap: 52px;
+
+    display: block;
+    font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 1.0625rem;
+    color: var(--iv-ink-1);
+    line-height: 1.6;
 }
 
-h2 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 20px;
+.iv {
+    max-width: 520px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
 }
 
-label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-  color: #555;
+/* ---------- Header ------------------------------------------------------- */
+
+.iv__header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0 0;
 }
 
-input[type="text"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+.iv__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--iv-brand), var(--iv-brand-strong));
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(15, 76, 129, .25);
 }
 
-.otp-inputs {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 15px;
+.iv__icon svg {
+    width: 28px;
+    height: 28px;
 }
 
-.otp-inputs input[type="text"] {
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  font-size: 1.2rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-.validOPT {
-  /* Larger font size */
-  font-family: 'Verdana', sans-serif;
-  /* A pleasant green color */
-  font-weight: bold;
-  /* Make the message stand out */
-  text-align: center;
-  /* Center the message */
-  margin-top: 10px;
-  /* Space above or below as needed */
-  animation: fadeIn 1s ease-in-out;
-  font-size: calc(0.5rem + 1vw); 
+.iv__title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--iv-ink-1);
+    line-height: 1.2;
 }
 
-.invalidOPT {
-  margin-top: 15px;
-  font-size: 1.0rem;
-  color: #A40606;
+.iv__subtitle {
+    margin: 0;
+    color: var(--iv-ink-3);
+    font-size: 1rem;
+    max-width: 420px;
 }
 
-.otp-section p {
-  font-size: 0.9rem;
-  color: #666;
+/* ---------- Card --------------------------------------------------------- */
+
+.iv-card {
+    background: var(--iv-surface);
+    border: 1px solid var(--iv-border);
+    border-radius: var(--iv-radius-lg);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 6px 18px rgba(12, 27, 42, .06);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-.resend-link {
-  cursor: pointer;
-  color: blue;
-  text-decoration: underline;
+.iv-card.is-shake {
+    animation: ivShake .55s ease;
 }
 
-.resend-link.disabled {
-  color: gray;
-  pointer-events: none;
+@keyframes ivShake {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-8px); }
+    40%      { transform: translateX(8px); }
+    60%      { transform: translateX(-5px); }
+    80%      { transform: translateX(5px); }
+}
+
+.iv-card__label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--iv-ink-2);
+    margin: 0;
+}
+
+.iv-card__label--center {
+    text-align: center;
+}
+
+/* ---------- Phone input ------------------------------------------------- */
+
+.iv-input {
+    width: 100%;
+    min-height: var(--iv-tap);
+    padding: 12px 16px;
+    border: 2px solid var(--iv-border);
+    border-radius: var(--iv-radius-md);
+    background: var(--iv-surface);
+    font-size: 1.25rem;
+    color: var(--iv-ink-1);
+    transition: border-color .15s ease, box-shadow .15s ease;
+    letter-spacing: 0.02em;
+}
+
+.iv-input:focus {
+    outline: none;
+    border-color: var(--iv-brand);
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, .18);
+}
+
+.iv-input.is-invalid {
+    border-color: var(--iv-danger);
+    background: var(--iv-danger-soft);
+}
+
+.iv-error {
+    color: var(--iv-danger);
+    font-size: .9375rem;
+    font-weight: 500;
+}
+
+.iv-hint {
+    margin: 0;
+    color: var(--iv-ink-3);
+    font-size: .9375rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.iv-hint svg {
+    width: 14px;
+    height: 14px;
+    color: var(--iv-success);
+    flex: none;
+}
+
+.iv-callout {
+    border-radius: var(--iv-radius-md);
+}
+
+/* ---------- Primary button ---------------------------------------------- */
+
+.iv-primary {
+    align-self: stretch;
+    min-height: var(--iv-tap);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    padding-inline: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.iv-primary svg {
+    width: 16px;
+    height: 16px;
+}
+
+.iv-primary:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/* ---------- OTP meta row ------------------------------------------------ */
+
+.iv-otp-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 10px;
+    background: var(--iv-brand-soft);
+    border: 1px solid rgba(15, 76, 129, .18);
+    color: var(--iv-ink-2);
+    border-radius: var(--iv-radius-md);
+    padding: 12px 14px;
+}
+
+.iv-otp-meta__label {
+    color: var(--iv-ink-3);
+    font-size: .875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.iv-otp-meta__phone {
+    color: var(--iv-ink-1);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+
+/* ---------- Inline link ------------------------------------------------- */
+
+.iv-link {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    color: var(--iv-brand);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: .9375rem;
+    margin-left: auto;
+}
+
+.iv-link:hover {
+    background: var(--iv-brand-soft);
+    color: var(--iv-brand-strong);
+}
+
+.iv-link svg {
+    width: 12px;
+    height: 12px;
+}
+
+.iv-link--solid {
+    background: var(--iv-brand);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 999px;
+    margin-left: 0;
+    text-decoration: none;
+}
+
+.iv-link--solid:hover {
+    background: var(--iv-brand-strong);
+    color: #fff;
+}
+
+.iv-link--solid svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ---------- OTP cells (single-input + visual overlay) ------------------- */
+
+.iv-otp {
+    position: relative;
+    max-width: 480px;
+    margin: 0 auto;
+    width: 100%;
+    cursor: text;
+}
+
+/* The real input that captures all keystrokes — visually hidden on top of cells */
+.iv-otp__field {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    color: transparent;
+    caret-color: transparent;
+    font-size: 16px; /* prevents iOS zoom-on-focus */
+    letter-spacing: 1em;
+    text-indent: 1em;
+    z-index: 2;
+    -webkit-text-fill-color: transparent;
+    outline: none;
+}
+
+.iv-otp__field::selection {
+    background: transparent;
+}
+
+.iv-otp__field::-webkit-outer-spin-button,
+.iv-otp__field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.iv-otp__cells {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    pointer-events: none; /* clicks fall through to the input */
+}
+
+.iv-otp__cell {
+    position: relative;
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--iv-ink-1);
+    background: var(--iv-surface);
+    border: 2px solid var(--iv-border);
+    border-radius: var(--iv-radius-md);
+    transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+    user-select: none;
+}
+
+.iv-otp__cell.is-filled {
+    background: var(--iv-brand-soft);
+    border-color: var(--iv-brand);
+    color: var(--iv-brand-strong);
+}
+
+/* Active cell (the one that will receive the next digit) — only shown when input is focused */
+.iv-otp:focus-within .iv-otp__cell.is-active {
+    border-color: var(--iv-brand);
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, .2);
+    background: var(--iv-brand-soft);
+}
+
+.iv-otp:focus-within .iv-otp__cell.is-active::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    height: 32px;
+    background: var(--iv-brand);
+    border-radius: 2px;
+    animation: ivCaret 1s steps(2, start) infinite;
+}
+
+@keyframes ivCaret {
+    to { opacity: 0; }
+}
+
+.iv-otp.is-error .iv-otp__cell {
+    border-color: var(--iv-danger);
+    background: var(--iv-danger-soft);
+    color: var(--iv-danger);
+}
+
+/* ---------- Result blocks ----------------------------------------------- */
+
+.iv-result {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--iv-radius-md);
+    border: 1px solid;
+}
+
+.iv-result--error {
+    border-color: rgba(192, 57, 43, .35);
+    background: var(--iv-danger-soft);
+    color: var(--iv-danger);
+}
+
+.iv-result__icon {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--iv-danger);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.iv-result__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    line-height: 1.4;
+}
+
+.iv-result__title {
+    color: var(--iv-danger);
+    font-size: 1rem;
+}
+
+.iv-result__msg {
+    color: var(--iv-ink-2);
+    font-size: .9375rem;
+}
+
+/* ---------- Verifying spinner ------------------------------------------- */
+
+.iv-verifying {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--iv-ink-3);
+    font-size: .9375rem;
+    align-self: center;
+}
+
+.iv-spinner {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2.5px solid var(--iv-border);
+    border-top-color: var(--iv-brand);
+    animation: ivSpin .8s linear infinite;
+}
+
+@keyframes ivSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* ---------- Resend ------------------------------------------------------ */
+
+.iv-resend {
+    text-align: center;
+    margin-top: 4px;
+    font-size: .9375rem;
+}
+
+.iv-resend__pending {
+    color: var(--iv-ink-3);
+}
+
+.iv-resend__pending strong {
+    color: var(--iv-ink-1);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Success card ----------------------------------------------- */
+
+.iv-card--success {
+    border-color: rgba(31, 138, 76, .35);
+    background: linear-gradient(180deg, var(--iv-success-soft), #fff 70%);
+}
+
+.iv-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 8px 0;
+    animation: ivPop .35s ease;
+}
+
+@keyframes ivPop {
+    from { transform: scale(.92); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+.iv-success__icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: var(--iv-success);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 28px rgba(31, 138, 76, .3);
+    margin-bottom: 6px;
+    animation: ivBounce .6s ease;
+}
+
+@keyframes ivBounce {
+    0%   { transform: scale(0); }
+    60%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+.iv-success__icon svg {
+    width: 38px;
+    height: 38px;
+}
+
+.iv-success__title {
+    margin: 0;
+    font-size: 1.375rem;
+    font-weight: 800;
+    color: var(--iv-success);
+    letter-spacing: -0.01em;
+}
+
+.iv-success__phone {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--iv-ink-1);
+    letter-spacing: 0.02em;
+}
+
+.iv-success__msg {
+    margin: 4px 0 0;
+    color: var(--iv-ink-3);
+    font-size: 1rem;
+    max-width: 380px;
+}
+
+/* ---------- Nav --------------------------------------------------------- */
+
+.iv-nav {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 4px;
+}
+
+.iv-next {
+    min-height: var(--iv-tap);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    padding-inline: 36px;
+}
+
+.iv-next:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Mobile (≤ 720px)
+   ========================================================================== */
+@media (max-width: 720px) {
+    .iv {
+        max-width: 100%;
+    }
+
+    .iv__title { font-size: 1.25rem; }
+
+    .iv-card { padding: 18px; gap: 14px; }
+
+    .iv-otp {
+        max-width: 100%;
+    }
+
+    .iv-otp__cells {
+        gap: 8px;
+    }
+
+    .iv-otp__cell {
+        height: 56px;
+        font-size: 1.625rem;
+    }
+
+    .iv-otp:focus-within .iv-otp__cell.is-active::after {
+        height: 28px;
+    }
+
+    .iv-input--phone { font-size: 1.125rem; }
+
+    .iv-otp-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .iv-link {
+        margin-left: 0;
+    }
+
+    .iv-nav {
+        justify-content: stretch;
+    }
+
+    .iv-next {
+        width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .iv-otp__cell {
+        height: 48px;
+        font-size: 1.375rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        transition-duration: .001ms !important;
+    }
 }

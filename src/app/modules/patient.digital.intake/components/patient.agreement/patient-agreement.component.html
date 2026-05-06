@@ -1,52 +1,143 @@
-<c-callout color="danger" *ngIf="isValidForm">
-    Please accept all mandatory agreements <strong class="text-danger">marked with red star</strong> before navigating
-    to next
-    step
-</c-callout>
-<div [formGroup]="form" class="mt-3">
-    <div formArrayName="agreement">
-        <c-accordion [alwaysOpen]="false" [flush]="false" class="shadow">
-            <c-accordion-item #item0="cAccordionItem" [visible]="agreement.visible"
-                *ngFor="let agreement of agreements; index as i;">
-                <ng-template cTemplateId="accordionHeaderTemplate">
-                    <span *ngIf="agreement.required">
-                        <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton
-                            [style]="agreement.accept?'color:#2d1cc5':'color:#e03f3f'">
-                            <h5>{{agreement.agreementName}} <span class="text-danger"
-                                    *ngIf="agreement.required">*</span>
-                            </h5>
-                        </button>
-                    </span>
-                    <span *ngIf="!agreement.required">
-                        <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton style="color:#2d1cc5">
-                            <h5>{{agreement.agreementName}} <span class="text-danger"
-                                    *ngIf="agreement.required">*</span>
-                            </h5>
-                        </button>
-                    </span>
-                </ng-template>
-                <ng-template cTemplateId="accordionBodyTemplate">
-                    <c-row>
-                        <c-col xs="12">
-                            <div [innerHTML]="agreement.agreementText" class="accordion-body">
-                            </div>
-                        </c-col>
-                        <c-col xs="12" class="ms-2">
-                            <c-form-check>
-                                <input cFormCheckInput type="checkbox" [formControlName]="agreement.fieldName"
-                                    (change)="acceptConcent(agreement,$event)" />
-                                <label cFormCheckLabel for="release">I accept</label>
-                            </c-form-check>
-                        </c-col>
-                    </c-row>
-                </ng-template>
-            </c-accordion-item>
+<div class="agreements" [formGroup]="form">
+    <header class="agreements__header" [class.is-complete]="allRequiredSigned">
+        <div class="agreements__header-text">
+            <h2 class="agreements__title">Office Agreements</h2>
+            <p class="agreements__subtitle">
+                Please read and accept the items below.
+                <strong *ngIf="totalRequiredCount > 0">
+                    {{ signedRequiredCount }} of {{ totalRequiredCount }} required signed
+                </strong>
+                <strong *ngIf="totalRequiredCount === 0 && (agreements?.length ?? 0) > 0">
+                    Optional documents — accept any that apply to you
+                </strong>
+            </p>
+        </div>
 
+        <div class="agreements__progress" *ngIf="(agreements?.length ?? 0) > 0">
+            <div class="agreements__bar" aria-hidden="true">
+                <span class="agreements__bar-fill" [style.width.%]="progressPercent"></span>
+            </div>
+            <div class="agreements__actions">
+                <button type="button"
+                        class="agreements__jump"
+                        *ngIf="!allRequiredSigned && totalRequiredCount > 0"
+                        (click)="scrollToNextRequired()">
+                    <svg cIcon name="cilArrowBottom" aria-hidden="true"></svg>
+                    Jump to next required
+                </button>
+                <span class="agreements__done-pill" *ngIf="allRequiredSigned">
+                    <svg cIcon name="cilCheck" aria-hidden="true"></svg>
+                    All required documents signed
+                </span>
+            </div>
+        </div>
+    </header>
 
-        </c-accordion>
+    <c-callout color="danger" class="agreements__callout" *ngIf="isValidForm">
+        <strong>One or more required agreements still need your signature.</strong>
+        We have scrolled to the first one for you.
+    </c-callout>
+
+    <div formGroupName="agreement" class="agreements__stack">
+        <article *ngFor="let agreement of agreements; let i = index; trackBy: trackById"
+                 class="doc-card"
+                 [id]="cardId(agreement)"
+                 [class.is-required]="agreement.required"
+                 [class.is-optional]="!agreement.required"
+                 [class.is-signed]="isSigned(agreement)">
+
+            <ng-container *ngIf="isSigned(agreement); else readView">
+                <div class="doc-card__signed">
+                    <span class="doc-card__signed-icon" aria-hidden="true">
+                        <svg cIcon name="cilCheck"></svg>
+                    </span>
+                    <div class="doc-card__signed-text">
+                        <span class="doc-card__signed-title">{{ agreement.agreementName }}</span>
+                        <span class="doc-card__signed-meta">Signed and accepted</span>
+                    </div>
+                    <button type="button" class="doc-card__edit" (click)="reopenSigned(agreement)">
+                        <svg cIcon name="cilPencil" aria-hidden="true"></svg>
+                        Edit
+                    </button>
+                </div>
+            </ng-container>
+
+            <ng-template #readView>
+                <header class="doc-card__head">
+                    <span class="doc-card__num">{{ i + 1 }}</span>
+                    <div class="doc-card__title-wrap">
+                        <h3 class="doc-card__title">{{ agreement.agreementName }}</h3>
+                        <span class="doc-card__pill"
+                              [class.is-required]="agreement.required"
+                              [class.is-optional]="!agreement.required">
+                            <ng-container *ngIf="agreement.required">Required</ng-container>
+                            <ng-container *ngIf="!agreement.required">Optional</ng-container>
+                        </span>
+                    </div>
+                </header>
+
+                <div class="doc-card__preview">
+                    <div class="doc-card__preview-text" [innerHTML]="trustedAgreementHtml(agreement)"></div>
+                    <div class="doc-card__preview-fade" aria-hidden="true"></div>
+                </div>
+
+                <div class="doc-card__readmore">
+                    <button type="button" class="doc-card__read-link" (click)="openFull(agreement)">
+                        <svg cIcon name="cilFindInPage" aria-hidden="true"></svg>
+                        Read full document
+                    </button>
+                </div>
+
+                <footer class="doc-card__foot">
+                    <label class="doc-card__accept">
+                        <input type="checkbox"
+                               class="doc-card__accept-input"
+                               [formControlName]="agreement.fieldName" />
+                        <span class="doc-card__accept-box" aria-hidden="true">
+                            <svg cIcon name="cilCheck"></svg>
+                        </span>
+                        <span class="doc-card__accept-text">
+                            I have read and agree to the <strong>{{ agreement.agreementName }}</strong>
+                        </span>
+                    </label>
+                </footer>
+            </ng-template>
+        </article>
     </div>
-    <div class="mt-3">
-        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
-        <button cButton variant="outline" size="sm" (click)="next()">Next</button>
+
+    <nav class="agreements__nav" aria-label="Wizard navigation">
+        <button cButton matStepperPrevious size="lg" variant="outline" class="agreements__back">
+            Back
+        </button>
+        <button cButton size="lg" (click)="next()"
+                [disabled]="!allRequiredSigned && totalRequiredCount > 0"
+                class="agreements__next">
+            Continue
+        </button>
+    </nav>
+</div>
+
+<div class="doc-modal" *ngIf="fullViewAgreement" (click)="closeFull()" role="dialog" aria-modal="true">
+    <div class="doc-modal__panel" (click)="$event.stopPropagation()">
+        <header class="doc-modal__head">
+            <h3 class="doc-modal__title">{{ fullViewAgreement.agreementName }}</h3>
+            <button type="button" class="doc-modal__close" (click)="closeFull()" aria-label="Close">
+                &times;
+            </button>
+        </header>
+        <div class="doc-modal__body">
+            <div [innerHTML]="trustedAgreementHtml(fullViewAgreement)"></div>
+        </div>
+        <footer class="doc-modal__foot">
+            <button type="button" class="doc-modal__btn doc-modal__btn--ghost" (click)="closeFull()">
+                Close
+            </button>
+            <button type="button" class="doc-modal__btn doc-modal__btn--primary"
+                    *ngIf="!isSigned(fullViewAgreement)"
+                    (click)="acceptFromFullView()">
+                <svg cIcon name="cilCheck" aria-hidden="true"></svg>
+                I have read and agree
+            </button>
+        </footer>
     </div>
 </div>

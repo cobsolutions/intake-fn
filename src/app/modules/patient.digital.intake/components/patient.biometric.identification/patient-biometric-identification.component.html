@@ -1,27 +1,99 @@
-<c-callout color="danger" *ngIf="isValidForm">
-    <span class="text-danger fw-bold">Please capture an image before navigating to next step</span>
-</c-callout>
-<div [formGroup]="form" class="mt-3">
-    <div formGroupName="bio">
-        <div class="webcam-container">
-            <!-- Webcam view -->
-            <div class="webcam-view">
-                <h3 class="section-header">Live</h3>
-                <webcam [height]="300" [width]="400" [trigger]="triggerObservable()"
-                    (imageCapture)="handleImage($event)" *ngIf="isActive ===2">
-                </webcam>
-                <button (click)="captureImage()" class="capture-button">Capture</button>
-            </div>
+<div class="bio" [formGroup]="form">
 
-            <!-- Captured image preview -->
-            <div class="image-preview" *ngIf="webcamImage">
-                <h3 class="section-header">Captured Image</h3>
-                <img [src]="form.get('bio')?.get('capturedImage')?.value" alt="Captured image" />
-                <button (click)="clearImage()" class="clear-button">Clear</button>
+    <header class="bio__header">
+        <span class="bio__icon" aria-hidden="true">
+            <svg cIcon name="cilUser"></svg>
+        </span>
+        <div class="bio__header-text">
+            <h2 class="bio__title">Add your photo</h2>
+            <p class="bio__subtitle">
+                A quick photo helps our staff greet you when you arrive.
+                <span class="bio__privacy">
+                    <svg cIcon name="cilLockLocked" aria-hidden="true"></svg>
+                    Only our front-desk team will see this.
+                </span>
+            </p>
+        </div>
+    </header>
+
+    <c-callout color="danger" *ngIf="isValidForm && !cameraError" class="bio__callout">
+        <strong>Please take a photo to continue.</strong> Look at the camera and tap the round button.
+    </c-callout>
+
+    <c-callout color="warning" *ngIf="cameraError" class="bio__callout">
+        <strong>Camera unavailable.</strong> {{ cameraError }}
+    </c-callout>
+
+    <div formGroupName="bio" class="bio__stage">
+
+        <!-- LIVE CAMERA -->
+        <ng-container *ngIf="!hasPhoto && !cameraError">
+            <div class="bio-camera">
+                <div class="bio-camera__viewport">
+                    <webcam class="bio-camera__webcam"
+                            [width]="720"
+                            [height]="720"
+                            [trigger]="triggerObservable()"
+                            [switchCamera]="switchCameraObservable()"
+                            [videoOptions]="videoOptions"
+                            [allowCameraSwitch]="false"
+                            [mirrorImage]="facingMode === 'user' ? 'always' : 'never'"
+                            (imageCapture)="handleImage($event)"
+                            (initError)="handleInitError($event)"
+                            *ngIf="isActive === 2">
+                    </webcam>
+
+                    <div class="bio-camera__guide" aria-hidden="true">
+                        <span class="bio-camera__oval"></span>
+                        <span class="bio-camera__guide-hint">Center your face in the circle</span>
+                    </div>
+
+                    <button type="button" class="bio-camera__switch" (click)="toggleCamera()"
+                            aria-label="Switch camera">
+                        <svg cIcon name="cilControl" aria-hidden="true"></svg>
+                    </button>
+                </div>
+
+                <ul class="bio-tips" aria-label="Photo tips">
+                    <li><svg cIcon name="cilSun" aria-hidden="true"></svg> Find a well-lit spot</li>
+                    <li><svg cIcon name="cilUser" aria-hidden="true"></svg> Look at the camera</li>
+                    <li><svg cIcon name="cilSmile" aria-hidden="true"></svg> A friendly smile is welcome</li>
+                </ul>
+
+                <div class="bio-camera__shutter-row">
+                    <button type="button" class="bio-shutter" (click)="captureImage()" aria-label="Take photo">
+                        <span class="bio-shutter__inner"></span>
+                    </button>
+                    <span class="bio-shutter__caption">Tap to take photo</span>
+                </div>
             </div>
-        </div>
-        <div class="mt-3">
-            <button cButton variant="outline" size="sm" (click)="next()">Next</button>
-        </div>
+        </ng-container>
+
+        <!-- PREVIEW -->
+        <ng-container *ngIf="hasPhoto">
+            <div class="bio-preview">
+                <div class="bio-preview__frame">
+                    <img class="bio-preview__img" [src]="currentPhoto" alt="Your captured photo" />
+                    <span class="bio-preview__check" aria-hidden="true">
+                        <svg cIcon name="cilCheck"></svg>
+                    </span>
+                </div>
+                <p class="bio-preview__msg">Looks good?</p>
+                <p class="bio-preview__hint">If the photo is blurry or unclear, you can take a new one.</p>
+
+                <div class="bio-preview__actions">
+                    <button type="button" cButton size="lg" variant="outline"
+                            (click)="clearImage()" class="bio-preview__retake">
+                        <svg cIcon name="cilControl" aria-hidden="true"></svg>
+                        Take a new photo
+                    </button>
+                </div>
+            </div>
+        </ng-container>
     </div>
+
+    <nav class="bio__nav">
+        <button cButton matStepperPrevious size="lg" variant="outline" class="bio__back">Back</button>
+        <button cButton size="lg" (click)="next()" [disabled]="!hasPhoto" class="bio__next">Continue</button>
+    </nav>
 </div>

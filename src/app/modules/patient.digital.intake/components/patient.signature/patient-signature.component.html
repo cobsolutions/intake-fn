@@ -1,53 +1,97 @@
-<c-callout color="danger" *ngIf="!isValidForm">
-    <span class="text-danger fw-bold">Please create your signature before navigating to next step</span>
-</c-callout>
-<c-nav variant="underline">
-    <c-nav-item *ngFor="let nav of panes; index as i; first as isFirst; last as isLast">
-        <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="i" cNavLink>
-            {{nav.name}}
-        </a>
-    </c-nav-item>
-</c-nav>
-<c-tab-content #tabContent="cTabContent" (activeTabPaneIdxChange)="onTabChange($event)" [activeTabPaneIdx]="activePane">
-    <!-- generate-->
-    <c-tab-pane class="p-3">
-        <c-row>
-            <c-col xs="12">
-                <div class="w-60 p-3 border border-default mb-3" style="background-color: #eee;">
-                    <span [class]="signatureClass" style="font-size: xx-large; background-color: transparent;"
-                        #patientsig id="sig">{{gPatientFullName?gPatientFullName:patientFullName }}</span>
-                </div>
-            </c-col>
-            <c-col xs="12">
-                <div class="signature-dropdown">
-                    <strong><label for="signature">Select Signature Format:</label></strong>
-                    <div id="signature" class="dropdown">
-                      <div
-                        *ngFor="let signature of signatures"
-                        (click)="generatesign(signature)"
-                        [ngClass]="{ selected: signature.value === selectedSignature }"
-                        class="dropdown-item"
-                        [ngStyle]="{ 'font-family': signature.fontFamily, 'font-size': 'xx-large' }"
-                      >
-                        {{ signature.displayText }}
-                      </div>
-                    </div>
-                  </div>               
-            </c-col>
-            <c-col xs="12">
-                <!-- <button cButton (click)="generate()">Capture</button> -->
-            </c-col>
-        </c-row>
-    </c-tab-pane>
-    <!-- Draw-->
-    <c-tab-pane class="p-3">
-        <canvas #canvas width="700" height="200" (mouseleave)="stopDrawing()" (touchend)="touchStopDrawing()"></canvas>
-        <div class="buttons flex justify-between">
-            <button cButton (click)="clearPad()">Clear</button>
+<div class="sig">
+    <header class="sig__header">
+        <h2 class="sig__title">Add your signature</h2>
+        <p class="sig__subtitle">Pick the way that feels easiest. You can always change it.</p>
+    </header>
+
+    <c-callout color="danger" *ngIf="!isValidForm" class="sig__callout">
+        <strong>Please add a signature</strong> — type your name or draw it before continuing.
+    </c-callout>
+
+    <div class="sig__modes" role="tablist">
+        <button type="button" class="sig-mode" [class.is-active]="mode === 'type'"
+                (click)="setMode('type')" role="tab" [attr.aria-selected]="mode === 'type'">
+            <span class="sig-mode__icon" aria-hidden="true">
+                <svg cIcon name="cilPencil"></svg>
+            </span>
+            <span class="sig-mode__text">
+                <span class="sig-mode__title">Type my name</span>
+                <span class="sig-mode__hint">Pick a stylish font</span>
+            </span>
+            <svg *ngIf="mode === 'type'" class="sig-mode__check" cIcon name="cilCheck" aria-hidden="true"></svg>
+        </button>
+
+        <button type="button" class="sig-mode" [class.is-active]="mode === 'draw'"
+                (click)="setMode('draw')" role="tab" [attr.aria-selected]="mode === 'draw'">
+            <span class="sig-mode__icon" aria-hidden="true">
+                <svg cIcon name="cilHighligt"></svg>
+            </span>
+            <span class="sig-mode__text">
+                <span class="sig-mode__title">Draw my signature</span>
+                <span class="sig-mode__hint">Use your finger or mouse</span>
+            </span>
+            <svg *ngIf="mode === 'draw'" class="sig-mode__check" cIcon name="cilCheck" aria-hidden="true"></svg>
+        </button>
+    </div>
+
+    <section class="sig__panel" *ngIf="mode === 'type'">
+        <div class="sig-preview">
+            <span class="sig-preview__label">Preview</span>
+            <div class="sig-preview__canvas">
+                <span [class]="selectedSignature || 'signature-format-Dancing-Script'" #patientsig class="sig-preview__name">
+                    {{ effectiveName }}
+                </span>
+            </div>
         </div>
-    </c-tab-pane>
-</c-tab-content>
-<div class="mt-3">
-    <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2">Back</button>
-    <button cButton variant="outline" size="sm" (click)="next()">Next</button>
+
+        <div class="sig-fonts">
+            <p class="sig-fonts__label">Choose a style</p>
+            <div class="sig-fonts__grid">
+                <button type="button"
+                        *ngFor="let signature of signatures"
+                        class="sig-font"
+                        [class.is-selected]="signature.value === selectedSignature"
+                        (click)="generatesign(signature)">
+                    <span class="sig-font__name" [ngStyle]="{ 'font-family': signature.fontFamily }">
+                        {{ effectiveName }}
+                    </span>
+                    <svg *ngIf="signature.value === selectedSignature" class="sig-font__check" cIcon name="cilCheck" aria-hidden="true"></svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="sig__panel" *ngIf="mode === 'draw'">
+        <div class="sig-canvas-wrap">
+            <span class="sig-canvas__hint" *ngIf="!isDrawsign">Draw your signature here</span>
+            <canvas #canvas class="sig-canvas"
+                    (mouseleave)="stopDrawing()"
+                    (touchend)="touchStopDrawing()"></canvas>
+            <span class="sig-canvas__baseline" aria-hidden="true"></span>
+        </div>
+        <div class="sig-canvas-actions">
+            <button type="button" cButton variant="outline" size="lg" class="sig-canvas__clear" (click)="clearPad()">
+                <svg cIcon name="cilTrash" aria-hidden="true"></svg>
+                Clear &amp; start over
+            </button>
+        </div>
+    </section>
+
+    <section class="sig__saved" *ngIf="hasSignature && savedSignatureDataUrl">
+        <span class="sig__saved-icon" aria-hidden="true">
+            <svg cIcon name="cilCheck"></svg>
+        </span>
+        <div class="sig__saved-text">
+            <span class="sig__saved-title">Signature saved</span>
+            <span class="sig__saved-meta">
+                {{ mode === 'type' ? 'Typed signature' : 'Drawn signature' }}
+            </span>
+        </div>
+        <img class="sig__saved-thumb" [src]="savedSignatureDataUrl" alt="Your signature" />
+    </section>
+
+    <nav class="sig__nav">
+        <button cButton matStepperPrevious size="lg" variant="outline" class="sig__back">Back</button>
+        <button cButton size="lg" (click)="next()" [disabled]="!hasSignature" class="sig__next">Continue</button>
+    </nav>
 </div>

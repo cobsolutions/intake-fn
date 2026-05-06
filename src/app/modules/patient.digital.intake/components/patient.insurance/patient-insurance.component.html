@@ -152,7 +152,7 @@
                                         </c-col>
                                         <c-col xs="12">
                                             <input cFormControl placeholder="Phone"
-                                                formControlName="commercial-ploicyHolder-relationship-phone" maxlength="15"
+                                                formControlName="commercial-ploicyHolder-relationship-phone" maxlength="14"
                                                 [value]="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.value | phone">
                                         </c-col>
                                         <div *ngIf="this.form.get('insurance')?.get('commercial-ploicyHolder-relationship-phone')?.errors?.['required'] && 

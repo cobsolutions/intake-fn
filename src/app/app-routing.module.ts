@@ -8,6 +8,11 @@ import { KCAuthGuardGuard } from './modules/security/service/kc/kcauth-guard.gua
 
 const routes: Routes = [
   {
+     path: '',
+    pathMatch: 'full',
+    redirectTo: 'admin',
+  },
+  {
     path: 'admin',
     component: DefaultAdminLayoutComponent,
     canActivate: [KCAuthGuardGuard],

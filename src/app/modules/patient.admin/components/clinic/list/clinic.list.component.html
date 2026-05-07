@@ -1,114 +1,145 @@
-
 <ngx-spinner></ngx-spinner>
-<div class="header">
-  <div class="header-content">
-    <div class="header-icon">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-          stroke-linejoin="round" />
-      </svg>
-    </div>
-    <div class="header-text">
-      <h1>Locations Manager</h1>
-      <p>Create and update locations</p>
-    </div>
-  </div>
-</div>
-<div class="search-panel">
-  <div class="search-title">
-    <h2>Search Locations</h2>
-    <p>Quickly find a location by name or address</p>
-  </div>
 
-  <div class="search-bar">
-    <div class="search-input-wrapper">
-      <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8" />
-        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-      </svg>
-      <input
-        type="text"
-        placeholder="Search by clinic name or address..."
-        [(ngModel)]="searchQuery"
-        class="search-input"
-      />
-    </div>
+<div class="al">
 
-    <button class="search-btn" (click)="onSearchClick()">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-        <path d="M3 12h18M9 6l-6 6 6 6" />
-      </svg>
-      Search
+    <header class="al__header">
+        <span class="al__icon" aria-hidden="true">
+            <svg cIcon name="cilLibraryBuilding"></svg>
+        </span>
+        <div class="al__header-text">
+            <span class="al__eyebrow">Administration</span>
+            <h2 class="al__title">Locations</h2>
+            <p class="al__subtitle">Create and manage the clinics where patients are seen.</p>
+        </div>
+        <button type="button" cButton size="lg" class="al__add" (click)="showCreateClinic()">
+            <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+            Add location
+        </button>
+    </header>
+
+    <c-alert color="danger" *ngIf="errorMessage !== ''">{{ errorMessage }}</c-alert>
+
+    <section class="al-search">
+        <header class="al-search__head">
+            <span class="al-search__icon" aria-hidden="true">
+                <svg cIcon name="cilSearch"></svg>
+            </span>
+            <div>
+                <h3 class="al-search__title">Find a location</h3>
+                <p class="al-search__hint">Filter by clinic name or address.</p>
+            </div>
+        </header>
+
+        <form class="al-search__form" (submit)="$event.preventDefault(); onSearchClick()">
+            <div class="al-field al-field--wide">
+                <label class="al-label">Search</label>
+                <input class="al-input" type="text"
+                       placeholder="Clinic name or address"
+                       [(ngModel)]="searchQuery" name="cl_q" />
+            </div>
+            <div class="al-search__actions">
+                <button type="button" class="al-clear"
+                        (click)="searchQuery = ''; onSearchChange()">Clear</button>
+                <button type="submit" cButton size="lg" class="al-search__submit">
+                    <svg cIcon name="cilSearch" aria-hidden="true"></svg>
+                    Search
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="al-results">
+        <div class="al-results__head" aria-hidden="true">
+            <span>Location</span>
+            <span>Address</span>
+            <span>Created</span>
+            <span class="al-results__head-actions">Actions</span>
+        </div>
+
+        <div class="al-row" *ngFor="let clinic of clinics; index as i">
+            <div class="al-row__main">
+                <span class="al-avatar al-avatar--brand" aria-hidden="true">
+                    <svg cIcon name="cilLibraryBuilding"></svg>
+                </span>
+                <div class="al-row__text">
+                    <span class="al-row__name">{{ clinic.name }}</span>
+                    <span class="al-row__sub" *ngIf="clinic.id != null">ID #{{ clinic.id }}</span>
+                </div>
+            </div>
+
+            <div class="al-row__address">
+                <span class="al-address" *ngIf="clinic.address">
+                    <svg cIcon name="cilLocationPin" aria-hidden="true"></svg>
+                    <span>{{ clinic.address }}</span>
+                </span>
+                <span class="al-badge al-badge--muted" *ngIf="!clinic.address">No address</span>
+            </div>
+
+            <div class="al-row__date">
+                <span class="al-date">{{ clinic.createdAt | date:'MMM d, y' }}</span>
+                <span class="al-date__time">{{ clinic.createdAt | date:'h:mm a' }}</span>
+            </div>
+
+            <div class="al-row__actions">
+                <button type="button" class="al-action" (click)="showEditClinic(clinic.id)">
+                    <svg cIcon name="cilPencil" aria-hidden="true"></svg>
+                    Edit
+                </button>
+            </div>
+        </div>
+
+        <div class="al-empty" *ngIf="!clinics || clinics.length === 0">
+            <span class="al-empty__icon" aria-hidden="true">
+                <svg cIcon name="cilLibraryBuilding"></svg>
+            </span>
+            <h3 class="al-empty__title">No locations yet</h3>
+            <p class="al-empty__msg">Tap <strong>Add location</strong> to register the first clinic.</p>
+        </div>
+    </section>
+
+    <button class="al-fab" (click)="showCreateClinic()" aria-label="Add location">
+        <svg cIcon name="cilPlus" aria-hidden="true"></svg>
     </button>
-  </div>
 </div>
-
-
-<c-alert color="danger" *ngIf="errorMessage !== ''">{{ errorMessage }}</c-alert>
-<div class="batch-table-container">
-  <table class="batch-table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Clinic Name</th>
-        <th scope="col">Address</th>
-        <th scope="col">Created At</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let clinic of clinics; index as i;">
-        <td>{{clinic.id}}</td>
-        <td class="total-emails">{{clinic.name}}</td>
-        <td class="total-emails">{{clinic.address}}</td>
-        <td class="total-emails">{{clinic.createdAt | date:"MM/dd/yyyy hh:mm a"}}</td>
-        <td>
-          <button  class="action-btn" (click)="showEditClinic(clinic.id)">
-            Change
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<!-- Floating Create Button -->
-<button class="floating-create-btn" (click)="showCreateClinic()">
-  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16">
-      <path
-          d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-  </svg>
-</button>
-
 
 
 <c-modal id="createClinic" [visible]="isCreateClinic" size="xl" backdrop="static">
-  <c-modal-header>
-    <h3 cModalTitle>Clinic Creation</h3>
-    <button (click)="toggleCreateClinic()" cButtonClose></button>
-  </c-modal-header>
-  <c-modal-body>
-    <clinic-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isCreateClinic"></clinic-creation>
-  </c-modal-body>
+    <c-modal-header>
+        <h3 cModalTitle>
+            <svg cIcon name="cilLibraryBuilding" aria-hidden="true"></svg>
+            Create a location
+        </h3>
+        <button (click)="toggleCreateClinic()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <clinic-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isCreateClinic"></clinic-creation>
+    </c-modal-body>
 </c-modal>
 
 <c-modal id="editClinic" [visible]="isEditClinic" size="xl" backdrop="static">
-  <c-modal-header>
-    <h3 cModalTitle>Update Clinic</h3>
-    <button (click)="toggleEditClinic()" cButtonClose></button>
-  </c-modal-header>
-  <c-modal-body>
-    <clinic-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isEditClinic"
-      [clinicId]="selectedClinicId"></clinic-creation>
-  </c-modal-body>
+    <c-modal-header>
+        <h3 cModalTitle>
+            <svg cIcon name="cilPencil" aria-hidden="true"></svg>
+            Edit location
+        </h3>
+        <button (click)="toggleEditClinic()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <clinic-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isEditClinic"
+                         [clinicId]="selectedClinicId"></clinic-creation>
+    </c-modal-body>
 </c-modal>
+
 <c-modal id="editClinicLocation" [visible]="isEditClinicLocation" size="xl" backdrop="static">
-  <c-modal-header>
-    <button (click)="toggleEditClinicLocation()" cButtonClose></button>
-  </c-modal-header>
-  <c-modal-body>
-    <edit-clinic-location (changeVisibility)="changeClinicLocationVisibility($event)" *ngIf="isEditClinicLocation"
-      [clinicId]="selectedClinicId"></edit-clinic-location>
-  </c-modal-body>
+    <c-modal-header>
+        <h3 cModalTitle>
+            <svg cIcon name="cilLocationPin" aria-hidden="true"></svg>
+            Update address
+        </h3>
+        <button (click)="toggleEditClinicLocation()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <edit-clinic-location (changeVisibility)="changeClinicLocationVisibility($event)" *ngIf="isEditClinicLocation"
+                              [clinicId]="selectedClinicId"></edit-clinic-location>
+    </c-modal-body>
 </c-modal>

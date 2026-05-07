@@ -77,7 +77,7 @@ export class UserListComponent implements OnInit {
     this.getUsers();
   }
   searchUsers(): void {
-    this.users = this.users.filter(user => {
+    this.users = this.original.filter(user => {
       const matchesName =
         !this.searchName || user.name?.toLowerCase().includes(this.searchName.toLowerCase());
       const matchesEmail =

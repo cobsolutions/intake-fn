@@ -1,134 +1,148 @@
 <ngx-spinner></ngx-spinner>
-<!-- Header -->
-<div class="header">
-    <div class="header-content">
-        <div class="header-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-        </div>
-        <div class="header-text">
-            <h1>Users Manager</h1>
-        </div>
-    </div>
-</div>
-<!-- Search Panel -->
-<div class="search-panel">
-    <div class="search-title">
-        <h2>Search Users</h2>
-        <p>find a user by name , email or role</p>
-    </div>
 
-    <div class="search-bar">
-        <!-- Name -->
-        <div class="search-input-wrapper">
-            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input type="text" placeholder="Search by name" [(ngModel)]="searchName" class="search-input" />
-        </div>
+<div class="al">
 
-        <!-- Email -->
-        <div class="search-input-wrapper">
-            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M4 4h16v16H4V4zm8 8L4 6m16 0l-8 6m8 6l-8-6m8 6H4" />
-            </svg>
-            <input type="text" placeholder="Search by email" [(ngModel)]="searchEmail" class="search-input" />
+    <header class="al__header">
+        <span class="al__icon" aria-hidden="true">
+            <svg cIcon name="cilPeople"></svg>
+        </span>
+        <div class="al__header-text">
+            <span class="al__eyebrow">Administration</span>
+            <h2 class="al__title">Users</h2>
+            <p class="al__subtitle">Manage who can access this admin and what they can do.</p>
         </div>
-
-        <!-- Role -->
-        <div class="search-input-wrapper">
-            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M12 5v14m7-7H5" />
-            </svg>
-            <select [(ngModel)]="searchRole" class="search-input">
-                <option value="">Select role</option>
-                <option value="Administrator">Administrator</option>
-                <option value="Normal">Normal</option>
-            </select>
-        </div>
-
-        <!-- Search button -->
-        <button class="search-btn" (click)="searchUsers()">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M3 12h18M9 6l-6 6 6 6" />
-            </svg>
-            Search
+        <button type="button" cButton size="lg" class="al__add" (click)="showCreateUser()">
+            <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+            Add user
         </button>
-        <button class="btn-clear" (click)="clearSearch()">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-            Clear
-          </button>
-    </div>
+    </header>
 
+    <section class="al-search">
+        <header class="al-search__head">
+            <span class="al-search__icon" aria-hidden="true">
+                <svg cIcon name="cilSearch"></svg>
+            </span>
+            <div>
+                <h3 class="al-search__title">Find a user</h3>
+                <p class="al-search__hint">Filter by name, email or role.</p>
+            </div>
+        </header>
+
+        <form class="al-search__form" (submit)="$event.preventDefault(); searchUsers()">
+            <div class="al-field">
+                <label class="al-label">Name</label>
+                <input class="al-input" type="text" placeholder="First or last name"
+                       [(ngModel)]="searchName" name="ul_name" />
+            </div>
+            <div class="al-field">
+                <label class="al-label">Email</label>
+                <input class="al-input" type="email" inputmode="email" placeholder="user@example.com"
+                       [(ngModel)]="searchEmail" name="ul_email" />
+            </div>
+            <div class="al-field">
+                <label class="al-label">Role</label>
+                <select class="al-input" [(ngModel)]="searchRole" name="ul_role">
+                    <option value="">All roles</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="Normal">Normal</option>
+                </select>
+            </div>
+            <div class="al-search__actions">
+                <button type="button" class="al-clear" (click)="clearSearch()">Clear</button>
+                <button type="submit" cButton size="lg" class="al-search__submit">
+                    <svg cIcon name="cilSearch" aria-hidden="true"></svg>
+                    Search
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="al-results">
+        <div class="al-results__head" aria-hidden="true">
+            <span>User</span>
+            <span>Role</span>
+            <span>Created</span>
+            <span class="al-results__head-actions">Actions</span>
+        </div>
+
+        <div class="al-row" *ngFor="let user of users; index as i">
+            <div class="al-row__main">
+                <span class="al-avatar" aria-hidden="true">
+                    {{ ((user.name || '?')[0] || '?').toUpperCase() }}
+                </span>
+                <div class="al-row__text">
+                    <span class="al-row__name">{{ user.name }}</span>
+                    <a *ngIf="user.email" [href]="'mailto:' + user.email" class="al-row__sub">{{ user.email }}</a>
+                </div>
+            </div>
+
+            <div class="al-row__role">
+                <span class="al-badge al-badge--admin" *ngIf="user.userRole === 'administrator'">
+                    <svg cIcon name="cilLockLocked" aria-hidden="true"></svg>
+                    Administrator
+                </span>
+                <span class="al-badge al-badge--user" *ngIf="user.userRole === 'normal'">
+                    <svg cIcon name="cilUser" aria-hidden="true"></svg>
+                    Normal
+                </span>
+                <span class="al-badge al-badge--muted"
+                      *ngIf="user.userRole !== 'administrator' && user.userRole !== 'normal'">
+                    {{ user.userRole || '—' }}
+                </span>
+            </div>
+
+            <div class="al-row__date">
+                <span class="al-date">{{ user.createdAt | date:'MMM d, y' }}</span>
+                <span class="al-date__time">{{ user.createdAt | date:'h:mm a' }}</span>
+            </div>
+
+            <div class="al-row__actions">
+                <button type="button" class="al-action" (click)="showEditUser(user.uuid!)">
+                    <svg cIcon name="cilPencil" aria-hidden="true"></svg>
+                    Edit
+                </button>
+            </div>
+        </div>
+
+        <div class="al-empty" *ngIf="!users || users.length === 0">
+            <span class="al-empty__icon" aria-hidden="true">
+                <svg cIcon name="cilPeople"></svg>
+            </span>
+            <h3 class="al-empty__title">No users yet</h3>
+            <p class="al-empty__msg">Tap <strong>Add user</strong> to invite the first member of your team.</p>
+        </div>
+    </section>
+
+    <button class="al-fab" (click)="showCreateUser()" aria-label="Add user">
+        <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+    </button>
 </div>
-<!-- Table -->
-<div class="batch-table-container">
-    <table cTable *ngIf="users" small class="batch-table">
-        <thead cTableColor="light">
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Role</th>
-                <th scope="col">Created At</th>
-                <th scope="col" style="width: 10%;">Action</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let user of users; index as i;">
-                <td>{{user.name}}</td>
-                <td>{{user.email}}</td>
-                <td>
-                    <c-badge color="primary" *ngIf="user.userRole === 'administrator'">{{user.userRole}}</c-badge>
-                    <c-badge color="warning" *ngIf="user.userRole === 'normal'">{{user.userRole}}</c-badge>
-                </td>
-                <td>{{user.createdAt | date:"MM/dd/yyyy hh:mm a"}}</td>
-                <td>
-                    <div class="btn-group" role="group">
-                        <button cButton variant="outline" (click)="showEditUser(user.uuid!)" size="sm"
-                            class="action-btn">
-                            Change
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<!-- Floating Create Button -->
-<button class="floating-create-btn" (click)="showCreateUser()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16">
-        <path
-            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-    </svg>
-</button>
+
+
 <c-modal id="createUSer" [visible]="isCreateUSer" size="xl" backdrop="static">
     <c-modal-header>
-        <h3 cModalTitle>User Creation</h3>
+        <h3 cModalTitle>
+            <svg cIcon name="cilUserFollow" aria-hidden="true"></svg>
+            Add a new user
+        </h3>
         <button (click)="toggleCreateUser()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
         <user-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isCreateUSer"></user-creation>
     </c-modal-body>
 </c-modal>
+
 <c-modal id="editUSer" [visible]="isEditUser" size="xl" backdrop="static">
     <c-modal-header>
-        <h3 cModalTitle>Edit User</h3>
+        <h3 cModalTitle>
+            <svg cIcon name="cilPencil" aria-hidden="true"></svg>
+            Edit user
+        </h3>
         <button (click)="toggleEditUser()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
-        <user-creation (changeVisibility)="changeClinicVisibility($event)" *ngIf="isEditUser"
-            [selectedUser]="selectedUser"></user-creation>
+        <user-creation (changeVisibility)="changeClinicVisibility($event)"
+                       *ngIf="isEditUser"
+                       [selectedUser]="selectedUser"></user-creation>
     </c-modal-body>
 </c-modal>

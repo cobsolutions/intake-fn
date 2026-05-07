@@ -1,101 +1,122 @@
 <ngx-spinner></ngx-spinner>
 
-<!-- Header -->
-<div class="header">
-    <div class="header-content">
-        <div class="header-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
-        </div>
-        <div class="header-text">
-            <h1>Insurance Company Manager</h1>
-        </div>
-    </div>
-</div>
+<div class="al">
 
-<!-- Search Panel -->
-<div class="search-panel">
-    <div class="search-title">
-        <h2>Search Insurance Companies</h2>
-        <p>Quickly find a company by name</p>
-    </div>
-
-    <div class="search-bar">
-        <div class="search-input-wrapper">
-            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <circle cx="11" cy="11" r="8" />
-                <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input type="text" placeholder="Search by name..." [(ngModel)]="searchQuery" class="search-input" />
+    <header class="al__header">
+        <span class="al__icon" aria-hidden="true">
+            <svg cIcon name="cilCreditCard"></svg>
+        </span>
+        <div class="al__header-text">
+            <span class="al__eyebrow">Administration</span>
+            <h2 class="al__title">Insurance Companies</h2>
+            <p class="al__subtitle">Maintain the carriers patients can choose from at intake.</p>
         </div>
-
-        <button class="search-btn" (click)="onSearchClick()">
-            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round" viewBox="0 0 24 24">
-                <path d="M3 12h18M9 6l-6 6 6 6" />
-            </svg>
-            Search
+        <button type="button" cButton size="lg" class="al__add" (click)="showCreateInsuranceCompany()">
+            <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+            Add company
         </button>
-    </div>
+    </header>
+
+    <section class="al-search">
+        <header class="al-search__head">
+            <span class="al-search__icon" aria-hidden="true">
+                <svg cIcon name="cilSearch"></svg>
+            </span>
+            <div>
+                <h3 class="al-search__title">Find a company</h3>
+                <p class="al-search__hint">Filter by company name.</p>
+            </div>
+        </header>
+
+        <form class="al-search__form" (submit)="$event.preventDefault(); onSearchClick()">
+            <div class="al-field">
+                <label class="al-label">Name</label>
+                <input class="al-input" type="text"
+                       placeholder="Company name"
+                       [(ngModel)]="searchQuery" name="ic_q" />
+            </div>
+            <div class="al-search__actions">
+                <button type="button" class="al-clear"
+                        (click)="searchQuery = ''; onSearchChange()">Clear</button>
+                <button type="submit" cButton size="lg" class="al-search__submit">
+                    <svg cIcon name="cilSearch" aria-hidden="true"></svg>
+                    Search
+                </button>
+            </div>
+        </form>
+    </section>
+
+    <section class="al-results">
+        <div class="al-results__head" aria-hidden="true">
+            <span>Company</span>
+            <span>Created</span>
+            <span class="al-results__head-actions">Actions</span>
+        </div>
+
+        <div class="al-row" *ngFor="let insuranceCompany of InsuranceCompanies; index as i">
+            <div class="al-row__main">
+                <span class="al-avatar" aria-hidden="true">
+                    <svg cIcon name="cilCreditCard"></svg>
+                </span>
+                <div class="al-row__text">
+                    <span class="al-row__name">{{ insuranceCompany.name }}</span>
+                    <span class="al-row__sub" *ngIf="insuranceCompany.id != null">ID #{{ insuranceCompany.id }}</span>
+                </div>
+            </div>
+
+            <div class="al-row__date">
+                <span class="al-date">{{ insuranceCompany.createdAt | date:'MMM d, y' }}</span>
+                <span class="al-date__time">{{ insuranceCompany.createdAt | date:'h:mm a' }}</span>
+            </div>
+
+            <div class="al-row__actions">
+                <button type="button" class="al-action" (click)="showEditInsuranceCompany(insuranceCompany.id)">
+                    <svg cIcon name="cilPencil" aria-hidden="true"></svg>
+                    Edit
+                </button>
+            </div>
+        </div>
+
+        <div class="al-empty" *ngIf="!InsuranceCompanies || InsuranceCompanies.length === 0">
+            <span class="al-empty__icon" aria-hidden="true">
+                <svg cIcon name="cilCreditCard"></svg>
+            </span>
+            <h3 class="al-empty__title">No companies yet</h3>
+            <p class="al-empty__msg">Tap <strong>Add company</strong> to register the first carrier.</p>
+        </div>
+    </section>
+
+    <button class="al-fab" (click)="showCreateInsuranceCompany()" aria-label="Add company">
+        <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+    </button>
 </div>
 
-<!-- Table -->
-<div class="batch-table-container">
-    <table cTable *ngIf="InsuranceCompanies" class="batch-table">
-        <thead cTableColor="light">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Created At</th>
-                <th scope="col">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let insuranceCompany of InsuranceCompanies; index as i;">
-                <td>{{ insuranceCompany.id }}</td>
-                <td>{{ insuranceCompany.name }}</td>
-                <td>{{ insuranceCompany.createdAt | date: "MM/dd/yyyy hh:mm a" }}</td>
-                <td>
-                    <div class="btn-group" role="group">
-                        <button cButton variant="outline" (click)="showEditInsuranceCompany(insuranceCompany.id)"
-                            size="sm" class="action-btn">
-                            Change
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- Floating Create Button -->
-<button class="floating-create-btn" (click)="showCreateInsuranceCompany()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16">
-        <path
-            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-    </svg>
-</button>
 
 <c-modal id="createinsuranceComany" [visible]="isCreateInsuranceCompany" size="xl" backdrop="static">
     <c-modal-header>
-        <h3 cModalTitle>Insurance Company Creation</h3>
+        <h3 cModalTitle>
+            <svg cIcon name="cilCreditCard" aria-hidden="true"></svg>
+            Add insurance company
+        </h3>
         <button (click)="toggleCreateInsuranceCompany()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
         <insurance-company-create (changeVisibility)="changeClinicVisibility($event)"
-            *ngIf="isCreateInsuranceCompany"></insurance-company-create>
+                                  *ngIf="isCreateInsuranceCompany"></insurance-company-create>
     </c-modal-body>
 </c-modal>
+
 <c-modal id="editinsuranceComany" [visible]="isEditInsuranceCompany" size="xl" backdrop="static">
     <c-modal-header>
-        <h3 cModalTitle>Edit Insurance Company</h3>
+        <h3 cModalTitle>
+            <svg cIcon name="cilPencil" aria-hidden="true"></svg>
+            Edit insurance company
+        </h3>
         <button (click)="toggleEditInsuranceCompany()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>
         <insurance-company-create (changeVisibility)="changeClinicVisibility($event)"
-            *ngIf="isEditInsuranceCompany" [selectedCompany]="selectedInsuranceCompanyId"></insurance-company-create>
+                                  *ngIf="isEditInsuranceCompany"
+                                  [selectedCompany]="selectedInsuranceCompanyId"></insurance-company-create>
     </c-modal-body>
 </c-modal>

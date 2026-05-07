@@ -38,9 +38,10 @@ export class ClinicListComponent implements OnInit {
   getClinics() {
     this.clinicService.get().subscribe(response => {
       this.clinics = [];
+      this.originalClinics = [];
       response.body?.forEach(element => {
         this.clinics?.push(this.constructClinic(element))
-        this.originalClinics.push(this.constructClinic(element)) 
+        this.originalClinics.push(this.constructClinic(element))
       });
     },
       error => {
@@ -114,7 +115,7 @@ export class ClinicListComponent implements OnInit {
     this.isEditClinicLocation = !this.isEditClinicLocation;
   }
   onSearchChange(): void {
-    const query = this.searchQuery.trim().toLowerCase();
+    const query = (this.searchQuery || '').trim().toLowerCase();
 
     if (!query) {
       // restore full list if search box is empty

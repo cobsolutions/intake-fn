@@ -15,7 +15,7 @@ export class InsuranceCompanyListComponent implements OnInit {
   isCreateInsuranceCompany: boolean = false;
   isEditInsuranceCompany: boolean = false;
   selectedInsuranceCompanyId: number;
-  searchQuery: any;
+  searchQuery: string = '';
   constructor(private router: Router, private insuranceCompanyService: InsuranceCompanyService) { }
 
   ngOnInit(): void {
@@ -23,10 +23,11 @@ export class InsuranceCompanyListComponent implements OnInit {
   }
   private getInsuranceCompanies() {
     this.InsuranceCompanies = []
+    this.original = []
     this.insuranceCompanyService.get().subscribe((response) => {
       response.body?.forEach(element => {
         this.InsuranceCompanies?.push(element);
-        this.original.push(element) 
+        this.original.push(element)
       });
     })
   }
@@ -51,7 +52,7 @@ export class InsuranceCompanyListComponent implements OnInit {
     this.isEditInsuranceCompany = !this.isEditInsuranceCompany;
   }
   onSearchChange(): void {
-    const query = this.searchQuery.trim().toLowerCase();
+    const query = (this.searchQuery || '').trim().toLowerCase();
 
     if (!query) {
       // restore full list if search box is empty

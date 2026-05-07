@@ -1,66 +1,86 @@
 <ngx-spinner></ngx-spinner>
-<div class="header">
-    <div class="header-content">
-        <div class="header-icon">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" />
-            </svg>
+
+<div class="td">
+
+    <header class="td__header">
+        <span class="td__icon" aria-hidden="true">
+            <svg cIcon name="cilTablet"></svg>
+        </span>
+        <div class="td__header-text">
+            <span class="td__eyebrow">Security</span>
+            <h2 class="td__title">Trusted Devices</h2>
+            <p class="td__subtitle">
+                Tablets and phones that are allowed to start patient intakes for this clinic.
+            </p>
         </div>
-        <div class="header-text">
-            <h1>Trusted Devices</h1>
+        <button type="button" cButton size="lg" class="td__add" (click)="openGenertaeRequest()">
+            <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+            Add device
+        </button>
+    </header>
+
+    <section class="td__list" *ngIf="trustDevices.length > 0; else noData">
+        <div class="td-row td-row--head" aria-hidden="true">
+            <span>Device</span>
+            <span>Device ID</span>
+            <span class="td-row__actions-head">Actions</span>
         </div>
-    </div>
+
+        <article class="td-row" *ngFor="let device of trustDevices">
+            <div class="td-row__device">
+                <span class="td-row__icon" aria-hidden="true">
+                    <svg cIcon name="cilTablet"></svg>
+                </span>
+                <div class="td-row__name-wrap">
+                    <span class="td-row__name">{{ device.deviceName }}</span>
+                    <span class="td-row__badge">
+                        <svg cIcon name="cilCheck" aria-hidden="true"></svg>
+                        Trusted
+                    </span>
+                </div>
+            </div>
+
+            <div class="td-row__id">
+                <span class="td-row__id-label">Device ID</span>
+                <code class="td-row__id-value" [title]="device.deviceId">{{ device.deviceId }}</code>
+            </div>
+
+            <div class="td-row__actions">
+                <button type="button" class="td-revoke" (click)="revoke(device.deviceId)">
+                    <svg cIcon name="cilTrash" aria-hidden="true"></svg>
+                    Revoke
+                </button>
+            </div>
+        </article>
+    </section>
+
+    <ng-template #noData>
+        <div class="td-empty">
+            <img src="assets/images/empty-devices.svg" alt="" class="td-empty__img" />
+            <h3 class="td-empty__title">No trusted devices yet</h3>
+            <p class="td-empty__msg">
+                Tap <strong>Add device</strong> to register a tablet or phone — the device will scan a QR code
+                to securely link itself to this clinic.
+            </p>
+            <button type="button" cButton size="lg" class="td-empty__add" (click)="openGenertaeRequest()">
+                <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+                Add device
+            </button>
+        </div>
+    </ng-template>
+
+    <button class="td-fab" (click)="openGenertaeRequest()" aria-label="Add device">
+        <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+    </button>
 </div>
-
-<div class="table-container">
-
-    <table class="device-table" *ngIf="trustDevices.length > 0; else noData">
-        <thead>
-            <tr>
-                <th>Device Name</th>
-                <th>Device ID</th>
-                <th class="action-column">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let device of trustDevices">
-                <td>{{ device.deviceName }}</td>
-                <td>{{ device.deviceId }}</td>
-                <td class="actions">
-                    <div class="btn-group" role="group">
-                        <button cButton variant="outline" (click)="revoke(device.deviceId)" size="sm"
-                            class="action-btn">
-                            Revoke
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-</div>
-
-<ng-template #noData>
-    <div class="empty-message">
-        <img src="assets/images/empty-devices.svg" alt="No Devices" class="empty-img" />
-        <h4>No trusted devices found</h4>
-        <p>You can add new devices by clicking the button below.</p>
-    </div>
-</ng-template>
-
-<!-- Floating Add Button -->
-<button class="floating-create-btn" (click)="openGenertaeRequest()">
-    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="white" viewBox="0 0 16 16">
-        <path
-            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-    </svg>
-</button>
 
 
 <c-modal id="genertaeRequestModal" [visible]="genertaeRequestVisibility" size="lg" backdrop="static">
     <c-modal-header>
-        <h5 cModalTitle>Add New Device</h5>
+        <h5 cModalTitle>
+            <svg cIcon name="cilPlus" aria-hidden="true"></svg>
+            Register a new device
+        </h5>
         <button (click)="toggleGenertaeRequest()" cButtonClose></button>
     </c-modal-header>
     <c-modal-body>

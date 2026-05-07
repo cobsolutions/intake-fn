@@ -1,176 +1,344 @@
 <ngx-spinner></ngx-spinner>
-<c-row>
-  <c-col xs="12">
-    <c-card class="mb-4">
-      <c-card-header ngPreserveWhitespaces>
-        <strong>Patient Search</strong> <small>From patient list</small>
-      </c-card-header>
-      <c-card-body>
-        <p class="text-medium-emphasis small">
-          The Abiltiy to filter the patient list using his/her personal Info,
-          Also using the insurnace , provider and Facility data.
-        </p>
-        <form cForm>
-          <c-row>
-            <c-col class="mb-2" xs="12">
-              <input aria-describedby="basic-addon1" aria-label="Username" cFormControl placeholder="Name" sizing="sm"
-                [(ngModel)]="patientSearchCriteria.name" name="sc_pname" />
-            </c-col>
-            <c-col class="mb-2" xs="12">
-              <input aria-describedby="basic-addon1" aria-label="phone" cFormControl placeholder="Phone" sizing="sm"
-                [ngModel]="patientSearchCriteria.phone |phone" (ngModelChange)="patientSearchCriteria.phone=$event"
-                #phone="ngModel" name="phone" />
-            </c-col>
-            <c-col class="mb-2" xs="12">
-              <input aria-describedby="basic-addon1" aria-label="email" cFormControl placeholder="Email" sizing="sm"
-                [(ngModel)]="patientSearchCriteria.email" name="sc_pemail" />
-            </c-col>
-            <c-col class="mb-2" xs="12">
-              <c-date-range-picker [(startDate)]="patientSearchCriteria.startDate_date"
-                [(endDate)]="patientSearchCriteria.endDate_date" [placeholder]="['Created From ', 'Created To']"
-                [ranges]="customRanges"></c-date-range-picker>
-            </c-col>
-            <c-col class="mb-2" xs="4">
-              <select cSelect name="pSchedulefilter" (change)="isScheduleChanged($event)"
-                [(ngModel)]="patientSearchCriteria.isSchedule">
-                <option selected disabled value="undefined">Patient Schedule</option>
-                <option value="null">All</option>
-                <option value="true">Scheduled</option>
-                <option value="false">Not Scheduled</option>
-              </select>
-            </c-col>
-            <c-col xs="12" class="text-center">
-              <button cButton class="me-1" color="primary" style="width: 15%;" (click)="search()">
-                Search
-              </button>
-            </c-col>
-          </c-row>
+
+<div class="pl">
+
+    <header class="pl__header">
+        <span class="pl__icon" aria-hidden="true">
+            <svg cIcon name="cilPeople"></svg>
+        </span>
+        <div class="pl__header-text">
+            <span class="pl__eyebrow">Patients</span>
+            <h2 class="pl__title">Patient list</h2>
+            <p class="pl__subtitle">
+                Search, schedule, assign providers and download patient intake records.
+            </p>
+        </div>
+    </header>
+
+    <!-- ============================================================== -->
+    <!-- Search panel                                                    -->
+    <!-- ============================================================== -->
+    <section class="pl-search">
+        <header class="pl-search__head">
+            <span class="pl-search__icon" aria-hidden="true">
+                <svg cIcon name="cilSearch"></svg>
+            </span>
+            <div>
+                <h3 class="pl-search__title">Find a patient</h3>
+                <p class="pl-search__hint">
+                    Filter by name, phone, email or the date the intake was created.
+                </p>
+            </div>
+        </header>
+
+        <form cForm class="pl-search__form" (submit)="$event.preventDefault(); search()">
+            <div class="pl-field">
+                <label class="pl-label" for="pl-name">Patient name</label>
+                <input id="pl-name" class="pl-input" placeholder="First or last name"
+                       [(ngModel)]="patientSearchCriteria.name" name="sc_pname" />
+            </div>
+
+            <div class="pl-field">
+                <label class="pl-label" for="pl-phone">Phone</label>
+                <input id="pl-phone" class="pl-input" type="tel" inputmode="tel"
+                       placeholder="(555) 555-5555"
+                       [ngModel]="patientSearchCriteria.phone | phone"
+                       (ngModelChange)="patientSearchCriteria.phone = $event"
+                       #phone="ngModel" name="phone" />
+            </div>
+
+            <div class="pl-field">
+                <label class="pl-label" for="pl-email">Email</label>
+                <input id="pl-email" class="pl-input" type="email" inputmode="email"
+                       placeholder="patient@example.com"
+                       [(ngModel)]="patientSearchCriteria.email" name="sc_pemail" />
+            </div>
+
+            <div class="pl-field pl-field--span2">
+                <label class="pl-label">Created date</label>
+                <c-date-range-picker class="pl-daterange"
+                    [(startDate)]="patientSearchCriteria.startDate_date"
+                    [(endDate)]="patientSearchCriteria.endDate_date"
+                    [placeholder]="['Created from', 'Created to']"
+                    [ranges]="customRanges"></c-date-range-picker>
+            </div>
+
+            <div class="pl-field pl-field--full">
+                <label class="pl-label">Schedule status</label>
+                <div class="pl-segmented" role="radiogroup" aria-label="Schedule status">
+                    <button type="button" class="pl-seg"
+                            [class.is-active]="patientSearchCriteria.isSchedule === undefined || patientSearchCriteria.isSchedule === null || $any(patientSearchCriteria.isSchedule) === 'null'"
+                            (click)="patientSearchCriteria.isSchedule = $any('null')">
+                        <svg cIcon name="cilList" aria-hidden="true"></svg>
+                        <span>All</span>
+                    </button>
+                    <button type="button" class="pl-seg"
+                            [class.is-active]="$any(patientSearchCriteria.isSchedule) === 'true' || patientSearchCriteria.isSchedule === true"
+                            (click)="patientSearchCriteria.isSchedule = $any('true')">
+                        <svg cIcon name="cilCalendar" aria-hidden="true"></svg>
+                        <span>Scheduled</span>
+                    </button>
+                    <button type="button" class="pl-seg"
+                            [class.is-active]="$any(patientSearchCriteria.isSchedule) === 'false' || patientSearchCriteria.isSchedule === false"
+                            (click)="patientSearchCriteria.isSchedule = $any('false')">
+                        <svg cIcon name="cilFlagAlt" aria-hidden="true"></svg>
+                        <span>Not scheduled</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pl-search__actions">
+                <button type="submit" cButton size="lg" class="pl-search__submit">
+                    <svg cIcon name="cilSearch" aria-hidden="true"></svg>
+                    Search
+                </button>
+            </div>
         </form>
-      </c-card-body>
-    </c-card>
-  </c-col>
-</c-row>
-<ng-container *ngIf="props$ | async as props" fluid="true">
-  <c-smart-table [columns]="columns" [items]="(usersData$ | async) ?? []" [itemsPerPage]="props.itemsPerPage"
-    (itemsPerPageChange)="handleItemsPerPageChange($event)" [itemsPerPageOptions]="[5,10,20]"
-    [itemsPerPageSelect]="true" [columnFilterValue]="props.columnFilterValue?? []" [sorterValue]="props.sorterValue"
-    [tableProps]="{ hover: true, striped: true  }" [tableBodyProps]="{ align: 'middle' }"
-    (sorterValueChange)="handleSorterValueChange($event)" header>
-    <ng-template cTemplateId="tableDetails" let-item="item">
-      <div [visible]="this.details_visible[item._id]===true" cCollapse>
-        <!-- <p ><strong>Action has been taken at :</strong> {{item['patientId']}}</p> -->
-        <table cTable hover>
-          <thead>
-            <tr>
-              <th scope="col">Document Name</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Patient Intake</td>
-              <td>
-                <button cButton variant="outline" (click)="exportPDF(item)" cTooltip="patient PDF File"
-                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
-                  <svg cIcon name="cilCloudDownload"></svg>
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td *ngIf="!item['hasGuarantor']">Patient ID Document</td>
-              <td *ngIf="item['hasGuarantor']">Guarantor Document</td>
-              <td><button cButton variant="outline" (click)="exportPatientIDDocument(item,false)" cTooltip="Id Document"
-                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
-                  <svg cIcon name="cilCloudDownload"></svg>
-                </button></td>
-            </tr>
-            <tr *ngIf="!item['hasGuarantor']">
-              <td>Patient Insurance Document</td>
-              <td>
-                <button cButton variant="outline" (click)="exportPatientInsuranceDocument(item)"
-                  *ngIf="!item.hasGuarantor" cTooltip="Insurance Document"
-                  [disabled]="!((item.isQuick===null) ||( item.isQuick ===false))">
-                  <svg cIcon name="cilCloudDownload"></svg>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </ng-template>
-    <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
-      <td>
-        <ng-container [ngSwitch]="columnName">
-          <ng-container *ngSwitchCase="'hasGuarantor'">
-            <c-form-check>
-              <input cFormCheckInput type="checkbox" size="sm" disabled [checked]="item[columnName]" />
-            </c-form-check>
-          </ng-container>
-          <ng-container *ngSwitchDefault>
-            {{tdContent}}
-          </ng-container>
-          <ng-container *ngSwitchCase="'createAt'" class="py-2">
-            {{item.createdAt | date:"MM/dd/yyyy hh:mm a"}}
-          </ng-container>
-          <ng-container *ngSwitchCase="'actions'" class="py-2">
-            <c-input-group class="mb-3">
-              <button (click)="toggleDetails(item['_id'])" cButton color="primary" size="sm" variant="outline">
-                Records
-              </button>
-            </c-input-group>
-          </ng-container>
-          <ng-container *ngSwitchCase="'name'" class="py-2">
-            {{item['lastName']}},{{item['firstName']}}
-          </ng-container>
-          <ng-container *ngSwitchCase="'provider'" class="py-2">
-            <c-form-check [switch]="true">
-              <input cFormCheckInput type="checkbox" (change)="assignProvider(item['patientId'])"
-                [disabled]="item['hasProvider']" [checked]="item['hasProvider']" [(ngModel)]="item.hasProvider" />
-            </c-form-check>
-          </ng-container>
-          <ng-container *ngSwitchCase="'schedule'" class="py-2">
-            <c-form-check [switch]="true">
-              <input cFormCheckInput type="checkbox" (change)="isSchedule(item)" [checked]="item.schedule"
-                [(ngModel)]="item.schedule" />
-            </c-form-check>
-          </ng-container>
-        </ng-container>
-      </td>
-    </ng-template>
-  </c-smart-table>
-  <c-smart-pagination *ngIf="props.totalPages" [activePage]="props.activePage"
-    (activePageChange)="handleActivePageChange($event)" [pages]="props.totalPages"></c-smart-pagination>
-</ng-container>
-<ng-container *ngIf="errorMessage$ | async as errorMessage">
-  <hr>
-  <c-alert>{{errorMessage}}</c-alert>
-</ng-container>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- Results                                                         -->
+    <!-- ============================================================== -->
+    <section class="pl-results" *ngIf="props$ | async as props">
+
+        <c-smart-table class="pl-table"
+                       [columns]="columns"
+                       [items]="(usersData$ | async) ?? []"
+                       [itemsPerPage]="props.itemsPerPage"
+                       (itemsPerPageChange)="handleItemsPerPageChange($event)"
+                       [itemsPerPageOptions]="[5,10,20]"
+                       [itemsPerPageSelect]="true"
+                       [columnFilterValue]="props.columnFilterValue ?? []"
+                       [sorterValue]="props.sorterValue"
+                       [tableProps]="{ hover: true, striped: false }"
+                       [tableBodyProps]="{ align: 'middle' }"
+                       (sorterValueChange)="handleSorterValueChange($event)"
+                       header>
+
+            <ng-template cTemplateId="tableDetails" let-item="item">
+                <div [visible]="this.details_visible[item._id] === true" cCollapse>
+                    <div class="pl-records">
+                        <h4 class="pl-records__title">
+                            <svg cIcon name="cilCloudDownload" aria-hidden="true"></svg>
+                            Available documents
+                        </h4>
+
+                        <div class="pl-records__grid">
+                            <div class="pl-record">
+                                <span class="pl-record__icon"><svg cIcon name="cilFile"></svg></span>
+                                <div class="pl-record__text">
+                                    <span class="pl-record__name">Patient intake</span>
+                                    <span class="pl-record__hint">Full intake form as PDF</span>
+                                </div>
+                                <button cButton variant="outline" size="sm"
+                                        (click)="exportPDF(item)"
+                                        [disabled]="!((item.isQuick === null) || (item.isQuick === false))"
+                                        cTooltip="Patient PDF file">
+                                    <svg cIcon name="cilCloudDownload" aria-hidden="true"></svg>
+                                    Download
+                                </button>
+                            </div>
+
+                            <div class="pl-record">
+                                <span class="pl-record__icon"><svg cIcon name="cilUser"></svg></span>
+                                <div class="pl-record__text">
+                                    <span class="pl-record__name">
+                                        <ng-container *ngIf="!item['hasGuarantor']">Patient ID document</ng-container>
+                                        <ng-container *ngIf="item['hasGuarantor']">Guarantor document</ng-container>
+                                    </span>
+                                    <span class="pl-record__hint">Front &amp; back, ZIP</span>
+                                </div>
+                                <button cButton variant="outline" size="sm"
+                                        (click)="exportPatientIDDocument(item, false)"
+                                        [disabled]="!((item.isQuick === null) || (item.isQuick === false))"
+                                        cTooltip="ID document">
+                                    <svg cIcon name="cilCloudDownload" aria-hidden="true"></svg>
+                                    Download
+                                </button>
+                            </div>
+
+                            <div class="pl-record" *ngIf="!item['hasGuarantor']">
+                                <span class="pl-record__icon"><svg cIcon name="cilCreditCard"></svg></span>
+                                <div class="pl-record__text">
+                                    <span class="pl-record__name">Insurance documents</span>
+                                    <span class="pl-record__hint">All insurance cards, ZIP</span>
+                                </div>
+                                <button cButton variant="outline" size="sm"
+                                        (click)="exportPatientInsuranceDocument(item)"
+                                        [disabled]="!((item.isQuick === null) || (item.isQuick === false))"
+                                        cTooltip="Insurance document">
+                                    <svg cIcon name="cilCloudDownload" aria-hidden="true"></svg>
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template cTemplateId="tableData" let-columnName="columnName" let-item="item" let-tdContent="tdContent">
+                <td>
+                    <ng-container [ngSwitch]="columnName">
+
+                        <!-- NAME -->
+                        <ng-container *ngSwitchCase="'name'">
+                            <div class="pl-cell-name">
+                                <span class="pl-avatar" aria-hidden="true">
+                                    {{ ((item['firstName'] || '')[0] || '') + ((item['lastName'] || '')[0] || '') }}
+                                </span>
+                                <div class="pl-cell-name__text">
+                                    <span class="pl-cell-name__primary">
+                                        {{ item['lastName'] }}, {{ item['firstName'] }}
+                                    </span>
+                                    <span class="pl-cell-name__secondary" *ngIf="item['email']">
+                                        {{ item['email'] }}
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <!-- EMAIL -->
+                        <ng-container *ngSwitchCase="'email'">
+                            <span class="pl-muted" *ngIf="!item['email']">—</span>
+                            <a *ngIf="item['email']" [href]="'mailto:' + item['email']" class="pl-link">
+                                {{ item['email'] }}
+                            </a>
+                        </ng-container>
+
+                        <!-- PHONE -->
+                        <ng-container *ngSwitchCase="'phoneNumber'">
+                            <span class="pl-muted" *ngIf="!item['phoneNumber']">—</span>
+                            <a *ngIf="item['phoneNumber']" [href]="'tel:' + item['phoneNumber']" class="pl-link pl-mono">
+                                {{ item['phoneNumber'] | phone }}
+                            </a>
+                        </ng-container>
+
+                        <!-- SOURCE -->
+                        <ng-container *ngSwitchCase="'sourceType'">
+                            <span class="pl-chip" *ngIf="item['sourceType']; else noSource">
+                                {{ item['sourceType'] }}
+                            </span>
+                            <ng-template #noSource><span class="pl-muted">—</span></ng-template>
+                        </ng-container>
+
+                        <!-- HAS GUARANTOR -->
+                        <ng-container *ngSwitchCase="'hasGuarantor'">
+                            <span class="pl-yes" *ngIf="item['hasGuarantor']">
+                                <svg cIcon name="cilCheck" aria-hidden="true"></svg>
+                                Yes
+                            </span>
+                            <span class="pl-muted" *ngIf="!item['hasGuarantor']">No</span>
+                        </ng-container>
+
+                        <!-- CREATED AT -->
+                        <ng-container *ngSwitchCase="'createAt'">
+                            <span class="pl-date">{{ item.createdAt | date:'MMM d, y' }}</span>
+                            <span class="pl-date__time">{{ item.createdAt | date:'h:mm a' }}</span>
+                        </ng-container>
+
+                        <!-- SCHEDULE -->
+                        <ng-container *ngSwitchCase="'schedule'">
+                            <label class="pl-switch" [class.is-on]="item.schedule">
+                                <input type="checkbox"
+                                       (change)="isSchedule(item)"
+                                       [checked]="item.schedule"
+                                       [(ngModel)]="item.schedule" />
+                                <span class="pl-switch__track">
+                                    <span class="pl-switch__thumb"></span>
+                                </span>
+                                <span class="pl-switch__label">{{ item.schedule ? 'Scheduled' : 'Not yet' }}</span>
+                            </label>
+                        </ng-container>
+
+                        <!-- PROVIDER -->
+                        <ng-container *ngSwitchCase="'provider'">
+                            <span class="pl-pill pl-pill--success" *ngIf="item['hasProvider']">
+                                <svg cIcon name="cilCheck" aria-hidden="true"></svg>
+                                Assigned
+                            </span>
+                            <button class="pl-assign" *ngIf="!item['hasProvider']"
+                                    (click)="assignProvider(item['patientId'])">
+                                <svg cIcon name="cilUserFollow" aria-hidden="true"></svg>
+                                Assign
+                            </button>
+                        </ng-container>
+
+                        <!-- ACTIONS -->
+                        <ng-container *ngSwitchCase="'actions'">
+                            <button class="pl-records-btn" (click)="toggleDetails(item['_id'])">
+                                <svg cIcon name="cilFile" aria-hidden="true"></svg>
+                                Records
+                            </button>
+                        </ng-container>
+
+                        <!-- DEFAULT -->
+                        <ng-container *ngSwitchDefault>
+                            <span *ngIf="tdContent">{{ tdContent }}</span>
+                            <span class="pl-muted" *ngIf="!tdContent">—</span>
+                        </ng-container>
+                    </ng-container>
+                </td>
+            </ng-template>
+        </c-smart-table>
+
+        <c-smart-pagination *ngIf="props.totalPages"
+                            [activePage]="props.activePage"
+                            (activePageChange)="handleActivePageChange($event)"
+                            [pages]="props.totalPages"></c-smart-pagination>
+    </section>
+
+    <c-callout color="danger" *ngIf="errorMessage$ | async as errorMessage" class="pl-error">
+        <strong>We couldn't load patients.</strong> {{ errorMessage }}
+    </c-callout>
+
+</div>
 
 
-<span *ngIf="noShow | async">
-  <div class="container error-container">
-    <h1 class="display-4">Oops, something went wrong!</h1>
-    <p class="lead">We apologize for the inconvenience.</p>
-    <p>May be you don't assign to any clinic or your clinic has been deactivated. Please contact the administrator</p>
-    <a class="btn btn-primary" (click)="logout()">Logout</a>
-  </div>
-</span>
+<!-- ============================================================== -->
+<!-- Friendly "no clinic assigned" full-screen state                 -->
+<!-- ============================================================== -->
+<div class="pl-blocked" *ngIf="noShow | async">
+    <div class="pl-blocked__card">
+        <span class="pl-blocked__icon" aria-hidden="true">
+            <svg cIcon name="cilLibraryBuilding"></svg>
+        </span>
+        <h2 class="pl-blocked__title">No clinic assigned</h2>
+        <p class="pl-blocked__msg">
+            Your account isn't linked to an active clinic right now.
+            Please contact your administrator so they can connect you to a clinic.
+        </p>
+        <button class="pl-blocked__btn" (click)="logout()">
+            <svg cIcon name="cilAccountLogout" aria-hidden="true"></svg>
+            Sign out
+        </button>
+    </div>
+</div>
+
+
 <c-modal id="editPatientProvider" [visible]="editPatientProvider" size="xl" backdrop="static">
-  <c-modal-header>
-    <h3 cModalTitle>Udpate Provider</h3>
-    <button (click)="toggleEditPatientProvider()" cButtonClose></button>
-  </c-modal-header>
-  <c-modal-body>
-    <edit-patient-provider *ngIf="editPatientProvider" [patientId]="selectedPatientId"
-      (changeVisibility)="changeFacilityVisibility($event)"></edit-patient-provider>
-  </c-modal-body>
+    <c-modal-header>
+        <h3 cModalTitle>
+            <svg cIcon name="cilUserFollow" aria-hidden="true"></svg>
+            Update provider
+        </h3>
+        <button (click)="toggleEditPatientProvider()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <edit-patient-provider *ngIf="editPatientProvider"
+                               [patientId]="selectedPatientId"
+                               (changeVisibility)="changeFacilityVisibility($event)"></edit-patient-provider>
+    </c-modal-body>
 </c-modal>
+
 <c-modal id="patientSurvey" [visible]="isPatientSurvey" size="xl" backdrop="static">
-  <c-modal-header>
-    <h3 cModalTitle>Submit Survey</h3>
-    <button (click)="toggleSurvey()" cButtonClose></button>
-  </c-modal-header>
-  <c-modal-body>
-    <survey-submission [patient]="selectedPatient" *ngIf="isPatientSurvey" [type]="'S'"></survey-submission>
-  </c-modal-body>
+    <c-modal-header>
+        <h3 cModalTitle>
+            <svg cIcon name="cilCommentSquare" aria-hidden="true"></svg>
+            Submit survey
+        </h3>
+        <button (click)="toggleSurvey()" cButtonClose></button>
+    </c-modal-header>
+    <c-modal-body>
+        <survey-submission [patient]="selectedPatient" *ngIf="isPatientSurvey" [type]="'S'"></survey-submission>
+    </c-modal-body>
 </c-modal>

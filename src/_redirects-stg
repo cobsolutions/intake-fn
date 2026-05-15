@@ -30,6 +30,7 @@
 /intake-service/api/digital-intake/lookups/find/agreement http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/agreement 200
 /intake-service/api/digital-intake/lookups/find/agreement http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/agreement 200
 /intake-service/api/digital-intake/lookups/find/agreement http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/agreement 200
+/intake-service/api/digital-intake/lookups/find/survey/find/:id http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/survey/find/:id 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
@@ -253,5 +254,71 @@
 /intake-service/api/reports/find/contact http://161.97.126.192:8050/intake-service/api/reports/find/contact 200
 /intake-service/api/reports/generator/excel/contact  http://161.97.126.192:8050/intake-service/api/reports/generator/excel/contact 200
 /intake-service/api/digital-intake/failed-intake http://161.97.126.192:8050/intake-service/api/digital-intake/failed-intake 200
+/intake-service/api/digital-intake/create/survey http://161.97.126.192:8050/intake-service/api/digital-intake/create/survey 200
+/intake-service/api/digital-intake/create/quick/intake http://161.97.126.192:8050/intake-service/api/digital-intake/create/quick/intake 200
 /intake-service/api/patient/find/failed/clinic/:clinicId http://161.97.126.192:8050/intake-service/api/patient/find/failed/clinic/:clinicId 200
+/intake-service/api/digital-intake/lookups/survey/find/:id http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/survey/find/:id 200
+/intake-service/api/survey/find/all http://161.97.126.192:8050/intake-service/api/survey/find/all 200
+
+/intake-service/api/survey/create http://161.97.126.192:8050/intake-service/api/survey/create 200
+/intake-service/api/survey/update/:id http://161.97.126.192:8050/intake-service/api/survey/update/:id 200
+/intake-service/api/survey/find/:id http://161.97.126.192:8050/intake-service/api/survey/find/:id 200
+/intake-service/api/survey/find/active http://161.97.126.192:8050/intake-service/api/survey/find/active 200
+
+/intake-service/api/survey/find/all http://161.97.126.192:8050/intake-service/api/survey/find/all 200
+/intake-service/api/survey/:id/status http://161.97.126.192:8050/intake-service/api/survey/:id/status 200
+/intake-service/api/survey/patient/:id http://161.97.126.192:8050/intake-service/api/survey/patient/:id 200
+
+
+/intake-service/api/one-time-token/generate/ott http://161.97.126.192:8050/intake-service/api/one-time-token/generate/ott 200
+
+/intake-service/api/patient/mail/send http://161.97.126.192:8050/intake-service/api/patient/mail/send 200
+
+/intake-service/api/patient/sms/send http://161.97.126.192:8050/intake-service/api/patient/sms/send 200
+
+/intake-service/api/campaign-batches http://161.97.126.192:8050/intake-service/api/campaign-batches 200
+
+/intake-service/api/campaign-batches/upload http://161.97.126.192:8050/intake-service/api/campaign-batches/upload 200
+
+/intake-service/api/campaign-batches/:id http://161.97.126.192:8050/intake-service/api/campaign-batches/:id 200
+
+/intake-service/api/digital-intake/create http://161.97.126.192:8050/intake-service/api/digital-intake/create 200
+
+/intake-service/api/digital-intake/create/quick http://161.97.126.192:8050/intake-service/api/digital-intake/create/quick 200
+
+/intake-service/api/digital-intake/find/phone http://161.97.126.192:8050/intake-service/api/digital-intake/find/phone 200
+
+/intake-service/api/digital-intake/digital-intake/find/phone http://161.97.126.192:8050/intake-service/api/digital-intake/digital-intake/find/phone 200
+
+/intake-service/api/digital-intake/find/submission-info http://161.97.126.192:8050/intake-service/api/digital-intake/find/submission-info 200
+
+/intake-service/api/digital-intake/register/new/device http://161.97.126.192:8050/intake-service/api/digital-intake/register/new/device 200
+
+/intake-service/api/digital-intake/initiate http://161.97.126.192:8050/intake-service/api/digital-intake/initiate 200
+
+/intake-service/api/digital-intake/lookups/agreements http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/agreements 200
+
+/intake-service/api/digital-intake/lookups/insurances http://161.97.126.192:8050/intake-service/api/digital-intake/lookups/insurances 200
+
+/intake-service/api/digital-intake/provider/npi/:npi http://161.97.126.192:8050/intake-service/api/digital-intake/provider/npi/:npi 200
+
+/intake-service/api/digital-intake/provider/f-name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/provider/f-name/:name 200
+
+
+/intake-service/api/digital-intake/provider/l-name/:name http://161.97.126.192:8050/intake-service/api/digital-intake/provider/l-name/:name 200
+
+/intake-service/api/digital-intake/provider/f-name/:firstName/l-name/:lastName http://161.97.126.192:8050/intake-service/api/digital-intake/provider/f-name/:firstName/l-name/:lastName 200
+
+/intake-service/api/digital-intake/otp/send http://161.97.126.192:8050/intake-service/api/digital-intake/otp/send 200
+
+/intake-service/api/digital-intake/otp/validate http://161.97.126.192:8050/intake-service/api/digital-intake/otp/validate 200
+
+/intake-service/api/digital-intake/mail/verify http://161.97.126.192:8050/intake-service/api/digital-intake/mail/verify 200
+
+/intake-service/api/digital-intake/sms/verify http://161.97.126.192:8050/intake-service/api/digital-intake/sms/verify 200
+
+/intake-service/api/digital-intake/create/quick/intake http://161.97.126.192:8050/intake-service/api/digital-intake/create/quick/intake 200
+
+/intake-service/api/clinic/upload http://161.97.126.192:8050/intake-service/api/clinic/upload 200
+
 /*  /index.html   200

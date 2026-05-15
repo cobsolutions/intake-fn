@@ -8,17 +8,17 @@ import { WebsocketService } from '../../../services/web.socket/websocket.service
 @Component({
   selector: 'app-list-trust-devices',
   templateUrl: './list-trust-devices.component.html',
-  styleUrls: ['./list-trust-devices.component.css']
+  styleUrls: ['./list-trust-devices.component.scss']
 })
 export class ListTrustDevicesComponent implements OnInit {
   isError: boolean = false;
   errorMessage: string;
-  trustDevices!: Observable<TrustDevice[]>;
+  trustDevices: TrustDevice[] = new Array();;
   genertaeRequestVisibility: boolean = false;
   constructor(private trustDeviceService: TrustDeviceService,
     private websocketService: WebsocketService,
     private cdRef: ChangeDetectorRef,
-    private toastrService:ToastrService) { }
+    private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.list();
@@ -41,22 +41,24 @@ export class ListTrustDevicesComponent implements OnInit {
     });
   }
   private list() {
-    this.trustDevices = this.trustDeviceService.list();
-    this.trustDevices.subscribe((result: any) => {
-      if (result.length === 0)
-        this.isError = true;
-      else
-        this.isError = false;
+    this.trustDeviceService.list().subscribe((result: any) => {
+      console.log(JSON.stringify(result))
+      if (result !== null && result.length !== 0)
+
+        this.trustDevices = new Array();;
+      this.trustDevices = [...result]
+      this.isError = false;
+
     }, error => {
       if (error.error !== undefined)
         this.errorMessage = error.error.message;
     })
   }
-  public revoke(deviceId:string){
-    this.trustDeviceService.revoke(deviceId).subscribe(result=>{
+  public revoke(deviceId: string) {
+    this.trustDeviceService.revoke(deviceId).subscribe(result => {
       this.list();
       this.toastrService.success('Device deleted');
-    },error=>{
+    }, error => {
       this.toastrService.success('Error during revoke device');
     })
   }

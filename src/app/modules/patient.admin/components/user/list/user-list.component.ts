@@ -8,27 +8,30 @@ import { UserService } from '../../../services/user/user.service';
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
   isLoggedIn: boolean;
   users: User[] = new Array();
+  original: any[] = [];
   isCreateUSer: boolean = false;
   isEditUser: boolean = false;
   selectedUser: string;
+  // Search criteria
+  searchName: string = '';
+  searchEmail: string = '';
+  searchRole: string = '';
   constructor(private router: Router, private userService: UserService, private kcAuthServiceService: KcAuthServiceService) { }
 
   ngOnInit(): void {
     this.getUsers();
   }
   private getUsers() {
-    this.users=[]
+    this.users = []
     this.userService.get().subscribe(response => {
       response.body?.forEach(element => {
         this.users?.push(element)
-        // if (element.clinics?.length !== undefined && element.clinics?.length > 0) {
-        //   this.users?.push(element)
-        // }
+        this.original.push(element) 
       });
     },
       error => {
@@ -72,5 +75,24 @@ export class UserListComponent implements OnInit {
     if (event === 'close-edit')
       this.isEditUser = false;
     this.getUsers();
+  }
+  searchUsers(): void {
+    this.users = this.original.filter(user => {
+      const matchesName =
+        !this.searchName || user.name?.toLowerCase().includes(this.searchName.toLowerCase());
+      const matchesEmail =
+        !this.searchEmail || user.email?.toLowerCase().includes(this.searchEmail.toLowerCase());
+      const matchesRole =
+        !this.searchRole || user.userRole?.toLowerCase().includes(this.searchRole.toLowerCase());
+
+      // AND logic – all criteria must match
+      return matchesName && matchesEmail && matchesRole;
+    });
+  }
+  clearSearch(): void {
+    this.searchName = '';
+    this.searchEmail = '';
+    this.searchRole = '';
+    this.users = [...this.original];
   }
 }

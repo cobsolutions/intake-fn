@@ -1,7 +1,46 @@
-<div class="danger-container">
-  <div class="danger-box">
-    <svg cIcon name="cilShieldAlt" size="4xl"></svg>
-    <h1>Access Denied</h1>
-    <p class="lead fs-5">{{errorMessage}}<strong></strong></p>
-  </div>
+<div class="dev-deny">
+    <div class="dev-deny__card">
+        <span class="dev-deny__halo" aria-hidden="true"></span>
+
+        <span class="dev-deny__icon" aria-hidden="true">
+            <svg cIcon name="cilShieldAlt"></svg>
+        </span>
+
+        <h1 class="dev-deny__title">We can't continue on this device</h1>
+
+        <p class="dev-deny__lead">
+            For your security, this intake link can only be opened on the device you started on.
+        </p>
+
+        <p class="dev-deny__detail" *ngIf="errorMessage">
+            <span class="dev-deny__detail-label">Reason</span>
+            {{ errorMessage }}
+        </p>
+
+        <ul class="dev-deny__tips" aria-label="What you can do">
+            <li>
+                <span class="dev-deny__tip-icon" aria-hidden="true">
+                    <svg cIcon name="cilTablet"></svg>
+                </span>
+                <span>Open this link again from the device you started on.</span>
+            </li>
+            <li>
+                <span class="dev-deny__tip-icon" aria-hidden="true">
+                    <svg cIcon name="cilEnvelopeClosed"></svg>
+                </span>
+                <span>Ask our team to send you a new intake link by text or email.</span>
+            </li>
+            <li>
+                <span class="dev-deny__tip-icon" aria-hidden="true">
+                    <svg cIcon name="cilSpeech"></svg>
+                </span>
+                <span>Or stop by the front desk — we're happy to help in person.</span>
+            </li>
+        </ul>
+
+        <p class="dev-deny__support">
+            <svg cIcon name="cilLockLocked" aria-hidden="true"></svg>
+            Your information is encrypted and HIPAA-protected.
+        </p>
+    </div>
 </div>

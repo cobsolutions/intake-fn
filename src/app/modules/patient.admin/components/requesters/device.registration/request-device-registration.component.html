@@ -1,43 +1,128 @@
-<div *ngIf="currentStep === 1" class="step-content">
-    <div *ngIf="inCorrectName" class="mb-2">
-        <div class="text-danger">Please enter device name</div>
-    </div>
-    <div class="mb-2">
-        <label cLabel for="exampleFormControlInput1">Device name</label>
-        <input cFormControl [(ngModel)]="deviceName" sizing="sm" placeholder="Type your device name" class="mb-2">
-    </div>
-    <div class="mb-2">
-        <label cLabel for="exampleFormControlInput1">Select Clinic </label>
-        <select aria-label="Default select example" cSelect [(ngModel)]="selectedClinicUUID">
-            <option selected disabled value="undefined">Select Clinic </option>
-            <option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.uuid">
-                {{clinic.name}}
-            </option>
-        </select>
-    </div>
-    <button cButton variant="outline" (click)="goToNextStep()" style="float: right;" size="sm">
-        <svg cIcon name="cilArrowThickFromLeft"></svg>
-    </button>
-</div>
-<div *ngIf="currentStep === 2" class="step-content">
-    <div class="mb-2">
-        <p class="fs-5">Scan QR Code to register device with name : <strong>{{deviceName}}</strong></p>
-    </div>
-    <div class="text-center">
-        <qrcode [qrdata]="this.createPatientURL" [errorCorrectionLevel]="'M'" [width]="256"></qrcode>
-    </div>
-    <button cButton variant="outline" (click)="goTopreviousStep()" style="float: right;">
-        <svg cIcon name="cilArrowThickFromRight"></svg>
-    </button>
-    <div class="countdown-container">
-        <div class="countdown-timer">
-            <span class="lead">QR will expired after </span>
-            <span class="countdown-number lead">{{ minutes }}</span><span class="countdown-label"> min</span>
-            <span class="countdown-separator lead">:</span>
-            <span class="countdown-number lead">{{ seconds }}</span><span class="countdown-label"> sec</span>
+<div class="rdr">
+
+    <ol class="rdr-stepper" aria-label="Registration steps">
+        <li class="rdr-stepper__step"
+            [class.is-active]="currentStep === 1"
+            [class.is-done]="currentStep > 1">
+            <span class="rdr-stepper__num">
+                <svg *ngIf="currentStep > 1" cIcon name="cilCheck" aria-hidden="true"></svg>
+                <ng-container *ngIf="currentStep === 1">1</ng-container>
+            </span>
+            <span class="rdr-stepper__label">Device details</span>
+        </li>
+        <span class="rdr-stepper__line" aria-hidden="true"></span>
+        <li class="rdr-stepper__step" [class.is-active]="currentStep === 2">
+            <span class="rdr-stepper__num">2</span>
+            <span class="rdr-stepper__label">Scan QR code</span>
+        </li>
+    </ol>
+
+    <!-- Step 1: device + clinic -->
+    <section class="rdr-step" *ngIf="currentStep === 1">
+        <div class="rdr-error" *ngIf="inCorrectName">
+            <svg cIcon name="cilFlagAlt" aria-hidden="true"></svg>
+            Please enter a name for the device.
         </div>
-        <div class="countdown-expired" *ngIf="expired">
-            <span>Time's up!</span>
+
+        <div class="rdr-field">
+            <label class="rdr-label" for="rdr-device-name">Device name <span class="rdr-req">*</span></label>
+            <p class="rdr-hint">Something easy to recognize, like "Front desk iPad" or "Exam room 2 tablet".</p>
+            <input id="rdr-device-name"
+                   class="rdr-input"
+                   type="text"
+                   [(ngModel)]="deviceName"
+                   placeholder="Type a device name"
+                   maxlength="60"
+                   [class.is-invalid]="inCorrectName" />
         </div>
-    </div>
+
+        <div class="rdr-field">
+            <label class="rdr-label">Pick a clinic</label>
+            <p class="rdr-hint">Which location will this device belong to?</p>
+
+            <div class="rdr-clinics" *ngIf="clinics$ | async as clinics; else loadingClinicsTpl">
+                <button type="button"
+                        class="rdr-clinic"
+                        *ngFor="let clinic of clinics"
+                        [class.is-selected]="clinic.uuid === selectedClinicUUID"
+                        (click)="selectedClinicUUID = clinic.uuid">
+                    <span class="rdr-clinic__icon" aria-hidden="true">
+                        <svg cIcon name="cilLocationPin"></svg>
+                    </span>
+                    <span class="rdr-clinic__text">
+                        <span class="rdr-clinic__name">{{ clinic.name }}</span>
+                        <span class="rdr-clinic__addr" *ngIf="clinic.address">{{ clinic.address }}</span>
+                    </span>
+                    <span class="rdr-clinic__check" aria-hidden="true">
+                        <svg cIcon name="cilCheck"></svg>
+                    </span>
+                </button>
+            </div>
+
+            <ng-template #loadingClinicsTpl>
+                <div class="rdr-clinics__empty">
+                    <span class="rdr-spinner"></span>
+                    <span>Loading clinics…</span>
+                </div>
+            </ng-template>
+        </div>
+
+        <div class="rdr-actions rdr-actions--end">
+            <button type="button" cButton size="lg" class="rdr-next" (click)="goToNextStep()"
+                    [disabled]="!deviceName.trim() || isGenerating"
+                    cLoadingButton [loading]="isGenerating">
+                Continue
+                <svg cIcon name="cilArrowRight" aria-hidden="true"></svg>
+            </button>
+        </div>
+    </section>
+
+    <!-- Step 2: QR code -->
+    <section class="rdr-step rdr-step--qr" *ngIf="currentStep === 2">
+        <header class="rdr-qr-head">
+            <span class="rdr-qr-head__icon" aria-hidden="true">
+                <svg cIcon name="cilCheck"></svg>
+            </span>
+            <div class="rdr-qr-head__text">
+                <h4 class="rdr-qr-head__title">Ready to scan</h4>
+                <p class="rdr-qr-head__hint">
+                    Open the camera on <strong>{{ deviceName }}</strong> and point it at this QR code.
+                </p>
+            </div>
+        </header>
+
+        <div class="rdr-qr-body">
+            <div class="rdr-frame">
+                <span class="rdr-frame__corner rdr-frame__corner--tl"></span>
+                <span class="rdr-frame__corner rdr-frame__corner--tr"></span>
+                <span class="rdr-frame__corner rdr-frame__corner--bl"></span>
+                <span class="rdr-frame__corner rdr-frame__corner--br"></span>
+                <qrcode [qrdata]="createPatientURL" [errorCorrectionLevel]="'M'" [width]="256" [margin]="2"></qrcode>
+            </div>
+
+            <div class="rdr-countdown" *ngIf="!expired">
+                <span class="rdr-countdown__label">Code expires in</span>
+                <div class="rdr-countdown__time">
+                    <span class="rdr-countdown__num">{{ minutes }}</span>
+                    <span class="rdr-countdown__unit">min</span>
+                    <span class="rdr-countdown__sep">:</span>
+                    <span class="rdr-countdown__num">{{ secondsPadded }}</span>
+                    <span class="rdr-countdown__unit">sec</span>
+                </div>
+            </div>
+
+            <div class="rdr-expired" *ngIf="expired">
+                <svg cIcon name="cilFlagAlt" aria-hidden="true"></svg>
+                <span><strong>This code has expired.</strong> Go back and generate a new one.</span>
+            </div>
+        </div>
+
+        <div class="rdr-actions">
+            <button type="button" cButton size="lg" variant="outline" class="rdr-back" (click)="goTopreviousStep()">
+                <svg cIcon name="cilArrowCircleLeft" aria-hidden="true"></svg>
+                Back
+            </button>
+        </div>
+    </section>
+
 </div>

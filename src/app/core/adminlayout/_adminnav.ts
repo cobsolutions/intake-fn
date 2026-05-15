@@ -2,88 +2,98 @@ import { INavData } from '@coreui/angular-pro';
 
 export const adminNavItems: INavData[] = [
   {
+    name: 'OVERVIEW',
+    title: true
+  },
+  {
     name: 'Dashboard',
     url: '/admin/dashboard',
     iconComponent: { name: 'cil-speedometer' }
   },
+
+  {
+    name: 'PATIENTS',
+    title: true
+  },
   {
     name: 'Patient',
     url: '',
-    iconComponent: { name: 'cil-disabled' },
+    iconComponent: { name: 'cil-people' },
     children: [
       {
         name: 'Patients',
-        url: 'patient/list'
+        url: 'patient/list',
+        iconComponent: { name: 'cil-list' }
       },
       {
         name: 'Failed Patients',
-        url: 'patient/failed'
+        url: 'patient/failed',
+        iconComponent: { name: 'cil-flag-alt' }
       },
       {
-        name: 'Submission',
-        url: 'patient/create'
+        name: 'Intake Submission',
+        url: 'patient/create',
+        iconComponent: { name: 'cil-note-add' }
       }
     ]
   },
+
   {
-    name: 'Administration',
+    name: 'ADMINISTRATION',
+    title: true
+  },
+  {
+    name: 'Settings',
     url: '',
-    iconComponent: { name: 'cil-applicationsSettings' },
+    iconComponent: { name: 'cil-applications-settings' },
     children: [
-      // {
-      //   name: 'Validation List',
-      //   url: 'validation/list'
-      // },
       {
         name: 'Clinics',
-        url: 'clinic/list'
+        url: 'clinic/list',
+        iconComponent: { name: 'cil-library-building' }
       },
       {
         name: 'Users',
-        url: 'user/list'
+        url: 'user/list',
+        iconComponent: { name: 'cil-user' }
       },
       {
-        name: 'Insurance Company',
-        url: 'insurance/company/list'
+        name: 'Insurance Companies',
+        url: 'insurance/company/list',
+        iconComponent: { name: 'cil-credit-card' }
       },
       {
-        name: 'Trust Devices',
-        url: 'trust/devices/list'
+        name: 'Trusted Devices',
+        url: 'trust/devices/list',
+        iconComponent: { name: 'cil-tablet' }
       }
-    ],
+    ]
+  },
+
+  {
+    name: 'INSIGHTS',
+    title: true
   },
   {
     name: 'Reports',
     url: '',
-    iconComponent: { name: 'cil-search' },
+    iconComponent: { name: 'cil-chart-pie' },
     children: [
       {
         name: 'Patient Source',
-        url: 'report/recommendation'
+        url: 'report/recommendation',
+        iconComponent: { name: 'cil-chart' }
       },
       {
         name: 'Patient Changes',
-        url: 'report/changes'
+        url: 'report/changes',
+        iconComponent: { name: 'cil-history' }
       },
       {
         name: 'Patient Contact',
-        url: 'report/contact'
-      },
+        url: 'report/contact',
+        iconComponent: { name: 'cil-speech' }
+      }
     ]
-  },
-  // {
-  //   name: 'Auditing',
-  //   url: '',
-  //   iconComponent: { name: 'cil-monitor' },
-  //   children: [
-  //     {
-  //       name: 'Entity Actions',
-  //       url: 'audit/entity-audit'
-  //     },
-  //     {
-  //       name: 'User Action',
-  //       url: 'audit/user-audit'
-  //     }
-  //   ]
-  // }
+  }
 ];

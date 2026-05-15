@@ -32,6 +32,15 @@ import { PatientBiometricIdentificationComponent } from './components/patient.bi
 import { WebcamModule } from 'ngx-webcam';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AutoCompleteAddressComponent } from './components/patient.address/address.auto.complete/auto-complete-address.component';
+import { PreCreatePatientSurveyComponent } from './components/pre.survey/pre-create-patient-survey.component';
+import { CreatePatientSurveyComponent } from './components/create.survey/create-patient-survey.component';
+import { RenderSurveyComponent } from './components/create.survey/render/render-survey.component';
+import { PatientSurveyGreetingComponent } from './components/patient.summary/greeting/patient-survey-greeting.component';
+import { CreatePatientQuickIntakeSurveyComponent } from './components/pre.survey/quick.create.survey/create-patient-quick-intake-survey.component';
+import { PreCreateQuickIntakeComponent } from './components/quick.intake/pre-create/pre-create-quick-intake.component';
+import { CreateQuickIntakeComponent } from './components/quick.intake/create/create-quick-intake.component';
+import { SmsVerificationComponent } from './components/sms.verification/sms-verification.component';
 
 const COREUI_MODULES = [
   AvatarModule,
@@ -82,6 +91,15 @@ const COREUI_MODULES = [
     PreRegisterDeviceComponent,
     PreCreateDigitalPatientIntakeComponentComponent,
     PatientBiometricIdentificationComponent,
+    AutoCompleteAddressComponent,
+    PreCreatePatientSurveyComponent,
+    CreatePatientSurveyComponent,
+    RenderSurveyComponent,
+    PatientSurveyGreetingComponent,
+    CreatePatientQuickIntakeSurveyComponent,
+    PreCreateQuickIntakeComponent,
+    CreateQuickIntakeComponent,
+    SmsVerificationComponent,
   ],
   imports: [
     CommonModule,

@@ -1,17 +1,66 @@
-<section class="success-message-section d-flex align-items-center justify-content-center py-5">
-	<div class="container text-center">
-	  <div class="success-box p-4 shadow rounded bg-white">
-		<div class="icon-circle mb-4 mx-auto">
-			<i class="checkmark">✓</i>
-		</div>
-		<h1 class="display-5 text-primary fw-bold">Success!</h1>
-		<p class="lead mt-3 mb-4 text-secondary">
-		  Your information was created successfully.
-		</p>
-		<p class="text-muted">
-		  Thank you for completing your digital intake form. We appreciate your cooperation and look forward to providing you with the best possible care.
-		</p>
-	  </div>
-	</div>
-  </section>
-  
+<div class="done">
+
+    <div class="done__confetti" aria-hidden="true">
+        <span *ngFor="let _ of [1,2,3,4,5,6,7,8,9,10,11,12]"></span>
+    </div>
+
+    <div class="done__card">
+        <div class="done__check-wrap" aria-hidden="true">
+            <span class="done__check-halo"></span>
+            <span class="done__check-halo done__check-halo--2"></span>
+            <span class="done__check">
+                <svg cIcon name="cilCheck"></svg>
+            </span>
+        </div>
+
+        <h1 class="done__title">All done — thank you!</h1>
+        <p class="done__subtitle">
+            Your digital intake has been securely submitted.
+        </p>
+
+        <ul class="done__steps" aria-label="What happens next">
+            <li>
+                <span class="done__step-icon" aria-hidden="true">
+                    <svg cIcon name="cilEnvelopeOpen"></svg>
+                </span>
+                <div class="done__step-text">
+                    <strong class="done__step-title">We've received your forms</strong>
+                    <span class="done__step-hint">Everything you submitted is safely on file.</span>
+                </div>
+            </li>
+            <li>
+                <span class="done__step-icon" aria-hidden="true">
+                    <svg cIcon name="cilMedicalCross"></svg>
+                </span>
+                <div class="done__step-text">
+                    <strong class="done__step-title">Our care team will review</strong>
+                    <span class="done__step-hint">A clinician will look over your information before your visit.</span>
+                </div>
+            </li>
+            <li>
+                <span class="done__step-icon" aria-hidden="true">
+                    <svg cIcon name="cilCalendar"></svg>
+                </span>
+                <div class="done__step-text">
+                    <strong class="done__step-title">See you at your appointment</strong>
+                    <span class="done__step-hint">Please arrive 10 minutes early. We'll be ready for you.</span>
+                </div>
+            </li>
+        </ul>
+
+        <div class="done__support">
+            <span class="done__support-icon" aria-hidden="true">
+                <svg cIcon name="cilSpeech"></svg>
+            </span>
+            <p class="done__support-text">
+                Questions or need to make a change?
+                <strong>Call our front desk</strong> any time — we're happy to help.
+            </p>
+        </div>
+
+        <p class="done__privacy">
+            <svg cIcon name="cilLockLocked" aria-hidden="true"></svg>
+            Your information is encrypted and HIPAA-protected.
+        </p>
+    </div>
+</div>

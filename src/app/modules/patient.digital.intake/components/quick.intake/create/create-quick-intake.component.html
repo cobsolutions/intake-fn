@@ -1,0 +1,170 @@
+<!-- Step 1: Phone + OTP Verification -->
+<div class="intake-container" *ngIf="!otpVerified && !renderSurvey">
+  <h1 class="title">Patient Verification</h1>
+  <p class="subtitle">Enter your phone number to receive an OTP</p>
+
+  <form [formGroup]="phoneForm" class="intake-form">
+    <!-- Phone Input -->
+    <div class="form-group">
+      <label>Phone</label>
+      <input type="tel" formControlName="phone" placeholder="(123) 456-7890" maxlength="14"
+        (input)="formatPhone($event)" />
+      <div class="error" *ngIf="pf['phone'].touched && pf['phone'].invalid">
+        Valid US phone number is required
+      </div>
+    </div>
+
+    <!-- OTP Input (only show after request) -->
+    <!-- OTP Input Fields -->
+    <div class="otp-container" *ngIf="otpSent">
+      <label class="otp-label">Enter OTP</label>
+      <div class="otp-inputs">
+        <input *ngFor="let ctrl of otpControls; let i = index" type="text" maxlength="1" class="otp-box"
+          [formControl]="ctrl" (input)="onOtpInput($event, i)" (keydown.backspace)="onOtpBackspace($event, i)" />
+      </div>
+      <div class="error" *ngIf="otpError">
+        Please enter all 6 digits
+      </div>
+      <div class="error" *ngIf="otpWrong">
+        The OTP you entered is incorrect
+      </div>
+    </div>
+
+    <div class="actions">
+      <span *ngIf="!otpSent">
+        <button type="button" class="btn primary" [loading]="isSending" (click)="sendOtp()" cLoadingButton
+          disabledOnLoading>
+          Send OTP
+        </button>
+      </span>
+      <span *ngIf="otpSent">
+        <button type="button" class="btn primary" [loading]="isSending" cLoadingButton disabledOnLoading
+          (click)="verifyOtp()">
+          Verify OTP
+        </button>
+      </span>
+    </div>
+  </form>
+</div>
+<!-- Step 2: Quick Intake  -->
+<div class="intake-container" *ngIf="otpVerified && !renderSurvey">
+  <h1 class="title">Patient Digital Intake</h1>
+  <p class="subtitle">Create a patient record quickly and start the journey</p>
+
+  <form [formGroup]="intakeForm" class="intake-form">
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" formControlName="firstName" placeholder="Enter first name" />
+      <div class="error" *ngIf="f.firstName.touched && f.firstName.invalid">
+        First name is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Middle Name</label>
+      <input type="text" formControlName="middleName" placeholder="Enter middle name" />
+    </div>
+
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text" formControlName="lastName" placeholder="Enter last name" />
+      <div class="error" *ngIf="f.lastName.touched && f.lastName.invalid">
+        Last name is required
+      </div>
+    </div>
+    <!-- New: Date of Birth -->
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input type="date" formControlName="dob" min="1900-01-01" max="2100-12-31" />
+      <div class="error" *ngIf="f.dob.touched && f.dob.invalid">
+        Date of birth is required
+      </div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['today']" class="text-danger mx-1">Date of birth
+        can't be today.</div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['future']" class="text-danger mx-1">Date of birth
+        can't be in future.</div>
+      <div class="error" *ngIf="this.intakeForm.get('dob')?.errors?.['max']" class="text-danger mx-1">Age Cannot be
+        greater than 100 years</div>
+    </div>
+    <!-- Address Section -->
+    <div class="form-group">
+      <label>Address</label>
+      <input type="text" formControlName="address" placeholder="Enter street address" />
+      <div class="error" *ngIf="f.address.touched && f.address.invalid">
+        Address is required
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group half-width">
+        <label>City</label>
+        <input type="text" formControlName="city" placeholder="Enter city" />
+        <div class="error" *ngIf="f.city.touched && f.city.invalid">
+          City is required
+        </div>
+      </div>
+
+      <div class="form-group half-width">
+        <label>State</label>
+        <input type="text" formControlName="state" placeholder="Enter state" />
+        <div class="error" *ngIf="f.state.touched && f.state.invalid">
+          State is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Zip Code</label>
+      <input type="text" formControlName="zipCode" placeholder="Enter zip code" zipcode maxlength="10" />
+      <div class="error" *ngIf="f.zipCode.touched && f.zipCode.invalid">
+        ZipCode is required
+      </div>
+      <div *ngIf="f.zipCode?.errors?.['pattern']" class="text-danger mx-1">
+        Invalid ZipCode format
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Phone</label>
+      <input formControlName="phone" placeholder="Enter phone number" [value]="f.phone!.value | phone" />
+      <div class="error" *ngIf="f.phone.touched && f.phone.invalid">
+        Valid phone number is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="Enter email" />
+      <div class="error" *ngIf="f.email.touched && f.email.invalid">
+        Valid email is required
+      </div>
+    </div>
+    <div class="form-group">
+      <label>How did you hear about us?</label>
+      <select cSelect sizing="sm" formControlName="patientSource">
+        <option value="" disabled>Select from below </option>
+        <option *ngFor="let entity of entityValues" [value]="entity.entityValue" [selected]="entity.selected">
+          {{entity.entityName}}</option>
+      </select>
+      <div class="error" *ngIf="f.patientSource.touched && f.patientSource">
+        Please tell us how you heard about us
+      </div>
+    </div>
+
+    <div class="actions" *ngIf="type==='QuickSurvey'">
+      <button type="button" class="btn primary" (click)="saveAndStartSurvey()">
+        Save & Start Survey
+      </button>
+      <button type="button" class="btn secondary" (click)="saveAndStartSurveyLater()">
+        Save & Start Survey Later
+      </button>
+    </div>
+    <div class="actions" *ngIf="type==='Quick'">
+      <button type="button" class="btn primary" (click)="save()">
+        Save
+      </button>
+    </div>
+  </form>
+</div>
+<create-patient-survey *ngIf="renderSurvey" [createdPatient]="createdPatient" [token]="token"
+  [model]="patientQuickIntakeRequest" [surveyId]="surID"></create-patient-survey>

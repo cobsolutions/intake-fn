@@ -1,4 +1,750 @@
+/* ==========================================================================
+   Patient Digital Intake — clinical, senior-friendly, mobile-first shell
+   ========================================================================== */
+
+:host {
+    --intake-ink-1: #0c1b2a;
+    --intake-ink-2: #2c3e54;
+    --intake-ink-3: #5a6a7e;
+    --intake-ink-4: #8a98aa;
+
+    --intake-bg: #f4f7fb;
+    --intake-surface: #ffffff;
+    --intake-border: #d8e0ea;
+    --intake-border-strong: #b8c4d4;
+
+    --intake-brand: #0f4c81;
+    --intake-brand-strong: #0a3a64;
+    --intake-brand-soft: #e6eff8;
+    --intake-accent: #0e7c7b;
+    --intake-success: #1f8a4c;
+    --intake-warning: #c46a00;
+
+    --intake-section-welcome:  #0f4c81;
+    --intake-section-about:    #0e7c7b;
+    --intake-section-health:   #1f8a4c;
+    --intake-section-coverage: #c46a00;
+    --intake-section-confirm:  #6c3fb5;
+
+    --intake-radius-lg: 18px;
+    --intake-radius-md: 12px;
+    --intake-radius-sm: 8px;
+    --intake-shadow-sm: 0 1px 2px rgba(12, 27, 42, .06);
+    --intake-shadow-md: 0 6px 18px rgba(12, 27, 42, .08);
+    --intake-shadow-lg: 0 18px 40px rgba(12, 27, 42, .10);
+
+    --intake-tap: 48px;
+    --intake-base-size: 1.0625rem;
+
+    display: block;
+    background: var(--intake-bg);
+    min-height: 100vh;
+    color: var(--intake-ink-1);
+    font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: var(--intake-base-size);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.intake-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 16px clamp(12px, 3vw, 32px) 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ---------- Top bar -------------------------------------------------------- */
+
+.intake-topbar {
+    background: var(--intake-surface);
+    border: 1px solid var(--intake-border);
+    border-radius: var(--intake-radius-lg);
+    box-shadow: var(--intake-shadow-sm);
+    overflow: hidden;
+}
+
+.intake-topbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px;
+}
+
+.intake-topbar__brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+
+.intake-brand-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--intake-brand), var(--intake-brand-strong));
+    color: #fff;
+    flex: none;
+    box-shadow: 0 4px 12px rgba(15, 76, 129, .25);
+}
+
+.intake-brand-mark svg {
+    width: 22px;
+    height: 22px;
+}
+
+.intake-brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+    min-width: 0;
+}
+
+.intake-brand-eyebrow {
+    font-size: .8125rem;
+    color: var(--intake-ink-3);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.intake-brand-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--intake-ink-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.intake-secure-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(31, 138, 76, .10);
+    color: var(--intake-success);
+    font-weight: 600;
+    font-size: .9375rem;
+    border: 1px solid rgba(31, 138, 76, .25);
+    white-space: nowrap;
+}
+
+.intake-secure-pill svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ---------- Progress hero ------------------------------------------------- */
+
+.intake-progress {
+    background: var(--intake-surface);
+    border: 1px solid var(--intake-border);
+    border-radius: var(--intake-radius-lg);
+    box-shadow: var(--intake-shadow-sm);
+    padding: clamp(18px, 3vw, 28px);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: relative;
+    overflow: hidden;
+}
+
+.intake-progress::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 6px;
+    background: var(--current-section-color, var(--intake-brand));
+    transition: background .25s ease;
+}
+
+.intake-shell[data-section="welcome"]  .intake-progress { --current-section-color: var(--intake-section-welcome); }
+.intake-shell[data-section="about"]    .intake-progress { --current-section-color: var(--intake-section-about); }
+.intake-shell[data-section="health"]   .intake-progress { --current-section-color: var(--intake-section-health); }
+.intake-shell[data-section="coverage"] .intake-progress { --current-section-color: var(--intake-section-coverage); }
+.intake-shell[data-section="confirm"]  .intake-progress { --current-section-color: var(--intake-section-confirm); }
+
+.intake-progress__panel {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: clamp(16px, 2.5vw, 28px);
+    align-items: center;
+}
+
+.intake-progress__counter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 92px;
+    padding: 10px 6px;
+    border-radius: var(--intake-radius-md);
+    background: var(--intake-brand-soft);
+    color: var(--intake-brand-strong);
+    line-height: 1;
+}
+
+.intake-progress__step-num {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.intake-progress__step-of {
+    margin-top: 6px;
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--intake-ink-3);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.intake-progress__current {
+    min-width: 0;
+}
+
+.intake-progress__chapter {
+    display: inline-block;
+    font-size: .8125rem;
+    font-weight: 700;
+    color: var(--current-section-color, var(--intake-brand));
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.intake-progress__title {
+    margin: 0 0 6px 0;
+    font-size: clamp(1.25rem, 2.4vw, 1.625rem);
+    font-weight: 700;
+    color: var(--intake-ink-1);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+}
+
+.intake-progress__hint {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--intake-ink-3);
+    line-height: 1.5;
+}
+
+/* Percent ring */
+.intake-progress__ring-wrap {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.intake-progress__ring {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.intake-progress__ring-bg {
+    fill: none;
+    stroke: var(--intake-border);
+    stroke-width: 3;
+}
+
+.intake-progress__ring-fill {
+    fill: none;
+    stroke: var(--current-section-color, var(--intake-brand));
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dasharray .4s ease, stroke .25s ease;
+}
+
+.intake-progress__percent-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--intake-ink-1);
+}
+
+/* Mobile-only thin progress bar (shown when ring is hidden) */
+.intake-progress__bar-mobile {
+    display: none;
+    grid-column: 1 / -1;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--intake-border);
+    overflow: hidden;
+}
+
+.intake-progress__bar-fill {
+    display: block;
+    height: 100%;
+    background: var(--current-section-color, var(--intake-brand));
+    transition: width .4s ease, background .25s ease;
+}
+
+/* ---------- Step rail ----------------------------------------------------- */
+
+.intake-rail {
+    list-style: none;
+    margin: 0;
+    padding: 4px 2px 2px;
+    display: grid;
+    grid-template-columns: repeat(11, minmax(0, 1fr));
+    gap: 6px;
+    counter-reset: rail;
+    position: relative;
+}
+
+/* connecting line */
+.intake-rail::before {
+    content: '';
+    position: absolute;
+    left: calc(100% / 22);
+    right: calc(100% / 22);
+    top: 22px;
+    height: 3px;
+    background: var(--intake-border);
+    border-radius: 999px;
+    z-index: 0;
+}
+
+.intake-rail__step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    min-width: 0;
+}
+
+.intake-rail__dot {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--intake-surface);
+    border: 2px solid var(--intake-border-strong);
+    color: var(--intake-ink-3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .2s ease, background .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+
+.intake-rail__dot svg {
+    width: 20px;
+    height: 20px;
+}
+
+.intake-rail__label {
+    font-size: .8125rem;
+    font-weight: 600;
+    color: var(--intake-ink-3);
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+/* per-section colors on completed/active dots */
+.intake-rail__step[data-section="welcome"]  { --rail-color: var(--intake-section-welcome);  }
+.intake-rail__step[data-section="about"]    { --rail-color: var(--intake-section-about);    }
+.intake-rail__step[data-section="health"]   { --rail-color: var(--intake-section-health);   }
+.intake-rail__step[data-section="coverage"] { --rail-color: var(--intake-section-coverage); }
+.intake-rail__step[data-section="confirm"]  { --rail-color: var(--intake-section-confirm);  }
+
+.intake-rail__step.is-done .intake-rail__dot {
+    background: var(--rail-color);
+    border-color: var(--rail-color);
+    color: #fff;
+}
+
+.intake-rail__step.is-done .intake-rail__label {
+    color: var(--intake-ink-2);
+}
+
+.intake-rail__step.is-active .intake-rail__dot {
+    background: #fff;
+    border-color: var(--rail-color);
+    color: var(--rail-color);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--rail-color) 18%, transparent),
+                0 6px 14px rgba(12, 27, 42, .12);
+    transform: scale(1.08);
+}
+
+.intake-rail__step.is-active .intake-rail__label {
+    color: var(--intake-ink-1);
+    font-weight: 700;
+}
+
+/* ---------- Main card ----------------------------------------------------- */
+
+.intake-main {
+    display: block;
+}
+
+.intake-card {
+    background: var(--intake-surface);
+    border: 1px solid var(--intake-border);
+    border-radius: var(--intake-radius-lg);
+    box-shadow: var(--intake-shadow-md);
+    padding: clamp(18px, 3vw, 32px);
+}
+
+/* hide native mat-stepper headers — our custom rail replaces them */
+.intake-stepper ::ng-deep .mat-horizontal-stepper-header-container,
+.intake-stepper ::ng-deep .mat-stepper-horizontal-line {
+    display: none !important;
+}
+
+.intake-stepper ::ng-deep .mat-horizontal-content-container {
+    padding: 0 !important;
+    overflow: visible;
+}
+
+.intake-stepper ::ng-deep .mat-horizontal-stepper-content[aria-expanded="true"] {
+    padding: 0;
+}
+
+/* Keep child component fonts comfortable */
+.intake-card ::ng-deep .form-label,
+.intake-card ::ng-deep label {
+    font-size: 1rem;
+    color: var(--intake-ink-2);
+    font-weight: 600;
+}
+
+.intake-card ::ng-deep input.form-control,
+.intake-card ::ng-deep select.form-select,
+.intake-card ::ng-deep textarea.form-control {
+    min-height: var(--intake-tap);
+    font-size: 1.0625rem;
+    line-height: 1.4;
+}
+
+.intake-card ::ng-deep button.btn,
+.intake-card ::ng-deep [cButton] {
+    min-height: var(--intake-tap);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    padding-inline: 22px;
+    border-radius: var(--intake-radius-sm);
+}
+
+/* visible focus indicator for keyboard users */
+.intake-card ::ng-deep :focus-visible,
+.intake-secure-pill:focus-visible {
+    outline: 3px solid var(--intake-brand);
+    outline-offset: 2px;
+    border-radius: 6px;
+}
+
+/* ---------- Help footer --------------------------------------------------- */
+
+.intake-help {
+    background: linear-gradient(180deg, transparent, rgba(15, 76, 129, .04));
+    border-radius: var(--intake-radius-lg);
+}
+
+.intake-help__inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+    color: var(--intake-ink-3);
+    font-size: .9375rem;
+}
+
+.intake-help__icon {
+    width: 36px;
+    height: 36px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--intake-brand-soft);
+    color: var(--intake-brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.intake-help__icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.intake-help__text {
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* ==========================================================================
+   Tablet (≤ 1024px)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .intake-rail {
+        gap: 4px;
+    }
+
+    .intake-rail__dot {
+        width: 38px;
+        height: 38px;
+    }
+
+    .intake-rail__dot svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .intake-rail::before {
+        top: 19px;
+    }
+
+    .intake-rail__label {
+        font-size: .75rem;
+    }
+
+    .intake-progress__counter {
+        width: 80px;
+    }
+
+    .intake-progress__step-num {
+        font-size: 2.125rem;
+    }
+}
+
+/* ==========================================================================
+   Mobile (≤ 720px) — single-column, sticky header, compact rail
+   ========================================================================== */
+@media (max-width: 720px) {
+    :host {
+        --intake-base-size: 1.0625rem;
+    }
+
+    .intake-shell {
+        padding: 0 0 96px;
+        gap: 0;
+    }
+
+    .intake-topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+        backdrop-filter: saturate(180%) blur(8px);
+        background: rgba(255, 255, 255, .96);
+    }
+
+    .intake-topbar__inner {
+        padding: 10px 14px;
+    }
+
+    .intake-brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+
+    .intake-brand-eyebrow {
+        display: none;
+    }
+
+    .intake-brand-title {
+        font-size: 1rem;
+    }
+
+    .intake-secure-pill {
+        padding: 6px 10px;
+        font-size: .8125rem;
+    }
+
+    .intake-secure-pill span {
+        display: none;
+    }
+
+    .intake-progress {
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        border-top: 0;
+        padding: 18px 16px 14px;
+        gap: 16px;
+    }
+
+    .intake-progress__panel {
+        grid-template-columns: auto 1fr;
+        row-gap: 10px;
+    }
+
+    .intake-progress__counter {
+        width: 72px;
+        padding: 8px 4px;
+    }
+
+    .intake-progress__step-num {
+        font-size: 2rem;
+    }
+
+    .intake-progress__step-of {
+        font-size: .75rem;
+        margin-top: 2px;
+    }
+
+    .intake-progress__current {
+        grid-column: 2;
+    }
+
+    .intake-progress__title {
+        font-size: 1.1875rem;
+    }
+
+    .intake-progress__hint {
+        font-size: .9375rem;
+    }
+
+    .intake-progress__ring-wrap {
+        display: none;
+    }
+
+    .intake-progress__bar-mobile {
+        display: block;
+        margin-top: 4px;
+    }
+
+    /* Compact rail: dots only, scrollable, label hidden except active */
+    .intake-rail {
+        grid-template-columns: repeat(11, 28px);
+        gap: 0;
+        padding: 0 4px;
+        justify-content: space-between;
+        overflow: visible;
+    }
+
+    .intake-rail::before {
+        top: 13px;
+        left: 18px;
+        right: 18px;
+        height: 2px;
+    }
+
+    .intake-rail__dot {
+        width: 28px;
+        height: 28px;
+        border-width: 2px;
+    }
+
+    .intake-rail__dot svg {
+        width: 13px;
+        height: 13px;
+    }
+
+    .intake-rail__step.is-active .intake-rail__dot {
+        transform: scale(1.15);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--rail-color) 22%, transparent);
+    }
+
+    .intake-rail__label {
+        display: none;
+    }
+
+    .intake-rail__step.is-active .intake-rail__label {
+        display: none; /* title is shown in hero block already */
+    }
+
+    .intake-main {
+        padding: 0 12px;
+        margin-top: 14px;
+    }
+
+    .intake-card {
+        border-radius: var(--intake-radius-md);
+        padding: 16px 14px 22px;
+    }
+
+    .intake-help {
+        margin: 14px 12px 0;
+        border-radius: var(--intake-radius-md);
+    }
+
+    .intake-help__inner {
+        padding: 14px;
+    }
+}
+
+/* ==========================================================================
+   Very small (≤ 360px) — squeeze a bit more
+   ========================================================================== */
+@media (max-width: 360px) {
+    .intake-rail {
+        grid-template-columns: repeat(11, 22px);
+    }
+
+    .intake-rail__dot {
+        width: 22px;
+        height: 22px;
+    }
+
+    .intake-rail__dot svg {
+        width: 11px;
+        height: 11px;
+    }
+
+    .intake-rail::before {
+        top: 10px;
+    }
+
+    .intake-progress__counter {
+        width: 64px;
+    }
+
+    .intake-progress__step-num {
+        font-size: 1.75rem;
+    }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+@media (prefers-contrast: more) {
+    :host {
+        --intake-border: #6b7889;
+        --intake-border-strong: #2c3e54;
+        --intake-ink-3: #2c3e54;
+    }
+
+    .intake-rail__dot {
+        border-width: 3px;
+    }
+}
+
+/* Preserve original mat-step label wrapping (kept for any fallback context) */
 .mat-step-label.mat-step-label {
     text-overflow: inherit;
     white-space: normal;
-  }
+}

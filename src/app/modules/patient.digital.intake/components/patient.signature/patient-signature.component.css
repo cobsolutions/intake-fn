@@ -1,112 +1,470 @@
-canvas {
+/* ==========================================================================
+   Patient Signature — type or draw, senior-friendly
+   ========================================================================== */
+
+:host {
+    --sig-ink-1: #0c1b2a;
+    --sig-ink-2: #2c3e54;
+    --sig-ink-3: #5a6a7e;
+    --sig-bg: #f4f7fb;
+    --sig-surface: #ffffff;
+    --sig-border: #d8e0ea;
+    --sig-border-strong: #b8c4d4;
+    --sig-brand: #0f4c81;
+    --sig-brand-strong: #0a3a64;
+    --sig-brand-soft: #e6eff8;
+    --sig-success: #1f8a4c;
+    --sig-success-soft: #e6f4ec;
+
+    --sig-radius-lg: 16px;
+    --sig-radius-md: 12px;
+    --sig-radius-sm: 8px;
+    --sig-tap: 48px;
+
     display: block;
-    border: 1px solid rgb(187, 178, 178);
-    background-color: var(--ion-color-success);
-}
-#download {
-    display: block;
-  }
-button {
-    margin: 10px;
-    margin-left: 10px;
+    font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 1.0625rem;
+    color: var(--sig-ink-1);
+    line-height: 1.6;
 }
 
-.signature-format-Dancing-Script{
-    font-family: 'Dancing Script',cursive;
-    font-size: xx-large;
+.sig {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
 }
-.signature-format-Gloria-Hallelujah{
-    font-family: 'Gloria Hallelujah',cursive;
-    font-size: xx-large;
+
+.sig__header {
+    margin-bottom: 4px;
 }
-.signature-format-Great-Vibes{
-    font-family: 'Great Vibes',cursive;
-    font-size: xx-large;
+
+.sig__title {
+    margin: 0 0 6px;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--sig-ink-1);
+    letter-spacing: -0.01em;
 }
-.signature-format-Homemade-Apple{
-    font-family: 'Homemade Apple',cursive;
-    font-size: xx-large;
+
+.sig__subtitle {
+    margin: 0;
+    color: var(--sig-ink-3);
+    font-size: 1rem;
 }
-.signature-format-Monsieur-La-Doulaise{
-    font-family: 'Monsieur La Doulaise',cursive;
-    font-size: xx-large;
+
+.sig__callout {
+    border-radius: var(--sig-radius-md);
 }
-.signature-format-Nanum-Brush-Script{
-    font-family: 'Nanum Brush Script',cursive;
-    font-size: xx-large;
+
+/* ---------- Mode pickers -------------------------------------------------- */
+
+.sig__modes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
 }
-.signature-format-Reenie-Beanie{
-    font-family: 'Reenie Beanie',cursive;
-    font-size: xx-large;
-}
-/* Parent container */
-.signature-dropdown {
-    position: relative;
-    width: 100%; 
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Dropdown container */
-  .dropdown {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    padding: 5px;
-    max-height: 200px;
-    overflow-y: auto;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease-in-out;
+
+.sig-mode {
+    appearance: none;
+    background: var(--sig-surface);
+    border: 2px solid var(--sig-border);
+    border-radius: var(--sig-radius-lg);
+    padding: 16px 18px;
+    text-align: left;
     cursor: pointer;
-  }
-  
-  /* Dropdown item */
-  .dropdown-item {
-    padding: 12px;
-    margin: 5px 0;
-    border-radius: 6px;
-    transition: background-color 0.2s ease, transform 0.2s ease;
-    text-align: center;
-  }
-  
-  /* Hover and selected styles */
-  .dropdown-item:hover {
-    background-color: var(--bs-info);
-    transform: scale(1.02);
-  }
-  
-  .dropdown-item.selected {
-    background-color: #532caf30;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 14px;
+    min-height: 72px;
+    transition: border-color .15s ease, background .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+
+.sig-mode:hover {
+    border-color: var(--sig-brand);
+    background: var(--sig-brand-soft);
+}
+
+.sig-mode.is-active {
+    border-color: var(--sig-brand);
+    background: var(--sig-brand-soft);
+    box-shadow: 0 0 0 4px rgba(15, 76, 129, .12);
+}
+
+.sig-mode__icon {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--sig-surface);
+    color: var(--sig-brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--sig-border);
+}
+
+.sig-mode.is-active .sig-mode__icon {
+    background: var(--sig-brand);
     color: #fff;
-    font-weight: bold;
-  }
-  
-  /* Scrollbar styling */
-  .dropdown::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .dropdown::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 4px;
-  }
-  
-  .dropdown::-webkit-scrollbar-thumb:hover {
-    background: #bbb;
-  }
-  
-  /* Add a subtle animation on dropdown items */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
+    border-color: var(--sig-brand);
+}
+
+.sig-mode__icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.sig-mode__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+    min-width: 0;
+}
+
+.sig-mode__title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--sig-ink-1);
+}
+
+.sig-mode__hint {
+    margin-top: 2px;
+    font-size: .9375rem;
+    color: var(--sig-ink-3);
+}
+
+.sig-mode__check {
+    width: 22px;
+    height: 22px;
+    color: var(--sig-brand);
+    flex: none;
+}
+
+/* ---------- Panel container ----------------------------------------------- */
+
+.sig__panel {
+    background: var(--sig-surface);
+    border: 1px solid var(--sig-border);
+    border-radius: var(--sig-radius-lg);
+    padding: clamp(16px, 2.5vw, 22px);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ---------- Type signature: preview + font grid -------------------------- */
+
+.sig-preview {
+    border: 1px dashed var(--sig-border-strong);
+    border-radius: var(--sig-radius-md);
+    background: linear-gradient(180deg, #fbfcfe, #f4f7fb);
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sig-preview__label {
+    font-size: .8125rem;
+    color: var(--sig-ink-3);
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.sig-preview__canvas {
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.sig-preview__name {
+    color: var(--sig-brand-strong);
+    font-size: clamp(2rem, 6vw, 3rem);
+    line-height: 1.2;
+    text-align: center;
+    word-break: break-word;
+}
+
+.sig-fonts__label {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--sig-ink-2);
+}
+
+.sig-fonts__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+}
+
+.sig-font {
+    appearance: none;
+    background: var(--sig-surface);
+    border: 2px solid var(--sig-border);
+    border-radius: var(--sig-radius-md);
+    padding: 18px 16px;
+    cursor: pointer;
+    min-height: 90px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: border-color .15s ease, background .15s ease, transform .15s ease;
+}
+
+.sig-font:hover {
+    border-color: var(--sig-brand);
+    background: var(--sig-brand-soft);
+    transform: translateY(-1px);
+}
+
+.sig-font.is-selected {
+    border-color: var(--sig-brand);
+    background: var(--sig-brand-soft);
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, .18);
+}
+
+.sig-font__name {
+    font-size: 1.875rem;
+    color: var(--sig-brand-strong);
+    text-align: center;
+    line-height: 1.2;
+    word-break: break-word;
+    pointer-events: none;
+}
+
+.sig-font__check {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    color: var(--sig-brand);
+}
+
+/* Font-family classes (kept from original API) */
+.signature-format-Dancing-Script     { font-family: 'Dancing Script', cursive; }
+.signature-format-Gloria-Hallelujah  { font-family: 'Gloria Hallelujah', cursive; }
+.signature-format-Great-Vibes        { font-family: 'Great Vibes', cursive; }
+.signature-format-Homemade-Apple     { font-family: 'Homemade Apple', cursive; }
+.signature-format-Monsieur-La-Doulaise { font-family: 'Monsieur La Doulaise', cursive; }
+.signature-format-Nanum-Brush-Script { font-family: 'Nanum Brush Script', cursive; }
+.signature-format-Reenie-Beanie      { font-family: 'Reenie Beanie', cursive; }
+
+/* ---------- Draw signature ----------------------------------------------- */
+
+.sig-canvas-wrap {
+    position: relative;
+    border: 2px dashed var(--sig-border-strong);
+    border-radius: var(--sig-radius-md);
+    background: #fff;
+    overflow: hidden;
+}
+
+.sig-canvas {
+    display: block;
+    width: 100%;
+    height: 220px;
+    background: #fff;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.sig-canvas__hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sig-ink-3);
+    font-size: 1rem;
+    pointer-events: none;
+    font-style: italic;
+}
+
+.sig-canvas__baseline {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 36px;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--sig-border-strong) 0 6px, transparent 6px 12px);
+    pointer-events: none;
+}
+
+.sig-canvas-actions {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sig-canvas__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: var(--sig-tap);
+    padding-inline: 22px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.sig-canvas__clear svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* ---------- Saved confirmation ------------------------------------------- */
+
+.sig__saved {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--sig-success-soft);
+    border: 1px solid rgba(31, 138, 76, .35);
+    border-radius: var(--sig-radius-lg);
+}
+
+.sig__saved-icon {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--sig-success);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sig__saved-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.sig__saved-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.sig__saved-title {
+    font-weight: 700;
+    color: var(--sig-ink-1);
+}
+
+.sig__saved-meta {
+    font-size: .875rem;
+    color: var(--sig-success);
+    font-weight: 600;
+}
+
+.sig__saved-thumb {
+    flex: none;
+    height: 44px;
+    max-width: 200px;
+    object-fit: contain;
+    background: #fff;
+    border: 1px solid var(--sig-border);
+    border-radius: 6px;
+    padding: 4px;
+}
+
+/* ---------- Nav ---------------------------------------------------------- */
+
+.sig__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 0;
+}
+
+.sig__back,
+.sig__next {
+    min-height: var(--sig-tap);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    padding-inline: 28px;
+}
+
+.sig__next:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Mobile (≤ 720px)
+   ========================================================================== */
+@media (max-width: 720px) {
+    .sig__title { font-size: 1.1875rem; }
+
+    .sig__modes {
+        grid-template-columns: 1fr;
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+
+    .sig-mode {
+        min-height: 64px;
+        padding: 14px 16px;
     }
-  }
-  
-  .dropdown-item {
-    animation: fadeIn 0.5s ease both;
-  }
-  
+
+    .sig-mode__icon {
+        width: 38px;
+        height: 38px;
+    }
+
+    .sig-mode__title { font-size: 1rem; }
+
+    .sig-fonts__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sig-font {
+        min-height: 76px;
+    }
+
+    .sig-font__name {
+        font-size: 1.5rem;
+    }
+
+    .sig-canvas {
+        height: 180px;
+    }
+
+    .sig-canvas__baseline {
+        bottom: 28px;
+    }
+
+    .sig__saved {
+        flex-wrap: wrap;
+    }
+
+    .sig__saved-thumb {
+        order: 4;
+        flex-basis: 100%;
+        max-width: none;
+        height: 60px;
+    }
+
+    .sig__nav {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .sig__back,
+    .sig__next {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+    }
+}

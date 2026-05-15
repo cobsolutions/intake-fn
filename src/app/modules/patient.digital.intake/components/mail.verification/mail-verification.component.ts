@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { forkJoin, switchMap } from 'rxjs';
-import { FingerprintService } from 'src/app/modules/patient.admin/services/trust.device/fingerprint.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PatientMailRequest } from 'src/app/modules/patient.admin/models/patient.channel/mail/patient.mail.request';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
 
 @Component({
@@ -10,29 +9,46 @@ import { DigitalIntakeService } from '../../services/digitalIntake/digital-intak
   styleUrls: ['./mail-verification.component.css']
 })
 export class MailVerificationComponent implements OnInit {
-  status: string
-  digitalIntakeURL:string;
-  public baseURL: string = location.origin;
-  constructor(private route: ActivatedRoute, private fingerprintService: FingerprintService, private digitalIntakeService: DigitalIntakeService) { }
+  isLoading: boolean = true
+  constructor(private route: ActivatedRoute,
+    private digitalIntakeService: DigitalIntakeService,
+    private router: Router) { }
 
   ngOnInit(): void {
-    const _getDeviceId = this.fingerprintService.getDeviceId();
     this.route.queryParams.subscribe(param => {
-      const token = param['token'];
-      _getDeviceId.pipe(
-        switchMap(deviceId => this.digitalIntakeService.verifyMail(token, deviceId)),
-        switchMap(result=>this.digitalIntakeService.initDigitalIntakeRecord("Mail"))
-      ).subscribe(rre => {
-        this.status = 'V'
-        this.digitalIntakeURL =  this.baseURL +'/digital-intake/submit?token=' + token;
-        console.log(this.digitalIntakeURL)
-      }, error => {
-        this.status = 'E'
+
+      const tokenId = param['token-id'];
+      const patientMail = param['m'];
+      const patientMailRequest: PatientMailRequest = {
+        patientMail: patientMail,
+        tokenId: tokenId
+      }
+      this.digitalIntakeService.verfiyMail(patientMailRequest).subscribe((response: any) => {
+        this.isLoading = false
+        const submissionType: string = response.body.result
+        switch (submissionType) {
+          case 'Full':
+            this.router.navigate(['/digital-intake/patient-mail-create-request'], {
+              queryParams: {
+                'token-id': tokenId
+              }
+            });
+            break;
+          case 'Quick':
+          case 'QuickSurvey':
+            this.router.navigate(['/digital-intake/quick/patient-mail-create-request'], {
+              queryParams: {
+                'token-id': tokenId
+              }
+            });
+            break;
+        }
       })
     })
   }
-  goToLink(url: string){
+  goToLink(url: string) {
+    console.log(url)
     window.open(url, "_self");
-}
+  }
 
 }

@@ -9,3 +9,14 @@
     </div>
   </div>
 </div>
+
+<div class="device-container" *ngIf="!isLoading">
+  <div class="card">
+    <div class="icon-circle success">
+      <span class="material-icons">check_circle</span>
+    </div>
+
+    <h1 class="title">Device Registered Successfully</h1>
+    <p class="subtitle">Your device <strong>{{ digitalIntakeDevice.deviceName }}</strong> is now linked and ready to use.</p>
+  </div>
+</div>

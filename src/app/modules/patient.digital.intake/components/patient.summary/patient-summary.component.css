@@ -1,0 +1,594 @@
+/* ==========================================================================
+   Patient Summary — friendly review with edit links
+   ========================================================================== */
+
+:host {
+    --sum-ink-1: #0c1b2a;
+    --sum-ink-2: #2c3e54;
+    --sum-ink-3: #5a6a7e;
+    --sum-ink-4: #8a98aa;
+    --sum-bg: #f4f7fb;
+    --sum-surface: #ffffff;
+    --sum-border: #d8e0ea;
+    --sum-border-strong: #b8c4d4;
+
+    --sum-brand: #0f4c81;
+    --sum-brand-strong: #0a3a64;
+    --sum-brand-soft: #e6eff8;
+    --sum-success: #1f8a4c;
+    --sum-success-soft: #e6f4ec;
+    --sum-danger: #c0392b;
+    --sum-danger-soft: #fbe8e6;
+
+    --sum-radius-lg: 16px;
+    --sum-radius-md: 12px;
+    --sum-radius-sm: 8px;
+    --sum-tap: 48px;
+
+    display: block;
+    font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 1.0625rem;
+    color: var(--sum-ink-1);
+    line-height: 1.6;
+}
+
+.summary {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ---------- Hero --------------------------------------------------------- */
+
+.summary__hero {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: linear-gradient(135deg, var(--sum-brand-soft), #fff 70%);
+    border: 1px solid var(--sum-border);
+    border-radius: var(--sum-radius-lg);
+    padding: 20px 22px;
+}
+
+.summary__hero-icon {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--sum-success), #1b7a42);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(31, 138, 76, .35);
+}
+
+.summary__hero-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.summary__hero-text { min-width: 0; }
+
+.summary__hero-title {
+    margin: 0 0 4px;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--sum-ink-1);
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+}
+
+.summary__hero-subtitle {
+    margin: 0;
+    color: var(--sum-ink-3);
+    font-size: 1rem;
+}
+
+/* ---------- Error -------------------------------------------------------- */
+
+.summary__error {
+    border-radius: var(--sum-radius-md);
+    display: block;
+}
+
+.summary__error-msg {
+    display: block;
+    margin-top: 4px;
+    color: var(--sum-danger);
+}
+
+.summary__error-tip {
+    display: block;
+    margin-top: 8px;
+    color: var(--sum-ink-3);
+    font-size: .9375rem;
+}
+
+/* ---------- Card --------------------------------------------------------- */
+
+.summary-card {
+    background: var(--sum-surface);
+    border: 1px solid var(--sum-border);
+    border-radius: var(--sum-radius-lg);
+    padding: 18px 20px;
+    box-shadow: 0 1px 2px rgba(12, 27, 42, .04);
+}
+
+.summary-card + .summary-card {
+    /* margin handled by .summary gap */
+}
+
+.summary-card__head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--sum-border);
+}
+
+.summary-card__icon {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--sum-brand-soft);
+    color: var(--sum-brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.summary-card__icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.summary-card__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--sum-ink-1);
+    line-height: 1.3;
+}
+
+.summary-card__edit {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--sum-border);
+    color: var(--sum-brand);
+    padding: 8px 14px;
+    border-radius: var(--sum-radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    font-size: .9375rem;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.summary-card__edit:hover {
+    background: var(--sum-brand-soft);
+    color: var(--sum-brand-strong);
+    border-color: var(--sum-brand);
+}
+
+.summary-card__edit svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Hero patient card */
+.summary-card--hero {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+}
+
+.summary-card__avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid var(--sum-border);
+    background: var(--sum-brand-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+
+.summary-card__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.summary-card__avatar-empty {
+    color: var(--sum-brand);
+}
+
+.summary-card__avatar-empty svg {
+    width: 32px;
+    height: 32px;
+}
+
+.summary-card__hero-text {
+    min-width: 0;
+}
+
+.summary-card__hero-eyebrow {
+    font-size: .75rem;
+    color: var(--sum-ink-3);
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.summary-card__hero-name {
+    margin: 4px 0 6px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--sum-ink-1);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
+.summary-card__hero-meta {
+    margin: 0;
+    color: var(--sum-ink-3);
+    font-size: .9375rem;
+}
+
+/* ---------- Definition grid --------------------------------------------- */
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 28px;
+    margin: 0;
+}
+
+.summary-grid--compact {
+    gap: 8px 24px;
+}
+
+.summary-row {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.summary-row--full {
+    grid-column: 1 / -1;
+}
+
+.summary-row dt {
+    font-size: .8125rem;
+    color: var(--sum-ink-3);
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.summary-row dd {
+    margin: 0;
+    color: var(--sum-ink-1);
+    font-size: 1rem;
+    line-height: 1.45;
+    word-break: break-word;
+}
+
+.summary-empty {
+    color: var(--sum-ink-3);
+    font-style: italic;
+}
+
+.summary-tag {
+    display: inline-flex;
+    align-items: center;
+    margin: 2px 6px 2px 0;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--sum-brand-soft);
+    color: var(--sum-brand-strong);
+    font-size: .875rem;
+    font-weight: 600;
+}
+
+/* ---------- Insurance summary block ------------------------------------- */
+
+.ins-summary + .ins-summary {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--sum-border);
+}
+
+.ins-summary__type {
+    font-weight: 700;
+    color: var(--sum-brand-strong);
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+/* ---------- Agreement summary ------------------------------------------- */
+
+.agreement-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.agreement-summary__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--sum-success-soft);
+    color: var(--sum-success);
+    border: 1px solid rgba(31, 138, 76, .3);
+    border-radius: 999px;
+    font-weight: 700;
+    align-self: flex-start;
+    font-size: .9375rem;
+}
+
+.agreement-summary__pill svg {
+    width: 14px;
+    height: 14px;
+}
+
+.agreement-summary__note {
+    margin: 0;
+    color: var(--sum-ink-3);
+    font-size: .9375rem;
+}
+
+/* ---------- Signature summary ------------------------------------------- */
+
+.sig-summary {
+    border: 1px solid var(--sum-border);
+    border-radius: var(--sum-radius-md);
+    background: linear-gradient(180deg, #fbfcfe, #f4f7fb);
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+}
+
+.sig-summary__img {
+    max-width: 100%;
+    max-height: 110px;
+    object-fit: contain;
+}
+
+/* ---------- Documents summary ------------------------------------------- */
+
+.docs-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.docs-summary__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--sum-success-soft);
+    color: var(--sum-success);
+    border: 1px solid rgba(31, 138, 76, .3);
+    border-radius: 999px;
+    font-weight: 700;
+    align-self: flex-start;
+    font-size: .9375rem;
+}
+
+.docs-summary__pill svg {
+    width: 14px;
+    height: 14px;
+}
+
+.docs-summary__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.docs-summary__list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #fbfcfe;
+    border: 1px solid var(--sum-border);
+    border-radius: var(--sum-radius-sm);
+    color: var(--sum-ink-2);
+    font-size: .9375rem;
+}
+
+.docs-summary__list svg {
+    width: 14px;
+    height: 14px;
+    color: var(--sum-brand);
+    flex: none;
+}
+
+/* ---------- Submit panel ------------------------------------------------ */
+
+.summary-submit {
+    background: linear-gradient(135deg, #fff, var(--sum-success-soft) 200%);
+    border: 1px solid rgba(31, 138, 76, .3);
+    border-radius: var(--sum-radius-lg);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 8px 24px rgba(31, 138, 76, .08);
+}
+
+.summary-confirm {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+    padding: 14px;
+    border: 2px solid var(--sum-border);
+    border-radius: var(--sum-radius-md);
+    background: var(--sum-surface);
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.summary-confirm:hover {
+    border-color: var(--sum-success);
+    background: var(--sum-success-soft);
+}
+
+.summary-confirm__input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+.summary-confirm__box {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 2px solid var(--sum-border-strong);
+    background: var(--sum-surface);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.summary-confirm__box svg {
+    width: 16px;
+    height: 16px;
+}
+
+.summary-confirm:has(.summary-confirm__input:checked) {
+    border-color: var(--sum-success);
+    background: var(--sum-success-soft);
+}
+
+.summary-confirm:has(.summary-confirm__input:checked) .summary-confirm__box {
+    background: var(--sum-success);
+    border-color: var(--sum-success);
+    color: #fff;
+}
+
+.summary-confirm__text {
+    font-size: 1rem;
+    color: var(--sum-ink-1);
+    line-height: 1.4;
+}
+
+.summary-submit__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.summary-submit__back,
+.summary-submit__next {
+    min-height: var(--sum-tap);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    padding-inline: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.summary-submit__next svg {
+    width: 16px;
+    height: 16px;
+}
+
+.summary-submit__next:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Mobile (≤ 720px)
+   ========================================================================== */
+@media (max-width: 720px) {
+    .summary__hero { padding: 16px; }
+    .summary__hero-title { font-size: 1.1875rem; }
+
+    .summary-card { padding: 16px; }
+
+    .summary-card__head {
+        gap: 10px;
+        margin-bottom: 12px;
+        padding-bottom: 12px;
+    }
+
+    .summary-card__edit {
+        padding: 6px 10px;
+        font-size: .875rem;
+    }
+
+    .summary-card--hero {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto auto;
+    }
+
+    .summary-card--hero .summary-card__edit {
+        grid-column: 1 / -1;
+        justify-self: stretch;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .summary-card__avatar {
+        width: 64px;
+        height: 64px;
+    }
+
+    .summary-card__hero-name {
+        font-size: 1.25rem;
+    }
+
+    .summary-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .summary-submit { padding: 16px; }
+
+    .summary-submit__nav {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .summary-submit__back,
+    .summary-submit__next {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+    }
+}

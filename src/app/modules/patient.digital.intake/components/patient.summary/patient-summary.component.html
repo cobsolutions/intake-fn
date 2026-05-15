@@ -1,210 +1,320 @@
-<c-callout color="danger" *ngIf="isError">
-    <span class="text-danger fw-bold">{{errorMessage}} . Please contact PT of City support </span>
-</c-callout>
-<!--Essential Information-->
-<c-card class="mb-3 mt-3">
-    <c-card-body>
-        <h5 cCardTitle>Essential Information</h5>
-        <p cCardText>
-            <strong>Name : </strong> {{capitalizeFirstLetter(pateint.patientEssentialInformation?.patientName?.lastName)
-            +','
-            +capitalizeFirstLetter(pateint.patientEssentialInformation?.patientName?.firstName)}}
-            <br />
-            <strong>Date Of Birth : </strong> {{pateint.patientEssentialInformation?.birthDate_str}}<br />
-            <strong>Gender : </strong> {{pateint.patientEssentialInformation?.gender}}<br />
-            <span *ngIf="pateint.patientEssentialInformation?.gender ==='Self_Describe'">
-                <strong>Gender Describe: </strong> {{pateint.patientEssentialInformation?.genderDescribe}}<br />
-            </span>
-            <strong>Marital Status : </strong> {{pateint.patientEssentialInformation?.maritalStatus}}<br />
-            <strong>Phone : </strong> {{pateint.patientEssentialInformation?.patientPhone?.phoneType}} :
-            {{pateint.patientEssentialInformation?.patientPhone?.phone}}<br />
-            <strong>Email : </strong> {{pateint.patientEssentialInformation?.email}}<br />
-            <strong>Employment Status : </strong>
-            {{pateint.patientEssentialInformation?.patientEmployment?.employmentStatus}}<br />
-            <span *ngIf="pateint.patientEssentialInformation?.patientEmployment?.employmentStatus ==='Employed'">
-                <strong>Employment Company : </strong>
-                {{pateint.patientEssentialInformation?.patientEmployment?.employmentCompany}}<br />
-            </span>
-            <strong>Emergency Relation :
-            </strong>{{pateint.patientEssentialInformation?.patientEmergencyContact?.emergencyRelation}}<br />
-            <strong>Emergency Name :
-            </strong>{{pateint.patientEssentialInformation?.patientEmergencyContact?.emergencyName}}<br />
-            <strong>Emergency Phone :
-            </strong>{{pateint.patientEssentialInformation?.patientEmergencyContact?.emergencyPhone}}<br />
-        </p>
-    </c-card-body>
-</c-card>
-<!--Address Information-->
-<c-card class="mb-3 mt-3">
-    <c-card-body>
-        <h5 cCardTitle>Address Information</h5>
-        <p cCardText>
-            <strong>First Address : </strong> {{pateint.patientAddress?.firstAddress}}<br />
-            <strong>Second Address : </strong> {{pateint.patientAddress?.secondAddress}}<br />
-            <strong>City : </strong> {{pateint.patientAddress?.city}}<br />
-            <strong>State : </strong> {{pateint.patientAddress?.state}}<br />
-            <strong>Zip-Code : </strong> {{pateint.patientAddress?.zipCode}}<br />
-        </p>
-    </c-card-body>
-</c-card>
-<!--Medical Information-->
-<c-card class="mb-3 mt-3">
-    <c-card-body>
-        <h5 cCardTitle>Medical Information</h5>
-        <p cCardText>
-            <span *ngIf="pateint.patientIncomingSource">
-                <strong>Incoming Source : </strong> {{pateint.patientIncomingSource}}<br />
-            </span>
-            <span *ngIf="pateint.referringProvider?.name && pateint.referringProvider?.npi">
-                <strong>Referring Doctor : </strong> {{pateint.referringProvider!.name}} -
-                {{pateint.referringProvider?.npi}}<br />
-            </span>
-            <strong>Appointment Booking via
-                : </strong> {{pateint.patientMedical?.appointmentBooking}}<br />
-            <strong>Primary Doctor
-                : </strong> {{pateint.patientMedical?.primaryDoctor}}<br />
-            <span>
-                <strong>Received physical therapy : </strong> {{pateint.patientMedical?.hasPatientPhysicalTherapy?
-                'Yes':'No'}} <br />
-                <span *ngIf="pateint.patientMedical?.hasPatientPhysicalTherapy">
-                    <li>Location : {{pateint.patientMedical?.patientPhysicalTherapy?.location}} </li>
-                    <li>Number Of Visits : {{pateint.patientMedical?.patientPhysicalTherapy?.numberOfVisit}}</li>
-                </span>
-            </span>
-        </p>
-    </c-card-body>
-</c-card>
-<!--Medical History Information-->
-<c-card class="mb-3 mt-3">
-    <c-card-body>
-        <h5 cCardTitle>Medical History Information</h5>
-        <p cCardText>
-            <strong>
-                Height : </strong>
-            {{pateint.patientMedical?.patientMedicalHistory?.heightFT}} FT <br />
-            <strong>
-                Weight : </strong>
-            {{pateint.patientMedical?.patientMedicalHistory?.weight}} Lbs <br />
-            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.evaluationSubmission !== null">
-                <strong>
-                    Reason for today’s evaluation : </strong>
-                {{pateint.patientMedical?.patientMedicalHistory?.evaluationSubmission}} <br />
-            </span>
+<div class="summary">
 
-            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.medicationPrescription !== null">
-                <strong>
-                    List prescription or non-prescription medication : </strong>
-                {{pateint.patientMedical?.patientMedicalHistory?.medicationPrescription}} <br />
+    <header class="summary__hero">
+        <span class="summary__hero-icon" aria-hidden="true">
+            <svg cIcon name="cilCheck"></svg>
+        </span>
+        <div class="summary__hero-text">
+            <h2 class="summary__hero-title">Almost done — please review</h2>
+            <p class="summary__hero-subtitle">
+                Take a moment to check that everything looks right.
+                Tap <strong>Edit</strong> on any section to make a change.
+            </p>
+        </div>
+    </header>
+
+    <c-callout color="danger" *ngIf="isError" class="summary__error">
+        <strong>We could not submit your intake.</strong>
+        <span class="summary__error-msg">{{ errorMessage }}</span>
+        <span class="summary__error-tip">Please review your information or contact our support team.</span>
+    </c-callout>
+
+    <!-- Patient at-a-glance -->
+    <section class="summary-card summary-card--hero">
+        <div class="summary-card__avatar">
+            <img *ngIf="capturedPhoto" [src]="capturedPhoto" alt="Patient photo" />
+            <span *ngIf="!capturedPhoto" class="summary-card__avatar-empty" aria-hidden="true">
+                <svg cIcon name="cilUser"></svg>
             </span>
-            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.patientCondition">
-                <strong>
-                    Conditions : </strong>
-                <li *ngFor="let condition of pateint.patientMedical?.patientMedicalHistory?.patientCondition">
-                    {{condition.name}}
+        </div>
+        <div class="summary-card__hero-text">
+            <span class="summary-card__hero-eyebrow">Patient</span>
+            <h3 class="summary-card__hero-name">{{ fullName || 'Your name will appear here' }}</h3>
+            <p class="summary-card__hero-meta">
+                <span *ngIf="age">{{ age }}</span>
+                <span *ngIf="age && genderDisplay"> • </span>
+                <span *ngIf="genderDisplay">{{ genderDisplay }}</span>
+                <span *ngIf="(age || genderDisplay) && pateint.patientEssentialInformation?.maritalStatus"> • </span>
+                <span *ngIf="pateint.patientEssentialInformation?.maritalStatus">{{ pateint.patientEssentialInformation?.maritalStatus }}</span>
+            </p>
+        </div>
+        <button type="button" class="summary-card__edit" (click)="editStep(stepIndex.photo)">
+            <svg cIcon name="cilPencil" aria-hidden="true"></svg>
+            Change photo
+        </button>
+    </section>
+
+    <!-- Personal info -->
+    <section class="summary-card">
+        <header class="summary-card__head">
+            <span class="summary-card__icon" aria-hidden="true"><svg cIcon name="cilAddressBook"></svg></span>
+            <h3 class="summary-card__title">Personal information</h3>
+            <button type="button" class="summary-card__edit" (click)="editStep(stepIndex.basic)">
+                <svg cIcon name="cilPencil" aria-hidden="true"></svg> Edit
+            </button>
+        </header>
+        <dl class="summary-grid">
+            <div class="summary-row"><dt>Date of birth</dt>
+                <dd>{{ pateint.patientEssentialInformation?.birthDate_str || '—' }}</dd></div>
+            <div class="summary-row"><dt>Phone</dt><dd>{{ phoneDisplay || '—' }}</dd></div>
+            <div class="summary-row"><dt>Email</dt><dd>{{ pateint.patientEssentialInformation?.email || '—' }}</dd></div>
+            <div class="summary-row summary-row--full"><dt>Address</dt>
+                <dd>{{ fullAddress || '—' }}</dd></div>
+            <div class="summary-row"><dt>Employment</dt>
+                <dd>
+                    {{ pateint.patientEssentialInformation?.patientEmployment?.employmentStatus || '—' }}
+                    <span *ngIf="pateint.patientEssentialInformation?.patientEmployment?.employmentStatus === 'Employed' && pateint.patientEssentialInformation?.patientEmployment?.employmentCompany">
+                        — {{ pateint.patientEssentialInformation?.patientEmployment?.employmentCompany }}
+                    </span>
+                </dd></div>
+            <div class="summary-row summary-row--full"><dt>Emergency contact</dt>
+                <dd>{{ emergencyDisplay || '—' }}</dd></div>
+            <div class="summary-row summary-row--full" *ngIf="hasGuarantor">
+                <dt>Guarantor</dt>
+                <dd>
+                    {{ capitalizeFirstLetter(pateint.patientGrantor?.firstName) }}
+                    {{ capitalizeFirstLetter(pateint.patientGrantor?.lastName) }}
+                    <span *ngIf="pateint.patientGrantor?.relation"> ({{ pateint.patientGrantor?.relation }})</span>
+                </dd>
+            </div>
+        </dl>
+    </section>
+
+    <!-- Reason for visit / referral -->
+    <section class="summary-card">
+        <header class="summary-card__head">
+            <span class="summary-card__icon" aria-hidden="true"><svg cIcon name="cilMedicalCross"></svg></span>
+            <h3 class="summary-card__title">Reason for visit</h3>
+            <button type="button" class="summary-card__edit" (click)="editStep(stepIndex.medical)">
+                <svg cIcon name="cilPencil" aria-hidden="true"></svg> Edit
+            </button>
+        </header>
+        <dl class="summary-grid">
+            <div class="summary-row" *ngIf="pateint.patientIncomingSource"><dt>Referred by</dt>
+                <dd>{{ pateint.patientIncomingSource }}</dd></div>
+            <div class="summary-row" *ngIf="pateint.referringProvider?.name"><dt>Referring provider</dt>
+                <dd>{{ pateint.referringProvider?.name }}<span *ngIf="pateint.referringProvider?.npi"> — NPI {{ pateint.referringProvider?.npi }}</span></dd></div>
+            <div class="summary-row"><dt>Booking</dt>
+                <dd>{{ pateint.patientMedical?.appointmentBooking || '—' }}</dd></div>
+            <div class="summary-row"><dt>Has primary doctor</dt>
+                <dd>{{ pateint.patientMedical?.primaryDoctor || '—' }}</dd></div>
+            <div class="summary-row summary-row--full">
+                <dt>Past physical therapy</dt>
+                <dd>
+                    <ng-container *ngIf="pateint.patientMedical?.hasPatientPhysicalTherapy; else noPT">
+                        Yes
+                        <span *ngIf="pateint.patientMedical?.patientPhysicalTherapy?.location">
+                            — {{ pateint.patientMedical?.patientPhysicalTherapy?.location }}
+                        </span>
+                        <span *ngIf="pateint.patientMedical?.patientPhysicalTherapy?.numberOfVisit">
+                            ({{ pateint.patientMedical?.patientPhysicalTherapy?.numberOfVisit }} visits)
+                        </span>
+                    </ng-container>
+                    <ng-template #noPT>No</ng-template>
+                </dd>
+            </div>
+        </dl>
+    </section>
+
+    <!-- Medical history -->
+    <section class="summary-card">
+        <header class="summary-card__head">
+            <span class="summary-card__icon" aria-hidden="true"><svg cIcon name="cilHistory"></svg></span>
+            <h3 class="summary-card__title">Medical history</h3>
+            <button type="button" class="summary-card__edit" (click)="editStep(stepIndex.history)">
+                <svg cIcon name="cilPencil" aria-hidden="true"></svg> Edit
+            </button>
+        </header>
+        <dl class="summary-grid">
+            <div class="summary-row"><dt>Height</dt><dd>{{ heightDisplay || '—' }}</dd></div>
+            <div class="summary-row"><dt>Weight</dt><dd>{{ weightDisplay || '—' }}</dd></div>
+            <div class="summary-row summary-row--full" *ngIf="pateint.patientMedical?.patientMedicalHistory?.evaluationSubmission">
+                <dt>Reason for evaluation</dt>
+                <dd>{{ pateint.patientMedical?.patientMedicalHistory?.evaluationSubmission }}</dd>
+            </div>
+            <div class="summary-row summary-row--full" *ngIf="pateint.patientMedical?.patientMedicalHistory?.medicationPrescription">
+                <dt>Medications</dt>
+                <dd>{{ pateint.patientMedical?.patientMedicalHistory?.medicationPrescription }}</dd>
+            </div>
+            <div class="summary-row summary-row--full" *ngIf="conditionsList.length > 0">
+                <dt>Conditions</dt>
+                <dd>
+                    <span class="summary-tag" *ngFor="let c of conditionsList">{{ c }}</span>
+                </dd>
+            </div>
+            <div class="summary-row summary-row--full" *ngIf="scanningTests.length > 0">
+                <dt>Imaging tests</dt>
+                <dd>
+                    <span class="summary-tag" *ngFor="let x of scanningTests">{{ x }}</span>
+                </dd>
+            </div>
+            <div class="summary-row"><dt>Metal implants</dt>
+                <dd>{{ pateint.patientMedical?.patientMedicalHistory?.metalImplantation ? 'Yes' : 'No' }}</dd></div>
+            <div class="summary-row"><dt>Pacemaker</dt>
+                <dd>{{ pateint.patientMedical?.patientMedicalHistory?.pacemaker ? 'Yes' : 'No' }}</dd></div>
+            <div class="summary-row summary-row--full" *ngIf="pateint.patientMedical?.patientMedicalHistory?.surgeriesList">
+                <dt>Surgeries / other</dt>
+                <dd>{{ pateint.patientMedical?.patientMedicalHistory?.surgeriesList }}</dd>
+            </div>
+        </dl>
+    </section>
+
+    <!-- Insurance -->
+    <section class="summary-card">
+        <header class="summary-card__head">
+            <span class="summary-card__icon" aria-hidden="true"><svg cIcon name="cilCreditCard"></svg></span>
+            <h3 class="summary-card__title">Insurance coverage</h3>
+            <button type="button" class="summary-card__edit" (click)="editStep(stepIndex.insurance)">
+                <svg cIcon name="cilPencil" aria-hidden="true"></svg> Edit
+            </button>
+        </header>
+
+        <div class="summary-empty" *ngIf="!hasAnyInsurance()">
+            No insurance details on file.
+        </div>
+
+        <ng-container *ngIf="pateint.insurances?.commercialInsurances?.length">
+            <div class="ins-summary" *ngFor="let item of pateint.insurances?.commercialInsurances; let i = index">
+                <div class="ins-summary__type">Commercial Insurance #{{ i + 1 }}</div>
+                <dl class="summary-grid summary-grid--compact">
+                    <div class="summary-row"><dt>Company</dt><dd>{{ item.insuranceCompanyName || '—' }}</dd></div>
+                    <div class="summary-row"><dt>Member ID</dt><dd>{{ item.memberId || '—' }}</dd></div>
+                    <div class="summary-row"><dt>Policy ID</dt><dd>{{ item.policyId || '—' }}</dd></div>
+                    <div class="summary-row" *ngIf="!item.isSecondaryInsurance">
+                        <dt>Relationship</dt><dd>{{ item.relationship || '—' }}</dd>
+                    </div>
+                    <div class="summary-row"><dt>Secondary?</dt>
+                        <dd>{{ item.isSecondaryInsurance ? 'Yes' : 'No' }}</dd></div>
+                </dl>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="pateint.insurances?.workerCompensationInsurances?.length">
+            <div class="ins-summary" *ngFor="let item of pateint.insurances?.workerCompensationInsurances; let i = index">
+                <div class="ins-summary__type">
+                    <ng-container *ngIf="item.type === 'worker'">Worker's Compensation / No Fault</ng-container>
+                    <ng-container *ngIf="item.type === 'auto_acc'">Auto Accident</ng-container>
+                </div>
+                <dl class="summary-grid summary-grid--compact">
+                    <div class="summary-row">
+                        <dt>{{ item.type === 'worker' ? 'Injury date' : 'Accident date' }}</dt>
+                        <dd>{{ item.accidentDate_str || '—' }}</dd>
+                    </div>
+                    <div class="summary-row"><dt>Insurance company</dt><dd>{{ item.insuranceName || '—' }}</dd></div>
+                    <div class="summary-row"><dt>Claim #</dt><dd>{{ item.claimNumber || '—' }}</dd></div>
+                    <div class="summary-row"><dt>Adjuster</dt>
+                        <dd>{{ item.adjusterInfoName || '—' }}<span *ngIf="item.adjusterInfoPhone"> — {{ item.adjusterInfoPhone }}</span></dd></div>
+                    <div class="summary-row"><dt>Attorney</dt>
+                        <dd>{{ item.attorneyInfoName || '—' }}<span *ngIf="item.attorneyInfoPhone"> — {{ item.attorneyInfoPhone }}</span></dd></div>
+                </dl>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="pateint.insurances?.medicareInsurance?.length">
+            <div class="ins-summary" *ngFor="let item of pateint.insurances?.medicareInsurance">
+                <div class="ins-summary__type">Medicare</div>
+                <dl class="summary-grid summary-grid--compact">
+                    <div class="summary-row"><dt>Policy number</dt><dd>{{ item.policyId || '—' }}</dd></div>
+                </dl>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="pateint.insurances?.medicaidInsurance?.length">
+            <div class="ins-summary" *ngFor="let item of pateint.insurances?.medicaidInsurance">
+                <div class="ins-summary__type">Medicaid</div>
+                <dl class="summary-grid summary-grid--compact">
+                    <div class="summary-row"><dt>Policy number</dt><dd>{{ item.policyId || '—' }}</dd></div>
+                </dl>
+            </div>
+        </ng-container>
+
+        <div class="ins-summary" *ngIf="$any(pateint.insurances)?.selfPay?.type === 'selfpay'">
+            <div class="ins-summary__type">Self Pay</div>
+        </div>
+    </section>
+
+    <!-- Agreements -->
+    <section class="summary-card">
+        <header class="summary-card__head">
+            <span class="summary-card__icon" aria-hidden="true"><svg cIcon name="cilTask"></svg></span>
+            <h3 class="summary-card__title">Office agreements</h3>
+            <button type="button" class="summary-card__edit" (click)="editStep(stepIndex.agreement)">
+                <svg cIcon name="cilPencil" aria-hidden="true"></svg> Edit
+            </button>
+        </header>
+        <div class="agreement-summary">
+            <span class="agreement-summary__pill">
+                <svg cIcon name="cilCheck" aria-hidden="true"></svg>
+                {{ acceptedAgreementCount }} of {{ totalAgreementCount }} agreements signed
+            </span>
+            <p class="agreement-summary__note" *ngIf="acceptedAgreementCount === 0">
+                You have not accepted any agreements yet.
+            </p>
+        </div>
+    </section>
+
+    <!-- Signature -->
+    <section class="summary-card">
+        <header class="summary-card__head">
+            <span class="summary-card__icon" aria-hidden="true"><svg cIcon name="cilPencil"></svg></span>
+            <h3 class="summary-card__title">Signature</h3>
+            <button type="button" class="summary-card__edit" (click)="editStep(stepIndex.signature)">
+                <svg cIcon name="cilPencil" aria-hidden="true"></svg> Edit
+            </button>
+        </header>
+        <div class="sig-summary">
+            <img *ngIf="signatureDataUrl" [src]="signatureDataUrl" alt="Your signature" class="sig-summary__img" />
+            <span *ngIf="!signatureDataUrl" class="summary-empty">No signature added yet.</span>
+        </div>
+    </section>
+
+    <!-- Documents -->
+    <section class="summary-card">
+        <header class="summary-card__head">
+            <span class="summary-card__icon" aria-hidden="true"><svg cIcon name="cilFile"></svg></span>
+            <h3 class="summary-card__title">Uploaded documents</h3>
+            <button type="button" class="summary-card__edit" (click)="editStep(stepIndex.documents)">
+                <svg cIcon name="cilPencil" aria-hidden="true"></svg> Edit
+            </button>
+        </header>
+        <div class="docs-summary">
+            <span class="docs-summary__pill" *ngIf="uploadedDocumentCount > 0">
+                <svg cIcon name="cilCheck" aria-hidden="true"></svg>
+                {{ uploadedDocumentCount }} document{{ uploadedDocumentCount === 1 ? '' : 's' }} uploaded
+            </span>
+            <span class="summary-empty" *ngIf="uploadedDocumentCount === 0">No documents uploaded yet.</span>
+            <ul class="docs-summary__list" *ngIf="uploadedDocumentCount > 0">
+                <li *ngFor="let name of uploadedDocumentNames">
+                    <svg cIcon name="cilFile" aria-hidden="true"></svg>
+                    {{ name }}
                 </li>
-                <br />
+            </ul>
+        </div>
+    </section>
+
+    <!-- Submit panel -->
+    <section class="summary-submit" [formGroup]="form">
+        <label class="summary-confirm">
+            <input type="checkbox" class="summary-confirm__input" [(ngModel)]="confirmAccuracy" [ngModelOptions]="{standalone: true}" />
+            <span class="summary-confirm__box" aria-hidden="true">
+                <svg cIcon name="cilCheck"></svg>
             </span>
-            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.scanningTest">
-                <strong>Imaging tests</strong>
-                <li *ngFor="let xVaue of pateint.patientMedical?.patientMedicalHistory?.scanningTestValue">
-                    {{xVaue }}
-                </li>
-                <br />
+            <span class="summary-confirm__text">
+                I confirm that all the information above is correct and complete to the best of my knowledge.
             </span>
-            <strong>
-                Has MetalImplants : </strong>
-            {{pateint.patientMedical?.patientMedicalHistory?.metalImplantation?'Yes':'No'}} <br />
-            <strong>
-                Has Pacemaker : </strong>
-            {{pateint.patientMedical?.patientMedicalHistory?.pacemaker?'Yes':'No'}} <br />
-            <span *ngIf="pateint.patientMedical?.patientMedicalHistory?.surgeriesList !== null">
-                <strong>
-                    Surgeries or any other conditions not listed above : </strong>
-                {{pateint.patientMedical?.patientMedicalHistory?.surgeriesList}}
-            </span>
-        </p>
-    </c-card-body>
-</c-card>
-<!--Patient Insurance Information-->
-<c-card class="mb-3 mt-3">
-    <c-card-body>
-        <h5 cCardTitle>Patient Insurance Information</h5>
-        <p cCardText>
-            <span
-                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.commercialInsurances !== null&&this.pateint.insurances?.commercialInsurances!.length > 0">
-                <strong>Patient Insurance Type : </strong> Commercial Insurance <br />
-                <span *ngFor="let patientInsurance of this.pateint.insurances?.commercialInsurances index as i">
-                    <i>Commercial Insurance {{ i+1}}</i> <br />
-                    <strong> Insurance Company: </strong> : {{patientInsurance.insuranceCompanyName}} <br />
-                    <strong> Member-Id: </strong> : {{patientInsurance.memberId}} <br />
-                    <strong> Policy-Id: </strong> : {{patientInsurance.policyId}} <br />
-                    <span *ngIf="!patientInsurance.isSecondaryInsurance"><strong> Relationship: </strong> :
-                        {{patientInsurance.relationship}} <br /></span>
-                    <strong> IS Secondary Insurance: </strong> : {{patientInsurance.isSecondaryInsurance ? 'Yes': 'No'}}
-                    <br />
-                </span>
-            </span>
-            <span
-                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.workerCompensationInsurances !== null&&this.pateint.insurances?.workerCompensationInsurances!.length > 0">
-                <span
-                    *ngFor="let patientInsurance of this.pateint.insurances?.workerCompensationInsurances; index as i">
-                    <strong>Patient Insurance Type : </strong>
-                    <span *ngIf="patientInsurance.type ==='worker'"> Worker's Compensation/No Fault</span>
-                    <span *ngIf="patientInsurance.type ==='auto_acc'"> Auto-Accident</span>
-                    <br />
-                    <strong>
-                        <span *ngIf="patientInsurance.type ==='worker'">Injury Date</span>
-                        <span *ngIf="patientInsurance.type ==='auto_acc'">Accident Date:</span>
-                    </strong>
-                    {{patientInsurance.accidentDate_str}} <br />
-                    <strong> Insurance Company: </strong>
-                    <label> {{patientInsurance.insuranceName}}</label>
-                    <strong> Claim #: </strong>
-                    <label> {{patientInsurance.claimNumber}} : </label> <br />
-                    <strong> Adjuster: </strong> <br />
-                    <label> Name : </label>
-                    {{patientInsurance.adjusterInfoName}} <br />
-                    <label> Phone : </label>
-                    {{patientInsurance.adjusterInfoPhone}} <br />
-                    <strong> Attorney: </strong> <br />
-                    <label> Name : </label>
-                    {{patientInsurance.attorneyInfoName}} <br />
-                    <label> Phone : </label>
-                    {{patientInsurance.attorneyInfoPhone}} <br />
-                    <hr>
-                </span>
-                <br />
-            </span>
-            <span
-                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.medicareInsurance !== null&&this.pateint.insurances?.medicareInsurance!.length > 0">
-                <strong>Patient Insurance Type : </strong> Medicare<br />
-                <span *ngFor="let patientInsurance of this.pateint.insurances?.medicareInsurance; index as i">
-                    <strong> Policy Number: </strong>
-                    {{patientInsurance.policyId}} <br />
-                </span>
-                <br />
-            </span>
-            <span
-                *ngIf="this.pateint.insurances !==null && this.pateint.insurances?.medicaidInsurance !== null&&this.pateint.insurances?.medicaidInsurance!.length > 0">
-                <strong>Patient Insurance Type : </strong> Medicaid<br />
-                <span *ngFor="let patientInsurance of this.pateint.insurances?.medicaidInsurance; index as i">
-                    <strong> Policy Number: </strong>
-                    {{patientInsurance.policyId}} <br />
-                </span>
-                <br />
-            </span>
-            <span *ngIf="this.pateint.insurances !==null  && this.pateint.insurances?.selfPay?.type ==='selfpay'">
-                SelfPay
-            </span>
-        </p>
-    </c-card-body>
-</c-card>
-<!--Submit-->
-<div [formGroup]=" form">
-    <div class="mt-3">
-        <button cButton matStepperPrevious size="sm" variant="outline" class="mx-2"
-            [disabled]="submitting">Back</button>
-        <button cButton matStepperNext variant="outline" size="sm" type="button" (click)="submit()"
-            [disabled]="submitting" cLoadingButton [loading]="submitting">Submit</button>
-    </div>
+        </label>
+
+        <div class="summary-submit__nav">
+            <button cButton matStepperPrevious size="lg" variant="outline" class="summary-submit__back"
+                    [disabled]="submitting">Back</button>
+            <button cButton matStepperNext size="lg" type="button"
+                    (click)="submit()"
+                    [disabled]="submitting || !confirmAccuracy"
+                    cLoadingButton [loading]="submitting"
+                    class="summary-submit__next">
+                <svg cIcon name="cilSend" aria-hidden="true"></svg>
+                Submit my intake
+            </button>
+        </div>
+    </section>
 </div>

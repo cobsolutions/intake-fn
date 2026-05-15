@@ -10,11 +10,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FailedPatientComponent } from './components/failed.patient/failed-patient.component';
 import { InsuranceCompanyCreateComponent } from './components/insurance.company/create/insurance-company-create.component';
 import { InsuranceCompanyListComponent } from './components/insurance.company/list/insurance-company-list.component';
+import { ListSurveyComponent } from './components/list.survey/list-survey.component';
 import { PatientCreateComponent } from './components/patient.create/patient-create.component';
 import { PatientListComponent } from './components/patient.list/patient.list.component';
 import { ChnagesReportComponent } from './components/reports/patient.change.report/chnages-report.component';
 import { PatientContactReportComponent } from './components/reports/patient.contact/patient-contact-report.component';
+import { PatientsurveyReportComponent } from './components/reports/patient.survey/patientsurvey-report.component';
 import { RecommendationReportComponent } from './components/reports/recommendation.report.component';
+import { ScreenCampainComponent } from './components/screen.campain/screen-campain.component';
+import { SurveySubmissionComponent } from './components/survey/submission/survey-submission.component';
 import { ListTrustDevicesComponent } from './components/trust.device/list/list-trust-devices.component';
 import { UserCreationComponent } from './components/user/create/user-creation.component';
 import { UserListComponent } from './components/user/list/user-list.component';
@@ -51,6 +55,13 @@ const routes: Routes = [{
     {
       path: 'patient/create',
       component: PatientCreateComponent,
+      data: {
+        title: 'Create',
+      },
+    },
+    {
+      path: 'survey/create',
+      component: SurveySubmissionComponent,
       data: {
         title: 'Create',
       },
@@ -131,6 +142,20 @@ const routes: Routes = [{
       component: ListTrustDevicesComponent,
       data: {
         title: 'insurance-company-create',
+      },
+    },
+    {
+      path: 'survey/list',
+      component: ListSurveyComponent,
+      data: {
+        title: 'surveys',
+      }
+    },
+    {
+      path: 'survey/campain',
+      component: ScreenCampainComponent,
+      data: {
+        title: 'Screen Campains',
       }
     }
   ]
@@ -160,6 +185,13 @@ const routes: Routes = [{
       component: PatientContactReportComponent,
       data: {
         title: 'Patient Contact',
+      },
+    },
+    {
+      path: 'report/survey',
+      component: PatientsurveyReportComponent,
+      data: {
+        title: 'Patient Survey',
       },
     }
   ]

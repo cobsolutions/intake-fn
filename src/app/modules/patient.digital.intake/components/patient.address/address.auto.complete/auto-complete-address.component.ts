@@ -1,11 +1,11 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 declare var google: any;
 @Component({
   selector: 'app-auto-complete-address',
   templateUrl: './auto-complete-address.component.html',
   styleUrls: ['./auto-complete-address.component.css']
 })
-export class AutoCompleteAddressComponent implements OnInit {
+export class AutoCompleteAddressComponent implements AfterViewInit  {
   @ViewChild('addressInput') addressInput!: ElementRef;
   @Output() addressSelected = new EventEmitter<{
     address: string;
@@ -15,7 +15,7 @@ export class AutoCompleteAddressComponent implements OnInit {
   }>();
   constructor() { }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     const autocomplete = new google.maps.places.Autocomplete(this.addressInput.nativeElement, {
       types: ['address'],
       componentRestrictions: { country: 'us' }
@@ -41,5 +41,29 @@ export class AutoCompleteAddressComponent implements OnInit {
       });
     });
   }
+/*
+<form [formGroup]="addressForm">
+    <div class="form-group mb-3">
+        <label for="address">Address</label>
+        <app-auto-complete-address (addressSelected)="onAddressSelected($event)"></app-auto-complete-address>
+    </div>
 
+    <div class="form-group mb-3">
+        <label for="city">City</label>
+        <input id="city" class="form-control" formControlName="city" readonly>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="state">State</label>
+        <input id="state" class="form-control" formControlName="state" readonly>
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="zip">ZIP Code</label>
+        <input id="zip" class="form-control" formControlName="zip" readonly>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+*/
 }

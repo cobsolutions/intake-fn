@@ -1,0 +1,537 @@
+// ============================================================================
+//  Insurance company list — shared "admin list" design language
+// ============================================================================
+
+:host {
+    --al-ink-1: #0c1b2a;
+    --al-ink-2: #2c3e54;
+    --al-ink-3: #5a6a7e;
+    --al-ink-4: #8a98aa;
+    --al-bg: #f4f7fb;
+    --al-surface: #ffffff;
+    --al-border: #d8e0ea;
+    --al-border-strong: #b8c4d4;
+
+    --al-brand: #0f4c81;
+    --al-brand-strong: #0a3a64;
+    --al-brand-soft: #e6eff8;
+    --al-success: #1f8a4c;
+    --al-success-soft: #e6f4ec;
+    --al-warning: #c46a00;
+    --al-warning-soft: #fbf0df;
+    --al-danger: #c0392b;
+    --al-danger-soft: #fbe8e6;
+    --al-purple: #6c3fb5;
+    --al-purple-soft: #efe9fb;
+
+    --al-radius-lg: 18px;
+    --al-radius-md: 12px;
+    --al-radius-sm: 8px;
+    --al-tap: 44px;
+
+    display: block;
+    font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--al-ink-1);
+    line-height: 1.55;
+}
+
+.al {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 1180px;
+    margin: 0 auto;
+}
+
+// ----------------------------------------------------------------------------
+// Header
+// ----------------------------------------------------------------------------
+
+.al__header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    background: linear-gradient(135deg, var(--al-brand-soft), #fff 70%);
+    border: 1px solid var(--al-border);
+    border-radius: var(--al-radius-lg);
+    box-shadow: 0 1px 2px rgba(12, 27, 42, .04);
+}
+
+.al__icon {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--al-brand), var(--al-brand-strong));
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 22px rgba(15, 76, 129, .25);
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.al__header-text {
+    min-width: 0;
+}
+
+.al__eyebrow {
+    display: block;
+    font-size: .75rem;
+    color: var(--al-brand);
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.al__title {
+    margin: 0 0 4px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--al-ink-1);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.al__subtitle {
+    margin: 0;
+    color: var(--al-ink-3);
+    font-size: 1rem;
+}
+
+.al__add {
+    min-height: var(--al-tap);
+    font-size: 1rem;
+    font-weight: 700;
+    padding-inline: 22px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    svg { width: 14px; height: 14px; }
+}
+
+// ----------------------------------------------------------------------------
+// Search panel
+// ----------------------------------------------------------------------------
+
+.al-search {
+    background: var(--al-surface);
+    border: 1px solid var(--al-border);
+    border-radius: var(--al-radius-lg);
+    padding: 20px 22px;
+    box-shadow: 0 1px 2px rgba(12, 27, 42, .04);
+}
+
+.al-search__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--al-border);
+}
+
+.al-search__icon {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--al-brand-soft);
+    color: var(--al-brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg { width: 16px; height: 16px; }
+}
+
+.al-search__title {
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: var(--al-ink-1);
+    line-height: 1.2;
+}
+
+.al-search__hint {
+    margin: 2px 0 0;
+    color: var(--al-ink-3);
+    font-size: .9375rem;
+}
+
+.al-search__form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.al-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.al-label {
+    font-size: .8125rem;
+    color: var(--al-ink-2);
+    font-weight: 700;
+    letter-spacing: .02em;
+}
+
+.al-input {
+    width: 100%;
+    min-height: var(--al-tap);
+    padding: 10px 12px;
+    border: 1.5px solid var(--al-border);
+    border-radius: var(--al-radius-md);
+    background: var(--al-surface);
+    color: var(--al-ink-1);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    -webkit-appearance: none;
+    appearance: none;
+
+    &:focus {
+        outline: none;
+        border-color: var(--al-brand);
+        box-shadow: 0 0 0 3px rgba(15, 76, 129, .15);
+    }
+}
+
+.al-search__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.al-clear {
+    appearance: none;
+    background: transparent;
+    border: 1.5px solid var(--al-border);
+    color: var(--al-ink-2);
+    padding: 10px 18px;
+    min-height: var(--al-tap);
+    border-radius: var(--al-radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+
+    &:hover {
+        background: var(--al-brand-soft);
+        color: var(--al-brand-strong);
+        border-color: var(--al-brand);
+    }
+}
+
+.al-search__submit {
+    min-height: var(--al-tap);
+    padding-inline: 26px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    svg { width: 14px; height: 14px; }
+}
+
+// ----------------------------------------------------------------------------
+// Results — card-list "table"
+// ----------------------------------------------------------------------------
+
+.al-results {
+    background: var(--al-surface);
+    border: 1px solid var(--al-border);
+    border-radius: var(--al-radius-lg);
+    padding: 14px;
+    box-shadow: 0 1px 2px rgba(12, 27, 42, .04);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.al-results__head {
+    display: grid;
+    grid-template-columns: 2.6fr 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 4px 16px;
+    color: var(--al-ink-3);
+    font-size: .6875rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.al-results__head-actions {
+    text-align: right;
+}
+
+.al-row {
+    display: grid;
+    grid-template-columns: 2.6fr 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    background: var(--al-surface);
+    border: 1px solid var(--al-border);
+    border-radius: var(--al-radius-md);
+    transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+
+    &:hover {
+        border-color: var(--al-brand);
+        background: var(--al-brand-soft);
+        box-shadow: 0 4px 12px rgba(15, 76, 129, .08);
+    }
+}
+
+.al-row__main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.al-avatar {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--al-brand), var(--al-brand-strong));
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 2px 6px rgba(15, 76, 129, .2);
+
+    svg { width: 18px; height: 18px; }
+}
+
+.al-row__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+    min-width: 0;
+}
+
+.al-row__name {
+    font-weight: 700;
+    color: var(--al-ink-1);
+    font-size: 1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.al-row__sub {
+    color: var(--al-ink-3);
+    font-size: .8125rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.al-row__date {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.al-date {
+    color: var(--al-ink-1);
+    font-weight: 600;
+    font-size: .9375rem;
+}
+
+.al-date__time {
+    color: var(--al-ink-3);
+    font-size: .75rem;
+    margin-top: 2px;
+}
+
+.al-row__actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.al-action {
+    appearance: none;
+    background: transparent;
+    border: 1.5px solid var(--al-border);
+    color: var(--al-ink-2);
+    padding: 8px 14px;
+    border-radius: var(--al-radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    font-size: .9375rem;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+
+    svg { width: 12px; height: 12px; }
+
+    &:hover {
+        background: var(--al-brand-soft);
+        color: var(--al-brand-strong);
+        border-color: var(--al-brand);
+    }
+}
+
+// ----------------------------------------------------------------------------
+// Empty state
+// ----------------------------------------------------------------------------
+
+.al-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    padding: clamp(28px, 4vw, 44px) 16px;
+    color: var(--al-ink-3);
+}
+
+.al-empty__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--al-brand-soft);
+    color: var(--al-brand);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+
+    svg { width: 28px; height: 28px; }
+}
+
+.al-empty__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--al-ink-1);
+}
+
+.al-empty__msg {
+    margin: 0;
+    color: var(--al-ink-3);
+    font-size: .9375rem;
+}
+
+// ----------------------------------------------------------------------------
+// FAB (mobile only)
+// ----------------------------------------------------------------------------
+
+.al-fab {
+    display: none;
+}
+
+// ----------------------------------------------------------------------------
+// Modal headers
+// ----------------------------------------------------------------------------
+
+::ng-deep #createinsuranceComany .modal-header h3,
+::ng-deep #editinsuranceComany .modal-header h3 {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--al-ink-1);
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        color: var(--al-brand);
+    }
+}
+
+::ng-deep #createinsuranceComany .modal-content,
+::ng-deep #editinsuranceComany .modal-content {
+    border: 0;
+    border-radius: var(--al-radius-lg);
+    box-shadow: 0 24px 60px rgba(12, 27, 42, .25);
+}
+
+// ============================================================================
+// Mobile (≤ 720px)
+// ============================================================================
+@media (max-width: 720px) {
+    .al__header {
+        grid-template-columns: auto 1fr;
+        padding: 16px;
+    }
+
+    .al__add {
+        display: none;
+    }
+
+    .al__icon { width: 44px; height: 44px; }
+    .al__icon svg { width: 20px; height: 20px; }
+    .al__title { font-size: 1.25rem; }
+
+    .al-search { padding: 16px; }
+    .al-search__actions { flex-direction: column-reverse; }
+    .al-clear, .al-search__submit { width: 100%; justify-content: center; }
+
+    .al-results__head { display: none; }
+
+    .al-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .al-row__date {
+        padding-left: 52px;
+    }
+
+    .al-row__actions {
+        padding-left: 52px;
+        justify-content: stretch;
+    }
+
+    .al-action {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .al-fab {
+        display: inline-flex;
+        position: fixed;
+        bottom: 22px;
+        right: 22px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--al-brand);
+        color: #fff;
+        border: 0;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 12px 28px rgba(15, 76, 129, .35);
+        cursor: pointer;
+        z-index: 1000;
+
+        svg { width: 20px; height: 20px; }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+}

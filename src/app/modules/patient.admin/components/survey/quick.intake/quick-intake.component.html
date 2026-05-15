@@ -1,0 +1,53 @@
+<div class="intake-container">
+    <h1 class="title">Quick Intake</h1>
+    <p class="subtitle">Create a patient record quickly and start the journey</p>
+  
+    <form [formGroup]="intakeForm" class="intake-form">
+      <div class="form-group">
+        <label>First Name</label>
+        <input type="text" formControlName="firstName" placeholder="Enter first name" />
+        <div class="error" *ngIf="f.firstName.touched && f.firstName.invalid">
+          First name is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label>Middle Name</label>
+        <input type="text" formControlName="middleName" placeholder="Enter middle name" />
+      </div>
+  
+      <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" formControlName="lastName" placeholder="Enter last name" />
+        <div class="error" *ngIf="f.lastName.touched && f.lastName.invalid">
+          Last name is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" formControlName="phone" placeholder="Enter phone number" />
+        <div class="error" *ngIf="f.phone.touched && f.phone.invalid">
+          Valid phone number is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="email" placeholder="Enter email" />
+        <div class="error" *ngIf="f.email.touched && f.email.invalid">
+          Valid email is required
+        </div>
+      </div>
+  
+      <div class="actions">
+        <button type="button" class="btn primary" (click)="saveAndStartSurvey()">
+          Save & Start Survey
+        </button>
+        <button type="button" class="btn secondary" (click)="saveAndStartSurveyLater()">
+          Save & Start Survey Later
+        </button>
+      </div>
+    </form>
+  </div>
+  

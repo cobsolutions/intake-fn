@@ -1,26 +1,827 @@
-select[formControlName="type"] {
-    background-color: white;
-    transition: background-color 0.3s ease;
-  }
-  
-  select[formControlName="type"]:focus {
-    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
-  }
+/* ==========================================================================
+   Patient Insurance — clinical, senior-friendly coverage flow
+   ========================================================================== */
 
-  select[formControlName="commercial-ploicyHolder-relationship"] {
-    background-color: white;
-    transition: background-color 0.3s ease;
-  }
-  
-  select[formControlName="commercial-ploicyHolder-relationship"]:focus {
-    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
-  }
+:host {
+    --ins-ink-1: #0c1b2a;
+    --ins-ink-2: #2c3e54;
+    --ins-ink-3: #5a6a7e;
+    --ins-bg: #f4f7fb;
+    --ins-surface: #ffffff;
+    --ins-border: #d8e0ea;
+    --ins-border-strong: #b8c4d4;
+    --ins-brand: #c46a00;
+    --ins-brand-strong: #94500a;
+    --ins-brand-soft: #fbf0df;
+    --ins-blue: #0f4c81;
+    --ins-blue-soft: #e6eff8;
+    --ins-success: #1f8a4c;
+    --ins-success-soft: #e6f4ec;
+    --ins-danger: #c0392b;
+    --ins-danger-soft: #fbe8e6;
 
-  select[formControlName="compensation-case-status"] {
-    background-color: white;
-    transition: background-color 0.3s ease;
-  }
-  
-  select[formControlName="compensation-case-status"]:focus {
-    background-color: #f0f0f0; /* Light gray when select is focused (opened) */
-  }
+    --ins-radius-lg: 16px;
+    --ins-radius-md: 12px;
+    --ins-radius-sm: 8px;
+    --ins-tap: 48px;
+
+    display: block;
+    font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 1.0625rem;
+    color: var(--ins-ink-1);
+    line-height: 1.6;
+}
+
+.ins {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* ---------- Header -------------------------------------------------------- */
+
+.ins__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.ins__icon {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--ins-brand), var(--ins-brand-strong));
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 22px rgba(196, 106, 0, .3);
+}
+
+.ins__icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.ins__title {
+    margin: 0 0 4px;
+    font-size: 1.375rem;
+    font-weight: 800;
+    color: var(--ins-ink-1);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+
+.ins__subtitle {
+    margin: 0;
+    color: var(--ins-ink-3);
+    font-size: 1rem;
+}
+
+.ins__callout { border-radius: var(--ins-radius-md); }
+
+/* ---------- Question card ------------------------------------------------- */
+
+.ins__sections {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ins-q {
+    background: var(--ins-surface);
+    border: 1px solid var(--ins-border);
+    border-radius: var(--ins-radius-lg);
+    padding: 20px 22px;
+    box-shadow: 0 1px 2px rgba(12, 27, 42, .04);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.ins-q__head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ins-q__num {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--ins-blue-soft);
+    color: var(--ins-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.ins-q__num svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ins-q__title-wrap { min-width: 0; }
+
+.ins-q__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--ins-ink-1);
+    line-height: 1.35;
+}
+
+.ins-q__hint {
+    margin: 4px 0 0;
+    color: var(--ins-ink-3);
+    font-size: .9375rem;
+}
+
+.ins-q__pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: .6875rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.ins-q__pill.is-required {
+    background: var(--ins-danger-soft);
+    color: var(--ins-danger);
+    border: 1px solid rgba(192, 57, 43, .25);
+}
+
+/* ---------- Coverage tile grid -------------------------------------------- */
+
+.cov-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.cov-tile {
+    position: relative;
+    cursor: pointer;
+    border: 2px solid var(--ins-border);
+    border-radius: var(--ins-radius-md);
+    background: var(--ins-surface);
+    padding: 18px 12px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-height: 120px;
+    transition: border-color .15s ease, background .15s ease, box-shadow .15s ease, transform .1s ease;
+}
+
+.cov-tile:hover {
+    border-color: var(--ins-brand);
+    background: var(--ins-brand-soft);
+    transform: translateY(-1px);
+}
+
+.cov-tile.is-selected {
+    border-color: var(--ins-brand);
+    background: var(--ins-brand-soft);
+    box-shadow: 0 0 0 4px rgba(196, 106, 0, .12);
+}
+
+.cov-tile input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+.cov-tile__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--ins-blue-soft);
+    color: var(--ins-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cov-tile.is-selected .cov-tile__icon {
+    background: var(--ins-brand);
+    color: #fff;
+}
+
+.cov-tile__icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.cov-tile__label {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--ins-ink-1);
+    line-height: 1.2;
+}
+
+.cov-tile__sub {
+    font-size: .8125rem;
+    color: var(--ins-ink-3);
+    line-height: 1.2;
+}
+
+/* ---------- Form sections ------------------------------------------------ */
+
+.ins-form {
+    background: var(--ins-surface);
+    border: 1px solid var(--ins-border);
+    border-radius: var(--ins-radius-lg);
+    box-shadow: 0 4px 14px rgba(12, 27, 42, .06);
+    overflow: hidden;
+    animation: insSlide .25s ease;
+}
+
+@keyframes insSlide {
+    from { transform: translateY(8px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+.ins-form__head {
+    background: linear-gradient(135deg, var(--ins-brand-soft), #fff 70%);
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--ins-border);
+}
+
+.ins-form__title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: var(--ins-brand-strong);
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ins-form__title svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ins-form__body {
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ---------- Field --------------------------------------------------------- */
+
+.ins-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ins-field__label {
+    font-size: .9375rem;
+    font-weight: 700;
+    color: var(--ins-ink-2);
+}
+
+.ins-field__hint {
+    margin: -2px 0 4px;
+    font-size: .875rem;
+    color: var(--ins-ink-3);
+}
+
+.ins-field__req {
+    color: var(--ins-danger);
+    margin-left: 2px;
+}
+
+.ins-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.ins-input {
+    width: 100%;
+    min-height: var(--ins-tap);
+    padding: 12px 14px;
+    border: 2px solid var(--ins-border);
+    border-radius: var(--ins-radius-md);
+    background: var(--ins-surface);
+    color: var(--ins-ink-1);
+    font-size: 1.0625rem;
+    transition: border-color .15s ease, box-shadow .15s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    font-family: inherit;
+}
+
+.ins-input:focus {
+    outline: none;
+    border-color: var(--ins-blue);
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, .18);
+}
+
+.ins-input.is-invalid {
+    border-color: var(--ins-danger);
+    background: var(--ins-danger-soft);
+}
+
+.ins-name-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.ins-error {
+    color: var(--ins-danger);
+    font-size: .9375rem;
+    font-weight: 500;
+}
+
+/* ---------- Relationship tiles (Self/Spouse/Child/Other) ---------------- */
+
+.rel-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.rel-grid--2 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.rel-tile {
+    position: relative;
+    cursor: pointer;
+    border: 2px solid var(--ins-border);
+    border-radius: var(--ins-radius-md);
+    background: var(--ins-surface);
+    padding: 14px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-height: 92px;
+    transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+
+.rel-tile:hover {
+    border-color: var(--ins-blue);
+    background: var(--ins-blue-soft);
+}
+
+.rel-tile.is-selected {
+    border-color: var(--ins-blue);
+    background: var(--ins-blue-soft);
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, .15);
+}
+
+.rel-tile input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+.rel-tile__icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--ins-blue-soft);
+    color: var(--ins-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rel-tile.is-selected .rel-tile__icon {
+    background: var(--ins-blue);
+    color: #fff;
+}
+
+.rel-tile__icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.rel-tile__label {
+    font-weight: 700;
+    font-size: .9375rem;
+    color: var(--ins-ink-1);
+    line-height: 1.2;
+}
+
+.rel-tile__sub {
+    font-size: .75rem;
+    color: var(--ins-ink-3);
+}
+
+/* ---------- Subform ------------------------------------------------------ */
+
+.ins-subform {
+    background: linear-gradient(180deg, #fbfcfe, #f4f7fb);
+    border: 1px solid var(--ins-border);
+    border-left: 3px solid var(--ins-blue);
+    border-radius: var(--ins-radius-md);
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.ins-subform__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--ins-blue);
+    letter-spacing: -0.01em;
+}
+
+/* ---------- Toggle (secondary insurance) -------------------------------- */
+
+.ins-toggle {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 2px solid var(--ins-border);
+    border-radius: var(--ins-radius-md);
+    background: var(--ins-surface);
+    cursor: pointer;
+    min-height: var(--ins-tap);
+    transition: border-color .15s ease, background .15s ease;
+}
+
+.ins-toggle:hover { border-color: var(--ins-blue); }
+
+.ins-toggle:has(input:checked) {
+    border-color: var(--ins-blue);
+    background: var(--ins-blue-soft);
+}
+
+.ins-toggle input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+}
+
+.ins-toggle__track {
+    flex: none;
+    width: 48px;
+    height: 26px;
+    border-radius: 999px;
+    background: var(--ins-border-strong);
+    position: relative;
+    transition: background .2s ease;
+}
+
+.ins-toggle__thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #fff;
+    transition: left .2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+}
+
+.ins-toggle:has(input:checked) .ins-toggle__track { background: var(--ins-blue); }
+.ins-toggle:has(input:checked) .ins-toggle__thumb { left: 24px; }
+
+.ins-toggle__label {
+    font-size: 1rem;
+    color: var(--ins-ink-1);
+    line-height: 1.4;
+}
+
+.ins-toggle__label strong {
+    color: var(--ins-ink-1);
+}
+
+/* ---------- Add button -------------------------------------------------- */
+
+.ins-add {
+    align-self: stretch;
+    min-height: 56px;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    padding-inline: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.ins-add svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* ---------- Coverage list (already added) ------------------------------ */
+
+.ins-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ins-list__item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--ins-success-soft);
+    border: 1px solid rgba(31, 138, 76, .35);
+    border-radius: var(--ins-radius-md);
+}
+
+.ins-list__icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ins-success);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+}
+
+.ins-list__icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ins-list__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    line-height: 1.3;
+}
+
+.ins-list__type {
+    font-weight: 700;
+    color: var(--ins-ink-1);
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ins-list__badge {
+    background: var(--ins-blue);
+    color: #fff;
+    font-size: .6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.ins-list__meta {
+    color: var(--ins-ink-3);
+    font-size: .9375rem;
+    word-break: break-word;
+}
+
+.ins-list__remove {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--ins-border);
+    color: var(--ins-ink-3);
+    padding: 8px 14px;
+    border-radius: var(--ins-radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.ins-list__remove:hover {
+    background: var(--ins-danger-soft);
+    color: var(--ins-danger);
+    border-color: rgba(192, 57, 43, .35);
+}
+
+.ins-list__remove svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* ---------- Self-pay confirmation ------------------------------------- */
+
+.ins-form--selfpay {
+    border-color: rgba(31, 138, 76, .35);
+    background: linear-gradient(180deg, var(--ins-success-soft), #fff 80%);
+    box-shadow: 0 6px 18px rgba(31, 138, 76, .1);
+}
+
+.selfpay {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 22px;
+}
+
+.selfpay__icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--ins-success);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 18px rgba(31, 138, 76, .3);
+    flex: none;
+}
+
+.selfpay__icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.selfpay__title {
+    margin: 0 0 4px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--ins-success);
+    letter-spacing: -0.01em;
+}
+
+.selfpay__msg {
+    margin: 0;
+    color: var(--ins-ink-2);
+    font-size: 1rem;
+}
+
+/* ---------- ng-multiselect-dropdown skin ------------------------------ */
+
+.ins-multiselect ::ng-deep .multiselect-dropdown {
+    font-family: inherit;
+}
+
+.ins-multiselect ::ng-deep .multiselect-dropdown .dropdown-btn {
+    min-height: var(--ins-tap);
+    padding: 10px 14px !important;
+    border: 2px solid var(--ins-border) !important;
+    border-radius: var(--ins-radius-md) !important;
+    font-size: 1rem !important;
+    color: var(--ins-ink-1) !important;
+    background: var(--ins-surface) !important;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.ins-multiselect ::ng-deep .multiselect-dropdown .dropdown-btn:focus,
+.ins-multiselect ::ng-deep .multiselect-dropdown .dropdown-btn:focus-within {
+    border-color: var(--ins-blue) !important;
+    box-shadow: 0 0 0 3px rgba(15, 76, 129, .18);
+    outline: none;
+}
+
+.ins-multiselect.is-invalid ::ng-deep .multiselect-dropdown .dropdown-btn {
+    border-color: var(--ins-danger) !important;
+    background: var(--ins-danger-soft) !important;
+}
+
+.ins-multiselect ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item {
+    background: var(--ins-blue) !important;
+    border-color: var(--ins-blue) !important;
+    border-radius: 999px !important;
+    padding: 4px 12px !important;
+    font-weight: 600;
+    margin-right: 6px !important;
+}
+
+.ins-multiselect ::ng-deep .dropdown-list {
+    border: 1px solid var(--ins-border) !important;
+    border-radius: var(--ins-radius-md) !important;
+    box-shadow: 0 12px 28px rgba(12, 27, 42, .12) !important;
+    margin-top: 4px;
+}
+
+.ins-multiselect ::ng-deep .dropdown-list .item1 {
+    padding: 8px 14px !important;
+}
+
+.ins-multiselect ::ng-deep .filter-textbox input {
+    min-height: 40px;
+    font-size: 1rem !important;
+    padding: 8px 12px !important;
+}
+
+/* ---------- Nav -------------------------------------------------------- */
+
+.ins__nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 4px;
+}
+
+.ins__back,
+.ins__next {
+    min-height: var(--ins-tap);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    padding-inline: 28px;
+}
+
+/* ==========================================================================
+   Mobile (≤ 720px)
+   ========================================================================== */
+@media (max-width: 720px) {
+    .ins__header { gap: 12px; align-items: flex-start; }
+    .ins__icon { width: 44px; height: 44px; }
+    .ins__icon svg { width: 20px; height: 20px; }
+    .ins__title { font-size: 1.1875rem; }
+
+    .ins-q { padding: 16px; }
+    .ins-q__head { grid-template-columns: auto 1fr; }
+    .ins-q__pill { grid-column: 2 / -1; justify-self: start; margin-top: 4px; }
+
+    .cov-grid { grid-template-columns: 1fr 1fr; }
+    .cov-tile { min-height: 110px; padding: 14px 10px; }
+
+    .ins-form__head { padding: 14px 16px; }
+    .ins-form__body { padding: 16px; }
+
+    .ins-field-row {
+        grid-template-columns: 1fr;
+    }
+
+    .ins-name-row {
+        grid-template-columns: 1fr;
+    }
+
+    .rel-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .rel-tile {
+        min-height: 80px;
+    }
+
+    .ins-list__item {
+        grid-template-columns: auto 1fr;
+        gap: 10px;
+    }
+
+    .ins-list__remove {
+        grid-column: 1 / -1;
+        justify-self: stretch;
+        justify-content: center;
+    }
+
+    .selfpay { flex-direction: column; text-align: center; }
+
+    .ins__nav {
+        flex-direction: column-reverse;
+        gap: 10px;
+    }
+
+    .ins__back,
+    .ins__next {
+        width: 100%;
+    }
+}
+
+@media (max-width: 380px) {
+    .cov-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+    }
+}

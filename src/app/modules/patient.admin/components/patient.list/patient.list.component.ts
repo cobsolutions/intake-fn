@@ -25,6 +25,7 @@ export interface IParams {
 })
 export class PatientListComponent implements OnInit, OnDestroy {
 
+
   noShow: BehaviorSubject<boolean | null>;
   constructor(private patientListService: PatientListService
     , private reportingService: PatientReportingService
@@ -37,7 +38,9 @@ export class PatientListComponent implements OnInit, OnDestroy {
   patientSearchCriteria: PatientSearchCriteria = { isSchedule: undefined }
   isSchedulePatient: boolean;
   editPatientProvider: boolean;
+  isPatientSurvey: boolean = false
   selectedPatientId?: number
+  selectedPatient: any
   public customRanges = {
     Today: [new Date(), new Date()],
     Yesterday: [
@@ -296,6 +299,13 @@ export class PatientListComponent implements OnInit, OnDestroy {
   details_visible = Object.create({});
   toggleDetails(item: any) {
     this.details_visible[item] = !this.details_visible[item];
+  }
+  openSurvey(item: any) {
+    this.selectedPatient = item;
+    this.isPatientSurvey = true;
+  }
+  toggleSurvey() {
+    this.isPatientSurvey = !this.isPatientSurvey;
   }
   isSchedule(item: any) {
     this.patientListService.updatePatientSchedule(item.patientId, item.schedule).subscribe(result => {

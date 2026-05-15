@@ -1,24 +1,136 @@
-<div class="mb-2">
-    <div *ngIf="!isValid">
-        <label class="text-danger fw-normal fst-italic">Select Clinic to generate digital intake </label>
-    </div>
-    <select aria-label="Default select example" cSelect [(ngModel)]="selectedClinicUUID">
-        <option selected disabled value="undefined">Select Clinic </option>
-        <option *ngFor="let clinic of (clinics$ |async)" [value]="clinic.uuid">
-            {{clinic.name}}
-        </option>
-    </select>
-</div>
-<div class="text-center">
-    <button cButton (click)="generateQRCode()">Generate</button>
-</div>
-<hr />
-<div *ngIf="isGenerated">
-    <p class="text-medium-emphasis small">
-        Scan the QR code by tablet to open Digital Intake Submission.Note QR-Code will be expired after one day
-    </p>
-    <div class="text-center">
-        <qrcode *ngIf="isGenerated" [qrdata]="submissionURL" [width]="300" [errorCorrectionLevel]="'H'">
-        </qrcode>
-    </div>
+<div class="qr-flow">
+
+    <!-- ============================================================== -->
+    <!-- Step 1: Pick clinic                                             -->
+    <!-- ============================================================== -->
+    <section class="qr-step" *ngIf="!isGenerated">
+        <header class="qr-step__head">
+            <span class="qr-step__num">1</span>
+            <div class="qr-step__title-wrap">
+                <h4 class="qr-step__title">Pick a clinic</h4>
+                <p class="qr-step__hint">Select the clinic this patient is being seen at.</p>
+            </div>
+            <span class="qr-step__pill">
+                {{ (filteredClinics$ | async)?.length || 0 }} available
+            </span>
+        </header>
+
+        <div class="qr-search">
+            <span class="qr-search__icon" aria-hidden="true">
+                <svg cIcon name="cilSearch"></svg>
+            </span>
+            <input class="qr-search__input"
+                   type="search"
+                   placeholder="Search by clinic name or address"
+                   (input)="onSearchInput($event)" />
+        </div>
+
+        <div class="qr-error" *ngIf="!isValid">
+            <svg cIcon name="cilFlagAlt" aria-hidden="true"></svg>
+            Please pick a clinic before generating the code.
+        </div>
+
+        <div class="qr-clinics" [class.is-loading]="loadingClinics">
+            <div class="qr-clinics__empty" *ngIf="loadingClinics">
+                <span class="qr-spinner"></span>
+                <span>Loading clinics…</span>
+            </div>
+
+            <ng-container *ngIf="!loadingClinics">
+                <button type="button"
+                        class="clinic-tile"
+                        *ngFor="let clinic of filteredClinics$ | async"
+                        [class.is-selected]="isClinicSelected(clinic)"
+                        (click)="selectClinic(clinic)">
+                    <span class="clinic-tile__icon" aria-hidden="true">
+                        <svg cIcon name="cilLocationPin"></svg>
+                    </span>
+                    <span class="clinic-tile__text">
+                        <span class="clinic-tile__name">{{ clinic.name }}</span>
+                        <span class="clinic-tile__address" *ngIf="clinic.address">{{ clinic.address }}</span>
+                    </span>
+                    <span class="clinic-tile__check" aria-hidden="true">
+                        <svg cIcon name="cilCheck"></svg>
+                    </span>
+                </button>
+
+                <div class="qr-clinics__empty" *ngIf="(filteredClinics$ | async)?.length === 0">
+                    <svg cIcon name="cilSad" aria-hidden="true"></svg>
+                    <span>No clinics match your search.</span>
+                </div>
+            </ng-container>
+        </div>
+
+        <div class="qr-step__cta">
+            <button type="button" cButton size="lg"
+                    class="qr-generate"
+                    (click)="generateQRCode()"
+                    [disabled]="isGenerating || !selectedClinicUUID"
+                    cLoadingButton [loading]="isGenerating">
+                <svg cIcon name="cilSend" aria-hidden="true"></svg>
+                Generate QR code
+            </button>
+        </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- Step 2: QR code result                                          -->
+    <!-- ============================================================== -->
+    <section class="qr-result" *ngIf="isGenerated">
+        <header class="qr-result__head">
+            <span class="qr-result__icon" aria-hidden="true">
+                <svg cIcon name="cilCheck"></svg>
+            </span>
+            <div class="qr-result__title-wrap">
+                <h4 class="qr-result__title">QR code is ready</h4>
+                <p class="qr-result__hint" *ngIf="selectedClinic?.name">
+                    For <strong>{{ selectedClinic?.name }}</strong>
+                </p>
+            </div>
+            <span class="qr-result__expiry">
+                <svg cIcon name="cilCalendar" aria-hidden="true"></svg>
+                Expires in 24 hours
+            </span>
+        </header>
+
+        <div class="qr-result__body">
+            <div class="qr-frame">
+                <span class="qr-frame__corner qr-frame__corner--tl"></span>
+                <span class="qr-frame__corner qr-frame__corner--tr"></span>
+                <span class="qr-frame__corner qr-frame__corner--bl"></span>
+                <span class="qr-frame__corner qr-frame__corner--br"></span>
+                <qrcode [qrdata]="submissionURL" [width]="280" [errorCorrectionLevel]="'H'"
+                        [margin]="2" cssClass="qr-image">
+                </qrcode>
+            </div>
+
+            <ol class="qr-instructions" aria-label="How to use">
+                <li>
+                    <span class="qr-instructions__num">1</span>
+                    <span>Hand a tablet or phone to the patient.</span>
+                </li>
+                <li>
+                    <span class="qr-instructions__num">2</span>
+                    <span>Have them open the camera and point it at this code.</span>
+                </li>
+                <li>
+                    <span class="qr-instructions__num">3</span>
+                    <span>Tap the link that appears to start the intake.</span>
+                </li>
+            </ol>
+        </div>
+
+        <div class="qr-result__actions">
+            <button type="button" cButton variant="outline" size="lg" (click)="changeClinic()">
+                <svg cIcon name="cilArrowCircleLeft" aria-hidden="true"></svg>
+                Change clinic
+            </button>
+            <button type="button" cButton size="lg" (click)="regenerate()" [disabled]="isGenerating"
+                    cLoadingButton [loading]="isGenerating">
+                <svg cIcon name="cilControl" aria-hidden="true"></svg>
+                Generate new code
+            </button>
+        </div>
+    </section>
+
 </div>

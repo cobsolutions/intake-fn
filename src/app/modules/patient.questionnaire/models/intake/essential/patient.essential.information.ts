@@ -4,10 +4,12 @@ import { PatientEmployment } from "./patient.employment";
 import { PatientName } from "./patient.name";
 import { PatientPhone } from "./patient.phone";
 import { PatientAddress } from "./patienta.ddress";
+import { PatientBasicAddress } from 'src/app/modules/patient.digital.intake/models/patient.address';
 
 export interface PatientEssentialInformation {
     patientName?: PatientName;
     dateOfBirth?: number;
+    patientAddress?: PatientBasicAddress,
     birthDate_date?:Date;
     birthDate_str?:string
     gender?: string;
@@ -17,6 +19,6 @@ export interface PatientEssentialInformation {
     maritalStatus?: string;
     patientEmergencyContact?: PatientEmergencyContact;
     patientEmployment?: PatientEmployment;
-    patientAddress? : Address
-    address?:PatientAddress
+    //patientAddress? : Address
+    address?:PatientAddress;
   }

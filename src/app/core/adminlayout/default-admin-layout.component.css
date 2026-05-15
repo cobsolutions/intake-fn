@@ -1,0 +1,2 @@
+/* Sidebar styling lives in src/scss/_custom.scss so the rules cascade
+   naturally without fighting view encapsulation or CoreUI defaults. */

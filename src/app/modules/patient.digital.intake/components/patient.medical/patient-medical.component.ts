@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import entityValues from 'src/app/modules/patient.admin/components/reports/_entity.values';
 import { Provider } from '../../models/provider';
 import { DigitalIntakeService } from '../../services/digitalIntake/digital-intake.service';
@@ -32,6 +32,14 @@ export class PatientMedicalComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.digitalIntakeService.loadedPatient$.pipe().pipe(
+      filter(data => data !== null)
+    ).subscribe(patient => {
+      const patientIncomingSource: any = patient.patientIncomingSource
+      if (patientIncomingSource !== null) {
+        this.form.get('medical')?.get('referringEntity')?.setValue(patientIncomingSource)
+      }
+    })
     this.form.get('medical')?.get('providerSearch')?.valueChanges.subscribe(res => {
       if (this.form.get('medical')?.get('providerNPI')?.value)
         this.form.get('medical')?.get('providerNPI')?.setValue(null)

@@ -9,21 +9,26 @@ interface RenderedClinic {
   country?: string | null,
   ps?: string | null,
   zipcode?: string | null
-  createdAt?:number
+  createdAt?: number
 }
 @Component({
   selector: 'app-clinic.list',
   templateUrl: './clinic.list.component.html',
-  styleUrls: ['./clinic.list.component.css']
+  styleUrls: ['./clinic.list.component.scss']
 })
 
 export class ClinicListComponent implements OnInit {
+  testClinicId:number = 10
   errorMessage: string | null = '';
   clinics: RenderedClinic[] | null = new Array();
+  originalClinics: any[] = [];
   isCreateClinic: boolean = false;
+  isSurvey: boolean = false;
   isEditClinic: boolean = false;
   isEditClinicLocation: boolean = false;
   selectedClinicId: number;
+  searchQuery: string = '';
+  filteredClinics: RenderedClinic[] | null | undefined = this.clinics;
   constructor(private router: Router, private clinicService: ClinicService) { }
 
   ngOnInit(): void {
@@ -33,8 +38,10 @@ export class ClinicListComponent implements OnInit {
   getClinics() {
     this.clinicService.get().subscribe(response => {
       this.clinics = [];
+      this.originalClinics = [];
       response.body?.forEach(element => {
         this.clinics?.push(this.constructClinic(element))
+        this.originalClinics.push(this.constructClinic(element))
       });
     },
       error => {
@@ -52,7 +59,7 @@ export class ClinicListComponent implements OnInit {
       id: element.id,
       name: element.name,
       address: address,
-      createdAt:element.createdAt
+      createdAt: element.createdAt
     }
     return renderedClinic;
   }
@@ -72,8 +79,14 @@ export class ClinicListComponent implements OnInit {
   showCreateClinic() {
     this.isCreateClinic = true;
   }
+  showPatientPelvicSurvey() {
+    this.isSurvey = true;
+  }
   toggleCreateClinic() {
     this.isCreateClinic = !this.isCreateClinic;
+  }
+  togglePatientPelvicSurvey() {
+    this.isSurvey = !this.isSurvey;
   }
   changeClinicVisibility(event: any) {
     if (event === 'close-create')
@@ -82,8 +95,8 @@ export class ClinicListComponent implements OnInit {
       this.isEditClinic = false;
     this.getClinics();
   }
-  changeClinicLocationVisibility(event: any){
-      if(event ==='close')
+  changeClinicLocationVisibility(event: any) {
+    if (event === 'close')
       this.isEditClinicLocation = false
   }
 
@@ -100,5 +113,23 @@ export class ClinicListComponent implements OnInit {
   }
   toggleEditClinicLocation() {
     this.isEditClinicLocation = !this.isEditClinicLocation;
+  }
+  onSearchChange(): void {
+    const query = (this.searchQuery || '').trim().toLowerCase();
+
+    if (!query) {
+      // restore full list if search box is empty
+      this.clinics = [...this.originalClinics];
+      return;
+    }
+
+    this.clinics = this.originalClinics.filter(clinic =>
+      clinic.name.toLowerCase().includes(query) ||
+      clinic.address.toLowerCase().includes(query)
+    );
+  }
+
+  onSearchClick(): void {
+    this.onSearchChange();
   }
 }

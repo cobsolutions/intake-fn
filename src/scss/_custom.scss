@@ -1,2 +1,306 @@
-// Here you can add other styles
+// ============================================================================
+//  Sidebar — clinical light theme with brand-blue accents
+//  Overrides CoreUI's CSS custom properties (the documented theming hook),
+//  then adds a few targeted refinements for spacing, indicators, and the
+//  collapsible-group rail.
+// ============================================================================
 
+$side-ink-1: #0c1b2a;
+$side-ink-2: #2c3e54;
+$side-ink-3: #5a6a7e;
+$side-ink-4: #8a98aa;
+$side-bg: #ffffff;
+$side-border: #e2e8f0;
+$side-brand: #0f4c81;
+$side-brand-strong: #0a3a64;
+$side-brand-soft: #e6eff8;
+$side-accent: #1f8a4c;
+
+// ----------------------------------------------------------------------------
+// CSS variable overrides — these cascade into every CoreUI sidebar.
+// ----------------------------------------------------------------------------
+
+.sidebar:not(.sidebar-end) {
+    --cui-sidebar-bg: #{$side-bg};
+    --cui-sidebar-color: #{$side-ink-2};
+    --cui-sidebar-border-color: #{$side-border};
+    --cui-sidebar-border-width: 1px;
+
+    --cui-sidebar-brand-color: #{$side-brand-strong};
+    --cui-sidebar-brand-bg: #{$side-brand-soft};
+    --cui-sidebar-brand-height: 4rem;
+
+    --cui-sidebar-header-bg: transparent;
+    --cui-sidebar-footer-bg: transparent;
+    --cui-sidebar-toggler-bg: transparent;
+
+    --cui-sidebar-nav-title-color: #{$side-brand};
+    --cui-sidebar-nav-title-padding-x: 1.4rem;
+    --cui-sidebar-nav-title-padding-y: .5rem;
+    --cui-sidebar-nav-title-margin-top: .75rem;
+
+    --cui-sidebar-nav-link-color: #{$side-ink-2};
+    --cui-sidebar-nav-link-bg: transparent;
+    --cui-sidebar-nav-link-padding-x: .9rem;
+    --cui-sidebar-nav-link-padding-y: .65rem;
+    --cui-sidebar-nav-link-border-radius: 10px;
+    --cui-sidebar-nav-link-icon-color: #{$side-ink-3};
+
+    --cui-sidebar-nav-link-hover-color: #{$side-brand-strong};
+    --cui-sidebar-nav-link-hover-bg: #{$side-brand-soft};
+    --cui-sidebar-nav-link-hover-icon-color: #{$side-brand};
+
+    --cui-sidebar-nav-link-active-color: #ffffff;
+    --cui-sidebar-nav-link-active-bg: #{$side-brand};
+    --cui-sidebar-nav-link-active-icon-color: #ffffff;
+
+    --cui-sidebar-nav-link-disabled-color: #{$side-ink-4};
+    --cui-sidebar-nav-link-disabled-icon-color: #{$side-ink-4};
+
+    --cui-sidebar-nav-icon-width: 2.4rem;
+    --cui-sidebar-nav-icon-height: 1.15rem;
+    --cui-sidebar-nav-icon-font-size: 1.15rem;
+
+    --cui-sidebar-nav-group-bg: transparent;
+    --cui-sidebar-nav-group-toggle-show-color: #{$side-brand-strong};
+
+    // Custom chevron — replaces CoreUI default
+    --cui-sidebar-nav-group-indicator: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%235a6a7e'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    --cui-sidebar-nav-group-indicator-hover: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%230f4c81'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+
+    box-shadow: 4px 0 16px rgba(12, 27, 42, .04);
+
+    // ------------------------------------------------------------------------
+    // Brand area
+    // ------------------------------------------------------------------------
+    .sidebar-brand {
+        background: linear-gradient(135deg, $side-brand-soft, #fff 70%);
+        border-bottom: 1px solid $side-border;
+        padding: .75rem 1rem;
+
+        img {
+            object-fit: contain;
+            max-height: 40px !important;
+            width: auto !important;
+            filter: drop-shadow(0 2px 4px rgba(15, 76, 129, .12));
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Nav container
+    // ------------------------------------------------------------------------
+    .sidebar-nav {
+        padding: 8px 10px 16px;
+        gap: 2px;
+    }
+
+    // ------------------------------------------------------------------------
+    // Section titles
+    // ------------------------------------------------------------------------
+    .nav-title {
+        font-size: .6875rem;
+        font-weight: 700;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: $side-brand;
+        opacity: .85;
+        padding-top: 18px;
+
+        &:first-child {
+            padding-top: 8px;
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Nav items
+    // ------------------------------------------------------------------------
+    .nav-item {
+        margin: 1px 0;
+    }
+
+    .nav-link {
+        font-weight: 600;
+        font-size: .9375rem;
+        line-height: 1.2;
+        margin: 0;
+        transition: background .15s ease, color .15s ease;
+
+        .nav-icon {
+            transition: color .15s ease, transform .15s ease;
+        }
+
+        &:hover .nav-icon {
+            transform: translateX(1px);
+        }
+
+        // Active state — solid blue gradient pill with right-edge accent bar
+        &.active {
+            background: linear-gradient(135deg, $side-brand, $side-brand-strong) !important;
+            box-shadow: 0 6px 16px rgba(15, 76, 129, .25);
+            font-weight: 700;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                right: -10px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 4px;
+                height: 22px;
+                border-radius: 4px 0 0 4px;
+                background: $side-accent;
+                box-shadow: -2px 0 8px rgba(31, 138, 76, .35);
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Collapsible groups
+    // ------------------------------------------------------------------------
+    .nav-group {
+        > .nav-link.nav-group-toggle {
+            background: transparent;
+        }
+
+        // Open group: subtle tint on the toggle so users know they're inside
+        &.show > .nav-link.nav-group-toggle:not(.active) {
+            background: rgba(15, 76, 129, .06);
+            color: $side-brand-strong !important;
+
+            .nav-icon {
+                color: $side-brand !important;
+            }
+        }
+    }
+
+    // Children — indented, smaller, with a vertical guide line on the left
+    .nav-group-items {
+        position: relative;
+        padding: 4px 0 6px 18px;
+        margin-top: 2px;
+
+        &::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            border-radius: 2px;
+            background: $side-border;
+        }
+
+        .nav-link {
+            font-size: .9rem;
+            font-weight: 500;
+            color: $side-ink-3;
+            padding-left: 1rem;
+
+            &:hover {
+                font-weight: 600;
+            }
+
+            &.active {
+                font-weight: 700;
+                color: #fff !important;
+
+                &::after {
+                    height: 18px;
+                }
+            }
+
+            // Smaller child icons
+            .nav-icon {
+                width: 2rem;
+                height: 1rem;
+                font-size: 1rem;
+            }
+        }
+    }
+
+    // Open-group rail: tint the guide line
+    .nav-group.show > .nav-group-items::before {
+        background: linear-gradient(180deg, $side-brand-soft, $side-border);
+    }
+
+    // ------------------------------------------------------------------------
+    // Toggler at the bottom
+    // ------------------------------------------------------------------------
+    .sidebar-toggler {
+        background: linear-gradient(180deg, transparent, rgba(15, 76, 129, .04));
+        border-top: 1px solid $side-border;
+
+        &:hover {
+            background: $side-brand-soft;
+        }
+
+        &::before {
+            // Recolor the chevron to the brand
+            filter: invert(20%) sepia(75%) saturate(800%) hue-rotate(190deg);
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Collapsed (narrow) sidebar
+    // ------------------------------------------------------------------------
+    &.sidebar-narrow,
+    &.sidebar-narrow-unfoldable:not(:hover) {
+
+        .nav-title {
+            padding: 8px 0;
+            text-align: center;
+            font-size: 0;
+
+            &::before {
+                content: '';
+                display: block;
+                height: 2px;
+                margin: 0 14px;
+                border-radius: 2px;
+                background: $side-border;
+            }
+        }
+
+        .nav-link {
+            padding-inline: 0;
+            justify-content: center;
+
+            &.active::after {
+                display: none;
+            }
+        }
+
+        .nav-group-items {
+            padding-left: 0;
+
+            &::before {
+                display: none;
+            }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Scrollbar (perfect-scrollbar)
+    // ------------------------------------------------------------------------
+    perfect-scrollbar > .ps > .ps__rail-y,
+    perfect-scrollbar > .ps-container > .ps__rail-y {
+        background: transparent !important;
+    }
+
+    perfect-scrollbar > .ps > .ps__rail-y > .ps__thumb-y,
+    perfect-scrollbar > .ps-container > .ps__rail-y > .ps__thumb-y {
+        background: $side-border !important;
+        width: 5px !important;
+        right: 1px !important;
+        border-radius: 999px;
+    }
+}
+
+// Reduced-motion users get static styling
+@media (prefers-reduced-motion: reduce) {
+    .sidebar:not(.sidebar-end) * {
+        transition: none !important;
+        animation: none !important;
+    }
+}

@@ -1,3 +1,4 @@
+{{this.loadedPatient | json}}
 <c-callout color="danger" *ngIf="isValidForm">
     <span class="text-danger fw-bold">Please fill in all the required fields before navigating to next step</span>
 </c-callout>
@@ -52,21 +53,21 @@
             <c-col xl="12">
                 <div class="d-flex w-80 p-0 m-0" style="gap: 0;">
                     <select formControlName="dobMonth" class="form-select dob-select">
-                      <option value="">Month</option>
-                      <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+                        <option value="">Month</option>
+                        <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
                     </select>
-                  
+
                     <select formControlName="dobDay" class="form-select dob-select">
-                      <option value="">Day</option>
-                      <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+                        <option value="">Day</option>
+                        <option *ngFor="let day of days" [value]="day">{{ day }}</option>
                     </select>
-                  
+
                     <select formControlName="dobYear" class="form-select dob-select">
-                      <option value="">Year</option>
-                      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                        <option value="">Year</option>
+                        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
                     </select>
-                  </div>
-                  
+                </div>
+
             </c-col>
             <div *ngIf="this.form.get('basic')?.get('dob')?.errors?.['required'] && 
             (this.form.get('basic')?.get('dob')?.dirty ||this.form.get('basic')?.get('dob')?.touched)"
@@ -198,8 +199,9 @@
                     <option value="null" disabled>Select Marital Status</option>
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
-                    <option value="Widowed">Widowed</option>
                     <option value="Divorced">Divorced</option>
+                    <option value="Widowed">Widowed</option>
+                    <option value="Other">Other</option>
                 </select>
             </c-col>
             <div *ngIf="!this.form.get('basic')?.get('marital')?.valid && 
@@ -219,7 +221,7 @@
                     <option value="null" disabled>Select Phone Type</option>
                     <option value="Home">Home</option>
                     <option value="Work">Work</option>
-                    <option value="CellPhone">CellPhone</option>
+                    <option value="CellPhone">Cell Phone</option>
                     <option value="Other">Other</option>
                 </select>
             </c-col>
@@ -297,6 +299,109 @@
                 Company is required
             </div>
         </c-row>
+
+        <!-- Address -->
+        <c-card class="mb-1" [cBorder]="{top: {color: 'secondary', width: 3}}">
+            <c-card-body>
+                <h6 cCardSubtitle class="mb-1 text-medium-emphasis">Address</h6>
+                <!--First Address-->
+                <c-row>
+                    <c-col xl="12">
+                        <label style="width: 150px;">Street address <span class="text-danger">*</span></label>
+                    </c-col>
+                    <c-col xl="12">
+                        <input class="form-control" placeholder formControlName="firstAddress" sizing="sm" cFormControl
+                            [ngClass]="{'is-invalid': this.form.get('basic')?.get('firstAddress')?.invalid
+                && this.form.get('basic')?.get('firstAddress')?.touched}" maxlength="60" input-trimmer>
+                    </c-col>
+                    <c-col xl=" 12">
+                        <div *ngIf="this.form.get('basic')?.get('firstAddress')?.errors?.['required'] && 
+            (this.form.get('basic')?.get('firstAddress')?.dirty ||this.form.get('basic')?.get('firstAddress')?.touched)"
+                            class="text-danger mx-1">
+                            Street address is required
+                        </div>
+                    </c-col>
+                </c-row>
+                <!-- Second Address-->
+                <c-row>
+                    <c-col xs="12">
+                        <label style="width: 150px;"> Street address line 2</label>
+                    </c-col>
+                    <c-col xs="12">
+                        <input class="form-control" placeholder formControlName="secondAddress" sizing="sm" cFormControl
+                            maxlength="60" input-trimmer>
+                    </c-col>
+                    <c-col xs="12">
+                        <div *ngIf="this.form.get('basic')?.get('secondAddress')?.errors?.['noSpecialCharacters']"
+                            class="text-danger mx-1">Second address cannot contain special characters.</div>
+                    </c-col>
+                </c-row>
+                <!--City-->
+                <c-row>
+                    <c-col xl="12">
+                        <label style="width: 150px;">City<span class="text-danger">*</span></label>
+                    </c-col>
+                    <c-col xl="12">
+                        <input class="form-control" placeholder formControlName="city" sizing="sm" cFormControl
+                            [ngClass]="{'is-invalid': this.form.get('basic')?.get('city')?.invalid
+                && this.form.get('basic')?.get('city')?.touched}" maxlength="60" input-trimmer>
+                    </c-col>
+                    <c-col xl=" 12">
+                        <div *ngIf="this.form.get('basic')?.get('city')?.errors?.['required'] && 
+            (this.form.get('basic')?.get('city')?.dirty ||this.form.get('basic')?.get('city')?.touched)"
+                            class="text-danger mx-1">
+                            City is required
+                        </div>
+                        <div *ngIf="this.form.get('basic')?.get('city')?.errors?.['noSpecialCharacters']"
+                            class="text-danger mx-1">City cannot contain special characters.</div>
+                        <div *ngIf="this.form.get('basic')?.get('city')?.errors?.['noNumbers']"
+                            class="text-danger mx-1">
+                            City
+                            cannot contains Numbers.</div>
+                    </c-col>
+                </c-row>
+                <!-- State-->
+                <c-row>
+                    <c-col xs="12"><label style="width: 150px;">State <span class="text-danger">*</span></label></c-col>
+                    <c-col xs="12">
+                        <select cSelect sizing="sm" style="line-height: 15px;" formControlName="state" [ngClass]="{'is-invalid': this.form.get('basic')?.get('state')?.invalid
+                && this.form.get('basic')?.get('state')?.touched}">
+                            <option value="null" disabled>Select State</option>
+                            <option *ngFor="let state of states" [value]="state">
+                                {{state}}
+                            </option>
+                        </select></c-col>
+                    <c-col xs="12">
+                        <div *ngIf="!this.form.get('basic')?.get('state')?.valid && 
+                (this.form.get('basic')?.get('state')?.touched)" class="text-danger mx-1">
+                            State is required
+                        </div>
+                    </c-col>
+                </c-row>
+                <!-- zipCode-->
+                <c-row>
+                    <c-col xs="12"><label style="width: 150px;">ZipCode <span
+                                class="text-danger">*</span></label></c-col>
+                    <c-col xs="12">
+                        <input class="form-control" placeholder formControlName="zipCode" zipcode maxlength="10"
+                            sizing="sm" cFormControl [ngClass]="{'is-invalid': this.form.get('basic')?.get('zipCode')?.invalid
+                    && this.form.get('basic')?.get('zipCode')?.touched}">
+                    </c-col>
+                    <c-col xs="12">
+                        <div *ngIf="this.form.get('basic')?.get('zipCode')?.errors?.['required'] === true && 
+                (this.form.get('basic')?.get('zipCode')?.dirty ||this.form.get('basic')?.get('zipCode')?.touched)"
+                            class="text-danger mx-1">
+                            ZipCode is required
+                        </div>
+                        <div *ngIf="this.form.get('basic')?.get('zipCode')?.errors?.['pattern']"
+                            class="text-danger mx-1">
+                            Invalid ZipCode format
+                        </div>
+                    </c-col>
+                </c-row>
+            </c-card-body>
+        </c-card>
+
         <!--Emergency -->
         <c-card class="mb-1" [cBorder]="{top: {color: 'secondary', width: 3}}">
             <c-card-body>

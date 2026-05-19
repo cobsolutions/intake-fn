@@ -30,6 +30,7 @@
 /intake-service/api/digital-intake/lookups/find/agreement https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/find/agreement 200
 /intake-service/api/digital-intake/lookups/find/agreement https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/find/agreement 200
 /intake-service/api/digital-intake/lookups/find/agreement https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/find/agreement 200
+/intake-service/api/digital-intake/lookups/find/survey/find/:id https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/find/survey/find/:id 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
 /intake-service/api/digital-intake/lookups/find/insurance/company/name/:name https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/find/insurance/company/name/:name 200
@@ -251,7 +252,73 @@
 /intake-service/api/patient/find/provider/f-name/:firstName/l-name/:lastName https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/patient/find/provider/f-name/:firstName/l-name/:lastName 200
 /intake-service/api/patient/update/provider https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/patient/update/provider 200
 /intake-service/api/reports/find/contact https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/reports/find/contact 200
-/intake-service/api/reports/generator/excel/contact https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/reports/generator/excel/contact 200
+/intake-service/api/reports/generator/excel/contact  https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/reports/generator/excel/contact 200
 /intake-service/api/digital-intake/failed-intake https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/failed-intake 200
+/intake-service/api/digital-intake/create/survey https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/create/survey 200
+/intake-service/api/digital-intake/create/quick/intake https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/create/quick/intake 200
 /intake-service/api/patient/find/failed/clinic/:clinicId https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/patient/find/failed/clinic/:clinicId 200
+/intake-service/api/digital-intake/lookups/survey/find/:id https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/survey/find/:id 200
+/intake-service/api/survey/find/all https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/survey/find/all 200
+
+/intake-service/api/survey/create https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/survey/create 200
+/intake-service/api/survey/update/:id https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/survey/update/:id 200
+/intake-service/api/survey/find/:id https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/survey/find/:id 200
+/intake-service/api/survey/find/active https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/survey/find/active 200
+
+/intake-service/api/survey/find/all https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/survey/find/all 200
+/intake-service/api/survey/:id/status https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/survey/:id/status 200
+/intake-service/api/survey/patient/:id https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/survey/patient/:id 200
+
+
+/intake-service/api/one-time-token/generate/ott https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/one-time-token/generate/ott 200
+
+/intake-service/api/patient/mail/send https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/patient/mail/send 200
+
+/intake-service/api/patient/sms/send https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/patient/sms/send 200
+
+/intake-service/api/campaign-batches https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/campaign-batches 200
+
+/intake-service/api/campaign-batches/upload https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/campaign-batches/upload 200
+
+/intake-service/api/campaign-batches/:id https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/campaign-batches/:id 200
+
+/intake-service/api/digital-intake/create https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/create 200
+
+/intake-service/api/digital-intake/create/quick https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/create/quick 200
+
+/intake-service/api/digital-intake/find/phone https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/find/phone 200
+
+/intake-service/api/digital-intake/digital-intake/find/phone https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/digital-intake/find/phone 200
+
+/intake-service/api/digital-intake/find/submission-info https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/find/submission-info 200
+
+/intake-service/api/digital-intake/register/new/device https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/register/new/device 200
+
+/intake-service/api/digital-intake/initiate https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/initiate 200
+
+/intake-service/api/digital-intake/lookups/agreements https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/agreements 200
+
+/intake-service/api/digital-intake/lookups/insurances https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/lookups/insurances 200
+
+/intake-service/api/digital-intake/provider/npi/:npi https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/provider/npi/:npi 200
+
+/intake-service/api/digital-intake/provider/f-name/:name https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/provider/f-name/:name 200
+
+
+/intake-service/api/digital-intake/provider/l-name/:name https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/provider/l-name/:name 200
+
+/intake-service/api/digital-intake/provider/f-name/:firstName/l-name/:lastName https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/provider/f-name/:firstName/l-name/:lastName 200
+
+/intake-service/api/digital-intake/otp/send https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/otp/send 200
+
+/intake-service/api/digital-intake/otp/validate https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/otp/validate 200
+
+/intake-service/api/digital-intake/mail/verify https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/mail/verify 200
+
+/intake-service/api/digital-intake/sms/verify https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/sms/verify 200
+
+/intake-service/api/digital-intake/create/quick/intake https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/digital-intake/create/quick/intake 200
+
+/intake-service/api/clinic/upload https://digital-intake-service-91937983aa25.herokuapp.com/intake-service/api/clinic/upload 200
+
 /*  /index.html   200

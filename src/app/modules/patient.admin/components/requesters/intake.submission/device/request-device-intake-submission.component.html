@@ -117,6 +117,13 @@
                     <span class="qr-instructions__num">3</span>
                     <span>Tap the link that appears to start the intake.</span>
                 </li>
+                <li>
+                    <span class="qr-instructions__num">4</span>
+                    <span>The generated URL will be used to access the intake form.</span>
+                </li>
+                <li>
+                    <a class="submission-link" [href]="submissionURL" target="_blank">{{ submissionURL }}</a>
+                </li>
             </ol>
         </div>
 

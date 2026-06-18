@@ -93,6 +93,7 @@ export class RequestDeviceIntakeSubmissionComponent implements OnInit {
       next: (response: any) => {
         const ottResponse: any = response.body;
         this.submissionURL = this.baseURL + '/digital-intake/device-submission-request?token-id=' + ottResponse.tokenId;
+        //console.log(this.submissionURL);
         this.isGenerated = true;
         this.isGenerating = false;
       },

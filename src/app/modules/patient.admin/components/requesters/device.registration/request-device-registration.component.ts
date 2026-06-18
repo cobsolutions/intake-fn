@@ -62,6 +62,8 @@ export class RequestDeviceRegistrationComponent implements OnInit, OnDestroy {
       next: (response: any) => {
         const ottResponse: any = response.body;
         this.createPatientURL = this.baseURL + '/digital-intake/register-request?name=' + encodeURIComponent(this.deviceName) + '&token-id=' + ottResponse.tokenId;
+        //console.log(this.createPatientURL);
+        
         this.currentStep = 2;
         this.isGenerating = false;
         this.startCountdown(ottResponse.expiresAt);

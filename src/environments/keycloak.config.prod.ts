@@ -1,7 +1,7 @@
 import { KeycloakConfig } from "keycloak-js";
 
 const keycloakConfigProd: KeycloakConfig = {
-    url: 'https://kc-cob-83bdbd045c6f.herokuapp.com',
+    url: 'https://kc.cobsolution.cloud',
     realm: 'COB',
     clientId: 'intake-resource',
   };
